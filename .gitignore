@@ -1,0 +1,46 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build outputs
+web/.svelte-kit/
+web/build/
+api/dist/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# Test coverage
+coverage/
+
+# Database (local dev only)
+*.sqlite
+*.sqlite3
+
+# Cache
+.cache/
+.turbo/
+
+# pm2
+.pm2/
+
+# Caddy certs
+*.crt
+*.key

@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mental Model — VK Projects</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0d0d0e;
+  --surf:#18181a;
+  --surf2:#222226;
+  --surf3:#2a2a30;
+  --border:rgba(255,255,255,.08);
+  --border2:rgba(255,255,255,.14);
+  --tx:#f0eff5;
+  --tx60:rgba(240,239,245,.6);
+  --tx30:rgba(240,239,245,.3);
+  --tx12:rgba(240,239,245,.12);
+  /* project accents */
+  --port:#7c6cf2;
+  --port-dim:rgba(124,108,242,.12);
+  --port-border:rgba(124,108,242,.3);
+  --home:#e2201f;
+  --home-dim:rgba(226,32,31,.1);
+  --home-border:rgba(226,32,31,.28);
+  /* category colours */
+  --c-green:#3ddc84;
+  --c-amber:#ffbb33;
+  --c-blue:#5b9cf6;
+  --c-teal:#2ec7a6;
+  --c-shared:#888790;
+}
+
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);
+  color:var(--tx);
+  font-family:'DM Mono',monospace;
+  min-height:100vh;
+  padding:32px 24px 80px;
+}
+/* dot matrix */
+body::before{
+  content:'';position:fixed;inset:0;
+  background-image:radial-gradient(circle,rgba(255,255,255,.035) 1px,transparent 1px);
+  background-size:22px 22px;
+  pointer-events:none;z-index:0;
+}
+
+.wrap{position:relative;z-index:1;max-width:1100px;margin:0 auto}
+
+/* ── page header ── */
+.pg-head{
+  display:flex;align-items:baseline;gap:16px;
+  margin-bottom:48px;padding-bottom:20px;
+  border-bottom:1px solid var(--border);
+}
+.pg-title{font-family:'Syne',sans-serif;font-size:28px;font-weight:800;letter-spacing:-1px}
+.pg-sub{font-size:11px;color:var(--tx30);letter-spacing:2px}
+
+/* ── two-col layout ── */
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:32px}
+@media(max-width:820px){.cols{grid-template-columns:1fr}}
+
+/* ── project root card ── */
+.proj{
+  border-radius:18px;padding:24px;
+  position:relative;overflow:hidden;
+}
+.proj-port{background:var(--port-dim);border:1px solid var(--port-border)}
+.proj-home{background:var(--home-dim);border:1px solid var(--home-border)}
+
+.proj-tag{
+  font-size:8px;letter-spacing:3.5px;text-transform:uppercase;
+  padding:3px 9px;border-radius:4px;
+  display:inline-block;margin-bottom:14px;
+}
+.proj-port .proj-tag{background:rgba(124,108,242,.15);color:var(--port);border:1px solid var(--port-border)}
+.proj-home .proj-tag{background:var(--home-dim);color:var(--home);border:1px solid var(--home-border)}
+
+.proj-name{
+  font-family:'Syne',sans-serif;
+  font-size:22px;font-weight:800;
+  letter-spacing:-.5px;margin-bottom:4px;
+}
+.proj-url{font-size:10px;color:var(--tx30);letter-spacing:1px;margin-bottom:20px}
+
+/* ── L1 section ── */
+.l1-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.l1{
+  padding:12px 14px;border-radius:12px;
+  background:var(--surf2);border:1px solid var(--border);
+  cursor:pointer;transition:all .18s;
+}
+.l1:hover{background:var(--surf3);border-color:var(--border2);transform:translateY(-1px)}
+.l1-label{
+  font-size:8px;letter-spacing:2.5px;text-transform:uppercase;
+  color:var(--tx30);margin-bottom:7px;
+  display:flex;align-items:center;gap:5px;
+}
+.l1-label::before{content:'';width:4px;height:4px;border-radius:50%;background:currentColor;flex-shrink:0}
+.l1-title{font-size:12px;font-weight:500;color:var(--tx);margin-bottom:3px}
+.l1-sub{font-size:10px;color:var(--tx30)}
+/* colour tints */
+.c-frontend .l1-label{color:var(--c-teal)}
+.c-design .l1-label{color:var(--c-amber)}
+.c-backend .l1-label{color:var(--c-blue)}
+.c-deploy .l1-label{color:var(--c-green)}
+.c-nodes .l1-label{color:var(--c-teal)}
+.c-services .l1-label{color:var(--c-amber)}
+.c-stack .l1-label{color:var(--port)}
+.c-infra .l1-label{color:var(--c-blue)}
+
+/* ── L2 chips (inside each L1 section, expanded on click) ── */
+.l1-chips{
+  display:none;flex-wrap:wrap;gap:5px;margin-top:10px;
+  padding-top:10px;border-top:1px solid var(--border);
+}
+.l1.open .l1-chips{display:flex}
+.chip{
+  padding:3px 8px;border-radius:4px;
+  font-size:9px;letter-spacing:.5px;
+  background:rgba(255,255,255,.04);
+  border:1px solid var(--border);
+  color:var(--tx60);
+  cursor:default;
+}
+/* expand caret */
+.l1-caret{
+  float:right;font-size:10px;color:var(--tx30);
+  transition:transform .2s;margin-top:-1px;
+}
+.l1.open .l1-caret{transform:rotate(90deg)}
+
+/* ── Dev setup band ── */
+.devsetup{
+  margin-top:16px;padding:14px 16px;border-radius:12px;
+  background:var(--surf);border:1px solid var(--border);
+  display:flex;flex-wrap:wrap;gap:7px;align-items:center;
+}
+.devsetup-lbl{
+  font-size:8px;letter-spacing:3px;color:var(--tx30);
+  text-transform:uppercase;margin-right:4px;flex-shrink:0;
+}
+.dsfile{
+  padding:3px 9px;border-radius:4px;border:1px solid var(--border);
+  font-size:9px;color:var(--tx60);
+  background:rgba(255,255,255,.03);cursor:default;
+  transition:border-color .15s,color .15s;
+}
+.dsfile:hover{border-color:var(--border2);color:var(--tx)}
+
+/* ── status badge ── */
+.status-row{
+  margin-top:14px;padding-top:12px;
+  border-top:1px solid var(--border);
+  display:flex;flex-wrap:wrap;gap:8px;align-items:center;
+}
+.sbadge{
+  font-size:9px;padding:3px 9px;border-radius:20px;letter-spacing:.5px;
+  display:inline-flex;align-items:center;gap:5px;
+}
+.sbadge::before{content:'';width:5px;height:5px;border-radius:50%;flex-shrink:0}
+.sbadge-done{background:rgba(61,220,132,.08);border:1px solid rgba(61,220,132,.2);color:var(--c-green)}
+.sbadge-done::before{background:var(--c-green);box-shadow:0 0 5px var(--c-green)}
+.sbadge-next{background:rgba(91,156,246,.08);border:1px solid rgba(91,156,246,.2);color:var(--c-blue)}
+.sbadge-next::before{background:var(--c-blue)}
+
+/* ── Shared layer ── */
+.shared{
+  padding:22px 24px;border-radius:16px;
+  background:var(--surf);border:1px solid var(--border);
+  margin-bottom:24px;
+}
+.shared-head{
+  font-size:8px;letter-spacing:3.5px;color:var(--tx30);
+  text-transform:uppercase;margin-bottom:14px;
+  display:flex;align-items:center;gap:10px;
+}
+.shared-head::after{content:'';flex:1;height:1px;background:var(--border)}
+.shared-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+@media(max-width:640px){.shared-grid{grid-template-columns:repeat(2,1fr)}}
+.sc{
+  padding:12px 14px;border-radius:10px;
+  background:var(--surf2);border:1px solid var(--border);
+}
+.sc-label{font-size:8px;letter-spacing:2px;color:var(--tx30);margin-bottom:5px}
+.sc-val{font-size:11px;color:var(--tx60)}
+
+/* ── Differences table ── */
+.diff{
+  padding:22px 24px;border-radius:16px;
+  background:var(--surf);border:1px solid var(--border);
+  margin-bottom:24px;overflow:auto;
+}
+.diff-head{
+  font-size:8px;letter-spacing:3.5px;color:var(--tx30);
+  text-transform:uppercase;margin-bottom:16px;
+  display:flex;align-items:center;gap:10px;
+}
+.diff-head::after{content:'';flex:1;height:1px;background:var(--border)}
+.diff-table{width:100%;border-collapse:collapse;min-width:480px}
+.diff-table th{
+  text-align:left;font-size:9px;letter-spacing:2px;
+  color:var(--tx30);font-weight:400;
+  padding:6px 12px;border-bottom:1px solid var(--border);
+}
+.diff-table td{
+  font-size:11px;color:var(--tx60);
+  padding:8px 12px;border-bottom:1px solid rgba(255,255,255,.04);
+  vertical-align:top;
+}
+.diff-table td:first-child{color:var(--tx30);font-size:10px;white-space:nowrap}
+.diff-table td.port{color:var(--port)}
+.diff-table td.home{color:rgba(226,32,31,.8)}
+.diff-table tr:last-child td{border-bottom:none}
+
+/* ── Next steps row ── */
+.nextsteps{
+  display:flex;align-items:center;gap:0;
+  background:var(--surf);border-radius:14px;border:1px solid var(--border);
+  overflow:hidden;
+}
+.ns{
+  flex:1;padding:16px 18px;
+  border-right:1px solid var(--border);
+}
+.ns:last-child{border-right:none}
+.ns-num{
+  font-family:'Syne',sans-serif;
+  font-size:28px;font-weight:800;
+  color:var(--tx12);letter-spacing:-2px;line-height:1;
+  margin-bottom:6px;
+}
+.ns-title{font-size:11px;font-weight:500;color:var(--tx);margin-bottom:2px}
+.ns-sub{font-size:10px;color:var(--tx30)}
+@media(max-width:640px){
+  .nextsteps{flex-direction:column}
+  .ns{border-right:none;border-bottom:1px solid var(--border)}
+  .ns:last-child{border-bottom:none}
+}
+
+/* arrows between next steps */
+.ns-arrow{
+  width:28px;flex-shrink:0;text-align:center;
+  color:var(--tx12);font-size:16px;
+}
+@media(max-width:640px){.ns-arrow{display:none}}
+
+/* ── Connector line (visual) ── */
+.connector{
+  display:flex;align-items:center;
+  justify-content:center;height:20px;
+  position:relative;
+}
+.connector::before{
+  content:'';
+  position:absolute;top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  width:1px;height:20px;
+  background:var(--border);
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="pg-head">
+    <div class="pg-title">Mental Model</div>
+    <div class="pg-sub">VK · portfolio-website &amp; homelab-dashboard · 2026</div>
+  </div>
+
+  <!-- ══ TWO PROJECT COLUMNS ══ -->
+  <div class="cols">
+
+    <!-- ── PORTFOLIO ── -->
+    <div class="proj proj-port">
+      <div class="proj-tag">Project 01</div>
+      <div class="proj-name">portfolio-website</div>
+      <div class="proj-url">vishalkatariya.dev · vkkatariya/vkkatariya.github.io</div>
+
+      <div class="l1-grid">
+
+        <div class="l1 c-frontend" onclick="toggle(this)">
+          <div class="l1-label">Frontend<span class="l1-caret">›</span></div>
+          <div class="l1-title">SvelteKit + TypeScript</div>
+          <div class="l1-sub">widget grid, /lab route</div>
+          <div class="l1-chips">
+            <span class="chip">iOS widget grid</span>
+            <span class="chip">Motion One</span>
+            <span class="chip">/lab route (later)</span>
+            <span class="chip">+page.server.ts loads</span>
+            <span class="chip">DM Mono + Syne</span>
+          </div>
+        </div>
+
+        <div class="l1 c-design" onclick="toggle(this)">
+          <div class="l1-label">Design system<span class="l1-caret">›</span></div>
+          <div class="l1-title">NothingOS · 3 layers</div>
+          <div class="l1-sub">Liquid Glass · Neomorph · NeoPOP</div>
+          <div class="l1-chips">
+            <span class="chip">Liquid Glass → nav/frames</span>
+            <span class="chip">Neomorphism → widget surfaces</span>
+            <span class="chip">NeoPOP → CTAs</span>
+            <span class="chip">#080808 base</span>
+            <span class="chip">monochrome accent</span>
+            <span class="chip">dot-matrix bg</span>
+            <span class="chip">inline SVG icons</span>
+          </div>
+        </div>
+
+        <div class="l1 c-backend" onclick="toggle(this)">
+          <div class="l1-label">Backend<span class="l1-caret">›</span></div>
+          <div class="l1-title">Fastify + WebSocket</div>
+          <div class="l1-sub">pm2 on VPS, systeminformation</div>
+          <div class="l1-chips">
+            <span class="chip">ws push every 2s</span>
+            <span class="chip">REST: projects/about</span>
+            <span class="chip">SQLite (project metadata)</span>
+            <span class="chip">systeminformation npm</span>
+            <span class="chip">pm2 always-on</span>
+          </div>
+        </div>
+
+        <div class="l1 c-deploy" onclick="toggle(this)">
+          <div class="l1-label">Deploy<span class="l1-caret">›</span></div>
+          <div class="l1-title">Vercel + GitHub Pages</div>
+          <div class="l1-sub">CDN frontend · VPS backend</div>
+          <div class="l1-chips">
+            <span class="chip">Vercel → vishalkatariya.dev</span>
+            <span class="chip">GH Pages → vkkatariya.github.io</span>
+            <span class="chip">Caddy: bind tailscale/&lt;n&gt; plugin</span>
+            <span class="chip">WS backend on DigitalOcean VPS</span>
+            <span class="chip">no auth (public)</span>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="devsetup">
+        <span class="devsetup-lbl">dev setup</span>
+        <span class="dsfile">AGENTS.md</span>
+        <span class="dsfile">CONTEXT.md</span>
+        <span class="dsfile">DEVLOG.md</span>
+        <span class="dsfile">todo.md</span>
+        <span class="dsfile">lessons.md</span>
+      </div>
+
+      <div class="status-row">
+        <span class="sbadge sbadge-done">Phase 0 — HTML prototype ✓</span>
+        <span class="sbadge sbadge-next">Next → SvelteKit scaffold</span>
+      </div>
+    </div>
+
+    <!-- ── HOMELAB DASHBOARD ── -->
+    <div class="proj proj-home">
+      <div class="proj-tag">Project 02</div>
+      <div class="proj-name">homelab-dashboard</div>
+      <div class="proj-url">vishalkatariya.dev/lab · lab.auxois-wyrm.ts.net (private)</div>
+
+      <div class="l1-grid">
+
+        <div class="l1 c-nodes" onclick="toggle(this)">
+          <div class="l1-label">Nodes<span class="l1-caret">›</span></div>
+          <div class="l1-title">athena · atlas · hermes</div>
+          <div class="l1-sub">Rock 5T · Proxmox · Mac</div>
+          <div class="l1-chips">
+            <span class="chip">athena — Rock 5T RK3588 ARM64</span>
+            <span class="chip">atlas — OptiPlex i7 Proxmox</span>
+            <span class="chip">hermes — MacBook dev</span>
+            <span class="chip">erebus — Oracle ARM (planned)</span>
+            <span class="chip">tailnet auxois-wyrm.ts.net</span>
+            <span class="chip">LXC 1xx · VM 2xx · TPL 9xx</span>
+          </div>
+        </div>
+
+        <div class="l1 c-services" onclick="toggle(this)">
+          <div class="l1-label">Services<span class="l1-caret">›</span></div>
+          <div class="l1-title">6 running · 4+ planned</div>
+          <div class="l1-sub">OpenWebUI · Cockpit · RustDesk…</div>
+          <div class="l1-chips">
+            <span class="chip">OpenWebUI :3000</span>
+            <span class="chip">OpenClaw :18789</span>
+            <span class="chip">Stirling PDF :8080</span>
+            <span class="chip">Cockpit :9090</span>
+            <span class="chip">RustDesk :21115</span>
+            <span class="chip">HAOS :8123 (KVM)</span>
+            <span class="chip">Gitea (planned)</span>
+            <span class="chip">Woodpecker CI (planned)</span>
+          </div>
+        </div>
+
+        <div class="l1 c-stack" onclick="toggle(this)">
+          <div class="l1-label">Stack<span class="l1-caret">›</span></div>
+          <div class="l1-title">Fastify + WS + sysinfo</div>
+          <div class="l1-sub">NothingOS #E2201F accent</div>
+          <div class="l1-chips">
+            <span class="chip">systeminformation npm</span>
+            <span class="chip">WS push every 2s</span>
+            <span class="chip">Notion MCP (docs tab)</span>
+            <span class="chip">5-min cache TTL</span>
+            <span class="chip">Nothing red #E2201F sole accent</span>
+            <span class="chip">3-tab layout</span>
+          </div>
+        </div>
+
+        <div class="l1 c-infra" onclick="toggle(this)">
+          <div class="l1-label">Infra<span class="l1-caret">›</span></div>
+          <div class="l1-title">Caddy file-cert + Tailscale</div>
+          <div class="l1-sub">bind mounts · 127.0.0.1 only</div>
+          <div class="l1-chips">
+            <span class="chip">tailscale cert (file-based)</span>
+            <span class="chip">root:caddy 640 key</span>
+            <span class="chip">Caddy bind Tailscale IP</span>
+            <span class="chip">Docker bind mounts only</span>
+            <span class="chip">/srv/dev-shared/homelab/</span>
+            <span class="chip">ARM64 — never x86 binaries</span>
+            <span class="chip">Proxmox fw over UFW</span>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="devsetup">
+        <span class="devsetup-lbl">dev setup</span>
+        <span class="dsfile">AGENTS.md</span>
+        <span class="dsfile">CONTEXT.md</span>
+        <span class="dsfile">DEVLOG.md</span>
+        <span class="dsfile">todo.md</span>
+        <span class="dsfile">lessons.md</span>
+        <span class="dsfile">README.md</span>
+      </div>
+
+      <div class="status-row">
+        <span class="sbadge sbadge-done">Phase 0 — HTML prototype ✓</span>
+        <span class="sbadge sbadge-next">Next → Fastify WS on athena</span>
+      </div>
+    </div>
+
+  </div><!-- /cols -->
+
+  <!-- ══ SHARED LAYER ══ -->
+  <div class="shared">
+    <div class="shared-head">shared between both projects</div>
+    <div class="shared-grid">
+      <div class="sc">
+        <div class="sc-label">Design tokens</div>
+        <div class="sc-val">tokens.css — NothingOS palette, glass formula, dot-matrix, neomorphic shadows</div>
+      </div>
+      <div class="sc">
+        <div class="sc-label">SVG icon system</div>
+        <div class="sc-val">inline, no external CDN, 3D animated, colour-matched per project</div>
+      </div>
+      <div class="sc">
+        <div class="sc-label">AGENTS.md base</div>
+        <div class="sc-val">session startup, execution models, DEVLOG hard rule, completion checklist</div>
+      </div>
+      <div class="sc">
+        <div class="sc-label">Typography</div>
+        <div class="sc-val">DM Mono (data/labels) + Syne 800 (display numerals) — Google Fonts CDN</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ KEY DIFFERENCES ══ -->
+  <div class="diff">
+    <div class="diff-head">key differences</div>
+    <table class="diff-table">
+      <thead>
+        <tr>
+          <th>Property</th>
+          <th style="color:rgba(124,108,242,.7)">portfolio-website</th>
+          <th style="color:rgba(226,32,31,.6)">homelab-dashboard</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Backend node</td><td class="port">DigitalOcean VPS</td><td class="home">athena — Rock 5T ARM64</td></tr>
+        <tr><td>Frontend deploy</td><td class="port">Vercel CDN</td><td class="home">/lab route in portfolio app</td></tr>
+        <tr><td>Caddy pattern</td><td class="port">bind tailscale/&lt;n&gt; plugin</td><td class="home">file-cert (tailscale cert cmd)</td></tr>
+        <tr><td>Auth</td><td class="port">none — public portfolio</td><td class="home">Tailscale-private (no login needed)</td></tr>
+        <tr><td>Database</td><td class="port">SQLite (project metadata)</td><td class="home">none — realtime WS only</td></tr>
+        <tr><td>WS data source</td><td class="port">live homelab metrics</td><td class="home">systeminformation on athena</td></tr>
+        <tr><td>Primary accent</td><td class="port">monochrome / white</td><td class="home">Nothing red #E2201F</td></tr>
+        <tr><td>Notion integration</td><td class="port">none planned</td><td class="home">docs tab — MCP read-only, 5m TTL</td></tr>
+        <tr><td>ARM64 discipline</td><td class="port">not applicable (x86 VPS)</td><td class="home">mandatory — aarch64, apt arch=arm64</td></tr>
+        <tr><td>Repo</td><td class="port">vkkatariya/vkkatariya.github.io</td><td class="home">separate: homelab-dashboard</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ══ NEXT STEPS ══ -->
+  <div style="font-size:8px;letter-spacing:3.5px;color:var(--tx30);text-transform:uppercase;margin-bottom:12px;display:flex;align-items:center;gap:10px">
+    next steps
+    <span style="flex:1;height:1px;background:var(--border);display:block"></span>
+  </div>
+
+  <div class="nextsteps">
+    <div class="ns">
+      <div class="ns-num">01</div>
+      <div class="ns-title">Scaffold SvelteKit</div>
+      <div class="ns-sub">pnpm create svelte@latest web</div>
+    </div>
+    <div class="ns-arrow">›</div>
+    <div class="ns">
+      <div class="ns-num">02</div>
+      <div class="ns-title">Fastify WS backend</div>
+      <div class="ns-sub">systeminformation on athena</div>
+    </div>
+    <div class="ns-arrow">›</div>
+    <div class="ns">
+      <div class="ns-num">03</div>
+      <div class="ns-title">Port components</div>
+      <div class="ns-sub">prototype → Svelte components</div>
+    </div>
+    <div class="ns-arrow">›</div>
+    <div class="ns">
+      <div class="ns-num">04</div>
+      <div class="ns-title">Wire live data</div>
+      <div class="ns-sub">metricsStore → widget grid</div>
+    </div>
+    <div class="ns-arrow">›</div>
+    <div class="ns">
+      <div class="ns-num">05</div>
+      <div class="ns-title">Deploy both</div>
+      <div class="ns-sub">Vercel + pm2 on athena</div>
+    </div>
+  </div>
+
+</div><!-- /wrap -->
+<script>
+function toggle(el){
+  el.classList.toggle('open');
+}
+</script>
+</body>
+</html>

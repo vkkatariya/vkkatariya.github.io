@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>vkkatariya — portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root {
+  --bg: #080808;
+  --bg2: #0f0f0f;
+  --bg3: #141414;
+  --w: #f0f0f0;
+  --w60: rgba(240,240,240,.6);
+  --w30: rgba(240,240,240,.3);
+  --w12: rgba(240,240,240,.12);
+  --w06: rgba(240,240,240,.06);
+  --w03: rgba(240,240,240,.03);
+  --green: #3ddc84;
+  --amber: #ffbb33;
+  --blue: #5b9cf6;
+  --red: #ff453a;
+  /* glass */
+  --gb: rgba(255,255,255,.055);
+  --gbd: rgba(255,255,255,.10);
+  /* neo-shadow */
+  --sd: rgba(0,0,0,.85);
+  --sl: rgba(255,255,255,.035);
+  /* neopop */
+  --np-off: 5px;
+}
+
+html { scroll-behavior: smooth }
+
+body {
+  background: var(--bg);
+  color: var(--w);
+  font-family: 'Syne', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── dot matrix bg ── */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: radial-gradient(circle, rgba(255,255,255,.055) 1px, transparent 1px);
+  background-size: 22px 22px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* subtle radial glow top */
+body::after {
+  content: '';
+  position: fixed;
+  top: -200px; left: 50%;
+  transform: translateX(-50%);
+  width: 900px; height: 500px;
+  background: radial-gradient(ellipse, rgba(93,161,246,.055) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ══════════════════════════════════════════
+   LIQUID GLASS NAVBAR
+══════════════════════════════════════════ */
+nav {
+  position: fixed;
+  top: 18px; left: 50%;
+  transform: translateX(-50%);
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  padding: 11px 24px;
+  background: rgba(8,8,8,.55);
+  backdrop-filter: blur(28px) saturate(200%) brightness(1.1);
+  -webkit-backdrop-filter: blur(28px) saturate(200%) brightness(1.1);
+  border-radius: 100px;
+  border: 1px solid rgba(255,255,255,.1);
+  box-shadow:
+    0 0 0 0.5px rgba(255,255,255,.04) inset,
+    0 1px 0 rgba(255,255,255,.09) inset,
+    0 -1px 0 rgba(0,0,0,.3) inset,
+    0 12px 40px rgba(0,0,0,.7),
+    0 2px 8px rgba(0,0,0,.4);
+}
+
+.nav-logo {
+  font-family: 'DM Mono', monospace;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 2.5px;
+  color: var(--w);
+}
+.nav-logo em { color: var(--w30); font-style: normal; }
+
+.nav-links {
+  display: flex; gap: 20px;
+  list-style: none;
+}
+.nav-links a {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 1px;
+  color: var(--w30);
+  text-decoration: none;
+  transition: color .2s;
+}
+.nav-links a:hover { color: var(--w); }
+
+.nav-avail {
+  display: flex; align-items: center; gap: 6px;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: .5px;
+  color: var(--green);
+}
+.nav-avail::before {
+  content: '';
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 0 3px rgba(61,220,132,.15), 0 0 10px var(--green);
+  animation: glow-pulse 2.4s ease-in-out infinite;
+}
+@keyframes glow-pulse {
+  0%,100% { box-shadow: 0 0 0 3px rgba(61,220,132,.15), 0 0 10px var(--green); }
+  50% { box-shadow: 0 0 0 5px rgba(61,220,132,.08), 0 0 4px var(--green); }
+}
+
+/* ══════════════════════════════════════════
+   LAYOUT
+══════════════════════════════════════════ */
+main {
+  position: relative; z-index: 1;
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 108px 20px 80px;
+}
+
+/* ══════════════════════════════════════════
+   WIDGET GRID — iOS home screen layout
+══════════════════════════════════════════ */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: 168px;
+  gap: 13px;
+}
+
+/* Size classes — iOS widget convention */
+.s11 { grid-column: span 1; grid-row: span 1; }
+.s21 { grid-column: span 2; grid-row: span 1; }
+.s12 { grid-column: span 1; grid-row: span 2; }
+.s22 { grid-column: span 2; grid-row: span 2; }
+.s41 { grid-column: span 4; grid-row: span 1; }
+
+/* ══════════════════════════════════════════
+   BASE WIDGET — neomorphic dark surface
+══════════════════════════════════════════ */
+.w {
+  position: relative;
+  border-radius: 28px;
+  padding: 20px;
+  overflow: hidden;
+  cursor: default;
+  transition: transform .25s cubic-bezier(.34,1.46,.64,1), box-shadow .25s ease;
+  /* neomorphism: dual shadow — dark bottom-right, faint light top-left */
+  background: var(--bg2);
+  box-shadow:
+    5px 5px 16px var(--sd),
+    -2px -2px 7px var(--sl),
+    inset 0 1px 0 rgba(255,255,255,.035),
+    inset 0 -1px 0 rgba(0,0,0,.4);
+  border: 1px solid rgba(255,255,255,.055);
+}
+.w:hover {
+  transform: translateY(-3px) scale(1.015);
+  box-shadow:
+    8px 10px 28px var(--sd),
+    -3px -3px 10px var(--sl),
+    inset 0 1px 0 rgba(255,255,255,.05),
+    inset 0 -1px 0 rgba(0,0,0,.4);
+}
+
+/* Liquid glass variant */
+.w.glass {
+  background: rgba(15,15,15,.6);
+  backdrop-filter: blur(32px) saturate(180%);
+  -webkit-backdrop-filter: blur(32px) saturate(180%);
+  border-color: rgba(255,255,255,.1);
+  box-shadow:
+    0 0 0 .5px rgba(255,255,255,.04) inset,
+    0 1.5px 0 rgba(255,255,255,.08) inset,
+    0 -1px 0 rgba(0,0,0,.35) inset,
+    5px 8px 24px rgba(0,0,0,.7),
+    0 2px 8px rgba(0,0,0,.4);
+}
+
+/* Inverted widget (white bg) */
+.w.inv {
+  background: #efefef;
+  color: #080808;
+  box-shadow:
+    5px 5px 16px rgba(0,0,0,.8),
+    -1px -1px 4px rgba(255,255,255,.04),
+    inset 0 1px 0 rgba(255,255,255,.9);
+}
+.w.inv:hover {
+  background: #f5f5f5;
+}
+
+/* ── Nothing-OS label ── */
+.lbl {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 3px;
+  color: var(--w30);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  display: flex; align-items: center; gap: 5px;
+}
+.lbl::before {
+  content: '';
+  width: 4px; height: 4px;
+  border-radius: 50%;
+  background: currentColor;
+  flex-shrink: 0;
+}
+
+.lbl-inv {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 3px;
+  color: rgba(8,8,8,.3);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  display: flex; align-items: center; gap: 5px;
+}
+.lbl-inv::before {
+  content: '';
+  width: 4px; height: 4px;
+  border-radius: 50%;
+  background: rgba(8,8,8,.3);
+  flex-shrink: 0;
+}
+
+.sub {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--w30);
+  letter-spacing: .3px;
+  line-height: 1.5;
+}
+
+/* ── NothingOS dot separator ── */
+.nd {
+  display: flex; align-items: center; gap: 4px;
+  margin: 10px 0;
+}
+.nd i {
+  width: 3px; height: 3px;
+  border-radius: 50%;
+  background: var(--w12);
+  flex-shrink: 0;
+}
+.nd .line {
+  flex: 1; height: 1px;
+  background: var(--w06);
+}
+
+/* ── status badge ── */
+.sbadge {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 4px 9px;
+  border-radius: 20px;
+  border: 1px solid rgba(61,220,132,.2);
+  background: rgba(61,220,132,.07);
+  font-family: 'DM Mono', monospace;
+  font-size: 10px; letter-spacing: .8px;
+  color: var(--green);
+}
+.sbadge::before {
+  content: '';
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 5px var(--green);
+}
+
+/* ── tag chip ── */
+.chip {
+  display: inline-block;
+  padding: 3px 8px;
+  border: 1px solid var(--w12);
+  border-radius: 5px;
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: var(--w30);
+  letter-spacing: .3px;
+}
+.chip-inv {
+  display: inline-block;
+  padding: 3px 8px;
+  border: 1px solid rgba(8,8,8,.2);
+  border-radius: 5px;
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: rgba(8,8,8,.45);
+}
+
+/* ══════════════════════════════════════════
+   CLOCK WIDGET — NothingOS ndot style
+══════════════════════════════════════════ */
+.clock-time {
+  display: flex; align-items: baseline; gap: 2px;
+}
+.clock-h {
+  font-family: 'DM Mono', monospace;
+  font-size: 72px; font-weight: 400;
+  line-height: 1; letter-spacing: -4px;
+  color: var(--w);
+}
+.clock-colon {
+  font-family: 'DM Mono', monospace;
+  font-size: 44px; font-weight: 300;
+  color: var(--w30); line-height: 1;
+  margin: 0 3px;
+  animation: colon-blink 1s step-end infinite;
+}
+@keyframes colon-blink { 50% { opacity: 0 } }
+.clock-m {
+  font-family: 'DM Mono', monospace;
+  font-size: 72px; font-weight: 300;
+  line-height: 1; letter-spacing: -4px;
+  color: var(--w30);
+}
+.clock-date {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px; letter-spacing: 2px;
+  color: var(--w30);
+  text-transform: uppercase;
+  margin-top: 6px;
+}
+
+/* ══════════════════════════════════════════
+   SKILL BARS — neomorphic inset track
+══════════════════════════════════════════ */
+.skill-row {
+  display: flex; align-items: center; gap: 9px;
+  margin-bottom: 9px;
+}
+.skill-n {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px; color: var(--w30);
+  width: 58px; flex-shrink: 0;
+  letter-spacing: .3px;
+}
+.skill-track {
+  flex: 1; height: 3px;
+  border-radius: 2px;
+  background: rgba(0,0,0,.5);
+  /* neomorphic inset */
+  box-shadow: inset 1px 1px 3px rgba(0,0,0,.7), inset -1px -1px 1px rgba(255,255,255,.025);
+  overflow: hidden;
+}
+.skill-fill {
+  height: 100%; border-radius: 2px;
+  background: var(--w);
+  animation: grow 1.4s cubic-bezier(.4,0,.2,1) both;
+  transform-origin: left;
+}
+@keyframes grow {
+  from { transform: scaleX(0); opacity: 0 }
+  to   { transform: scaleX(1); opacity: 1 }
+}
+.skill-pct {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px; color: var(--w12);
+  width: 26px; text-align: right;
+}
+
+/* ══════════════════════════════════════════
+   NEOPOP BUTTON
+══════════════════════════════════════════ */
+.np {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 10px 18px;
+  background: var(--w);
+  color: #080808;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px; font-weight: 500;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  border: none; cursor: pointer;
+  border-radius: 5px;
+  position: relative;
+  transition: transform .1s ease, box-shadow .1s ease;
+  box-shadow: var(--np-off) var(--np-off) 0 rgba(240,240,240,.28);
+}
+.np:hover {
+  transform: translate(-2px,-2px);
+  box-shadow: calc(var(--np-off) + 2px) calc(var(--np-off) + 2px) 0 rgba(240,240,240,.28);
+}
+.np:active {
+  transform: translate(var(--np-off), var(--np-off));
+  box-shadow: 0 0 0 rgba(240,240,240,.28);
+}
+
+.np-ghost {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 9px 17px;
+  background: transparent;
+  color: var(--w60);
+  font-family: 'DM Mono', monospace;
+  font-size: 11px; font-weight: 400;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  border: 1px solid var(--w12); cursor: pointer;
+  border-radius: 5px;
+  transition: border-color .2s, color .2s;
+}
+.np-ghost:hover { border-color: var(--w30); color: var(--w); }
+
+/* ══════════════════════════════════════════
+   CONTRIBUTION GRID
+══════════════════════════════════════════ */
+.cg {
+  display: grid;
+  grid-template-columns: repeat(26, 1fr);
+  gap: 3px;
+  margin: 8px 0;
+}
+.cc {
+  aspect-ratio: 1;
+  border-radius: 2px;
+  background: rgba(255,255,255,.04);
+}
+.cc.l1 { background: rgba(255,255,255,.12); }
+.cc.l2 { background: rgba(255,255,255,.30); }
+.cc.l3 { background: rgba(255,255,255,.55); }
+.cc.l4 { background: rgba(255,255,255,.88); }
+
+/* ══════════════════════════════════════════
+   STACK LIST
+══════════════════════════════════════════ */
+.si {
+  display: flex; align-items: center; gap: 9px;
+  padding: 7px 0;
+  border-bottom: 1px solid rgba(255,255,255,.04);
+}
+.si:last-child { border-bottom: none; padding-bottom: 0; }
+.si-dot {
+  width: 5px; height: 5px; border-radius: 50%;
+  background: var(--w);
+  flex-shrink: 0;
+}
+.si-name {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px; color: var(--w60);
+  flex: 1; letter-spacing: .3px;
+}
+.si-tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px; color: var(--w30);
+  letter-spacing: 1.5px;
+}
+
+/* ══════════════════════════════════════════
+   NEO RING (neomorphic progress ring)
+══════════════════════════════════════════ */
+.ring-wrap {
+  position: relative;
+  width: 78px; height: 78px;
+  flex-shrink: 0;
+}
+.ring-wrap svg { transform: rotate(-90deg); }
+.ring-bg { fill: none; stroke: rgba(255,255,255,.05); stroke-width: 5; }
+.ring-fill { fill: none; stroke-width: 5; stroke-linecap: round; }
+.ring-inner {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+}
+.ring-val {
+  font-family: 'DM Mono', monospace;
+  font-size: 16px; font-weight: 500;
+  line-height: 1;
+}
+.ring-unit {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px; color: var(--w30);
+  letter-spacing: 1px;
+}
+
+/* ══════════════════════════════════════════
+   PROJECT CARD WIDE
+══════════════════════════════════════════ */
+.proj-num {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px; color: var(--w30);
+  letter-spacing: 2px;
+}
+.proj-title {
+  font-size: 22px; font-weight: 700;
+  letter-spacing: -.5px;
+  line-height: 1.15;
+}
+.proj-desc {
+  font-size: 12px; color: var(--w60);
+  line-height: 1.65;
+}
+
+/* ══════════════════════════════════════════
+   STAGGER ENTER ANIMATION
+══════════════════════════════════════════ */
+.w {
+  animation: widget-enter .6s cubic-bezier(.4,0,.2,1) both;
+}
+@keyframes widget-enter {
+  from { opacity: 0; transform: translateY(16px) scale(.98); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+.w:nth-child(1)  { animation-delay: .05s }
+.w:nth-child(2)  { animation-delay: .10s }
+.w:nth-child(3)  { animation-delay: .15s }
+.w:nth-child(4)  { animation-delay: .20s }
+.w:nth-child(5)  { animation-delay: .25s }
+.w:nth-child(6)  { animation-delay: .30s }
+.w:nth-child(7)  { animation-delay: .35s }
+.w:nth-child(8)  { animation-delay: .40s }
+.w:nth-child(9)  { animation-delay: .45s }
+.w:nth-child(10) { animation-delay: .50s }
+.w:nth-child(11) { animation-delay: .55s }
+.w:nth-child(12) { animation-delay: .60s }
+
+/* ══════════════════════════════════════════
+   DOT PROGRESS (NothingOS style)
+══════════════════════════════════════════ */
+.dp { display: flex; gap: 5px; align-items: center; }
+.dp span {
+  width: 5px; height: 5px; border-radius: 50%;
+  background: var(--w12);
+  transition: background .3s;
+}
+.dp span.on { background: var(--w); }
+
+/* ══════════════════════════════════════════
+   SECTION HEADER (below grid)
+══════════════════════════════════════════ */
+.sec-head {
+  display: flex; align-items: center; gap: 14px;
+  margin: 56px 0 24px;
+}
+.sec-head h2 {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px; letter-spacing: 4px;
+  color: var(--w30); text-transform: uppercase;
+  font-weight: 400;
+}
+.sec-head::after {
+  content: ''; flex: 1; height: 1px;
+  background: linear-gradient(to right, var(--w06), transparent);
+}
+
+/* ══════════════════════════════════════════
+   MORE PROJECTS ROW
+══════════════════════════════════════════ */
+.proj-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 13px;
+  margin-bottom: 13px;
+}
+.pcard {
+  padding: 22px;
+  border-radius: 20px;
+  background: var(--bg2);
+  border: 1px solid var(--w06);
+  box-shadow: 3px 3px 12px var(--sd), -1px -1px 5px var(--sl);
+  transition: transform .2s cubic-bezier(.34,1.46,.64,1), border-color .2s;
+  animation: widget-enter .6s cubic-bezier(.4,0,.2,1) both;
+}
+.pcard:hover {
+  transform: translateY(-3px);
+  border-color: var(--w12);
+}
+.pcard-num {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px; letter-spacing: 2px; color: var(--w30);
+  margin-bottom: 12px;
+}
+.pcard-title {
+  font-size: 16px; font-weight: 600;
+  letter-spacing: -.3px; line-height: 1.25;
+  margin-bottom: 8px;
+}
+.pcard-desc {
+  font-size: 12px; color: var(--w30);
+  line-height: 1.6; margin-bottom: 14px;
+}
+.pcard-tags { display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 16px; }
+.pcard-foot {
+  display: flex; align-items: center; justify-content: space-between;
+  padding-top: 12px;
+  border-top: 1px solid var(--w06);
+  font-family: 'DM Mono', monospace;
+  font-size: 10px; color: var(--w30); letter-spacing: .5px;
+}
+
+/* ══════════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════════ */
+
+/* ── Tablet: 3-column grid ── */
+@media (max-width: 860px) {
+  nav {
+    top: auto;
+    bottom: 20px;
+    gap: 20px;
+    padding: 12px 20px;
+  }
+  .nav-links { gap: 16px; }
+  .nav-links a { font-size: 10px; }
+  .nav-avail { display: none; }
+
+  main {
+    padding: 32px 16px 100px;
+  }
+
+  .grid {
+    grid-template-columns: repeat(3, 1fr);
+    grid-auto-rows: 152px;
+    gap: 11px;
+  }
+
+  /* Remap span classes for 3-col */
+  .s22 { grid-column: span 2; grid-row: span 2; }
+  .s21 { grid-column: span 2; grid-row: span 1; }
+  .s12 { grid-column: span 1; grid-row: span 2; }
+  .s11 { grid-column: span 1; grid-row: span 1; }
+  .s41 { grid-column: span 3; grid-row: span 1; }
+
+  .clock-h, .clock-m { font-size: 58px; letter-spacing: -3px; }
+  .clock-colon { font-size: 36px; }
+  .proj-title { font-size: 19px; }
+
+  .proj-row {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .pcard:last-child {
+    grid-column: span 2;
+  }
+
+  footer {
+    flex-direction: column;
+    gap: 14px;
+    align-items: flex-start;
+    padding-bottom: 100px;
+  }
+}
+
+/* ── Mobile: 2-column iPhone widget grid ── */
+@media (max-width: 560px) {
+  nav {
+    bottom: 16px;
+    gap: 0;
+    padding: 0;
+    background: rgba(8,8,8,.75);
+    backdrop-filter: blur(32px) saturate(200%);
+    -webkit-backdrop-filter: blur(32px) saturate(200%);
+    border-radius: 22px;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,.12);
+    box-shadow:
+      0 0 0 .5px rgba(255,255,255,.05) inset,
+      0 1px 0 rgba(255,255,255,.1) inset,
+      0 16px 48px rgba(0,0,0,.8);
+  }
+  .nav-logo { display: none; }
+  .nav-links {
+    display: flex;
+    gap: 0;
+  }
+  .nav-links li { flex: 1; }
+  .nav-links a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 14px 12px;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    border-right: 1px solid rgba(255,255,255,.06);
+  }
+  .nav-links li:last-child a { border-right: none; }
+  .nav-links a:hover { background: rgba(255,255,255,.05); }
+
+  main {
+    padding: 20px 12px 110px;
+  }
+
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+    grid-auto-rows: 160px;
+    gap: 10px;
+  }
+
+  /* All widgets become 1×1 or 2×1 on mobile */
+  .s22 { grid-column: span 2; grid-row: span 2; }
+  .s21 { grid-column: span 2; grid-row: span 1; }
+  .s12 { grid-column: span 1; grid-row: span 2; }
+  .s11 { grid-column: span 1; grid-row: span 1; }
+  .s41 { grid-column: span 2; grid-row: span 1; }
+
+  /* Clock — shrink text for 2-col */
+  .clock-h, .clock-m { font-size: 52px; letter-spacing: -3px; }
+  .clock-colon { font-size: 32px; }
+  .clock-date { font-size: 10px; letter-spacing: 1px; }
+
+  /* Identity widget — tighter */
+  .w .proj-title { font-size: 16px; }
+
+  /* Skills label truncate */
+  .skill-n { width: 46px; font-size: 9px; }
+  .skill-pct { font-size: 9px; }
+
+  /* Featured project */
+  .proj-title { font-size: 18px; }
+  .proj-desc { font-size: 11px; }
+  .np { padding: 8px 14px; font-size: 10px; }
+  .np-ghost { padding: 7px 13px; font-size: 10px; }
+
+  /* Projects section — single column */
+  .proj-row {
+    grid-template-columns: 1fr;
+  }
+  .pcard:last-child { grid-column: span 1; }
+
+  .sec-head h2 { font-size: 10px; letter-spacing: 3px; }
+
+  footer {
+    flex-direction: column;
+    gap: 12px;
+    align-items: flex-start;
+    padding-bottom: 110px;
+  }
+  .footer-links { flex-wrap: wrap; gap: 12px 16px; }
+
+  /* Contribution grid — fewer columns on mobile */
+  .cg {
+    grid-template-columns: repeat(20, 1fr);
+    gap: 2.5px;
+  }
+
+  /* Tighten widget padding */
+  .w { padding: 16px; border-radius: 24px; }
+  .pcard { padding: 18px; border-radius: 18px; }
+}
+
+/* ── Very small phones ── */
+@media (max-width: 380px) {
+  .grid { grid-auto-rows: 148px; gap: 9px; }
+  .clock-h, .clock-m { font-size: 46px; letter-spacing: -2px; }
+  .w { padding: 14px; }
+}
+
+/* ══════════════════════════════════════════
+   FOOTER
+══════════════════════════════════════════ */
+footer {
+  position: relative; z-index: 1;
+  border-top: 1px solid var(--w06);
+  padding: 28px 0;
+  max-width: 960px;
+  margin: 0 auto;
+  padding-left: 20px; padding-right: 20px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.footer-logo {
+  font-family: 'DM Mono', monospace;
+  font-size: 12px; letter-spacing: 2px; color: var(--w30);
+}
+.footer-links {
+  display: flex; gap: 20px; list-style: none;
+}
+.footer-links a {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px; letter-spacing: 1px;
+  color: var(--w30); text-decoration: none;
+  transition: color .2s;
+}
+.footer-links a:hover { color: var(--w); }
+</style>
+</head>
+<body>
+
+<!-- ── Liquid Glass Navbar ── -->
+<nav>
+  <div class="nav-logo">VK<em>.</em></div>
+  <ul class="nav-links">
+    <li><a href="#">work</a></li>
+    <li><a href="#">about</a></li>
+    <li><a href="#">lab</a></li>
+    <li><a href="#">contact</a></li>
+  </ul>
+  <div class="nav-avail">available</div>
+</nav>
+
+<main>
+
+  <!-- ══════════════════════════════════════════
+       WIDGET GRID
+  ══════════════════════════════════════════ -->
+  <div class="grid">
+
+    <!-- 1 · CLOCK — NothingOS ndot · 2×2 -->
+    <div class="w glass s22" style="display:flex;flex-direction:column;justify-content:space-between;">
+      <div class="lbl">system time</div>
+      <div>
+        <div class="clock-time">
+          <span class="clock-h" id="ch">00</span>
+          <span class="clock-colon">:</span>
+          <span class="clock-m" id="cm">00</span>
+        </div>
+        <div class="clock-date" id="cd">wed · 25 mar 2026</div>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+        <span class="sbadge">open to work</span>
+        <span class="chip">AI · ML · SWE</span>
+      </div>
+    </div>
+
+    <!-- 2 · IDENTITY · 2×1 -->
+    <div class="w s21" style="display:flex;flex-direction:column;justify-content:space-between;">
+      <div class="lbl">identity</div>
+      <div>
+        <div style="font-size:26px;font-weight:700;letter-spacing:-.8px;line-height:1.15;">Vishal<br>Katariya</div>
+      </div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;">
+        <span class="chip">Frankfurt</span>
+        <span class="chip">h_da · CS</span>
+        <span class="chip">he/him</span>
+      </div>
+    </div>
+
+    <!-- 3 · GITHUB ACTIVITY · 2×1 -->
+    <div class="w glass s21">
+      <div class="lbl">github · vkkatariya</div>
+      <div class="cg" id="cg"></div>
+      <div style="display:flex;justify-content:space-between;align-items:baseline;margin-top:4px;">
+        <span class="sub">contributions · 2026</span>
+        <span style="font-family:'DM Mono',monospace;font-size:22px;font-weight:500;letter-spacing:-1px;" id="cc">—</span>
+      </div>
+    </div>
+
+    <!-- 4 · SKILLS — neomorphic bars · 1×2 -->
+    <div class="w s12" style="display:flex;flex-direction:column;">
+      <div class="lbl">skills</div>
+      <div style="flex:1;display:flex;flex-direction:column;justify-content:center;">
+        <div class="skill-row"><span class="skill-n">Python</span><div class="skill-track"><div class="skill-fill" style="width:90%;animation-delay:.2s"></div></div><span class="skill-pct">90</span></div>
+        <div class="skill-row"><span class="skill-n">ML / AI</span><div class="skill-track"><div class="skill-fill" style="width:82%;animation-delay:.3s"></div></div><span class="skill-pct">82</span></div>
+        <div class="skill-row"><span class="skill-n">TypeScript</span><div class="skill-track"><div class="skill-fill" style="width:68%;animation-delay:.4s"></div></div><span class="skill-pct">68</span></div>
+        <div class="skill-row"><span class="skill-n">Docker</span><div class="skill-track"><div class="skill-fill" style="width:76%;animation-delay:.5s"></div></div><span class="skill-pct">76</span></div>
+        <div class="skill-row"><span class="skill-n">Linux</span><div class="skill-track"><div class="skill-fill" style="width:80%;animation-delay:.6s"></div></div><span class="skill-pct">80</span></div>
+        <div class="skill-row"><span class="skill-n">SvelteKit</span><div class="skill-track"><div class="skill-fill" style="width:55%;animation-delay:.7s"></div></div><span class="skill-pct">55</span></div>
+      </div>
+      <div class="nd"><div class="line"></div><i></i><i></i><i></i><div class="line"></div></div>
+      <span class="sub">6 core · always building</span>
+    </div>
+
+    <!-- 5 · CURRENTLY BUILDING · 1×1 -->
+    <div class="w s11" style="display:flex;flex-direction:column;justify-content:space-between;">
+      <div class="lbl">now</div>
+      <div style="font-size:15px;font-weight:600;line-height:1.4;color:rgba(240,240,240,.85);">This<br>portfolio<br>↗</div>
+      <div class="dp">
+        <span class="on"></span><span class="on"></span><span class="on"></span><span></span><span></span>
+      </div>
+    </div>
+
+    <!-- 6 · HOMELAB STATUS · 1×1 -->
+    <div class="w s11" style="display:flex;flex-direction:column;justify-content:space-between;">
+      <div class="lbl">homelab</div>
+      <div>
+        <div style="font-family:'DM Mono',monospace;font-size:28px;font-weight:500;color:var(--green);line-height:1;letter-spacing:-1px;">2/3</div>
+        <div class="sub" style="margin-top:4px;">nodes online</div>
+      </div>
+      <div style="display:flex;gap:6px;align-items:center;">
+        <span style="width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);"></span>
+        <span style="width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);"></span>
+        <span style="width:8px;height:8px;border-radius:50%;background:var(--w12);"></span>
+      </div>
+    </div>
+
+    <!-- 7 · FEATURED PROJECT — NeoPOP · 2×2 -->
+    <div class="w s22" style="display:flex;flex-direction:column;justify-content:space-between;">
+      <div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+          <div class="lbl" style="margin-bottom:0;">featured project</div>
+          <span class="proj-num">01 / 04</span>
+        </div>
+        <div class="proj-title">Homelab<br>Dashboard</div>
+        <div class="nd"><div class="line"></div><i></i><i></i><div class="line"></div></div>
+        <div class="proj-desc">Realtime ops dashboard for Rock 5T + VPS. WebSocket live metrics, Notion docs viewer, and full service registry across 3 nodes.</div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:10px;">
+          <span class="chip">React</span>
+          <span class="chip">WebSocket</span>
+          <span class="chip">Node.js</span>
+          <span class="chip">Tailscale</span>
+        </div>
+      </div>
+      <div style="display:flex;gap:10px;align-items:center;margin-top:16px;">
+        <button class="np">view →</button>
+        <button class="np-ghost">github</button>
+      </div>
+    </div>
+
+    <!-- 8 · TECH STACK · 1×2 -->
+    <div class="w s12">
+      <div class="lbl">stack</div>
+      <div style="margin-top:6px;">
+        <div class="si"><span class="si-dot"></span><span class="si-name">SvelteKit</span><span class="si-tag">FE</span></div>
+        <div class="si"><span class="si-dot"></span><span class="si-name">Fastify</span><span class="si-tag">API</span></div>
+        <div class="si"><span class="si-dot"></span><span class="si-name">Python</span><span class="si-tag">ML</span></div>
+        <div class="si"><span class="si-dot"></span><span class="si-name">Docker</span><span class="si-tag">OPS</span></div>
+        <div class="si"><span class="si-dot"></span><span class="si-name">Tailscale</span><span class="si-tag">NET</span></div>
+        <div class="si"><span class="si-dot"></span><span class="si-name">Radxa 5T</span><span class="si-tag">HW</span></div>
+        <div class="si"><span class="si-dot"></span><span class="si-name">SQLite</span><span class="si-tag">DB</span></div>
+      </div>
+    </div>
+
+    <!-- 9 · ABOUT — liquid glass · 2×1 -->
+    <div class="w glass s21" style="display:flex;flex-direction:column;justify-content:space-between;">
+      <div class="lbl">about</div>
+      <div style="font-size:13px;color:var(--w60);line-height:1.7;">
+        Building at the intersection of AI, distributed systems &amp; self-hosted infrastructure. CS student at h_da Frankfurt — more interested in what runs under the hood than what sits on top.
+      </div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;">
+        <span class="chip">h_da Frankfurt</span>
+        <span class="chip">3rd year</span>
+        <span class="chip">open source</span>
+      </div>
+    </div>
+
+    <!-- 10 · PROJECTS STAT · 1×1 -->
+    <div class="w s11" style="display:flex;flex-direction:column;justify-content:space-between;">
+      <div class="lbl">projects</div>
+      <div style="font-family:'DM Mono',monospace;font-size:58px;font-weight:400;line-height:1;letter-spacing:-3px;">12</div>
+      <div class="sub">shipped</div>
+    </div>
+
+    <!-- 11 · CONTACT — inverted white · 1×1 -->
+    <div class="w inv s11" style="display:flex;flex-direction:column;justify-content:space-between;">
+      <div class="lbl-inv">contact</div>
+      <div style="font-size:20px;font-weight:700;line-height:1.25;letter-spacing:-.3px;color:#080808;">Let's<br>work →</div>
+      <div style="font-family:'DM Mono',monospace;font-size:10px;color:rgba(8,8,8,.4);letter-spacing:1px;">vkkatariya</div>
+    </div>
+
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       MORE PROJECTS
+  ══════════════════════════════════════════ -->
+  <div class="sec-head"><h2>all projects</h2></div>
+
+  <div class="proj-row">
+    <div class="pcard" style="animation-delay:.65s">
+      <div class="pcard-num">02 / 04</div>
+      <div class="pcard-title">VPS Blueprint</div>
+      <div class="pcard-desc">Docker + Caddy + Tailscale setup. Zero public ports, auto-HTTPS, MagicDNS per service. Disaster recovery in under 30 min.</div>
+      <div class="pcard-tags">
+        <span class="chip">Docker</span><span class="chip">Caddy</span><span class="chip">Tailscale</span>
+      </div>
+      <div class="pcard-foot">
+        <span>Blueprint</span>
+        <button class="np-ghost" style="padding:6px 12px;font-size:10px;">view →</button>
+      </div>
+    </div>
+    <div class="pcard" style="animation-delay:.70s">
+      <div class="pcard-num">03 / 04</div>
+      <div class="pcard-title">RustDesk Setup<br>Rock 5T</div>
+      <div class="pcard-desc">Full remote desktop over Tailscale on Radxa aarch64. Forced X11, SDDM autologin, headless HDMI fix and systemd patching.</div>
+      <div class="pcard-tags">
+        <span class="chip">RustDesk</span><span class="chip">ARM</span><span class="chip">Systemd</span>
+      </div>
+      <div class="pcard-foot">
+        <span>Guide</span>
+        <button class="np-ghost" style="padding:6px 12px;font-size:10px;">view →</button>
+      </div>
+    </div>
+    <div class="pcard" style="animation-delay:.75s">
+      <div class="pcard-num">04 / 04</div>
+      <div class="pcard-title">Cockpit + Caddy<br>Blueprint</div>
+      <div class="pcard-desc">Rock 5T management UI via Tailscale. File-based TLS, Cockpit Origin headers, systemd monthly cert renewal timer.</div>
+      <div class="pcard-tags">
+        <span class="chip">Cockpit</span><span class="chip">Caddy</span><span class="chip">Radxa</span>
+      </div>
+      <div class="pcard-foot">
+        <span>Blueprint</span>
+        <button class="np-ghost" style="padding:6px 12px;font-size:10px;">view →</button>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  <div class="footer-logo">VK · 2026</div>
+  <ul class="footer-links">
+    <li><a href="#">github</a></li>
+    <li><a href="#">linkedin</a></li>
+    <li><a href="#">email</a></li>
+    <li><a href="#">vishalkatariya.dev</a></li>
+  </ul>
+</footer>
+
+<script>
+// ── Live Clock ──
+function tick() {
+  const n = new Date();
+  const h = String(n.getHours()).padStart(2,'0');
+  const m = String(n.getMinutes()).padStart(2,'0');
+  document.getElementById('ch').textContent = h;
+  document.getElementById('cm').textContent = m;
+  const D=['sun','mon','tue','wed','thu','fri','sat'];
+  const M=['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'];
+  document.getElementById('cd').textContent =
+    `${D[n.getDay()]} · ${String(n.getDate()).padStart(2,'0')} ${M[n.getMonth()]} ${n.getFullYear()}`;
+}
+tick(); setInterval(tick, 1000);
+
+// ── Simulated GitHub contribution grid ──
+const g = document.getElementById('cg');
+const L = ['','l1','l2','l3','l4'];
+let tot = 0;
+// Responsive: 26×5 desktop, 20×5 mobile
+const cols = window.innerWidth <= 560 ? 20 : 26;
+const cells = cols * 5;
+g.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+for (let i = 0; i < cells; i++) {
+  const r = Math.random();
+  const lv = r < .42 ? 0 : r < .62 ? 1 : r < .78 ? 2 : r < .92 ? 3 : 4;
+  const c = document.createElement('div');
+  c.className = 'cc' + (L[lv] ? ' '+L[lv] : '');
+  g.appendChild(c);
+  tot += lv;
+}
+// Animate counter
+let cur = 0;
+const target = tot * 4;
+const step = Math.ceil(target / 40);
+const counter = setInterval(() => {
+  cur = Math.min(cur + step, target);
+  document.getElementById('cc').textContent = cur.toLocaleString();
+  if (cur >= target) clearInterval(counter);
+}, 30);
+</script>
+</body>
+</html>
