@@ -1,5 +1,7 @@
 # vkkatariya.github.io — portfolio-website
 
+![CI](https://github.com/vkkatariya/vkkatariya.github.io/actions/workflows/ci.yml/badge.svg)
+
 Personal portfolio web app. Live at `vishalkatariya.dev`.
 
 Widget-based homepage (iOS home screen aesthetic) with live homelab metrics, project showcase, and planned `/me` personal section.
