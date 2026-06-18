@@ -165,6 +165,18 @@
 - Before re-observing, `unobserve()` then `observe()` each element so the browser recalculates intersections against the now-visible layout.
 - Never assume a one-time observer setup at `DOMContentLoaded` works for content inside initially-hidden SPA pages.
 
+## L-013 — A "slide-over" topbar swap reads as two different sites; morph from the shared pill instead
+
+**What failed:** The roadmap internal nav was implemented by sliding the entire shared 3-pill topbar off-screen left and sliding a separate roadmap pill in from the side. It felt like navigating to a different site, and the shared logo/controls disappeared.
+
+**Root cause:** Hiding the whole shell nav (`#shared-nav.nav-hidden { transform: translateX(-100%) }`) destroys visual continuity. A page-local sub-nav should feel like it grows out of the existing shell, not replace it.
+
+**Prevention rule:**
+- For a page-local sub-nav inside a shared SPA shell, keep the shell's outer pills (logo, controls) fixed and visible at all times.
+- Anchor the sub-nav to the exact slot of the element it replaces (same `top/left:50%/translateX(-50%)`), and morph with `opacity` + `transform: scale()` from a center origin so it reads as "popping out" of that pill.
+- Scope the hide behavior to only the swapped child (`#shared-nav.nav-hidden .nav-links`), never the whole nav container.
+- Match the sub-nav's glass fill/shadow to the shell pills so it looks like the same component expanding, not a foreign bar.
+
 <!-- Add new lessons above this line using: -->
 <!-- ## L-00N — Short title -->
 <!-- **What failed:** ... -->
