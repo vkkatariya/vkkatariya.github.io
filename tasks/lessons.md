@@ -182,3 +182,16 @@
 <!-- **What failed:** ... -->
 <!-- **Root cause:** ... -->
 <!-- **Prevention rule:** ... -->
+
+## L-014 — Long-running coding agents must be delegated, not run in foreground terminal
+
+**What failed:** Dispatched Claude Code for a large roadmap integration task by calling `terminal()` with `timeout=600`. The process was killed at 10 minutes mid-work, then relaunched via background `terminal()` and later killed again. Result: ~50% of Claude Code credits burned, only 20 lines changed, no deliverable, and an empty `tee` log.
+
+**Root cause:** Coding-agent CLIs are long-lived autonomous workers, not short shell commands. The `coding-agent-clis` skill explicitly says to use `delegate_task` for these agents. Using `terminal()` killed the session on timeout. Piping through `tee` inside a shell made the log unbuffered and lost all output when SIGTERM arrived.
+
+**Prevention rule:**
+- For `claude`, `codex`, `opencode`, `agy`, `abacusai`, `agent`, `copilot`: always use `delegate_task` (toolsets `["terminal", "file"]`) unless the task is literally one shell command.
+- If `delegate_task` is unavailable and a background `terminal()` is needed: redirect directly to a file (`> /tmp/agent.log 2>&1`) — no pipes, no `tee`, and always set `notify_on_complete=true`.
+- Never impose a short foreground timeout on a multi-step coding task.
+- Liveness check = `git diff --stat` over time + `ps -p <pid>`, not log file contents.
+- When the user says "I got this" or wants to take over, ask explicitly whether to **pause** or **kill** the agent — do not assume and terminate a running credit-consuming session.
