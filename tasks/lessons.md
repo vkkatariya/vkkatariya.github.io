@@ -101,6 +101,46 @@
 
 ---
 
+## L-008 — Building new files from scratch wastes tokens; targeted edits are always faster
+
+**What failed:** Asked to redesign the homepage, built `portfolio-combined.html` from scratch (1181 lines) instead of editing the existing `portfolio-v4.html`. The combined file differed from the individual pages, required re-work, and burned significant credits.
+
+**Root cause:** Default response to "redesign X" was to write a new file. The correct default is to open the existing file and make surgical replacements.
+
+**Prevention rule:**
+- First instinct must always be `view` the existing file → `str_replace` or `python3` patch — never `create_file` on something that already exists
+- If a new combined file is genuinely needed: build it by extracting sections from the originals, not by rewriting from memory
+- Ask before creating any new file: "does this already exist in a form I can edit?"
+
+---
+
+## L-009 — Confirm which file to edit before starting — don't assume
+
+**What failed:** User said "fix the homepage" but I edited `portfolio-combined.html` instead of `portfolio-v4.html`. User had to explicitly correct this.
+
+**Root cause:** Ambiguous instruction ("the homepage") was interpreted as the combined file because that was the most recent output, when the user meant the standalone homepage prototype.
+
+**Prevention rule:**
+- When multiple files could be "the homepage", ask which one before touching anything: `portfolio-v4.html` vs `portfolio-combined.html` vs `index.html`
+- Default to the most specific standalone file unless the user says "the combined file"
+- Echo back the target file before every edit session: "Working on `portfolio-v4.html` — correct?"
+
+---
+
+## L-010 — Don't remove CSS classes when removing the HTML that uses them — check for other usages first
+
+**What failed:** When removing the hero section (`<section class="hero">`), the `.hn-script` and `.hn-sans` CSS classes were nearly deleted too. Those classes are also used in the nav logo pill and the identity widget.
+
+**Root cause:** Assumed CSS classes were only used in one place. The hero section defined `.hn-script`/`.hn-sans` but they're referenced elsewhere in the same file.
+
+**Prevention rule:**
+- Before removing any CSS class: `grep -n "hn-script\|hn-sans"` — count all usages
+- Only delete a CSS class if its count drops to zero after removing the HTML
+- Safe order: remove HTML → grep remaining usages → only then remove CSS if count = 0
+
+---
+
+
 <!-- Add new lessons above this line using: -->
 <!-- ## L-00N — Short title -->
 <!-- **What failed:** ... -->

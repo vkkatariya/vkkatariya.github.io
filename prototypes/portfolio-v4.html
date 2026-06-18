@@ -1,0 +1,1620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>vkkatariya — portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,600;1,700&family=DM+Mono:wght@300;400;500&family=Space+Grotesk:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root {
+  --bg: #080808;
+  --bg2: #0f0f0f;
+  --bg3: #141414;
+  --w: #f0f0f0;
+  --w60: rgba(240,240,240,.6);
+  --w30: rgba(240,240,240,.3);
+  --w12: rgba(240,240,240,.12);
+  --w06: rgba(240,240,240,.06);
+  --w03: rgba(240,240,240,.03);
+  --green: #3ddc84;
+  --acc: #00D4AA;
+  --amber: #ffbb33;
+  --blue: #5b9cf6;
+  --red: #ff453a;
+  /* glass */
+  --gb: rgba(255,255,255,.055);
+  --gbd: rgba(255,255,255,.10);
+  /* neo-shadow */
+  --sd: rgba(0,0,0,.85);
+  --sl: rgba(255,255,255,.035);
+  /* neopop */
+  --np-off: 5px;
+}
+
+html { scroll-behavior: smooth }
+
+body {
+  background: var(--bg);
+  color: var(--w);
+  font-family: 'Space Grotesk', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── dot matrix bg ── */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: radial-gradient(circle, rgba(255,255,255,.055) 1px, transparent 1px);
+  background-size: 22px 22px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* subtle radial glow top */
+body::after {
+  content: '';
+  position: fixed;
+  top: -200px; left: 50%;
+  transform: translateX(-50%);
+  width: 900px; height: 500px;
+  background: radial-gradient(ellipse, rgba(93,161,246,.055) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ══════════════════════════════════════════
+   LIQUID GLASS NAVBAR
+══════════════════════════════════════════ */
+nav {
+  position: fixed;
+  top: 14px; left: 0; right: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  gap: 0;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  height: auto;
+}
+
+/* ═══ 3 FLOATING PILLS ═══ */
+
+/* LEFT — name logo pill */
+.nav-logo {
+  display: flex; align-items: center; flex-shrink: 0;
+  padding: 10px 20px;
+  background: linear-gradient(135deg, rgba(255,255,255,.10) 0%, rgba(255,255,255,.04) 100%);
+  backdrop-filter: blur(40px) saturate(180%); -webkit-backdrop-filter: blur(40px) saturate(180%);
+  border: 1px solid rgba(255,255,255,.16);
+  border-radius: 100px;
+  box-shadow: 0 4px 28px rgba(0,0,0,.55), 0 1px 0 rgba(255,255,255,.12) inset;
+  text-decoration: none; cursor: pointer;
+  transition: box-shadow .2s;
+}
+.nav-logo:hover { box-shadow: 0 6px 32px rgba(0,0,0,.65), 0 1px 0 rgba(255,255,255,.16) inset; }
+.nav-logo-name { font-size: 16px; line-height: 1; white-space: nowrap; letter-spacing: -.3px; }
+
+/* CENTER — nav pill (home/projects/roadmap/about + available dot) */
+.nav-links {
+  position: absolute; left: 50%; transform: translateX(-50%);
+  display: flex; align-items: center; gap: 0; list-style: none;
+  background: linear-gradient(135deg, rgba(255,255,255,.10) 0%, rgba(255,255,255,.04) 100%);
+  backdrop-filter: blur(40px) saturate(180%); -webkit-backdrop-filter: blur(40px) saturate(180%);
+  border: 1px solid rgba(255,255,255,.16);
+  border-radius: 100px; padding: 5px 5px;
+  box-shadow: 0 4px 28px rgba(0,0,0,.55), 0 1px 0 rgba(255,255,255,.12) inset;
+}
+.nav-links a {
+  display: flex; align-items: center;
+  font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: .8px;
+  color: rgba(241,240,246,.38); background: none;
+  border: none; padding: 7px 16px; border-radius: 100px;
+  text-decoration: none; transition: color .13s, background .13s; white-space: nowrap;
+}
+.nav-links a:hover { color: rgba(241,240,246,.8); background: rgba(255,255,255,.07); }
+.nav-links a.act { background: rgba(255,255,255,.12); color: var(--w); box-shadow: 0 1px 8px rgba(0,0,0,.4), 0 1px 0 rgba(255,255,255,.1) inset; }
+
+/* available dot — inside center pill */
+.nav-avail-item {
+  display: flex; align-items: center; gap: 5px;
+  padding: 6px 14px 6px 10px; border-radius: 100px;
+  margin-left: 4px; flex-shrink: 0;
+}
+.nav-avail-dot {
+  width: 5px; height: 5px; border-radius: 50%;
+  background: var(--green); box-shadow: 0 0 6px var(--green);
+  flex-shrink: 0; animation: avail-pulse 2.4s ease-in-out infinite;
+}
+@keyframes avail-pulse {
+  0%,100% { box-shadow: 0 0 6px var(--green); }
+  50% { box-shadow: 0 0 2px var(--green); }
+}
+.nav-avail-txt {
+  font-family: 'DM Mono', monospace; font-size: 10px;
+  letter-spacing: .5px; color: var(--green);
+}
+
+/* RIGHT — controls pill (search + lang + theme + profile) */
+.nav-right {
+  display: flex; align-items: center; gap: 2px;
+  margin-left: auto;
+  background: linear-gradient(135deg, rgba(255,255,255,.10) 0%, rgba(255,255,255,.04) 100%);
+  backdrop-filter: blur(40px) saturate(180%); -webkit-backdrop-filter: blur(40px) saturate(180%);
+  border: 1px solid rgba(255,255,255,.16);
+  border-radius: 100px; padding: 5px 6px 5px 8px;
+  box-shadow: 0 4px 28px rgba(0,0,0,.55), 0 1px 0 rgba(255,255,255,.12) inset;
+}
+.nav-search {
+  display: flex; align-items: center; gap: 7px;
+  padding: 4px 10px 4px 6px;
+  border-right: 1px solid rgba(255,255,255,.09); margin-right: 4px;
+  color: rgba(241,240,246,.45);
+}
+.nav-search-input {
+  background: none; border: none; outline: none;
+  font-family: 'DM Mono', monospace; font-size: 11px; color: var(--w);
+  width: 90px; transition: width .25s ease;
+  letter-spacing: .3px;
+}
+.nav-search-input:focus { width: 140px; }
+.nav-search-input::placeholder { color: rgba(241,240,246,.28); }
+.nav-lang {
+  font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 1.5px;
+  color: rgba(241,240,246,.45); background: none; border: none; cursor: pointer;
+  padding: 6px 10px; border-radius: 100px; transition: all .13s; height: 32px;
+}
+.nav-lang:hover { background: rgba(255,255,255,.08); color: var(--w); }
+.nav-theme {
+  width: 32px; height: 32px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  background: none; border: none; cursor: pointer;
+  color: rgba(241,240,246,.45); transition: all .13s;
+}
+.nav-theme:hover { background: rgba(255,255,255,.08); color: var(--w); }
+.nav-profile {
+  width: 34px; height: 34px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--acc) 0%, var(--green) 100%);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Space Grotesk', sans-serif; font-size: 12px; font-weight: 800;
+  color: #050505; border: none; cursor: pointer; margin-left: 2px;
+  transition: transform .2s, box-shadow .2s; flex-shrink: 0;
+}
+.nav-profile:hover { transform: scale(1.07); box-shadow: 0 0 0 3px rgba(0,212,170,.25); }
+.hn-script {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic; font-weight: 700;
+  color: var(--w); letter-spacing: -2px;
+}
+.hn-sans {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 800; color: var(--w);
+}
+.hn-gap { display: inline-block; width: .18em; }
+
+/* ── right pill controls ── */
+.nav-right {
+  display: flex; align-items: center; gap: 4px;
+  background: rgba(8,8,8,.72);
+  backdrop-filter: blur(28px) saturate(180%); -webkit-backdrop-filter: blur(28px) saturate(180%);
+  border: 1px solid rgba(255,255,255,.12); border-radius: 14px; padding: 5px 8px;
+  box-shadow: 0 4px 24px rgba(0,0,0,.5), 0 1px 0 rgba(255,255,255,.09) inset;
+}
+.nav-theme {
+  width: 32px; height: 32px; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  background: none; border: none; cursor: pointer;
+  color: rgba(241,240,246,.45); transition: all .13s;
+}
+.nav-theme:hover { background: rgba(255,255,255,.08); color: var(--w); }
+.nav-profile {
+  width: 34px; height: 34px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--acc) 0%, var(--green) 100%);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Space Grotesk', sans-serif; font-size: 12px; font-weight: 800;
+  color: #050505; border: none; cursor: pointer;
+  transition: transform .2s, box-shadow .2s;
+}
+.nav-profile:hover { transform: scale(1.06); box-shadow: 0 0 0 3px rgba(0,212,170,.2); }
+
+/* ── lang toggle ── */
+.nav-lang {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  color: var(--w30);
+  cursor: pointer;
+  border: 1px solid var(--w12);
+  border-radius: 4px;
+  padding: 3px 7px;
+  background: none;
+  transition: all .2s;
+}
+.nav-lang:hover { color: var(--w); border-color: var(--w30); }
+
+/* ── main no longer needs huge top padding — hero handles it ── */
+main {
+  position: relative; z-index: 1;
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 20px 80px;
+}
+
+/* ══════════════════════════════════════════
+   WIDGET GRID — iOS home screen layout
+══════════════════════════════════════════ */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: 168px;
+  gap: 13px;
+}
+
+/* Size classes — iOS widget convention */
+.s11 { grid-column: span 1; grid-row: span 1; }
+.s21 { grid-column: span 2; grid-row: span 1; }
+.s12 { grid-column: span 1; grid-row: span 2; }
+.s22 { grid-column: span 2; grid-row: span 2; }
+.s41 { grid-column: span 4; grid-row: span 1; }
+
+/* ══════════════════════════════════════════
+   BASE WIDGET — neomorphic dark surface
+══════════════════════════════════════════ */
+.w {
+  position: relative;
+  border-radius: 28px;
+  padding: 20px;
+  overflow: hidden;
+  cursor: default;
+  transition: transform .25s cubic-bezier(.34,1.46,.64,1), box-shadow .25s ease;
+  /* neomorphism: dual shadow — dark bottom-right, faint light top-left */
+  background: var(--bg2);
+  box-shadow:
+    5px 5px 16px var(--sd),
+    -2px -2px 7px var(--sl),
+    inset 0 1px 0 rgba(255,255,255,.035),
+    inset 0 -1px 0 rgba(0,0,0,.4);
+  border: 1px solid rgba(255,255,255,.055);
+}
+.w:hover {
+  transform: translateY(-3px) scale(1.015);
+  box-shadow:
+    8px 10px 28px var(--sd),
+    -3px -3px 10px var(--sl),
+    inset 0 1px 0 rgba(255,255,255,.05),
+    inset 0 -1px 0 rgba(0,0,0,.4);
+}
+
+/* Liquid glass variant */
+.w.glass {
+  background: rgba(15,15,15,.6);
+  backdrop-filter: blur(32px) saturate(180%);
+  -webkit-backdrop-filter: blur(32px) saturate(180%);
+  border-color: rgba(255,255,255,.1);
+  box-shadow:
+    0 0 0 .5px rgba(255,255,255,.04) inset,
+    0 1.5px 0 rgba(255,255,255,.08) inset,
+    0 -1px 0 rgba(0,0,0,.35) inset,
+    5px 8px 24px rgba(0,0,0,.7),
+    0 2px 8px rgba(0,0,0,.4);
+}
+
+/* Inverted widget (white bg) */
+.w.inv {
+  background: #efefef;
+  color: #080808;
+  box-shadow:
+    5px 5px 16px rgba(0,0,0,.8),
+    -1px -1px 4px rgba(255,255,255,.04),
+    inset 0 1px 0 rgba(255,255,255,.9);
+}
+.w.inv:hover {
+  background: #f5f5f5;
+}
+
+/* ── Nothing-OS label ── */
+.lbl {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 3px;
+  color: var(--w30);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  display: flex; align-items: center; gap: 5px;
+}
+.lbl::before {
+  content: '';
+  width: 4px; height: 4px;
+  border-radius: 50%;
+  background: currentColor;
+  flex-shrink: 0;
+}
+
+.lbl-inv {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 3px;
+  color: rgba(8,8,8,.3);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  display: flex; align-items: center; gap: 5px;
+}
+.lbl-inv::before {
+  content: '';
+  width: 4px; height: 4px;
+  border-radius: 50%;
+  background: rgba(8,8,8,.3);
+  flex-shrink: 0;
+}
+
+.sub {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--w30);
+  letter-spacing: .3px;
+  line-height: 1.5;
+}
+
+/* ── NothingOS dot separator ── */
+.nd {
+  display: flex; align-items: center; gap: 4px;
+  margin: 10px 0;
+}
+.nd i {
+  width: 3px; height: 3px;
+  border-radius: 50%;
+  background: var(--w12);
+  flex-shrink: 0;
+}
+.nd .line {
+  flex: 1; height: 1px;
+  background: var(--w06);
+}
+
+/* ── status badge ── */
+.sbadge {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 4px 9px;
+  border-radius: 20px;
+  border: 1px solid rgba(61,220,132,.2);
+  background: rgba(61,220,132,.07);
+  font-family: 'DM Mono', monospace;
+  font-size: 10px; letter-spacing: .8px;
+  color: var(--green);
+}
+.sbadge::before {
+  content: '';
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 5px var(--green);
+}
+
+/* ── tag chip ── */
+.chip {
+  display: inline-block;
+  padding: 3px 8px;
+  border: 1px solid var(--w12);
+  border-radius: 5px;
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: var(--w30);
+  letter-spacing: .3px;
+}
+.chip-inv {
+  display: inline-block;
+  padding: 3px 8px;
+  border: 1px solid rgba(8,8,8,.2);
+  border-radius: 5px;
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: rgba(8,8,8,.45);
+}
+
+/* ══════════════════════════════════════════
+   CLOCK WIDGET — NothingOS ndot style
+══════════════════════════════════════════ */
+.clock-time {
+  display: flex; align-items: baseline; gap: 2px;
+}
+.clock-h {
+  font-family: 'DM Mono', monospace;
+  font-size: 72px; font-weight: 400;
+  line-height: 1; letter-spacing: -4px;
+  color: var(--w);
+}
+.clock-colon {
+  font-family: 'DM Mono', monospace;
+  font-size: 44px; font-weight: 300;
+  color: var(--w30); line-height: 1;
+  margin: 0 3px;
+  animation: colon-blink 1s step-end infinite;
+}
+@keyframes colon-blink { 50% { opacity: 0 } }
+.clock-m {
+  font-family: 'DM Mono', monospace;
+  font-size: 72px; font-weight: 300;
+  line-height: 1; letter-spacing: -4px;
+  color: var(--w30);
+}
+.clock-date {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px; letter-spacing: 2px;
+  color: var(--w30);
+  text-transform: uppercase;
+  margin-top: 6px;
+}
+
+/* ══════════════════════════════════════════
+   SKILL BARS — neomorphic inset track
+══════════════════════════════════════════ */
+.skill-row {
+  display: flex; align-items: center; gap: 9px;
+  margin-bottom: 9px;
+}
+.skill-n {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px; color: var(--w30);
+  width: 58px; flex-shrink: 0;
+  letter-spacing: .3px;
+}
+.skill-track {
+  flex: 1; height: 3px;
+  border-radius: 2px;
+  background: rgba(0,0,0,.5);
+  /* neomorphic inset */
+  box-shadow: inset 1px 1px 3px rgba(0,0,0,.7), inset -1px -1px 1px rgba(255,255,255,.025);
+  overflow: hidden;
+}
+.skill-fill {
+  height: 100%; border-radius: 2px;
+  background: var(--w);
+  animation: grow 1.4s cubic-bezier(.4,0,.2,1) both;
+  transform-origin: left;
+}
+@keyframes grow {
+  from { transform: scaleX(0); opacity: 0 }
+  to   { transform: scaleX(1); opacity: 1 }
+}
+.skill-pct {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px; color: var(--w12);
+  width: 26px; text-align: right;
+}
+
+/* ══════════════════════════════════════════
+   NEOPOP BUTTON
+══════════════════════════════════════════ */
+.np {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 10px 18px;
+  background: var(--w);
+  color: #080808;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px; font-weight: 500;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  border: none; cursor: pointer;
+  border-radius: 5px;
+  position: relative;
+  transition: transform .1s ease, box-shadow .1s ease;
+  box-shadow: var(--np-off) var(--np-off) 0 rgba(240,240,240,.28);
+}
+.np:hover {
+  transform: translate(-2px,-2px);
+  box-shadow: calc(var(--np-off) + 2px) calc(var(--np-off) + 2px) 0 rgba(240,240,240,.28);
+}
+.np:active {
+  transform: translate(var(--np-off), var(--np-off));
+  box-shadow: 0 0 0 rgba(240,240,240,.28);
+}
+
+.np-ghost {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 9px 17px;
+  background: transparent;
+  color: var(--w60);
+  font-family: 'DM Mono', monospace;
+  font-size: 11px; font-weight: 400;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  border: 1px solid var(--w12); cursor: pointer;
+  border-radius: 5px;
+  transition: border-color .2s, color .2s;
+}
+.np-ghost:hover { border-color: var(--w30); color: var(--w); }
+
+/* ══════════════════════════════════════════
+   CONTRIBUTION GRID
+══════════════════════════════════════════ */
+.cg {
+  display: grid;
+  grid-template-columns: repeat(26, 1fr);
+  gap: 3px;
+  margin: 8px 0;
+}
+.cc {
+  aspect-ratio: 1;
+  border-radius: 2px;
+  background: rgba(255,255,255,.04);
+}
+.cc.l1 { background: rgba(255,255,255,.12); }
+.cc.l2 { background: rgba(255,255,255,.30); }
+.cc.l3 { background: rgba(255,255,255,.55); }
+.cc.l4 { background: rgba(255,255,255,.88); }
+
+/* ══════════════════════════════════════════
+   STACK LIST
+══════════════════════════════════════════ */
+.si {
+  display: flex; align-items: center; gap: 9px;
+  padding: 7px 0;
+  border-bottom: 1px solid rgba(255,255,255,.04);
+}
+.si:last-child { border-bottom: none; padding-bottom: 0; }
+.si-dot {
+  width: 5px; height: 5px; border-radius: 50%;
+  background: var(--w);
+  flex-shrink: 0;
+}
+.si-name {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px; color: var(--w60);
+  flex: 1; letter-spacing: .3px;
+}
+.si-tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px; color: var(--w30);
+  letter-spacing: 1.5px;
+}
+
+/* ══════════════════════════════════════════
+   NEO RING (neomorphic progress ring)
+══════════════════════════════════════════ */
+.ring-wrap {
+  position: relative;
+  width: 78px; height: 78px;
+  flex-shrink: 0;
+}
+.ring-wrap svg { transform: rotate(-90deg); }
+.ring-bg { fill: none; stroke: rgba(255,255,255,.05); stroke-width: 5; }
+.ring-fill { fill: none; stroke-width: 5; stroke-linecap: round; }
+.ring-inner {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+}
+.ring-val {
+  font-family: 'DM Mono', monospace;
+  font-size: 16px; font-weight: 500;
+  line-height: 1;
+}
+.ring-unit {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px; color: var(--w30);
+  letter-spacing: 1px;
+}
+
+/* ══════════════════════════════════════════
+   PROJECT CARD WIDE
+══════════════════════════════════════════ */
+.proj-num {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px; color: var(--w30);
+  letter-spacing: 2px;
+}
+.proj-title {
+  font-size: 22px; font-weight: 700;
+  letter-spacing: -.5px;
+  line-height: 1.15;
+}
+.proj-desc {
+  font-size: 12px; color: var(--w60);
+  line-height: 1.65;
+}
+
+/* ══════════════════════════════════════════
+   STAGGER ENTER ANIMATION
+══════════════════════════════════════════ */
+.w {
+  animation: widget-enter .6s cubic-bezier(.4,0,.2,1) both;
+}
+@keyframes widget-enter {
+  from { opacity: 0; transform: translateY(16px) scale(.98); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+.w:nth-child(1)  { animation-delay: .05s }
+.w:nth-child(2)  { animation-delay: .10s }
+.w:nth-child(3)  { animation-delay: .15s }
+.w:nth-child(4)  { animation-delay: .20s }
+.w:nth-child(5)  { animation-delay: .25s }
+.w:nth-child(6)  { animation-delay: .30s }
+.w:nth-child(7)  { animation-delay: .35s }
+.w:nth-child(8)  { animation-delay: .40s }
+.w:nth-child(9)  { animation-delay: .45s }
+.w:nth-child(10) { animation-delay: .50s }
+.w:nth-child(11) { animation-delay: .55s }
+.w:nth-child(12) { animation-delay: .60s }
+
+/* ══════════════════════════════════════════
+   DOT PROGRESS (NothingOS style)
+══════════════════════════════════════════ */
+.dp { display: flex; gap: 5px; align-items: center; }
+.dp span {
+  width: 5px; height: 5px; border-radius: 50%;
+  background: var(--w12);
+  transition: background .3s;
+}
+.dp span.on { background: var(--w); }
+
+/* ══════════════════════════════════════════
+   SECTION HEADER (below grid)
+══════════════════════════════════════════ */
+.sec-head {
+  display: flex; align-items: center; gap: 14px;
+  margin: 56px 0 24px;
+}
+.sec-head h2 {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px; letter-spacing: 4px;
+  color: var(--w30); text-transform: uppercase;
+  font-weight: 400;
+}
+.sec-head::after {
+  content: ''; flex: 1; height: 1px;
+  background: linear-gradient(to right, var(--w06), transparent);
+}
+
+/* ══════════════════════════════════════════
+   MORE PROJECTS ROW
+══════════════════════════════════════════ */
+.proj-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 13px;
+  margin-bottom: 13px;
+}
+.pcard {
+  padding: 22px;
+  border-radius: 20px;
+  background: var(--bg2);
+  border: 1px solid var(--w06);
+  box-shadow: 3px 3px 12px var(--sd), -1px -1px 5px var(--sl);
+  transition: transform .2s cubic-bezier(.34,1.46,.64,1), border-color .2s;
+  animation: widget-enter .6s cubic-bezier(.4,0,.2,1) both;
+}
+.pcard:hover {
+  transform: translateY(-3px);
+  border-color: var(--w12);
+}
+.pcard-num {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px; letter-spacing: 2px; color: var(--w30);
+  margin-bottom: 12px;
+}
+.pcard-title {
+  font-size: 16px; font-weight: 600;
+  letter-spacing: -.3px; line-height: 1.25;
+  margin-bottom: 8px;
+}
+.pcard-desc {
+  font-size: 12px; color: var(--w30);
+  line-height: 1.6; margin-bottom: 14px;
+}
+.pcard-tags { display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 16px; }
+.pcard-foot {
+  display: flex; align-items: center; justify-content: space-between;
+  padding-top: 12px;
+  border-top: 1px solid var(--w06);
+  font-family: 'DM Mono', monospace;
+  font-size: 10px; color: var(--w30); letter-spacing: .5px;
+}
+
+/* ══════════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════════ */
+
+/* ── Tablet: 3-column grid ── */
+@media (max-width: 860px) {
+  .hero { min-height: 80vh; }
+  .hero-name { letter-spacing: -3px; }
+  nav {
+    top: auto;
+    bottom: 20px;
+    gap: 20px;
+    padding: 12px 20px;
+  }
+  .nav-links { gap: 0; }
+  .nav-links a { font-size: 10px; padding: 6px 11px; }
+  .nav-avail { display: none; }
+
+  main {
+    padding: 32px 16px 100px;
+  }
+
+  .grid {
+    grid-template-columns: repeat(3, 1fr);
+    grid-auto-rows: 152px;
+    gap: 11px;
+  }
+
+  /* Remap span classes for 3-col */
+  .s22 { grid-column: span 2; grid-row: span 2; }
+  .s21 { grid-column: span 2; grid-row: span 1; }
+  .s12 { grid-column: span 1; grid-row: span 2; }
+  .s11 { grid-column: span 1; grid-row: span 1; }
+  .s41 { grid-column: span 3; grid-row: span 1; }
+
+  .clock-h, .clock-m { font-size: 58px; letter-spacing: -3px; }
+  .clock-colon { font-size: 36px; }
+  .proj-title { font-size: 19px; }
+
+  .proj-row {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .pcard:last-child {
+    grid-column: span 2;
+  }
+
+  footer {
+    flex-direction: column;
+    gap: 14px;
+    align-items: flex-start;
+    padding-bottom: 100px;
+  }
+}
+
+/* ── Mobile: 2-column iPhone widget grid ── */
+@media (max-width: 560px) {
+  .hero { min-height: 75vh; padding: 70px 16px 0; }
+  .hero-role { font-size: 10px; letter-spacing: 1.5px; gap: 8px 10px; }
+  .nav-lang { display: none; }
+  nav {
+    bottom: 16px;
+    gap: 0;
+    padding: 0;
+    background: rgba(8,8,8,.75);
+    backdrop-filter: blur(32px) saturate(200%);
+    -webkit-backdrop-filter: blur(32px) saturate(200%);
+    border-radius: 22px;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,.12);
+    box-shadow:
+      0 0 0 .5px rgba(255,255,255,.05) inset,
+      0 1px 0 rgba(255,255,255,.1) inset,
+      0 16px 48px rgba(0,0,0,.8);
+  }
+  .nav-logo { display: none; }
+  .nav-links {
+    display: flex;
+    gap: 0;
+  }
+  .nav-links li { flex: 1; }
+  .nav-links a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 14px 12px;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    border-right: 1px solid rgba(255,255,255,.06);
+  }
+  .nav-links li:last-child a { border-right: none; }
+  .nav-links a:hover { background: rgba(255,255,255,.05); }
+
+  main {
+    padding: 20px 12px 110px;
+  }
+
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+    grid-auto-rows: 160px;
+    gap: 10px;
+  }
+
+  /* All widgets become 1×1 or 2×1 on mobile */
+  .s22 { grid-column: span 2; grid-row: span 2; }
+  .s21 { grid-column: span 2; grid-row: span 1; }
+  .s12 { grid-column: span 1; grid-row: span 2; }
+  .s11 { grid-column: span 1; grid-row: span 1; }
+  .s41 { grid-column: span 2; grid-row: span 1; }
+
+  /* Clock — shrink text for 2-col */
+  .clock-h, .clock-m { font-size: 52px; letter-spacing: -3px; }
+  .clock-colon { font-size: 32px; }
+  .clock-date { font-size: 10px; letter-spacing: 1px; }
+
+  /* Identity widget — tighter */
+  .w .proj-title { font-size: 16px; }
+
+  /* Skills label truncate */
+  .skill-n { width: 46px; font-size: 9px; }
+  .skill-pct { font-size: 9px; }
+
+  /* Featured project */
+  .proj-title { font-size: 18px; }
+  .proj-desc { font-size: 11px; }
+  .np { padding: 8px 14px; font-size: 10px; }
+  .np-ghost { padding: 7px 13px; font-size: 10px; }
+
+  /* Projects section — single column */
+  .proj-row {
+    grid-template-columns: 1fr;
+  }
+  .pcard:last-child { grid-column: span 1; }
+
+  .sec-head h2 { font-size: 10px; letter-spacing: 3px; }
+
+  footer {
+    flex-direction: column;
+    gap: 12px;
+    align-items: flex-start;
+    padding-bottom: 110px;
+  }
+  .footer-links { flex-wrap: wrap; gap: 12px 16px; }
+
+  /* Contribution grid — fewer columns on mobile */
+  .cg {
+    grid-template-columns: repeat(20, 1fr);
+    gap: 2.5px;
+  }
+
+  /* Tighten widget padding */
+  .w { padding: 16px; border-radius: 24px; }
+  .pcard { padding: 18px; border-radius: 18px; }
+}
+
+/* ── Very small phones ── */
+@media (max-width: 380px) {
+  .grid { grid-auto-rows: 148px; gap: 9px; }
+  .clock-h, .clock-m { font-size: 46px; letter-spacing: -2px; }
+  .w { padding: 14px; }
+}
+
+/* ══════════════════════════════════════════
+   FOOTER
+══════════════════════════════════════════ */
+footer {
+  position: relative; z-index: 1;
+  border-top: 1px solid var(--w06);
+  padding: 28px 0;
+  max-width: 960px;
+  margin: 0 auto;
+  padding-left: 20px; padding-right: 20px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.footer-logo {
+  font-family: 'DM Mono', monospace;
+  font-size: 12px; letter-spacing: 2px; color: var(--w30);
+}
+.footer-links {
+  display: flex; gap: 20px; list-style: none;
+}
+.footer-links a {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px; letter-spacing: 1px;
+  color: var(--w30); text-decoration: none;
+  transition: color .2s;
+}
+.footer-links a:hover { color: var(--w); }
+
+/* ══════════════════════════════════════════
+   3D + ANIMATED ICON SYSTEM
+══════════════════════════════════════════ */
+.ico{display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}
+.ico svg{display:block}
+@keyframes ico-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+@keyframes ico-spin-slow{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+@keyframes ico-pulse-glow{0%,100%{filter:drop-shadow(0 0 3px rgba(255,255,255,.15))}50%{filter:drop-shadow(0 0 12px rgba(255,255,255,.45))}}
+@keyframes ico-blink-led{0%,85%,100%{opacity:1}92%{opacity:.12}}
+@keyframes ico-throb{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
+@keyframes ico-draw{from{stroke-dashoffset:60}to{stroke-dashoffset:0}}
+@keyframes ico-wander{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-6px) rotate(3deg)}}
+.ico-float{animation:ico-float 3.6s ease-in-out infinite}
+.ico-float2{animation:ico-float 3.6s ease-in-out infinite .9s}
+.ico-spin{animation:ico-spin-slow 9s linear infinite}
+.ico-pulse{animation:ico-pulse-glow 2.8s ease-in-out infinite}
+.ico-blink{animation:ico-blink-led 3s ease-in-out infinite}
+.ico-blink2{animation:ico-blink-led 3s ease-in-out infinite .7s}
+.ico-blink3{animation:ico-blink-led 3s ease-in-out infinite 1.4s}
+.ico-throb{animation:ico-throb 2s ease-in-out infinite}
+.ico-wander{animation:ico-wander 4s ease-in-out infinite}
+/* label row with icon */
+.wlbl-row{display:flex;align-items:center;gap:7px;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;color:var(--w30);text-transform:uppercase;margin-bottom:10px}
+/* social icon links in footer */
+.soc{display:inline-flex;align-items:center;gap:6px;text-decoration:none;color:var(--w30);transition:color .2s;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:1px}
+.soc:hover{color:var(--w)}
+.soc svg{transition:transform .2s}
+.soc:hover svg{transform:scale(1.2)}
+
+/* ══════════════════════════════════════════
+   TIMELINE
+══════════════════════════════════════════ */
+.tl-outer{
+  display:grid;
+  grid-template-columns:1.1fr 1fr;
+  gap:40px;
+  align-items:start;
+  margin-top:16px;
+}
+.tl-body{
+  position:relative;
+  padding-left:28px;
+}
+.tl-body::before{
+  content:'';
+  position:absolute;
+  left:7px;top:8px;bottom:4px;
+  width:1px;
+  background:linear-gradient(to bottom,var(--w12),var(--w06) 85%,transparent);
+}
+.tl-item{
+  position:relative;
+  padding-bottom:22px;
+}
+.tl-item:last-child{padding-bottom:0}
+.tl-item::before{
+  content:'';
+  position:absolute;
+  left:-24px;top:5px;
+  width:8px;height:8px;
+  border-radius:50%;
+  background:var(--w);
+  box-shadow:0 0 0 3px var(--bg),0 0 0 4.5px var(--w12);
+}
+.tl-item.future{opacity:.3}
+.tl-item.future::before{
+  background:transparent;
+  border:1px solid var(--w30);
+  box-shadow:none;
+}
+.tl-meta{display:flex;align-items:center;gap:8px;margin-bottom:3px}
+.tl-year{
+  font-family:'DM Mono',monospace;
+  font-size:9px;color:var(--w30);
+  letter-spacing:2px;text-transform:uppercase;
+}
+.tl-badge{
+  font-family:'DM Mono',monospace;font-size:8px;
+  padding:1px 6px;border-radius:3px;
+  border:1px solid var(--w06);color:var(--w30);letter-spacing:.8px;
+}
+.tl-title{
+  font-size:14px;font-weight:600;
+  color:var(--w);letter-spacing:-.3px;
+  line-height:1.25;margin-bottom:3px;
+}
+.tl-desc{
+  font-family:'DM Mono',monospace;
+  font-size:10px;color:var(--w30);
+  letter-spacing:.3px;line-height:1.65;
+}
+
+/* stats grid (right column of timeline) */
+.tl-stats{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  position:sticky;top:108px;
+}
+.tl-stat{
+  padding:16px 18px;border-radius:16px;
+  background:var(--bg2);
+  border:1px solid var(--w06);
+  box-shadow:4px 4px 12px var(--sd),-1px -1px 5px var(--sl),inset 0 1px 0 var(--sl);
+}
+.tl-stat-num{
+  font-family:'DM Mono',monospace;
+  font-size:32px;font-weight:400;
+  letter-spacing:-2px;line-height:1;
+  color:var(--w);margin-bottom:4px;
+}
+.tl-stat-lbl{
+  font-family:'DM Mono',monospace;
+  font-size:9px;color:var(--w30);
+  letter-spacing:2px;text-transform:uppercase;
+}
+
+/* ══════════════════════════════════════════
+   ABOUT + CONTACT SECTION
+══════════════════════════════════════════ */
+.about-section{
+  margin-top:56px;padding-top:40px;
+  border-top:1px solid var(--w06);
+}
+.about-grid{
+  display:grid;
+  grid-template-columns:1fr 260px;
+  gap:20px;
+  align-items:start;
+  margin-top:16px;
+}
+.about-bio{
+  font-size:15px;line-height:1.85;
+  color:var(--w60);
+}
+.about-bio p{margin-bottom:18px}
+.about-bio p:last-child{margin-bottom:0}
+.about-bio strong{color:var(--w);font-weight:500}
+.about-contact{
+  padding:20px;border-radius:20px;
+  background:var(--bg2);
+  border:1px solid var(--w06);
+  box-shadow:4px 4px 12px var(--sd),-1px -1px 5px var(--sl),inset 0 1px 0 var(--sl);
+  display:flex;flex-direction:column;gap:14px;
+}
+.contact-row{
+  display:flex;align-items:center;gap:10px;
+  font-family:'DM Mono',monospace;
+  font-size:11px;color:var(--w30);
+  text-decoration:none;
+  transition:color .2s;
+}
+.contact-row:hover{color:var(--w)}
+.avail-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:7px 13px;border-radius:20px;
+  border:1px solid rgba(61,220,132,.2);
+  background:rgba(61,220,132,.06);
+  font-family:'DM Mono',monospace;
+  font-size:10px;letter-spacing:.5px;
+  color:var(--green);
+}
+.avail-badge::before{
+  content:'';width:5px;height:5px;
+  border-radius:50%;background:var(--green);
+  box-shadow:0 0 5px var(--green);
+  animation:glow-pulse 2.4s ease-in-out infinite;
+}
+.loc-label{
+  font-family:'DM Mono',monospace;
+  font-size:10px;color:var(--w30);
+  letter-spacing:1px;
+}
+
+/* responsive additions */
+@media(max-width:700px){
+  .tl-outer{grid-template-columns:1fr}
+  .tl-stats{position:static}
+  .about-grid{grid-template-columns:1fr}
+  .about-contact{width:auto}
+}
+</style>
+</head>
+<body>
+
+<!-- ── 3 Floating Glass Pills ── -->
+<nav>
+  <!-- LEFT: artistic name logo pill -->
+  <a href="/" class="nav-logo">
+    <div class="nav-logo-name">
+      <span class="hn-script">V</span><span class="hn-sans">ishal</span><span class="hn-gap"></span><span class="hn-script">K</span><span class="hn-sans">atariya</span>
+    </div>
+  </a>
+
+  <!-- CENTER pill: nav + available dot -->
+  <ul class="nav-links">
+    <li><a href="/" class="act">home</a></li>
+    <li><a href="projects.html">projects</a></li>
+    <li><a href="cs-roadmap.html">roadmap</a></li>
+    <li><a href="#about">about</a></li>
+    <li class="nav-avail-item">
+      <span class="nav-avail-dot"></span>
+      <span class="nav-avail-txt">available</span>
+    </li>
+  </ul>
+
+  <!-- RIGHT pill: search + lang + theme + profile -->
+  <div class="nav-right">
+    <div class="nav-search">
+      <svg width="13" height="13" viewBox="0 0 13 13" fill="none" style="flex-shrink:0;opacity:.45">
+        <circle cx="5.2" cy="5.2" r="3.8" stroke="currentColor" stroke-width="1.2"/>
+        <line x1="8" y1="8" x2="11.5" y2="11.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+      </svg>
+      <input class="nav-search-input" placeholder="search…" id="navSearchInput" oninput="runSearch(this.value)">
+    </div>
+    <button class="nav-lang" id="langBtn" onclick="toggleLang()">EN</button>
+    <button class="nav-theme" id="themeBtn" onclick="toggleTheme()" title="Toggle theme">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" id="themeIcon">
+        <path d="M7 1v1M7 12v1M1 7H0M14 7h-1M2.1 2.1l.7.7M11.2 11.2l.7.7M11.9 2.1l-.7.7M2.8 11.2l-.7.7" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
+        <circle cx="7" cy="7" r="2.8" stroke="currentColor" stroke-width="1.1"/>
+      </svg>
+    </button>
+    <button class="nav-profile" onclick="location.href='#me'" title="Private section">VK</button>
+  </div>
+</nav>
+
+<main id="work" style="padding-top:76px">
+
+  <!-- ══════════════════════════════════════════
+       WIDGET GRID
+  ══════════════════════════════════════════ -->
+  <div class="grid">
+
+    <!-- 1 · CLOCK — NothingOS ndot · 2×2 -->
+    <div class="w glass s22" style="display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden">
+      <!-- Animated background clock decoration -->
+      <div style="position:absolute;right:-10px;bottom:-10px;pointer-events:none;opacity:.06">
+        <svg class="ico-spin" width="140" height="140" viewBox="0 0 140 140" fill="none">
+          <circle cx="70" cy="70" r="65" stroke="white" stroke-width="2"/>
+          <line x1="70" y1="8" x2="70" y2="22" stroke="white" stroke-width="3" stroke-linecap="round"/>
+          <line x1="132" y1="70" x2="118" y2="70" stroke="white" stroke-width="3" stroke-linecap="round"/>
+          <line x1="70" y1="132" x2="70" y2="118" stroke="white" stroke-width="3" stroke-linecap="round"/>
+          <line x1="8" y1="70" x2="22" y2="70" stroke="white" stroke-width="3" stroke-linecap="round"/>
+          <line x1="35" y1="18" x2="42" y2="30" stroke="white" stroke-width="2" stroke-linecap="round"/>
+          <line x1="105" y1="18" x2="98" y2="30" stroke="white" stroke-width="2" stroke-linecap="round"/>
+          <line x1="70" y1="70" x2="70" y2="28" stroke="white" stroke-width="4" stroke-linecap="round"/>
+          <line x1="70" y1="70" x2="100" y2="70" stroke="white" stroke-width="3" stroke-linecap="round"/>
+          <circle cx="70" cy="70" r="5" fill="white"/>
+        </svg>
+      </div>
+      <div class="wlbl-row">
+        <svg class="ico ico-pulse" width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="rgba(255,255,255,.35)" stroke-width="1"/><line x1="7" y1="7" x2="7" y2="3.2" stroke="rgba(255,255,255,.85)" stroke-width="1.4" stroke-linecap="round"/><line x1="7" y1="7" x2="10.5" y2="7" stroke="rgba(255,255,255,.45)" stroke-width="1.1" stroke-linecap="round"/><circle cx="7" cy="7" r=".9" fill="white"/></svg>
+        system time
+      </div>
+      <div>
+        <div class="clock-time">
+          <span class="clock-h" id="ch">00</span>
+          <span class="clock-colon">:</span>
+          <span class="clock-m" id="cm">00</span>
+        </div>
+        <div class="clock-date" id="cd">wed · 25 mar 2026</div>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+        <span class="sbadge">open to work</span>
+        <span class="chip">AI · ML · SWE</span>
+      </div>
+    </div>
+
+    <!-- 2 · IDENTITY · 2×1 -->
+    <div class="w s21" style="display:flex;flex-direction:column;justify-content:space-between;">
+      <div class="wlbl-row">
+        <svg class="ico" width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="5" r="2.8" stroke="rgba(255,255,255,.4)" stroke-width="1"/><path d="M2 13 C2 10 4.5 8.5 7 8.5 C9.5 8.5 12 10 12 13" stroke="rgba(255,255,255,.4)" stroke-width="1" stroke-linecap="round" fill="none"/></svg>
+        identity
+      </div>
+      <div style="display:flex;align-items:flex-end;justify-content:space-between">
+        <div style="line-height:1;letter-spacing:-.5px;">
+          <div style="font-size:clamp(28px,3.5vw,36px)"><span class="hn-script" style="font-size:1.2em">V</span><span class="hn-sans">ishal</span></div>
+          <div style="font-size:clamp(28px,3.5vw,36px)"><span class="hn-script" style="font-size:1.2em">K</span><span class="hn-sans">atariya</span></div>
+        </div>
+        <!-- 3D person icon -->
+        <div class="ico ico-float" style="opacity:.18;margin-bottom:4px">
+          <svg width="42" height="42" viewBox="0 0 42 42" fill="none">
+            <circle cx="21" cy="15" r="9" fill="rgba(255,255,255,.6)" stroke="rgba(255,255,255,.8)" stroke-width="1.5"/>
+            <path d="M4 42 C4 31 12 26 21 26 C30 26 38 31 38 42" fill="rgba(255,255,255,.6)" stroke="rgba(255,255,255,.8)" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+      </div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;">
+        <span class="chip">Dieburg · DE</span>
+        <span class="chip">h_da · CS</span>
+        <span class="chip">intern-ready</span>
+      </div>
+    </div>
+
+    <!-- 3 · GITHUB ACTIVITY · 2×1 -->
+    <div class="w glass s21">
+      <div class="wlbl-row">
+        <svg class="ico" width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="3.5" cy="3" r="1.8" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="none"/><circle cx="3.5" cy="11" r="1.8" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="none"/><circle cx="10.5" cy="5" r="1.8" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="none"/><line x1="3.5" y1="4.8" x2="3.5" y2="9.2" stroke="rgba(255,255,255,.3)" stroke-width="1"/><path d="M3.5 5 C3.5 5 10.5 5 10.5 5" fill="none" stroke="rgba(255,255,255,.3)" stroke-width="1"/></svg>
+        github · vkkatariya
+      </div>
+      <div class="cg" id="cg"></div>
+      <div style="display:flex;justify-content:space-between;align-items:baseline;margin-top:4px;">
+        <span class="sub">contributions · 2026</span>
+        <span style="font-family:'DM Mono',monospace;font-size:22px;font-weight:500;letter-spacing:-1px;" id="cc">—</span>
+      </div>
+    </div>
+
+    <!-- 4 · SKILLS — neomorphic bars · 1×2 -->
+    <div class="w s12" style="display:flex;flex-direction:column;">
+      <div class="wlbl-row">
+        <svg class="ico ico-pulse" width="14" height="14" viewBox="0 0 14 14" fill="none"><polyline points="4.5,2.5 1,7 4.5,11.5" stroke="rgba(255,255,255,.55)" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" fill="none"/><polyline points="9.5,2.5 13,7 9.5,11.5" stroke="rgba(255,255,255,.55)" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" fill="none"/><line x1="8" y1="1.5" x2="6" y2="12.5" stroke="rgba(255,255,255,.25)" stroke-width="1" stroke-linecap="round"/></svg>
+        skills
+      </div>
+      <div style="flex:1;display:flex;flex-direction:column;justify-content:center;">
+        <div class="skill-row"><span class="skill-n">Python</span><div class="skill-track"><div class="skill-fill" style="width:90%;animation-delay:.2s"></div></div><span class="skill-pct">90</span></div>
+        <div class="skill-row"><span class="skill-n">ML / AI</span><div class="skill-track"><div class="skill-fill" style="width:82%;animation-delay:.3s"></div></div><span class="skill-pct">82</span></div>
+        <div class="skill-row"><span class="skill-n">TypeScript</span><div class="skill-track"><div class="skill-fill" style="width:68%;animation-delay:.4s"></div></div><span class="skill-pct">68</span></div>
+        <div class="skill-row"><span class="skill-n">Docker</span><div class="skill-track"><div class="skill-fill" style="width:76%;animation-delay:.5s"></div></div><span class="skill-pct">76</span></div>
+        <div class="skill-row"><span class="skill-n">Linux</span><div class="skill-track"><div class="skill-fill" style="width:80%;animation-delay:.6s"></div></div><span class="skill-pct">80</span></div>
+        <div class="skill-row"><span class="skill-n">SvelteKit</span><div class="skill-track"><div class="skill-fill" style="width:55%;animation-delay:.7s"></div></div><span class="skill-pct">55</span></div>
+      </div>
+      <div class="nd"><div class="line"></div><i></i><i></i><i></i><div class="line"></div></div>
+      <span class="sub">6 core · always building</span>
+    </div>
+
+    <!-- 5 · CURRENTLY BUILDING · 1×1 -->
+    <div class="w s11" style="display:flex;flex-direction:column;justify-content:space-between;">
+      <div class="wlbl-row">
+        <svg class="ico ico-blink" width="13" height="13" viewBox="0 0 13 13" fill="none"><rect x="1" y="1.5" width="11" height="10" rx="2" stroke="rgba(255,255,255,.3)" stroke-width="1" fill="rgba(255,255,255,.03)"/><polyline points="3,6 5.5,8 3,10" stroke="rgba(255,255,255,.6)" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" fill="none"/><line x1="7" y1="10" x2="10.5" y2="10" stroke="rgba(255,255,255,.35)" stroke-width="1" stroke-linecap="round"/></svg>
+        now
+      </div>
+      <div style="font-size:14px;font-weight:600;line-height:1.4;color:rgba(240,240,240,.85);">orlon-bot<br><span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--w30);font-weight:400">QLoRA · training</span><br>↗</div>
+      <div class="dp">
+        <span class="on"></span><span class="on"></span><span></span><span></span><span></span>
+      </div>
+    </div>
+
+    <!-- 6 · HOMELAB STATUS · 1×1 -->
+    <div class="w s11" style="display:flex;flex-direction:column;justify-content:space-between;">
+      <div class="wlbl-row">
+        <svg class="ico" width="13" height="13" viewBox="0 0 13 13" fill="none"><rect x="1" y="1" width="11" height="3" rx="1.2" stroke="rgba(255,255,255,.3)" stroke-width="1" fill="rgba(255,255,255,.05)"/><rect x="1" y="5" width="11" height="3" rx="1.2" stroke="rgba(255,255,255,.3)" stroke-width="1" fill="rgba(255,255,255,.05)"/><rect x="1" y="9" width="11" height="3" rx="1.2" stroke="rgba(255,255,255,.3)" stroke-width="1" fill="rgba(255,255,255,.05)"/><circle cx="10.5" cy="2.5" r=".9" fill="rgba(61,220,132,.8)" class="ico-blink2"/><circle cx="10.5" cy="6.5" r=".9" fill="rgba(61,220,132,.8)" class="ico-blink3"/></svg>
+        homelab
+      </div>
+      <div style="display:flex;align-items:flex-end;justify-content:space-between">
+        <div>
+          <div style="font-family:'DM Mono',monospace;font-size:28px;font-weight:500;color:var(--green);line-height:1;letter-spacing:-1px;">2/3</div>
+          <div class="sub" style="margin-top:4px;">nodes online</div>
+        </div>
+        <!-- 3D animated server icon -->
+        <div class="ico ico-float" style="opacity:.5">
+          <svg width="34" height="34" viewBox="0 0 34 34" fill="none">
+            <!-- shadow layers -->
+            <rect x="5" y="25" width="24" height="5" rx="2.5" fill="rgba(0,0,0,.6)" transform="translate(.5,1.5)"/>
+            <rect x="5" y="17" width="24" height="5" rx="2.5" fill="rgba(0,0,0,.5)" transform="translate(.5,1.5)"/>
+            <rect x="5" y="9" width="24" height="5" rx="2.5" fill="rgba(0,0,0,.4)" transform="translate(.5,1.5)"/>
+            <!-- units -->
+            <rect x="4" y="23" width="24" height="5" rx="2.5" fill="rgba(255,255,255,.07)" stroke="rgba(255,255,255,.18)" stroke-width=".8"/>
+            <rect x="4" y="15" width="24" height="5" rx="2.5" fill="rgba(255,255,255,.09)" stroke="rgba(255,255,255,.18)" stroke-width=".8"/>
+            <rect x="4" y="7" width="24" height="5" rx="2.5" fill="rgba(255,255,255,.11)" stroke="rgba(255,255,255,.18)" stroke-width=".8"/>
+            <!-- LEDs -->
+            <circle cx="24" cy="25.5" r="1.3" fill="#3DDC84" class="ico-blink"/>
+            <circle cx="24" cy="17.5" r="1.3" fill="#3DDC84" class="ico-blink2"/>
+            <circle cx="24" cy="9.5" r="1.3" fill="#3DDC84"/>
+            <!-- drive slots -->
+            <rect x="6.5" y="24.5" width="9" height="2" rx=".8" fill="rgba(255,255,255,.1)"/>
+            <rect x="6.5" y="16.5" width="7" height="2" rx=".8" fill="rgba(255,255,255,.1)"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- 7 · FEATURED PROJECT — Finance Buddy NeoPOP · 2×2 -->
+    <div class="w s22" style="display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden">
+      <!-- Animated bar chart decoration -->
+      <div style="position:absolute;right:14px;top:12px;pointer-events:none">
+        <svg class="ico-float" width="44" height="44" viewBox="0 0 48 48" fill="none" style="filter:drop-shadow(0 4px 12px rgba(255,255,255,.08))">
+          <!-- shadow -->
+          <rect x="3" y="35" width="8" height="11" rx="1.5" fill="rgba(0,0,0,.4)" transform="translate(1,1.5)"/>
+          <rect x="14" y="27" width="8" height="19" rx="1.5" fill="rgba(0,0,0,.35)" transform="translate(1,1.5)"/>
+          <rect x="25" y="19" width="8" height="27" rx="1.5" fill="rgba(0,0,0,.3)" transform="translate(1,1.5)"/>
+          <rect x="36" y="11" width="8" height="35" rx="1.5" fill="rgba(0,0,0,.25)" transform="translate(1,1.5)"/>
+          <!-- bars -->
+          <rect x="3" y="34" width="8" height="12" rx="1.5" fill="rgba(255,255,255,.07)" stroke="rgba(255,255,255,.15)" stroke-width=".8"/>
+          <rect x="14" y="26" width="8" height="20" rx="1.5" fill="rgba(255,255,255,.09)" stroke="rgba(255,255,255,.18)" stroke-width=".8"/>
+          <rect x="25" y="18" width="8" height="28" rx="1.5" fill="rgba(255,255,255,.12)" stroke="rgba(255,255,255,.22)" stroke-width=".8"/>
+          <rect x="36" y="10" width="8" height="36" rx="1.5" fill="rgba(255,255,255,.16)" stroke="rgba(255,255,255,.28)" stroke-width=".8"/>
+          <!-- trend line -->
+          <path d="M7 30 L18 22 L29 14 L40 6" stroke="rgba(255,255,255,.4)" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+          <circle cx="40" cy="6" r="2.5" fill="rgba(255,255,255,.65)"/>
+        </svg>
+      </div>
+      <div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+          <div class="wlbl-row" style="margin-bottom:0">
+            <svg class="ico ico-throb" width="13" height="13" viewBox="0 0 13 13" fill="none"><rect x=".5" y="3" width="12" height="9" rx="2" stroke="rgba(255,255,255,.35)" stroke-width="1" fill="rgba(255,255,255,.04)"/><line x1="3" y1="3" x2="3" y2="1.5" stroke="rgba(255,255,255,.3)" stroke-width="1" stroke-linecap="round"/><line x1="10" y1="3" x2="10" y2="1.5" stroke="rgba(255,255,255,.3)" stroke-width="1" stroke-linecap="round"/><rect x="2.5" y="6" width="3.5" height="2" rx=".5" fill="rgba(255,255,255,.25)"/><rect x="7" y="6" width="3.5" height="2" rx=".5" fill="rgba(255,255,255,.15)"/></svg>
+            featured project
+          </div>
+          <span class="proj-num">01 / 04</span>
+        </div>
+        <div class="proj-title">Finance<br>Buddy</div>
+        <div class="nd"><div class="line"></div><i></i><i></i><div class="line"></div></div>
+        <div class="proj-desc">Personal finance tracker built from <strong style="color:var(--w60)">993 real transactions</strong> across 44 months. Spending analysis, category breakdown, waste audit, savings scenarios, and live search.</div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:10px;">
+          <span class="chip">SvelteKit</span>
+          <span class="chip">Fastify</span>
+          <span class="chip">Postgres</span>
+          <span class="chip">Drizzle</span>
+          <span class="chip">Chart.js</span>
+        </div>
+      </div>
+      <div style="display:flex;gap:10px;align-items:center;margin-top:16px;">
+        <button class="np">view →</button>
+        <button class="np-ghost">github</button>
+      </div>
+    </div>
+
+    <!-- 8 · TECH STACK · 1×2 -->
+    <div class="w s12">
+      <div class="wlbl-row">
+        <svg class="ico" width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M6.5 1 L12 3.8 L6.5 6.5 L1 3.8Z" stroke="rgba(255,255,255,.5)" stroke-width="1" stroke-linejoin="round" fill="rgba(255,255,255,.07)"/><path d="M1 7 L6.5 9.7 L12 7" stroke="rgba(255,255,255,.3)" stroke-width="1" stroke-linecap="round" fill="none"/><path d="M1 10 L6.5 12.7 L12 10" stroke="rgba(255,255,255,.18)" stroke-width="1" stroke-linecap="round" fill="none"/></svg>
+        stack
+      </div>
+      <div style="margin-top:6px;">
+        <div class="si"><span class="si-dot"></span><span class="si-name">SvelteKit</span><span class="si-tag">FE</span></div>
+        <div class="si"><span class="si-dot"></span><span class="si-name">Fastify</span><span class="si-tag">API</span></div>
+        <div class="si"><span class="si-dot"></span><span class="si-name">Python</span><span class="si-tag">ML</span></div>
+        <div class="si"><span class="si-dot"></span><span class="si-name">Docker</span><span class="si-tag">OPS</span></div>
+        <div class="si"><span class="si-dot"></span><span class="si-name">Tailscale</span><span class="si-tag">NET</span></div>
+        <div class="si"><span class="si-dot"></span><span class="si-name">Radxa 5T</span><span class="si-tag">HW</span></div>
+        <div class="si"><span class="si-dot"></span><span class="si-name">SQLite</span><span class="si-tag">DB</span></div>
+      </div>
+    </div>
+
+    <!-- 9 · ABOUT — liquid glass · 2×1 -->
+    <div class="w glass s21" style="display:flex;flex-direction:column;justify-content:space-between;">
+      <div class="wlbl-row">
+        <svg class="ico" width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="5.5" stroke="rgba(255,255,255,.28)" stroke-width="1"/><circle cx="6.5" cy="4" r=".9" fill="rgba(255,255,255,.6)"/><line x1="6.5" y1="6" x2="6.5" y2="9.5" stroke="rgba(255,255,255,.55)" stroke-width="1.3" stroke-linecap="round"/></svg>
+        about
+      </div>
+      <div style="font-size:13px;color:var(--w60);line-height:1.75;">
+        CS student at Hochschule Darmstadt. I work across the full stack — training LLMs, wiring APIs, and running self-hosted infra on real ARM hardware. More interested in how it works than what it looks like.
+      </div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;">
+        <span class="chip">ML / AI</span>
+        <span class="chip">full-stack</span>
+        <span class="chip">infra</span>
+      </div>
+    </div>
+
+    <!-- 10 · PROJECTS STAT · 1×1 -->
+    <div class="w s11" style="display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden">
+      <div class="wlbl-row">
+        <svg class="ico ico-pulse" width="13" height="13" viewBox="0 0 13 13" fill="none"><rect x=".5" y=".5" width="5" height="5" rx="1.2" stroke="rgba(255,255,255,.4)" stroke-width="1" fill="rgba(255,255,255,.08)"/><rect x="7.5" y=".5" width="5" height="5" rx="1.2" stroke="rgba(255,255,255,.4)" stroke-width="1" fill="rgba(255,255,255,.08)"/><rect x=".5" y="7.5" width="5" height="5" rx="1.2" stroke="rgba(255,255,255,.4)" stroke-width="1" fill="rgba(255,255,255,.08)"/><rect x="7.5" y="7.5" width="5" height="5" rx="1.2" stroke="rgba(255,255,255,.4)" stroke-width="1" fill="rgba(255,255,255,.08)"/></svg>
+        projects
+      </div>
+      <div style="font-family:'DM Mono',monospace;font-size:58px;font-weight:400;line-height:1;letter-spacing:-3px;">12</div>
+      <div class="sub">shipped</div>
+    </div>
+
+    <!-- 11 · CONTACT — inverted white · 1×1 -->
+    <div class="w inv s11" style="display:flex;flex-direction:column;justify-content:space-between;">
+      <div style="display:flex;align-items:center;gap:6px;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;color:rgba(8,8,8,.3);text-transform:uppercase;margin-bottom:10px">
+        <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><rect x=".5" y="3" width="12" height="8" rx="2" stroke="rgba(8,8,8,.3)" stroke-width="1" fill="rgba(8,8,8,.04)"/><polyline points=".5,3 6.5,8 12.5,3" stroke="rgba(8,8,8,.3)" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+        contact
+      </div>
+      <!-- 3D envelope icon -->
+      <div class="ico ico-float" style="opacity:.9">
+        <svg width="38" height="32" viewBox="0 0 38 32" fill="none">
+          <rect x="2" y="5" width="34" height="22" rx="4" fill="rgba(0,0,0,.12)" transform="translate(1,2)"/>
+          <rect x="2" y="3" width="34" height="22" rx="4" fill="#090909" stroke="rgba(0,0,0,.5)" stroke-width="1.5"/>
+          <polyline points="2,3 19,16 36,3" stroke="rgba(0,0,0,.35)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          <line x1="6" y1="20" x2="14" y2="20" stroke="rgba(0,0,0,.18)" stroke-width="1" stroke-linecap="round"/>
+          <line x1="6" y1="23" x2="18" y2="23" stroke="rgba(0,0,0,.12)" stroke-width="1" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div style="font-family:'DM Mono',monospace;font-size:10px;color:rgba(8,8,8,.4);letter-spacing:1px;">vkkatariya</div>
+    </div>
+
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       TIMELINE
+  ══════════════════════════════════════════ -->
+  <div class="sec-head" id="about"><h2>timeline</h2></div>
+  <div class="tl-outer">
+    <div class="tl-body">
+      <div class="tl-item">
+        <div class="tl-meta"><span class="tl-year">Oct 2024</span><span class="tl-badge">education</span></div>
+        <div class="tl-title">Started CS at h_da</div>
+        <div class="tl-desc">Hochschule Darmstadt · CS · since Oct 2024</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-meta"><span class="tl-year">2024</span><span class="tl-badge">homelab</span></div>
+        <div class="tl-title">First homelab — Rock 5T</div>
+        <div class="tl-desc">Radxa Rock 5T · RK3588J ARM64 · 16 GB LPDDR5<br>Docker · Tailscale · self-hosted from scratch</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-meta"><span class="tl-year">2025</span><span class="tl-badge">project</span></div>
+        <div class="tl-title">Finance Buddy</div>
+        <div class="tl-desc">993 real transactions · 44 months · Oct 2022–May 2026<br>SvelteKit + Fastify + Postgres + Drizzle + Chart.js</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-meta"><span class="tl-year">2025</span><span class="tl-badge">homelab</span></div>
+        <div class="tl-title">Homelab v2 — Proxmox cluster</div>
+        <div class="tl-desc">+ Dell OptiPlex 7060 · Proxmox VE · 2-node cluster<br>KVM / libvirt · LXC containers · 48 GB total RAM</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-meta"><span class="tl-year">2026</span><span class="tl-badge">collab</span></div>
+        <div class="tl-title">TypeShift</div>
+        <div class="tl-desc">Cross-platform AI writing assistant · with nayalambaliya<br>Android (Kotlin) · macOS (Swift) · Windows (C#)</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-meta"><span class="tl-year">2026</span><span class="tl-badge">AI · ML</span></div>
+        <div class="tl-title">orlon-bot — in progress</div>
+        <div class="tl-desc">Telegram bot · QLoRA fine-tune on Kaggle T4 GPUs<br>Unsloth · inference on Rock 5T NPU (6 TOPs)</div>
+      </div>
+      <div class="tl-item future">
+        <div class="tl-meta"><span class="tl-year">2028</span><span class="tl-badge">goal</span></div>
+        <div class="tl-title">B.Sc. Computer Science</div>
+        <div class="tl-desc">Hochschule Darmstadt · expected graduation</div>
+      </div>
+    </div>
+    <div class="tl-stats">
+      <div class="tl-stat">
+        <div class="tl-stat-num">2</div>
+        <div class="tl-stat-lbl">nodes online</div>
+      </div>
+      <div class="tl-stat">
+        <div class="tl-stat-num">993</div>
+        <div class="tl-stat-lbl">txns tracked</div>
+      </div>
+      <div class="tl-stat">
+        <div class="tl-stat-num">4</div>
+        <div class="tl-stat-lbl">projects shipped</div>
+      </div>
+      <div class="tl-stat">
+        <div class="tl-stat-num">2</div>
+        <div class="tl-stat-lbl">yrs building</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       PROJECTS
+  ══════════════════════════════════════════ -->
+  <div class="sec-head"><h2>all projects</h2></div>
+
+  <div class="proj-row">
+    <div class="pcard" style="animation-delay:.65s;position:relative;overflow:hidden">
+      <div style="position:absolute;right:14px;top:14px;opacity:.08;pointer-events:none">
+        <svg class="ico-float" width="38" height="38" viewBox="0 0 38 38" fill="none">
+          <rect x="2" y="11" width="34" height="18" rx="3" fill="rgba(255,255,255,.6)" stroke="rgba(255,255,255,.8)" stroke-width="1"/>
+          <rect x="7" y="16" width="5" height="5" rx="1" stroke="rgba(255,255,255,.5)" stroke-width=".8" fill="rgba(0,0,0,.1)"/>
+          <rect x="14" y="16" width="5" height="5" rx="1" stroke="rgba(255,255,255,.5)" stroke-width=".8" fill="rgba(0,0,0,.1)"/>
+          <circle cx="19" cy="8" r="2.5" fill="rgba(255,255,255,.35)" stroke="rgba(255,255,255,.6)" stroke-width=".8"/>
+        </svg>
+      </div>
+      <div class="pcard-num">02 / 04</div>
+      <div class="pcard-title">Homelab<br>Dashboard</div>
+      <div class="pcard-desc">Realtime ops dashboard for a 2-node homelab cluster. Live CPU/RAM/network metrics via WebSocket, NothingOS design, Notion docs viewer and service registry.</div>
+      <div class="pcard-tags"><span class="chip">Fastify</span><span class="chip">WebSocket</span><span class="chip">Docker</span><span class="chip">Tailscale</span></div>
+      <div class="pcard-foot">
+        <span>App · private</span>
+        <button class="np-ghost" style="padding:6px 12px;font-size:10px;">view →</button>
+      </div>
+    </div>
+
+    <div class="pcard" style="animation-delay:.70s;position:relative;overflow:hidden">
+      <div style="position:absolute;right:14px;top:14px;opacity:.08;pointer-events:none">
+        <svg class="ico-float2" width="38" height="38" viewBox="0 0 38 38" fill="none">
+          <rect x="6" y="2" width="10" height="34" rx="4" fill="rgba(255,255,255,.5)" stroke="rgba(255,255,255,.8)" stroke-width="1"/>
+          <rect x="22" y="8" width="10" height="24" rx="3" fill="rgba(255,255,255,.4)" stroke="rgba(255,255,255,.6)" stroke-width="1"/>
+          <line x1="16" y1="14" x2="22" y2="14" stroke="rgba(255,255,255,.3)" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="pcard-num">03 / 04</div>
+      <div class="pcard-title">TypeShift</div>
+      <div class="pcard-desc">Cross-platform AI writing assistant built in collaboration with nayalambaliya. Android (Kotlin), macOS (Swift), Windows (C#) — shared AI backend for text transformation.</div>
+      <div class="pcard-tags"><span class="chip">Kotlin</span><span class="chip">Swift</span><span class="chip">C#</span><span class="chip">AI</span></div>
+      <div class="pcard-foot">
+        <span>Collab · open source</span>
+        <button class="np-ghost" style="padding:6px 12px;font-size:10px;">github →</button>
+      </div>
+    </div>
+
+    <div class="pcard" style="animation-delay:.75s;position:relative;overflow:hidden">
+      <div style="position:absolute;right:14px;top:14px;opacity:.08;pointer-events:none">
+        <svg class="ico-float" width="38" height="38" viewBox="0 0 38 38" fill="none">
+          <circle cx="19" cy="19" r="15" fill="rgba(255,255,255,.3)" stroke="rgba(255,255,255,.7)" stroke-width="1.2"/>
+          <path d="M12 22 C12 16 16 12 19 11 C22 12 26 16 26 22" fill="none" stroke="rgba(255,255,255,.5)" stroke-width="1.2" stroke-linecap="round"/>
+          <circle cx="19" cy="11" r="3" fill="rgba(255,255,255,.55)" stroke="rgba(255,255,255,.7)" stroke-width=".8"/>
+        </svg>
+      </div>
+      <div class="pcard-num">04 / 04</div>
+      <div class="pcard-title">orlon-bot</div>
+      <div class="pcard-desc">Telegram bot with a custom QLoRA fine-tuned model. Trained on Kaggle T4 GPUs via Unsloth. Inference on Rock 5T NPU (6 TOPs). Personal AI assistant — in progress.</div>
+      <div class="pcard-tags"><span class="chip">Python</span><span class="chip">QLoRA</span><span class="chip">Unsloth</span><span class="chip">Telegram</span></div>
+      <div class="pcard-foot">
+        <span>AI · ML · in progress</span>
+        <button class="np-ghost" style="padding:6px 12px;font-size:10px;">view →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       ABOUT + CONTACT
+  ══════════════════════════════════════════ -->
+  <section class="about-section" id="contact">
+    <div class="sec-head"><h2>about</h2></div>
+    <div class="about-grid">
+      <div class="about-bio">
+        <p>I'm <strong>Vishal</strong> — a CS student at Hochschule Darmstadt, building production systems while studying.</p>
+        <p>I work across the full stack: fine-tuning language models, building REST and WebSocket backends, designing interfaces, and managing self-hosted services on real ARM hardware. The common thread is building things that actually run — not just demos.</p>
+        <p>Currently based in <strong>Dieburg · near Darmstadt</strong>. Looking for internships where I can work on systems that matter — flexible across ML engineering, full-stack development, and DevOps/infrastructure.</p>
+      </div>
+      <div class="about-contact">
+        <div class="wlbl-row" style="margin-bottom:8px">contact</div>
+        <a class="contact-row" href="https://github.com/vkkatariya" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+          github.com/vkkatariya
+        </a>
+        <a class="contact-row" href="https://vishalkatariya.dev" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm7.5-6.923c-.67.204-1.335.82-1.887 1.855A7.97 7.97 0 0 0 5.145 4H7.5V1.077zM4.09 4a9.267 9.267 0 0 1 .64-1.539 6.7 6.7 0 0 1 .597-.933A7.025 7.025 0 0 0 2.255 4H4.09zm-.582 3.5c.03-.877.138-1.718.312-2.5H1.674a6.958 6.958 0 0 0-.656 2.5h2.49zM4.847 5a12.5 12.5 0 0 0-.338 2.5H7.5V5H4.847zM8.5 5v2.5h2.99a12.495 12.495 0 0 0-.337-2.5H8.5zM4.51 8.5a12.5 12.5 0 0 0 .337 2.5H7.5V8.5H4.51zm3.99 0V11h2.653c.187-.765.306-1.608.338-2.5H8.5zM5.145 12c.138.386.295.744.468 1.068.552 1.035 1.218 1.65 1.887 1.855V12H5.145zm.182 2.472a6.696 6.696 0 0 1-.597-.933A9.268 9.268 0 0 1 4.09 12H2.255a7.024 7.024 0 0 0 3.072 2.472zM3.82 11a13.652 13.652 0 0 1-.312-2.5h-2.49c.062.89.291 1.733.656 2.5H3.82zm6.853 3.472A7.024 7.024 0 0 0 13.745 12H11.91a9.27 9.27 0 0 1-.64 1.539 6.688 6.688 0 0 1-.597.933zM8.5 12v2.923c.67-.204 1.335-.82 1.887-1.855.173-.324.33-.682.468-1.068H8.5zm3.68-1h2.146c.365-.767.594-1.61.656-2.5h-2.49a13.65 13.65 0 0 1-.312 2.5zm2.802-3.5a6.959 6.959 0 0 0-.656-2.5H12.18c.174.782.282 1.623.312 2.5h2.49zM11.27 2.461c.247.464.462.98.64 1.539h1.835a7.024 7.024 0 0 0-3.072-2.472c.218.284.418.598.597.933zM10.855 4a7.966 7.966 0 0 0-.468-1.068C9.835 1.897 9.17 1.282 8.5 1.077V4h2.355z"/></svg>
+          vishalkatariya.dev
+        </a>
+        <div class="loc-label" style="margin-top:4px">📍 Dieburg · near Darmstadt</div>
+        <div class="avail-badge" style="margin-top:4px">available for internships</div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="footer-logo">VK · 2026</div>
+  <ul class="footer-links">
+    <li><a class="soc" href="#"><svg width="15" height="15" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>github</a></li>
+    <li><a class="soc" href="#"><svg width="15" height="15" viewBox="0 0 16 16" fill="currentColor"><path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854V1.146zm4.943 12.248V6.169H2.542v7.225h2.401zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248-.822 0-1.359.54-1.359 1.248 0 .694.521 1.248 1.327 1.248h.016zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016a5.54 5.54 0 0 1 .016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225h2.4z"/></svg>linkedin</a></li>
+    <li><a class="soc" href="#"><svg width="15" height="15" viewBox="0 0 16 16" fill="currentColor"><path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2zm13 2.383-4.758 2.855L15 11.114v-5.73zm-.034 6.878L9.271 8.82 8 9.583 6.728 8.82l-5.694 3.44A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.739zM1 11.114l4.758-3.876L1 4.383v6.73z"/></svg>email</a></li>
+    <li><a class="soc" href="#"><svg width="15" height="15" viewBox="0 0 16 16" fill="currentColor"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm7.5-6.923c-.67.204-1.335.82-1.887 1.855A7.97 7.97 0 0 0 5.145 4H7.5V1.077zM4.09 4a9.267 9.267 0 0 1 .64-1.539 6.7 6.7 0 0 1 .597-.933A7.025 7.025 0 0 0 2.255 4H4.09zm-.582 3.5c.03-.877.138-1.718.312-2.5H1.674a6.958 6.958 0 0 0-.656 2.5h2.49zM4.847 5a12.5 12.5 0 0 0-.338 2.5H7.5V5H4.847zM8.5 5v2.5h2.99a12.495 12.495 0 0 0-.337-2.5H8.5zM4.51 8.5a12.5 12.5 0 0 0 .337 2.5H7.5V8.5H4.51zm3.99 0V11h2.653c.187-.765.306-1.608.338-2.5H8.5zM5.145 12c.138.386.295.744.468 1.068.552 1.035 1.218 1.65 1.887 1.855V12H5.145zm.182 2.472a6.696 6.696 0 0 1-.597-.933A9.268 9.268 0 0 1 4.09 12H2.255a7.024 7.024 0 0 0 3.072 2.472zM3.82 11a13.652 13.652 0 0 1-.312-2.5h-2.49c.062.89.291 1.733.656 2.5H3.82zm6.853 3.472A7.024 7.024 0 0 0 13.745 12H11.91a9.27 9.27 0 0 1-.64 1.539 6.688 6.688 0 0 1-.597.933zM8.5 12v2.923c.67-.204 1.335-.82 1.887-1.855.173-.324.33-.682.468-1.068H8.5zm3.68-1h2.146c.365-.767.594-1.61.656-2.5h-2.49a13.65 13.65 0 0 1-.312 2.5zm2.802-3.5a6.959 6.959 0 0 0-.656-2.5H12.18c.174.782.282 1.623.312 2.5h2.49zM11.27 2.461c.247.464.462.98.64 1.539h1.835a7.024 7.024 0 0 0-3.072-2.472c.218.284.418.598.597.933zM10.855 4a7.966 7.966 0 0 0-.468-1.068C9.835 1.897 9.17 1.282 8.5 1.077V4h2.355z"/></svg>vishalkatariya.dev</a></li>
+  </ul>
+</footer>
+
+<script>
+// ── Live Clock ──
+function tick() {
+  const n = new Date();
+  const h = String(n.getHours()).padStart(2,'0');
+  const m = String(n.getMinutes()).padStart(2,'0');
+  document.getElementById('ch').textContent = h;
+  document.getElementById('cm').textContent = m;
+  const D=['sun','mon','tue','wed','thu','fri','sat'];
+  const M=['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'];
+  document.getElementById('cd').textContent =
+    `${D[n.getDay()]} · ${String(n.getDate()).padStart(2,'0')} ${M[n.getMonth()]} ${n.getFullYear()}`;
+}
+tick(); setInterval(tick, 1000);
+
+// ── Theme toggle
+function toggleTheme() {
+  const light = document.documentElement.getAttribute('data-theme') === 'light';
+  document.documentElement.setAttribute('data-theme', light ? 'dark' : 'light');
+  const icon = document.getElementById('themeIcon');
+  if (icon) icon.innerHTML = light
+    ? '<path d="M7 1v1M7 12v1M1 7H0M14 7h-1M2.1 2.1l.7.7M11.2 11.2l.7.7M11.9 2.1l-.7.7M2.8 11.2l-.7.7" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/><circle cx="7" cy="7" r="2.8" stroke="currentColor" stroke-width="1.1"/>'
+    : '<path d="M12 7a5 5 0 0 1-7 4.6A5 5 0 0 0 7 2c2.7 0 5 2.2 5 5z" fill="currentColor" opacity=".7"/>';
+}
+
+// ── Language toggle (EN/DE stub) ──
+const COPY = {
+  EN: {
+    eyebrow: 'CS student · Darmstadt · 2026',
+    role: ['ML Engineering','Full-Stack','Infrastructure'],
+    avail: 'available for internships',
+  },
+  DE: {
+    eyebrow: 'Informatikstudent · Darmstadt · 2026',
+    role: ['ML Engineering','Full-Stack','Infrastruktur'],
+    avail: 'offen für Praktikumsplätze',
+  }
+};
+let lang = 'EN';
+function toggleLang() {
+  lang = lang === 'EN' ? 'DE' : 'EN';
+  document.getElementById('langBtn').textContent = lang;
+  document.querySelector('.hero-eyebrow').childNodes[2].nodeValue = ' ' + COPY[lang].eyebrow + ' ';
+  document.querySelector('.avail-badge').textContent = COPY[lang].avail;
+}
+
+// ── Simulated GitHub contribution grid ──
+const g = document.getElementById('cg');
+const L = ['','l1','l2','l3','l4'];
+let tot = 0;
+// Responsive: 26×5 desktop, 20×5 mobile
+const cols = window.innerWidth <= 560 ? 20 : 26;
+const cells = cols * 5;
+g.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+for (let i = 0; i < cells; i++) {
+  const r = Math.random();
+  const lv = r < .42 ? 0 : r < .62 ? 1 : r < .78 ? 2 : r < .92 ? 3 : 4;
+  const c = document.createElement('div');
+  c.className = 'cc' + (L[lv] ? ' '+L[lv] : '');
+  g.appendChild(c);
+  tot += lv;
+}
+// Animate counter
+let cur = 0;
+const target = tot * 4;
+const step = Math.ceil(target / 40);
+const counter = setInterval(() => {
+  cur = Math.min(cur + step, target);
+  document.getElementById('cc').textContent = cur.toLocaleString();
+  if (cur >= target) clearInterval(counter);
+}, 30);
+</script>
+</body>
+</html>

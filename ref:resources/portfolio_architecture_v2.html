@@ -1,0 +1,182 @@
+
+<style>
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
+.root{border:1px solid var(--color-border-secondary);border-radius:var(--border-radius-lg);padding:14px 18px;margin-bottom:10px;background:var(--color-background-secondary)}
+.root-title{font-size:15px;font-weight:500;color:var(--color-text-primary);margin-bottom:2px}
+.root-sub{font-size:12px;color:var(--color-text-secondary)}
+.tier{display:grid;gap:8px;margin-bottom:10px}
+.tier-2{grid-template-columns:repeat(2,1fr)}
+.tier-3{grid-template-columns:repeat(3,1fr)}
+.tier-4{grid-template-columns:repeat(4,1fr)}
+@media(max-width:560px){.tier-2,.tier-3,.tier-4{grid-template-columns:1fr}}
+@media(max-width:760px){.tier-4{grid-template-columns:repeat(2,1fr)}}
+.node{border:1px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:10px 12px;cursor:pointer;transition:border-color .15s,background .15s;position:relative}
+.node:hover{border-color:var(--color-border-secondary);background:var(--color-background-secondary)}
+.node.open{border-color:var(--color-border-primary)}
+.node-label{font-size:10px;font-weight:500;letter-spacing:.06em;margin-bottom:4px}
+.node-title{font-size:13px;font-weight:500;color:var(--color-text-primary);margin-bottom:2px}
+.node-sub{font-size:11px;color:var(--color-text-secondary);line-height:1.5}
+.node-expand{display:none;margin-top:10px;padding-top:10px;border-top:1px solid var(--color-border-tertiary)}
+.node.open .node-expand{display:block}
+.node-expand p{font-size:11px;color:var(--color-text-secondary);line-height:1.7;margin-bottom:6px}
+.node-expand p:last-child{margin-bottom:0}
+.expand-caret{position:absolute;top:10px;right:10px;font-size:11px;color:var(--color-text-tertiary);transition:transform .15s}
+.node.open .expand-caret{transform:rotate(90deg)}
+.pill{display:inline-block;padding:2px 7px;border-radius:20px;font-size:10px;font-weight:500;margin:1px 2px 1px 0;vertical-align:middle}
+.pill-pub{background:var(--color-background-success);color:var(--color-text-success)}
+.pill-priv{background:var(--color-background-warning);color:var(--color-text-warning)}
+.pill-done{background:var(--color-background-info);color:var(--color-text-info)}
+.pill-pending{background:var(--color-background-secondary);color:var(--color-text-secondary);border:1px solid var(--color-border-secondary)}
+.pill-docs{background:var(--color-background-primary);color:var(--color-text-secondary);border:1px solid var(--color-border-tertiary)}
+.pill-nothing{background:var(--color-background-danger);color:var(--color-text-danger)}
+.section-head{font-size:10px;font-weight:500;letter-spacing:.08em;color:var(--color-text-tertiary);text-transform:uppercase;margin:14px 0 8px;display:flex;align-items:center;gap:8px}
+.section-head::after{content:'';flex:1;height:1px;background:var(--color-border-tertiary)}
+.decision-row{display:flex;align-items:flex-start;gap:10px;padding:7px 0;border-bottom:1px solid var(--color-border-tertiary);font-size:12px}
+.decision-row:last-child{border-bottom:none}
+.decision-key{color:var(--color-text-secondary);width:130px;flex-shrink:0}
+.decision-val{color:var(--color-text-primary);flex:1;line-height:1.5}
+.open-q{background:var(--color-background-warning);border:1px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:10px 12px;margin-bottom:6px;display:flex;gap:8px;align-items:flex-start;font-size:12px;color:var(--color-text-primary)}
+.open-q::before{content:'?';font-weight:500;color:var(--color-text-warning);flex-shrink:0;width:16px}
+.connector{text-align:center;font-size:11px;color:var(--color-text-tertiary);padding:2px 0}
+</style>
+
+<h2 class="sr-only">Portfolio website v2 architecture — routes, artifacts, and placement decisions</h2>
+
+<div class="root">
+  <div class="root-title">vishalkatariya.dev</div>
+  <div class="root-sub">public · Vercel · SvelteKit</div>
+</div>
+
+<div class="section-head">public routes</div>
+<div class="tier tier-4">
+  <div class="node" onclick="toggle(this)">
+    <div class="expand-caret">›</div>
+    <div class="node-label" style="color:var(--color-text-info)">/</div>
+    <div class="node-title">Homepage</div>
+    <div class="node-sub">Widget grid + timeline</div>
+    <div class="node-expand">
+      <p><span class="pill pill-done">done in v1</span> Widget grid (NothingOS/Liquid Glass/NeoPOP) stays.</p>
+      <p><span class="pill pill-pending">new</span> Static career timeline added below the grid.</p>
+      <p><span class="pill pill-pending">new</span> Live "now" widget — what's currently building, node status dots.</p>
+      <p>Content needed: career milestones, current status text.</p>
+    </div>
+  </div>
+  <div class="node" onclick="toggle(this)">
+    <div class="expand-caret">›</div>
+    <div class="node-label" style="color:var(--color-text-info)">/projects</div>
+    <div class="node-title">Projects</div>
+    <div class="node-sub">Links to standalone apps</div>
+    <div class="node-expand">
+      <p>Not a dump of GitHub repos. Cards linking to each live app:</p>
+      <p>→ <code style="font-size:10px">studio.auxois-wyrm.ts.net</code> — homelab dashboard</p>
+      <p>→ <code style="font-size:10px">buddy.auxois-wyrm.ts.net</code> — finance buddy</p>
+      <p>→ TypeShift, orlon-bot, other public projects</p>
+      <p>Content needed: project descriptions, stack tags, screenshots.</p>
+    </div>
+  </div>
+  <div class="node" onclick="toggle(this)">
+    <div class="expand-caret">›</div>
+    <div class="node-label" style="color:var(--color-text-info)">/roadmap</div>
+    <div class="node-title">CS Roadmap</div>
+    <div class="node-sub">Dedicated page, NothingOS style</div>
+    <div class="node-expand">
+      <p><span class="pill pill-done">artifact exists</span> cs-roadmap.html is already in the portfolio aesthetic.</p>
+      <p>Port directly to SvelteKit as a dedicated route — minimal rework needed since it already uses DM Mono + Syne + #080808.</p>
+      <p>Link from navbar. Could also be linked from the homepage widget grid as a featured item.</p>
+    </div>
+  </div>
+  <div class="node" onclick="toggle(this)">
+    <div class="expand-caret">›</div>
+    <div class="node-label" style="color:var(--color-text-info)">/about</div>
+    <div class="node-title">About + Contact</div>
+    <div class="node-sub">Content to write</div>
+    <div class="node-expand">
+      <p>Combined page: who you are, what you build, how to reach you.</p>
+      <p>Content needed: bio copy, what you're studying, what you're building toward, contact links (email, GitHub, LinkedIn).</p>
+      <p>Design: same widget/card aesthetic as homepage, not a wall of text.</p>
+    </div>
+  </div>
+</div>
+
+<div class="section-head">private section — /me (behind auth)</div>
+<div class="open-q">Auth approach not decided yet — OAuth (GitHub?), Tailscale, or simple JWT. Discuss separately.</div>
+<div class="tier tier-3">
+  <div class="node" onclick="toggle(this)">
+    <div class="expand-caret">›</div>
+    <div class="node-label" style="color:var(--color-text-warning)">/me/vault</div>
+    <div class="node-title">Identity vault</div>
+    <div class="node-sub">100 aliases, where-used tracker</div>
+    <div class="node-expand">
+      <p><span class="pill pill-done">artifact exists</span> identity-vault.html with Space Grotesk, category filters, where-used tracker, localStorage persistence.</p>
+      <p>Port as-is into /me/vault. Auth gate protects it — no public access to alias data.</p>
+    </div>
+  </div>
+  <div class="node" onclick="toggle(this)">
+    <div class="expand-caret">›</div>
+    <div class="node-label" style="color:var(--color-text-warning)">/me/docs</div>
+    <div class="node-title">Notion artifacts</div>
+    <div class="node-sub">Homelab notes as HTML pages</div>
+    <div class="node-expand">
+      <p>Hermes agent has Notion MCP access → reads homelab/DIY pages → generates HTML artifacts.</p>
+      <p><span class="pill pill-done">3 artifacts exist</span> cs-roadmap.html (NothingOS style), rustdesk-guide.html (docs style), vps-blueprint.html (docs style).</p>
+      <p>Style split: technical guides (RustDesk, VPS Blueprint) use docs aesthetic. Personal pages (roadmap) use NothingOS.</p>
+      <p>Create "notion-artifacts" mini-project for Hermes to batch-generate remaining homelab/DIY pages.</p>
+    </div>
+  </div>
+  <div class="node" onclick="toggle(this)">
+    <div class="expand-caret">›</div>
+    <div class="node-label" style="color:var(--color-text-warning)">/me/notes</div>
+    <div class="node-title">Notes (future)</div>
+    <div class="node-sub">Notion workspace mirror</div>
+    <div class="node-expand">
+      <p>Backlog item — not blocking v1 of the portfolio.</p>
+      <p>Would pull from Notion via API and display as a personal knowledge base.</p>
+    </div>
+  </div>
+</div>
+
+<div class="section-head">standalone apps (separate subdomains)</div>
+<div class="tier tier-2">
+  <div class="node" onclick="toggle(this)">
+    <div class="expand-caret">›</div>
+    <div class="node-label" style="color:var(--color-text-secondary)">studio.auxois-wyrm.ts.net</div>
+    <div class="node-title">Homelab dashboard</div>
+    <div class="node-sub">NothingOS · live metrics · private</div>
+    <div class="node-expand">
+      <p><span class="pill pill-done">prototype done</span> homelab-dashboard.html — 3 tabs, live simulated metrics, Notion docs viewer.</p>
+      <p>Separate project, separate codebase (Fastify + WS + systeminformation on athena).</p>
+      <p>Portfolio just shows a card linking to it in /projects.</p>
+    </div>
+  </div>
+  <div class="node" onclick="toggle(this)">
+    <div class="expand-caret">›</div>
+    <div class="node-label" style="color:var(--color-text-secondary)">buddy.auxois-wyrm.ts.net</div>
+    <div class="node-title">Finance buddy</div>
+    <div class="node-sub">993 txns · Postgres · private</div>
+    <div class="node-expand">
+      <p><span class="pill pill-done">prototype done</span> 7-tab dashboard, real transaction data, Chart.js, light/dark mode.</p>
+      <p>Separate project, separate codebase (Fastify + Drizzle + Postgres on atlas).</p>
+      <p>Private — only accessible on Tailscale. Not linked from public portfolio.</p>
+    </div>
+  </div>
+</div>
+
+<div class="section-head">artifact placement map</div>
+<div style="border:1px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:12px 14px">
+  <div class="decision-row"><span class="decision-key">cs-roadmap.html</span><span class="decision-val">→ <strong>/roadmap</strong> public route <span class="pill pill-nothing">NothingOS</span></span></div>
+  <div class="decision-row"><span class="decision-key">rustdesk-guide.html</span><span class="decision-val">→ <strong>/me/docs</strong> <span class="pill pill-docs">docs style</span> — already in docs aesthetic</span></div>
+  <div class="decision-row"><span class="decision-key">vps-blueprint.html</span><span class="decision-val">→ <strong>/me/docs</strong> <span class="pill pill-docs">docs style</span> — already in docs aesthetic</span></div>
+  <div class="decision-row"><span class="decision-key">identity-vault.html</span><span class="decision-val">→ <strong>/me/vault</strong> private, behind auth</span></div>
+  <div class="decision-row"><span class="decision-key">dev-setup mental model</span><span class="decision-val">→ <strong>/me/docs</strong> internal reference, private</span></div>
+  <div class="decision-row"><span class="decision-key">digital security guide</span><span class="decision-val">→ <strong>/me/docs</strong> private, personal reference</span></div>
+  <div class="decision-row"><span class="decision-key">notion artifacts (batch)</span><span class="decision-val">→ <strong>/me/docs</strong> generated by Hermes, mixed styles</span></div>
+  <div class="decision-row" style="border-bottom:none"><span class="decision-key">homelab naming convention</span><span class="decision-val">→ <strong>/me/docs</strong> or homelab dashboard docs tab</span></div>
+</div>
+
+<div class="section-head">open questions before building</div>
+<div class="open-q">v2 prototype — share it so we can see what changed vs v1 before touching anything.</div>
+<div class="open-q">Auth for /me — what mechanism? GitHub OAuth, Tailscale-gated URL, or simple JWT password?</div>
+<div class="open-q">Content — do you have bio/about text, career milestones, and project descriptions written, or do we write those together?</div>
+<div class="open-q">Notion artifacts project — treat as a separate Claude Code task for Hermes, or do it here first?</div>
+
+<script>function toggle(el){el.classList.toggle('open')}</script>

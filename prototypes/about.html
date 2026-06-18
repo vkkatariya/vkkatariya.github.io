@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About — Vishal Katariya</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,700&family=DM+Mono:wght@300;400;500&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#080808;--bg2:#0f0f0f;--bg3:#141414;
+  --w:#f0f0f0;--w60:rgba(240,240,240,.6);--w30:rgba(240,240,240,.3);
+  --w12:rgba(240,240,240,.12);--w06:rgba(240,240,240,.06);--w03:rgba(240,240,240,.03);
+  --green:#3ddc84;--amber:#ffbb33;--blue:#5b9cf6;--red:#ff453a;--purple:#c084fc;
+  --sd:rgba(0,0,0,.85);--sl:rgba(255,255,255,.035);
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--w);font-family:'Syne',sans-serif;min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background-image:radial-gradient(circle,rgba(255,255,255,.045) 1px,transparent 1px);background-size:22px 22px;pointer-events:none;z-index:0}
+
+/* ── NAV ── */
+nav{position:fixed;top:18px;left:50%;transform:translateX(-50%);z-index:200;display:flex;align-items:center;gap:24px;padding:11px 24px;background:rgba(8,8,8,.55);backdrop-filter:blur(28px) saturate(200%);-webkit-backdrop-filter:blur(28px) saturate(200%);border-radius:100px;border:1px solid rgba(255,255,255,.1);box-shadow:0 0 0 .5px rgba(255,255,255,.04) inset,0 1px 0 rgba(255,255,255,.09) inset,0 12px 40px rgba(0,0,0,.7)}
+.nav-logo{font-family:'DM Mono',monospace;font-size:13px;font-weight:500;letter-spacing:2.5px;color:var(--w);text-decoration:none}
+.nav-logo em{color:var(--w30);font-style:normal}
+.nav-links{display:flex;gap:20px;list-style:none}
+.nav-links a{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--w30);text-decoration:none;transition:color .2s}
+.nav-links a:hover,.nav-links a.act{color:var(--w)}
+.nav-lock{display:flex;align-items:center;color:var(--w30);text-decoration:none;transition:color .2s;padding:2px}
+.nav-lock:hover{color:var(--w)}
+
+/* ── LAYOUT ── */
+.wrap{position:relative;z-index:1;max-width:1000px;margin:0 auto;padding:130px 20px 100px}
+
+/* ── PAGE HEADER ── */
+.ph-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:4px;color:var(--w30);text-transform:uppercase;margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.ph-label::after{content:'';flex:1;height:1px;background:var(--w12)}
+.ph-title{font-family:'Syne',sans-serif;font-size:clamp(48px,8vw,96px);font-weight:800;letter-spacing:-3px;line-height:.9;margin-bottom:56px}
+.hn-script{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:700}
+
+/* ── INTRO BLOCK ── */
+.intro{display:grid;grid-template-columns:200px 1fr;gap:48px;align-items:start;margin-bottom:80px}
+@media(max-width:680px){.intro{grid-template-columns:1fr;gap:28px}}
+
+/* photo */
+.photo-block{display:flex;flex-direction:column;align-items:center;gap:14px}
+.photo-frame{
+  width:170px;height:200px;border-radius:20px;
+  background:var(--bg2);border:1px solid var(--w06);
+  display:flex;align-items:center;justify-content:center;
+  position:relative;overflow:hidden;
+  box-shadow:4px 4px 16px var(--sd),-1px -1px 5px var(--sl);
+}
+.photo-initials{
+  font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:700;
+  font-size:72px;color:var(--w12);letter-spacing:-4px;user-select:none;
+  line-height:1;
+}
+.photo-placeholder{
+  position:absolute;bottom:0;left:0;right:0;
+  background:linear-gradient(to top,var(--bg3),transparent);
+  font-family:'DM Mono',monospace;font-size:8px;letter-spacing:2px;
+  color:var(--w30);text-align:center;padding:10px 0;
+}
+.photo-status{
+  display:inline-flex;align-items:center;gap:6px;
+  font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.5px;color:var(--green);
+}
+.photo-status::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--green);box-shadow:0 0 5px var(--green);animation:gp 2.4s ease-in-out infinite}
+@keyframes gp{0%,100%{box-shadow:0 0 5px var(--green)}50%{box-shadow:0 0 2px var(--green)}}
+
+/* bio text */
+.bio{display:flex;flex-direction:column;gap:20px}
+.bio-p{font-size:16px;color:var(--w60);line-height:1.85}
+.bio-p strong{color:var(--w);font-weight:600}
+.bio-chips{display:flex;gap:7px;flex-wrap:wrap;margin-top:4px}
+.bchip{font-family:'DM Mono',monospace;font-size:10px;padding:4px 10px;border-radius:5px;border:1px solid var(--w12);color:var(--w30);letter-spacing:.3px}
+
+/* ── SECTION WRAPPER ── */
+.section{margin-bottom:72px}
+.sh{display:flex;align-items:center;gap:12px;margin-bottom:24px}
+.sh-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:4px;color:var(--w30);text-transform:uppercase;white-space:nowrap}
+.sh-line{flex:1;height:1px;background:var(--w06)}
+.sh-num{font-family:'DM Mono',monospace;font-size:10px;color:var(--w12);margin-left:4px}
+
+/* ── EDUCATION ── */
+.edu-card{
+  padding:28px 32px;border-radius:20px;
+  background:var(--bg2);border:1px solid var(--w06);
+  box-shadow:4px 4px 14px var(--sd),-1px -1px 5px var(--sl),inset 0 1px 0 var(--sl);
+  display:grid;grid-template-columns:1fr auto;gap:20px;align-items:start;
+}
+@media(max-width:560px){.edu-card{grid-template-columns:1fr}}
+.edu-inst{font-family:'DM Mono',monospace;font-size:10px;color:var(--w30);letter-spacing:1.5px;margin-bottom:8px}
+.edu-degree{font-size:22px;font-weight:700;letter-spacing:-.5px;color:var(--w);margin-bottom:6px}
+.edu-period{font-family:'DM Mono',monospace;font-size:11px;color:var(--w30);margin-bottom:12px}
+.edu-tags{display:flex;gap:6px;flex-wrap:wrap}
+.edu-tag{font-family:'DM Mono',monospace;font-size:9px;padding:3px 8px;border-radius:4px;border:1px solid var(--w06);color:var(--w30);letter-spacing:.5px}
+.edu-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:6px 12px;border-radius:20px;white-space:nowrap;align-self:flex-start;
+  background:rgba(61,220,132,.06);border:1px solid rgba(61,220,132,.2);
+  font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.5px;color:var(--green);
+}
+.edu-badge::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--green);box-shadow:0 0 4px var(--green)}
+.edu-modules{
+  margin-top:20px;padding-top:20px;border-top:1px solid var(--w06);
+  grid-column:1/-1;
+}
+.edu-mod-label{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:3px;color:var(--w30);margin-bottom:10px}
+.edu-mod-grid{display:flex;flex-wrap:wrap;gap:6px}
+.edu-mod{font-family:'DM Mono',monospace;font-size:10px;padding:4px 9px;border-radius:5px;background:var(--bg3);border:1px solid var(--w06);color:var(--w30)}
+
+/* ── SKILLS ── */
+.skills-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media(max-width:600px){.skills-grid{grid-template-columns:1fr}}
+.skill-group{padding:22px 24px;border-radius:16px;background:var(--bg2);border:1px solid var(--w06);box-shadow:3px 3px 10px var(--sd),-1px -1px 4px var(--sl)}
+.sg-label{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:3px;color:var(--w30);text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:7px}
+.sg-label::before{content:'';width:3px;height:3px;border-radius:50%;background:currentColor}
+.sg-chips{display:flex;flex-wrap:wrap;gap:6px}
+.sk{
+  font-family:'DM Mono',monospace;font-size:11px;
+  padding:5px 10px;border-radius:6px;
+  background:var(--bg3);border:1px solid var(--w06);
+  color:var(--w60);letter-spacing:.3px;
+  position:relative;overflow:hidden;
+  transition:border-color .2s;
+}
+.sk:hover{border-color:var(--w12)}
+.sk.hi{border-color:var(--w12);color:var(--w)}
+.sk.mid{color:var(--w60)}
+.sk.lo{color:var(--w30)}
+
+/* skill bar rows for key skills */
+.skill-bars{display:flex;flex-direction:column;gap:10px;margin-top:20px;padding-top:20px;border-top:1px solid var(--w06)}
+.skb-row{display:flex;align-items:center;gap:10px}
+.skb-n{font-family:'DM Mono',monospace;font-size:10px;color:var(--w30);width:80px;flex-shrink:0;letter-spacing:.3px}
+.skb-track{flex:1;height:2px;border-radius:1px;background:rgba(0,0,0,.5);box-shadow:inset 1px 1px 2px rgba(0,0,0,.6);overflow:hidden}
+.skb-fill{height:100%;border-radius:1px;background:var(--w);animation:grow 1.4s cubic-bezier(.4,0,.2,1) both}
+@keyframes grow{from{transform:scaleX(0);opacity:0}to{transform:scaleX(1);opacity:1}}
+.skb-v{font-family:'DM Mono',monospace;font-size:10px;color:var(--w12);width:30px;text-align:right}
+
+/* ── LANGUAGES ── */
+.lang-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+@media(max-width:500px){.lang-grid{grid-template-columns:1fr}}
+.lang-card{
+  padding:22px 22px;border-radius:16px;
+  background:var(--bg2);border:1px solid var(--w06);
+  box-shadow:3px 3px 10px var(--sd),-1px -1px 4px var(--sl);
+  position:relative;overflow:hidden;
+}
+.lang-name{font-size:20px;font-weight:700;letter-spacing:-.4px;color:var(--w);margin-bottom:3px}
+.lang-level{font-family:'DM Mono',monospace;font-size:10px;color:var(--w30);letter-spacing:.5px;margin-bottom:14px}
+.lang-dots{display:flex;gap:5px;align-items:center}
+.ld{width:6px;height:6px;border-radius:50%;background:var(--w12)}
+.ld.on{background:var(--w)}
+.ld.hi{background:var(--green);box-shadow:0 0 4px var(--green)}
+.lang-note{
+  margin-top:10px;padding-top:10px;border-top:1px solid var(--w06);
+  font-family:'DM Mono',monospace;font-size:9px;color:var(--w30);letter-spacing:.3px;line-height:1.6;
+}
+.lang-flag{
+  position:absolute;top:16px;right:18px;
+  font-size:22px;opacity:.25;
+}
+
+/* native lang highlight */
+.lang-card.native{border-color:rgba(61,220,132,.15)}
+
+/* ── INTERESTS ── */
+.int-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+@media(max-width:500px){.int-grid{grid-template-columns:1fr}}
+.int-card{
+  padding:20px 22px;border-radius:14px;
+  background:var(--bg2);border:1px solid var(--w06);
+  display:flex;gap:14px;align-items:flex-start;
+  box-shadow:3px 3px 10px var(--sd),-1px -1px 4px var(--sl);
+  transition:border-color .18s;
+}
+.int-card:hover{border-color:var(--w12)}
+.int-icon{
+  font-size:24px;width:40px;height:40px;border-radius:10px;
+  background:var(--bg3);border:1px solid var(--w06);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.int-title{font-size:13px;font-weight:700;color:var(--w);margin-bottom:4px;letter-spacing:-.2px}
+.int-desc{font-family:'DM Mono',monospace;font-size:10px;color:var(--w30);line-height:1.65}
+
+/* ── CONTACT ── */
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:500px){.contact-grid{grid-template-columns:1fr}}
+.contact-card{
+  padding:20px 22px;border-radius:14px;
+  background:var(--bg2);border:1px solid var(--w06);
+  display:flex;align-items:center;gap:14px;
+  text-decoration:none;color:inherit;
+  box-shadow:3px 3px 10px var(--sd),-1px -1px 4px var(--sl);
+  transition:border-color .18s,background .18s;
+}
+.contact-card:hover{border-color:var(--w12);background:var(--bg3)}
+.cc-icon{
+  width:38px;height:38px;border-radius:10px;
+  background:var(--bg3);border:1px solid var(--w06);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--w30);
+}
+.cc-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--w30);margin-bottom:3px}
+.cc-val{font-family:'DM Mono',monospace;font-size:12px;color:var(--w60)}
+.avail-block{
+  margin-top:24px;padding:20px 24px;border-radius:16px;
+  background:rgba(61,220,132,.04);border:1px solid rgba(61,220,132,.15);
+  display:flex;align-items:center;gap:14px;
+}
+.ab-dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);flex-shrink:0;animation:gp 2.4s ease-in-out infinite}
+.ab-text{font-size:15px;font-weight:600;color:var(--w)}
+.ab-sub{font-family:'DM Mono',monospace;font-size:10px;color:var(--w30);margin-top:2px;letter-spacing:.3px}
+
+/* ── RESPONSIVE NAV ── */
+@media(max-width:640px){
+  nav{bottom:16px;top:auto;border-radius:22px;padding:0;gap:0;overflow:hidden;width:calc(100% - 40px)}
+  .nav-logo{display:none}
+  .nav-links{display:flex;width:100%}
+  .nav-links li{flex:1}
+  .nav-links a{display:flex;align-items:center;justify-content:center;padding:14px 8px;font-size:10px;border-right:1px solid rgba(255,255,255,.06)}
+  .nav-links li:last-child a{border-right:none}
+  .nav-lock{display:none}
+  .wrap{padding:120px 16px 100px}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="index.html">VK<em>.</em></a>
+  <ul class="nav-links">
+    <li><a href="projects.html">projects</a></li>
+    <li><a href="cs-roadmap.html">roadmap</a></li>
+    <li><a href="about.html" class="act">about</a></li>
+  </ul>
+  <a href="#me" class="nav-lock" title="Sign in">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+      <rect x="2" y="6.5" width="10" height="7" rx="1.5" stroke="currentColor" stroke-width="1" fill="none"/>
+      <path d="M4.5 6.5V5a2.5 2.5 0 0 1 5 0v1.5" stroke="currentColor" stroke-width="1" stroke-linecap="round" fill="none"/>
+      <circle cx="7" cy="10" r=".85" fill="currentColor"/>
+    </svg>
+  </a>
+</nav>
+
+<div class="wrap">
+
+  <!-- PAGE HEADER -->
+  <div class="ph-label">vkkatariya · personal</div>
+  <h1 class="ph-title"><span class="hn-script">A</span>bout</h1>
+
+  <!-- ── INTRO ── -->
+  <div class="intro">
+    <!-- Photo placeholder -->
+    <div class="photo-block">
+      <div class="photo-frame">
+        <div class="photo-initials">VK</div>
+        <div class="photo-placeholder">add photo</div>
+      </div>
+      <div class="photo-status">open to internships</div>
+    </div>
+
+    <!-- Bio -->
+    <div class="bio">
+      <p class="bio-p">
+        I'm <strong>Vishal Katariya</strong> — a CS student at Hochschule Darmstadt, based in Dieburg near Frankfurt. I build across the full stack: fine-tuning language models, wiring REST and WebSocket APIs, and managing self-hosted infrastructure on real hardware.
+      </p>
+      <p class="bio-p">
+        My projects run in production — not just on localhost. From a personal finance tracker built on 993 real transactions, to a 2-node Proxmox cluster running 6+ services, to a Telegram bot trained with QLoRA on a free Kaggle GPU and deployed to an ARM NPU.
+      </p>
+      <p class="bio-p">
+        The common thread: I care more about <strong>how systems actually work</strong> than what they look like on the surface. Open to internships in Germany across ML engineering, full-stack development, and infrastructure roles.
+      </p>
+      <div class="bio-chips">
+        <span class="bchip">Dieburg · Germany</span>
+        <span class="bchip">h_da · CS</span>
+        <span class="bchip">German · English · Hindi · Gujarati</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── EDUCATION ── -->
+  <div class="section">
+    <div class="sh">
+      <span class="sh-label">Education</span>
+      <div class="sh-line"></div>
+      <span class="sh-num">01</span>
+    </div>
+
+    <div class="edu-card">
+      <div>
+        <div class="edu-inst">HOCHSCHULE DARMSTADT · DARMSTADT, GERMANY</div>
+        <div class="edu-degree">B.Sc. Computer Science</div>
+        <div class="edu-period">Oct 2024 – Expected 2028</div>
+        <div class="edu-tags">
+          <span class="edu-tag">Informatik</span>
+          <span class="edu-tag">Darmstadt</span>
+          <span class="edu-tag">Germany</span>
+        </div>
+      </div>
+      <div class="edu-badge">currently enrolled</div>
+
+      <div class="edu-modules">
+        <div class="edu-mod-label">MODULES COMPLETED / IN PROGRESS</div>
+        <div class="edu-mod-grid">
+          <span class="edu-mod">Algorithms & Data Structures</span>
+          <span class="edu-mod">Object-Oriented Programming</span>
+          <span class="edu-mod">Mathematics for CS</span>
+          <span class="edu-mod">Computer Architecture</span>
+          <span class="edu-mod">Database Systems</span>
+          <span class="edu-mod">Operating Systems</span>
+          <span class="edu-mod">Software Engineering</span>
+          <span class="edu-mod">Computer Networks</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SKILLS ── -->
+  <div class="section">
+    <div class="sh">
+      <span class="sh-label">Skills</span>
+      <div class="sh-line"></div>
+      <span class="sh-num">02</span>
+    </div>
+
+    <!-- Key skill bars -->
+    <div style="padding:24px 28px;border-radius:20px;background:var(--bg2);border:1px solid var(--w06);box-shadow:4px 4px 14px var(--sd),-1px -1px 5px var(--sl);margin-bottom:14px">
+      <div style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:3px;color:var(--w30);text-transform:uppercase;margin-bottom:18px;display:flex;align-items:center;gap:7px"><span style="width:3px;height:3px;border-radius:50%;background:currentColor;flex-shrink:0;display:inline-block"></span>core technical</div>
+      <div class="skill-bars">
+        <div class="skb-row"><span class="skb-n">Python</span><div class="skb-track"><div class="skb-fill" style="width:86%;animation-delay:.1s"></div></div><span class="skb-v">86</span></div>
+        <div class="skb-row"><span class="skb-n">Docker · Linux</span><div class="skb-track"><div class="skb-fill" style="width:82%;animation-delay:.2s"></div></div><span class="skb-v">82</span></div>
+        <div class="skb-row"><span class="skb-n">TypeScript</span><div class="skb-track"><div class="skb-fill" style="width:68%;animation-delay:.3s"></div></div><span class="skb-v">68</span></div>
+        <div class="skb-row"><span class="skb-n">ML / AI</span><div class="skb-track"><div class="skb-fill" style="width:72%;animation-delay:.4s"></div></div><span class="skb-v">72</span></div>
+        <div class="skb-row"><span class="skb-n">SvelteKit</span><div class="skb-track"><div class="skb-fill" style="width:60%;animation-delay:.5s"></div></div><span class="skb-v">60</span></div>
+        <div class="skb-row"><span class="skb-n">Proxmox · ARM</span><div class="skb-track"><div class="skb-fill" style="width:64%;animation-delay:.6s"></div></div><span class="skb-v">64</span></div>
+        <div class="skb-row"><span class="skb-n">C++</span><div class="skb-track"><div class="skb-fill" style="width:52%;animation-delay:.7s"></div></div><span class="skb-v">52</span></div>
+      </div>
+    </div>
+
+    <div class="skills-grid">
+      <!-- Backend & Infra -->
+      <div class="skill-group">
+        <div class="sg-label">Backend & Infrastructure</div>
+        <div class="sg-chips">
+          <span class="sk hi">Fastify</span>
+          <span class="sk hi">WebSocket</span>
+          <span class="sk hi">REST API</span>
+          <span class="sk hi">PostgreSQL</span>
+          <span class="sk hi">Drizzle ORM</span>
+          <span class="sk mid">SQLite</span>
+          <span class="sk hi">Docker Compose</span>
+          <span class="sk hi">Caddy</span>
+          <span class="sk hi">Tailscale</span>
+          <span class="sk mid">Proxmox VE</span>
+          <span class="sk mid">KVM / libvirt</span>
+          <span class="sk mid">ARM64</span>
+          <span class="sk mid">pm2</span>
+          <span class="sk mid">UFW</span>
+        </div>
+      </div>
+
+      <!-- AI / ML -->
+      <div class="skill-group">
+        <div class="sg-label">AI & Machine Learning</div>
+        <div class="sg-chips">
+          <span class="sk hi">QLoRA fine-tuning</span>
+          <span class="sk hi">Unsloth</span>
+          <span class="sk hi">Ollama</span>
+          <span class="sk hi">LLM inference</span>
+          <span class="sk mid">rkllama (NPU)</span>
+          <span class="sk mid">Hugging Face</span>
+          <span class="sk mid">Kaggle T4 GPU</span>
+          <span class="sk lo">PyTorch</span>
+          <span class="sk lo">GGUF / quantisation</span>
+          <span class="sk lo">Transformers</span>
+        </div>
+      </div>
+
+      <!-- Frontend -->
+      <div class="skill-group">
+        <div class="sg-label">Frontend</div>
+        <div class="sg-chips">
+          <span class="sk hi">SvelteKit</span>
+          <span class="sk hi">TypeScript</span>
+          <span class="sk hi">Chart.js</span>
+          <span class="sk hi">Vanilla CSS</span>
+          <span class="sk mid">Motion One</span>
+          <span class="sk mid">Responsive design</span>
+          <span class="sk mid">Liquid Glass CSS</span>
+          <span class="sk mid">NothingOS design</span>
+          <span class="sk lo">React (learning)</span>
+        </div>
+      </div>
+
+      <!-- Soft skills -->
+      <div class="skill-group">
+        <div class="sg-label">Soft Skills</div>
+        <div class="sg-chips">
+          <span class="sk hi">Problem-solving</span>
+          <span class="sk hi">Research & analysis</span>
+          <span class="sk hi">Documentation</span>
+          <span class="sk hi">Teamwork</span>
+          <span class="sk hi">Self-directed learning</span>
+          <span class="sk mid">Async collaboration</span>
+          <span class="sk mid">Technical writing</span>
+          <span class="sk mid">Systems thinking</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── LANGUAGES ── -->
+  <div class="section">
+    <div class="sh">
+      <span class="sh-label">Languages</span>
+      <div class="sh-line"></div>
+      <span class="sh-num">03</span>
+    </div>
+
+    <div class="lang-grid">
+
+      <div class="lang-card">
+        <div class="lang-flag">🇩🇪</div>
+        <div class="lang-name">Deutsch</div>
+        <div class="lang-level">PROFESSIONAL WORKING PROFICIENCY · B2–C1</div>
+        <div class="lang-dots">
+          <span class="ld on"></span>
+          <span class="ld on"></span>
+          <span class="ld on"></span>
+          <span class="ld on"></span>
+          <span class="ld"></span>
+        </div>
+        <div class="lang-note">Working language in Germany · handle professional conversations, emails, and technical discussions · studying at a German-language institution</div>
+      </div>
+
+      <div class="lang-card">
+        <div class="lang-flag">🇬🇧</div>
+        <div class="lang-name">English</div>
+        <div class="lang-level">FULL PROFESSIONAL PROFICIENCY · C1–C2</div>
+        <div class="lang-dots">
+          <span class="ld on"></span>
+          <span class="ld on"></span>
+          <span class="ld on"></span>
+          <span class="ld on"></span>
+          <span class="ld on"></span>
+        </div>
+        <div class="lang-note">Primary language for all technical work, documentation, code, and AI tooling · full professional fluency</div>
+      </div>
+
+      <div class="lang-card native">
+        <div class="lang-flag">🇮🇳</div>
+        <div class="lang-name">Hindi</div>
+        <div class="lang-level">FULL PROFESSIONAL PROFICIENCY · NATIVE</div>
+        <div class="lang-dots">
+          <span class="ld hi"></span>
+          <span class="ld hi"></span>
+          <span class="ld hi"></span>
+          <span class="ld hi"></span>
+          <span class="ld hi"></span>
+        </div>
+        <div class="lang-note">Native speaker · full fluency across formal and informal contexts</div>
+      </div>
+
+      <div class="lang-card native">
+        <div class="lang-flag">🇮🇳</div>
+        <div class="lang-name">Gujarati</div>
+        <div class="lang-level">FULL PROFESSIONAL PROFICIENCY · NATIVE</div>
+        <div class="lang-dots">
+          <span class="ld hi"></span>
+          <span class="ld hi"></span>
+          <span class="ld hi"></span>
+          <span class="ld hi"></span>
+          <span class="ld hi"></span>
+        </div>
+        <div class="lang-note">Native speaker from Surat, Gujarat · full fluency including regional dialect</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── INTERESTS ── -->
+  <div class="section">
+    <div class="sh">
+      <span class="sh-label">Interests</span>
+      <div class="sh-line"></div>
+      <span class="sh-num">04</span>
+    </div>
+
+    <div class="int-grid">
+      <div class="int-card">
+        <div class="int-icon">💻</div>
+        <div>
+          <div class="int-title">Programming</div>
+          <div class="int-desc">Started coding in 10th grade — before I knew it was a career path. Now building production systems, self-hosted infrastructure, and ML pipelines across whatever stack fits the problem.</div>
+        </div>
+      </div>
+
+      <div class="int-card">
+        <div class="int-icon">🤖</div>
+        <div>
+          <div class="int-title">Artificial Intelligence</div>
+          <div class="int-desc">Not just using AI tools — understanding how they work under the hood. Fine-tuning LLMs with QLoRA, running inference on edge NPUs, building multi-agent systems on self-hosted hardware.</div>
+        </div>
+      </div>
+
+      <div class="int-card">
+        <div class="int-icon">🏏</div>
+        <div>
+          <div class="int-title">Cricket</div>
+          <div class="int-desc">Played since childhood — always been a big part of life. The strategy, the patience, the team dynamics. Grew up watching and playing in India and still follow it closely.</div>
+        </div>
+      </div>
+
+      <div class="int-card">
+        <div class="int-icon">📚</div>
+        <div>
+          <div class="int-title">Entrepreneurship</div>
+          <div class="int-desc">Reading business books and studying how companies are built — not just the tech, but the strategy, the product thinking, and what makes a system scale. Building toward something called orlon.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── CONTACT ── -->
+  <div class="section" id="contact">
+    <div class="sh">
+      <span class="sh-label">Contact</span>
+      <div class="sh-line"></div>
+      <span class="sh-num">05</span>
+    </div>
+
+    <div class="contact-grid">
+      <a class="contact-card" href="mailto:vishalkatariya404@gmail.com">
+        <div class="cc-icon">
+          <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2zm13 2.383-4.758 2.855L15 11.114v-5.73zm-.034 6.878L9.271 8.82 8 9.583 6.728 8.82l-5.694 3.44A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.739zM1 11.114l4.758-3.876L1 4.383v6.73z"/></svg>
+        </div>
+        <div>
+          <div class="cc-label">EMAIL</div>
+          <div class="cc-val">vishalkatariya404@gmail.com</div>
+        </div>
+      </a>
+
+      <a class="contact-card" href="https://github.com/vkkatariya" target="_blank">
+        <div class="cc-icon">
+          <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        </div>
+        <div>
+          <div class="cc-label">GITHUB</div>
+          <div class="cc-val">github.com/vkkatariya</div>
+        </div>
+      </a>
+
+      <a class="contact-card" href="https://linkedin.com/in/vkkatariya" target="_blank">
+        <div class="cc-icon">
+          <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854V1.146zm4.943 12.248V6.169H2.542v7.225h2.401zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248-.822 0-1.359.54-1.359 1.248 0 .694.521 1.248 1.327 1.248h.016zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016a5.54 5.54 0 0 1 .016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225h2.4z"/></svg>
+        </div>
+        <div>
+          <div class="cc-label">LINKEDIN</div>
+          <div class="cc-val">linkedin.com/in/vkkatariya</div>
+        </div>
+      </a>
+
+      <a class="contact-card" href="https://vishalkatariya.dev" target="_blank">
+        <div class="cc-icon">
+          <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm7.5-6.923c-.67.204-1.335.82-1.887 1.855A7.97 7.97 0 0 0 5.145 4H7.5V1.077zM4.09 4a9.267 9.267 0 0 1 .64-1.539 6.7 6.7 0 0 1 .597-.933A7.025 7.025 0 0 0 2.255 4H4.09zm-.582 3.5c.03-.877.138-1.718.312-2.5H1.674a6.958 6.958 0 0 0-.656 2.5h2.49zM4.847 5a12.5 12.5 0 0 0-.338 2.5H7.5V5H4.847zM8.5 5v2.5h2.99a12.495 12.495 0 0 0-.337-2.5H8.5zM4.51 8.5a12.5 12.5 0 0 0 .337 2.5H7.5V8.5H4.51zm3.99 0V11h2.653c.187-.765.306-1.608.338-2.5H8.5zM5.145 12c.138.386.295.744.468 1.068.552 1.035 1.218 1.65 1.887 1.855V12H5.145zm.182 2.472a6.696 6.696 0 0 1-.597-.933A9.268 9.268 0 0 1 4.09 12H2.255a7.024 7.024 0 0 0 3.072 2.472zM3.82 11a13.652 13.652 0 0 1-.312-2.5h-2.49c.062.89.291 1.733.656 2.5H3.82zm6.853 3.472A7.024 7.024 0 0 0 13.745 12H11.91a9.27 9.27 0 0 1-.64 1.539 6.688 6.688 0 0 1-.597.933zM8.5 12v2.923c.67-.204 1.335-.82 1.887-1.855.173-.324.33-.682.468-1.068H8.5zm3.68-1h2.146c.365-.767.594-1.61.656-2.5h-2.49a13.65 13.65 0 0 1-.312 2.5zm2.802-3.5a6.959 6.959 0 0 0-.656-2.5H12.18c.174.782.282 1.623.312 2.5h2.49zM11.27 2.461c.247.464.462.98.64 1.539h1.835a7.024 7.024 0 0 0-3.072-2.472c.218.284.418.598.597.933zM10.855 4a7.966 7.966 0 0 0-.468-1.068C9.835 1.897 9.17 1.282 8.5 1.077V4h2.355z"/></svg>
+        </div>
+        <div>
+          <div class="cc-label">WEBSITE</div>
+          <div class="cc-val">vishalkatariya.dev</div>
+        </div>
+      </a>
+    </div>
+
+    <div class="avail-block">
+      <div class="ab-dot"></div>
+      <div>
+        <div class="ab-text">Available for internships in Germany · 2025–2026</div>
+        <div class="ab-sub">open to ML engineering · full-stack · DevOps / infrastructure · remote or Darmstadt / Frankfurt area</div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /wrap -->
+</body>
+</html>

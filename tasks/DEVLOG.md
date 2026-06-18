@@ -2,6 +2,124 @@
 > Append-only session log. Written by agents at end of every session. **Newest entry at top.**
 > Format: date · agent · one-line summary, then Did / State / Decided / Blocked+Next / Modified.
 
+
+## 2026-06-18 · Claude (claude.ai) · Portfolio v4 — 3-pill topbar, hero removed, font stack, design polish
+
+**Mode:** Builder + Execution · **File:** `portfolio-v4.html` only
+
+---
+
+### What was done
+
+**3 floating glass pills topbar (final)**
+
+- Left pill: `Vishal Katariya` — Cormorant Garamond italic for `V`/`K` initials, Space Grotesk 800 for `ishal`/`atariya`. `border-radius: 100px`, gradient glass: `linear-gradient(135deg, rgba(255,255,255,.10), rgba(255,255,255,.04))`, `backdrop-filter: blur(40px) saturate(180%)`
+- Center pill: `home · projects · roadmap · about` nav links + `available` pulsing green dot at end
+- Right pill: search input (expands 90→140px on focus) + `EN/DE` toggle + theme toggle + `VK` gradient profile circle
+- All pills: `border: 1px solid rgba(255,255,255,.16)`, `box-shadow: 0 4px 28px rgba(0,0,0,.55)`, white inner highlight
+- Outer `nav` element: transparent, `position:fixed; top:14px; left:0; right:0` — invisible flex container
+
+**Hero section removed**
+
+- 90vh `Vishal Katariya` big text section removed completely (CSS + HTML)
+- `.hn-script` and `.hn-sans` classes kept — still used in logo pill and identity widget
+- `main` starts at `padding-top: 76px`
+
+**Identity widget — artistic name**
+
+- `clamp(28px, 3.5vw, 36px)`, split across two lines: `Vishal` / `Katariya`
+- Each line: Cormorant Garamond italic `V`/`K` at 1.2em + Space Grotesk 800 for the rest
+
+**Font stack updated**
+
+- Added: Space Grotesk (400/500/600/700/800), Outfit (400/500/600/700)
+- Kept: Cormorant Garamond italic 700, DM Mono (data labels)
+- Removed: Syne — zero references remain
+
+---
+
+### Decisions made
+
+- Work on `portfolio-v4.html` only when fixing homepage — not the combined file
+- Available dot belongs in the **center** nav pill (not right)
+- Search bar belongs in the **right** pill (expandable input)
+- Outfit over Inter/DM Sans for body text
+- Cormorant Garamond stays — artistic V/K initials are a design signature
+---
+
+## 2026-06-17 · Claude (claude.ai) · Portfolio website complete redesign — v4 homepage, /projects, /about, combined single-file with Finance Buddy-style topbar
+
+**Mode:** Builder + Execution
+
+**Did:**
+
+### Portfolio v4 homepage (portfolio-v4.html)
+- Added `Cormorant Garamond` italic font to create the mixed-font artistic logo treatment (Zack Webster style): `V` and `K` in Cormorant Garamond 700 italic, `ishal` and `atariya` in Syne 800 bold
+- Hero section (90vh): full-width, centered, artistic name + role line (ML Engineering · Full-Stack · Infrastructure) + scroll indicator animation
+- New nav: replaced floating pill with the combined file topbar (see below). Standalone pages still have a pill nav linking between files.
+- Content corrections from CV: `Dieburg` (not Frankfurt), `Oct 2024` h_da start date (not "2nd year"), removed "two years in" claim, `CS` not "2nd yr" chip
+- Lang toggle: `EN/DE` button in nav, `COPY` object architecture for future full translation pass
+
+### /projects page (projects.html)
+- 2×2 index grid — 4 cards, clickable, anchor-scroll to case studies
+- Full case studies for all 4 projects with inline visualizations:
+  - **Finance Buddy**: stats row (993 txns / 44mo / €43.7k / 7 tabs), animated spending breakdown bar chart (IntersectionObserver triggers on scroll), 7-tab feature list, full stack, privacy note
+  - **Homelab Dashboard**: 2-node infrastructure diagram (athena + atlas side-by-side with live services listed, Tailscale connector), 3-tab breakdown, stack
+  - **TypeShift**: 3-platform grid (Android/Kotlin · macOS/Swift · Windows/C#), collaboration context, my role
+  - **orlon-bot**: 6-stage ML pipeline (Dataset → Kaggle T4 → Unsloth → GGUF export → Rock 5T NPU → Telegram), QLoRA rationale, NPU explanation
+
+### /about page (about.html)
+- Photo frame with `VK` initials in Cormorant Garamond italic as placeholder (matches logo aesthetic)
+- Three bio paragraphs with accurate content (Dieburg near Darmstadt, not Frankfurt; building while studying)
+- Education: h_da only (B.Sc. CS, Oct 2024–2028, modules grid, enrolled badge)
+- Skills: 7-item animated bar chart + 4 grouped chip clouds (Backend & Infra / AI & ML / Frontend / Soft) with 3 opacity tiers (hi/mid/lo)
+- Languages: all 4 (Deutsch B2-C1 / English C1-C2 / Hindi native / Gujarati native) — each with 5-dot visual, proficiency note, flag, context sentence. Native cards have green border accent.
+- Interests: 4 cards from CV (Programming / AI / Cricket / Entrepreneurship) with expanded copy
+- Contact: 4 link cards (email / GitHub / LinkedIn / site) + pulsing green availability badge
+
+### portfolio-combined.html — combined single-file SPA
+- **Finance Buddy-style topbar**: full-width sticky 54px header, 3-column grid layout
+  - Left: artistic `V`ishal `K`atariya mixed-font logo + `vishalkatariya.dev` subtitle
+  - Center: 4 nav buttons (home · projects · about · roadmap) with active pill highlight
+  - Right: 4 controls — 🔍 search icon, `EN/DE` language toggle, ☀️/🌙 theme toggle, `VK` green-to-blue gradient profile circle
+- All 4 sections in one file: home (hero + widget grid + timeline + project preview cards), projects (index grid + 4 full case studies), about (full page), roadmap (11-topic overview grid + CTA to full cs-roadmap.html)
+- `/me` section stub: login page with GitHub OAuth placeholder + Tailscale note
+- **Search modal** (`Cmd+K` / click 🔍): searches 11 indexed items across all sections, jump-to-section on click, `Escape` closes
+- **Language toggle**: EN/DE switches nav labels and hero eyebrow text, `COPY` object architecture for future full translation
+- **Theme toggle**: dark (default) / light — swaps full CSS variable set, dot-matrix pattern inverts, chart grid colours adapt
+- **Finance bar chart**: 8-category spending breakdown, bars animate on IntersectionObserver scroll trigger
+- **Live clock**: ticks every second, day + date line
+- **GitHub contribution grid**: simulated 26×5 (18×5 mobile), animated counter
+
+**State:** All 5 HTML files working. Combined file is the primary deliverable — open in any browser, no build step. CS roadmap stays as separate linked file (too large to inline).
+
+**Decided:**
+- **Separated the hero name from the topbar logo**: hero uses `clamp(54px, 11vw, 124px)` for maximum impact; topbar uses `19px` compact version. Both use same Cormorant + Syne font mix.
+- **Topbar replaces the floating pill nav**: Finance Buddy-style full-width sticky bar is more appropriate for a multi-section portfolio than a floating pill
+- **Multi-page → single-file SPA**: all 4 sections in one HTML, JS navigation, URL hash for back-button support. Roadmap stays as a separate linked file (1878 lines, too large to inline)
+- **Education: h_da only** — B.Tech India not shown (user decision)
+- **Work experience: not included** — student jobs (Amazon, Moers) unrelated to CS
+- **Privacy**: phone number and full address NOT on any public page — email + GitHub + LinkedIn only
+- **4 languages as a differentiator**: German working proficiency is a genuine competitive advantage for German internship applications — given prominent placement on /about
+- **Dieburg not Frankfurt**: CV shows Dieburg (64807). Frankfurt mentioned only as "near Frankfurt" in context.
+
+**Blocked / Next:**
+- [ ] Auth for `/me` private section (GitHub OAuth vs Tailscale vs simple JWT) — conversation deferred
+- [ ] Add email to contact section once confirmed as public-safe
+- [ ] Add actual photo to photo placeholder on /about
+- [ ] DE translation strings — fill in `COPY.DE` object for full bilingual support
+- [ ] Scaffold SvelteKit project — port combined.html to real components
+- [ ] Fastify + WS backend on athena — systeminformation pipe for live homelab metrics
+- [ ] notion-artifacts project for Hermes — batch-generate HTML artifacts from homelab/DIY Notion pages
+
+**Modified:**
+- `prototypes/portfolio-v4.html`
+- `prototypes/projects.html`
+- `prototypes/about.html`
+- `prototypes/portfolio-combined.html`
+- `tasks/DEVLOG.md` (this entry)
+- `tasks/todo.md`
+
 ---
 
 ## 2026-03-27 Claude (claude.ai) — Icon system added to both prototypes; dashboard JS bug fixed

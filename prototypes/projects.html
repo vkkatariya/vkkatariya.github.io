@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Projects — Vishal Katariya</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,700&family=DM+Mono:wght@300;400;500&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#080808;--bg2:#0f0f0f;--bg3:#141414;
+  --w:#f0f0f0;--w80:rgba(240,240,240,.8);--w60:rgba(240,240,240,.6);
+  --w30:rgba(240,240,240,.3);--w12:rgba(240,240,240,.12);--w06:rgba(240,240,240,.06);
+  --green:#3ddc84;--amber:#ffbb33;--blue:#5b9cf6;--red:#ff453a;--purple:#c084fc;
+  --sd:rgba(0,0,0,.85);--sl:rgba(255,255,255,.035);
+}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);color:var(--w);
+  font-family:'Syne',sans-serif;min-height:100vh;overflow-x:hidden;
+}
+body::before{
+  content:'';position:fixed;inset:0;
+  background-image:radial-gradient(circle,rgba(255,255,255,.045) 1px,transparent 1px);
+  background-size:22px 22px;pointer-events:none;z-index:0;
+}
+
+/* ── NAV (same as homepage) ── */
+nav{
+  position:fixed;top:18px;left:50%;transform:translateX(-50%);
+  z-index:200;display:flex;align-items:center;gap:24px;padding:11px 24px;
+  background:rgba(8,8,8,.55);backdrop-filter:blur(28px) saturate(200%);
+  -webkit-backdrop-filter:blur(28px) saturate(200%);border-radius:100px;
+  border:1px solid rgba(255,255,255,.1);
+  box-shadow:0 0 0 .5px rgba(255,255,255,.04) inset,0 1px 0 rgba(255,255,255,.09) inset,
+    0 12px 40px rgba(0,0,0,.7);
+}
+.nav-logo{font-family:'DM Mono',monospace;font-size:13px;font-weight:500;
+  letter-spacing:2.5px;color:var(--w);text-decoration:none}
+.nav-logo em{color:var(--w30);font-style:normal}
+.nav-links{display:flex;gap:20px;list-style:none}
+.nav-links a{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:1px;
+  color:var(--w30);text-decoration:none;transition:color .2s}
+.nav-links a:hover,.nav-links a.act{color:var(--w)}
+.nav-lock{display:flex;align-items:center;color:var(--w30);text-decoration:none;
+  transition:color .2s;padding:2px}
+.nav-lock:hover{color:var(--w)}
+
+/* ── PAGE HEADER ── */
+.ph{
+  position:relative;z-index:1;
+  padding:120px 20px 60px;max-width:1100px;margin:0 auto;
+}
+.ph-label{
+  font-family:'DM Mono',monospace;font-size:9px;letter-spacing:4px;
+  color:var(--w30);text-transform:uppercase;margin-bottom:16px;
+  display:flex;align-items:center;gap:10px;
+}
+.ph-label::after{content:'';flex:1;height:1px;background:var(--w12)}
+.ph-title{
+  font-family:'Syne',sans-serif;font-size:clamp(36px,6vw,72px);
+  font-weight:800;letter-spacing:-2px;line-height:.95;margin-bottom:20px;
+}
+.ph-sub{
+  font-family:'DM Mono',monospace;font-size:12px;color:var(--w30);
+  letter-spacing:.5px;line-height:1.7;max-width:500px;
+}
+.ph-title .hn-script{
+  font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:700;
+}
+
+/* ── PROJECT CARDS (index) ── */
+.proj-index{
+  position:relative;z-index:1;max-width:1100px;margin:0 auto;
+  padding:0 20px 40px;
+  display:grid;grid-template-columns:1fr 1fr;gap:2px;
+}
+@media(max-width:700px){.proj-index{grid-template-columns:1fr}}
+.pi{
+  padding:36px 40px;cursor:pointer;
+  border:1px solid var(--w06);border-radius:0;
+  transition:background .2s;position:relative;overflow:hidden;
+}
+.pi:hover{background:var(--bg2)}
+.pi:nth-child(1){border-radius:16px 0 0 0}
+.pi:nth-child(2){border-radius:0 16px 0 0}
+.pi:nth-child(3){border-radius:0 0 0 16px}
+.pi:nth-child(4){border-radius:0 0 16px 0}
+.pi-num{
+  font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;
+  color:var(--w30);margin-bottom:16px;
+}
+.pi-title{
+  font-size:28px;font-weight:800;letter-spacing:-.8px;
+  margin-bottom:6px;line-height:1.1;
+}
+.pi-sub{
+  font-family:'DM Mono',monospace;font-size:11px;color:var(--w30);
+  letter-spacing:.5px;margin-bottom:20px;
+}
+.pi-tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:20px}
+.pi-tag{
+  font-family:'DM Mono',monospace;font-size:9px;padding:3px 8px;
+  border-radius:4px;border:1px solid var(--w12);color:var(--w30);letter-spacing:.5px;
+}
+.pi-status{
+  font-family:'DM Mono',monospace;font-size:10px;
+  display:inline-flex;align-items:center;gap:5px;
+}
+.pi-status::before{
+  content:'';width:5px;height:5px;border-radius:50%;flex-shrink:0;
+}
+.s-done::before{background:var(--green);box-shadow:0 0 5px var(--green)}
+.s-done{color:var(--green)}
+.s-wip::before{background:var(--amber)}
+.s-wip{color:var(--amber)}
+.pi-arrow{
+  position:absolute;right:32px;bottom:32px;
+  font-size:20px;color:var(--w12);transition:all .2s;
+}
+.pi:hover .pi-arrow{color:var(--w30);transform:translate(3px,-3px)}
+
+/* ── CASE STUDY SECTION ── */
+.cs{
+  position:relative;z-index:1;max-width:1100px;margin:0 auto;
+  padding:0 20px 100px;
+}
+.cs-section{
+  padding:80px 0;
+  border-top:1px solid var(--w06);
+}
+.cs-section:first-child{border-top:none}
+
+/* case study hero */
+.cs-hero{
+  display:grid;grid-template-columns:1fr auto;gap:40px;
+  align-items:start;margin-bottom:56px;
+}
+@media(max-width:700px){.cs-hero{grid-template-columns:1fr}}
+.cs-number{
+  font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;
+  color:var(--w30);margin-bottom:12px;
+}
+.cs-title{
+  font-family:'Syne',sans-serif;font-size:clamp(42px,6vw,80px);
+  font-weight:800;letter-spacing:-2.5px;line-height:.9;
+  margin-bottom:14px;
+}
+.cs-tagline{
+  font-size:16px;color:var(--w60);line-height:1.7;
+  max-width:520px;margin-bottom:20px;
+}
+.cs-badges{display:flex;gap:8px;flex-wrap:wrap}
+.cs-badge{
+  font-family:'DM Mono',monospace;font-size:9px;padding:4px 10px;
+  border-radius:20px;letter-spacing:1px;
+  border:1px solid;display:inline-flex;align-items:center;gap:5px;
+}
+.cs-badge::before{content:'';width:4px;height:4px;border-radius:50%}
+.cb-green{border-color:rgba(61,220,132,.25);color:var(--green)}
+.cb-green::before{background:var(--green)}
+.cb-amber{border-color:rgba(255,187,51,.2);color:var(--amber)}
+.cb-amber::before{background:var(--amber)}
+
+/* stats row */
+.cs-stats{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:1px;
+  background:var(--w06);border-radius:16px;overflow:hidden;
+  margin-bottom:56px;
+}
+@media(max-width:600px){.cs-stats{grid-template-columns:repeat(2,1fr)}}
+.cs-stat{
+  background:var(--bg2);padding:24px 20px;
+}
+.cs-stat-n{
+  font-family:'DM Mono',monospace;font-size:30px;font-weight:400;
+  letter-spacing:-1.5px;color:var(--w);line-height:1;margin-bottom:5px;
+}
+.cs-stat-l{
+  font-family:'DM Mono',monospace;font-size:9px;color:var(--w30);
+  letter-spacing:2px;text-transform:uppercase;
+}
+
+/* two-col body */
+.cs-body{
+  display:grid;grid-template-columns:1fr 1fr;gap:60px;
+  align-items:start;margin-bottom:56px;
+}
+@media(max-width:700px){.cs-body{grid-template-columns:1fr;gap:36px}}
+.cs-body-full{margin-bottom:56px}
+.cs-h{
+  font-family:'DM Mono',monospace;font-size:8px;letter-spacing:3.5px;
+  color:var(--w30);text-transform:uppercase;margin-bottom:12px;
+}
+.cs-p{
+  font-size:15px;color:var(--w60);line-height:1.85;margin-bottom:12px;
+}
+.cs-p:last-child{margin-bottom:0}
+.cs-p strong{color:var(--w);font-weight:500}
+
+/* tech stack pills */
+.cs-stack{
+  display:flex;flex-wrap:wrap;gap:6px;
+  margin-top:12px;
+}
+.cs-tech{
+  font-family:'DM Mono',monospace;font-size:10px;
+  padding:5px 10px;border-radius:6px;
+  background:var(--bg2);border:1px solid var(--w06);
+  color:var(--w60);letter-spacing:.3px;
+}
+
+/* feature list */
+.feat-list{
+  display:flex;flex-direction:column;gap:12px;
+}
+.feat{
+  padding:14px 16px;border-radius:12px;
+  background:var(--bg2);border:1px solid var(--w06);
+  display:flex;gap:12px;align-items:flex-start;
+}
+.feat-icon{
+  width:28px;height:28px;border-radius:8px;
+  background:var(--bg3);border:1px solid var(--w06);
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;font-size:13px;
+}
+.feat-title{font-size:13px;font-weight:600;color:var(--w);margin-bottom:2px}
+.feat-desc{font-family:'DM Mono',monospace;font-size:11px;color:var(--w30);line-height:1.5}
+
+/* ── VISUALIZATIONS ── */
+/* Finance bar chart */
+.vis-wrap{
+  border-radius:16px;background:var(--bg2);
+  border:1px solid var(--w06);padding:24px;
+  margin-bottom:56px;
+  box-shadow:4px 4px 16px var(--sd),-1px -1px 5px var(--sl);
+}
+.vis-title{
+  font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;
+  color:var(--w30);text-transform:uppercase;margin-bottom:20px;
+}
+.bar-chart{display:flex;flex-direction:column;gap:10px}
+.bar-row{display:flex;align-items:center;gap:12px}
+.bar-lbl{
+  font-family:'DM Mono',monospace;font-size:10px;color:var(--w30);
+  width:90px;flex-shrink:0;letter-spacing:.3px;
+}
+.bar-track{
+  flex:1;height:22px;background:var(--bg3);border-radius:4px;
+  overflow:hidden;position:relative;
+  box-shadow:inset 1px 1px 3px rgba(0,0,0,.5);
+}
+.bar-fill{
+  height:100%;border-radius:4px;
+  transition:width 1.2s cubic-bezier(.4,0,.2,1);
+  position:relative;
+}
+.bar-fill::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.08));
+  border-radius:inherit;
+}
+.bar-val{
+  font-family:'DM Mono',monospace;font-size:10px;color:var(--w30);
+  width:60px;text-align:right;flex-shrink:0;
+}
+
+/* donut chart (CSS) */
+.donut-wrap{
+  display:flex;align-items:center;gap:32px;
+  padding:24px;
+}
+@media(max-width:500px){.donut-wrap{flex-direction:column}}
+.donut-svg{flex-shrink:0}
+.donut-legend{display:flex;flex-direction:column;gap:10px}
+.dl-item{display:flex;align-items:center;gap:8px;font-family:'DM Mono',monospace;font-size:11px;color:var(--w30)}
+.dl-dot{width:8px;height:8px;border-radius:2px;flex-shrink:0}
+
+/* homelab node diagram */
+.node-diagram{
+  padding:24px;display:flex;gap:20px;align-items:stretch;
+  flex-wrap:wrap;
+}
+.nd-node{
+  flex:1;min-width:160px;padding:16px;border-radius:12px;
+  background:var(--bg3);border:1px solid var(--w06);
+}
+.nd-name{
+  font-size:13px;font-weight:700;color:var(--w);
+  margin-bottom:4px;letter-spacing:-.2px;
+}
+.nd-hw{font-family:'DM Mono',monospace;font-size:10px;color:var(--w30);margin-bottom:12px}
+.nd-svc{display:flex;flex-direction:column;gap:5px}
+.nd-svc-item{
+  display:flex;align-items:center;gap:6px;
+  font-family:'DM Mono',monospace;font-size:10px;color:var(--w60);
+}
+.nd-svc-item::before{
+  content:'';width:5px;height:5px;border-radius:50%;
+  background:var(--green);box-shadow:0 0 4px var(--green);flex-shrink:0;
+}
+.nd-connector{
+  display:flex;align-items:center;justify-content:center;
+  font-family:'DM Mono',monospace;font-size:9px;color:var(--w12);
+  writing-mode:initial;align-self:center;padding:0 4px;
+  flex-direction:column;gap:6px;
+}
+.nd-connector-line{
+  width:1px;height:40px;
+  background:linear-gradient(to bottom,transparent,var(--w12),transparent);
+}
+
+/* ML pipeline */
+.pipeline{
+  display:flex;align-items:stretch;gap:0;overflow-x:auto;padding-bottom:4px;
+}
+.pipe-stage{
+  min-width:130px;padding:16px 14px;
+  background:var(--bg3);border:1px solid var(--w06);
+  position:relative;flex-shrink:0;
+}
+.pipe-stage:first-child{border-radius:12px 0 0 12px}
+.pipe-stage:last-child{border-radius:0 12px 12px 0}
+.pipe-stage:not(:first-child){border-left:none}
+.pipe-num{
+  font-family:'DM Mono',monospace;font-size:8px;letter-spacing:2px;
+  color:var(--w30);margin-bottom:8px;
+}
+.pipe-name{font-size:12px;font-weight:600;color:var(--w);margin-bottom:4px;letter-spacing:-.2px}
+.pipe-detail{font-family:'DM Mono',monospace;font-size:9px;color:var(--w30);line-height:1.5}
+.pipe-arrow{
+  position:absolute;right:-12px;top:50%;transform:translateY(-50%);
+  z-index:1;color:var(--w30);font-size:12px;
+}
+
+/* cross-platform grid */
+.platform-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+@media(max-width:500px){.platform-grid{grid-template-columns:1fr}}
+.plat{
+  padding:20px;border-radius:14px;
+  background:var(--bg3);border:1px solid var(--w06);
+  text-align:center;
+}
+.plat-icon{font-size:28px;margin-bottom:12px;display:block}
+.plat-name{font-size:14px;font-weight:600;color:var(--w);margin-bottom:4px}
+.plat-lang{font-family:'DM Mono',monospace;font-size:10px;color:var(--w30);margin-bottom:10px}
+.plat-feature{
+  font-family:'DM Mono',monospace;font-size:10px;color:var(--w30);
+  line-height:1.5;
+}
+
+/* next/prev nav */
+.proj-nav{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:40px 0;border-top:1px solid var(--w06);
+  margin-top:60px;
+}
+.pnav-btn{
+  font-family:'DM Mono',monospace;font-size:11px;color:var(--w30);
+  text-decoration:none;letter-spacing:1px;
+  transition:color .2s;display:flex;align-items:center;gap:6px;
+}
+.pnav-btn:hover{color:var(--w)}
+
+/* ── RESPONSIVE NAV ── */
+@media(max-width:640px){
+  nav{bottom:16px;top:auto;border-radius:22px;padding:0;gap:0;overflow:hidden;width:calc(100% - 40px)}
+  .nav-logo{display:none}
+  .nav-links{display:flex;width:100%}
+  .nav-links li{flex:1}
+  .nav-links a{display:flex;align-items:center;justify-content:center;padding:14px 8px;font-size:10px;border-right:1px solid rgba(255,255,255,.06)}
+  .nav-links li:last-child a{border-right:none}
+  .nav-lock{display:none}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="index.html">VK<em>.</em></a>
+  <ul class="nav-links">
+    <li><a href="projects.html" class="act">projects</a></li>
+    <li><a href="cs-roadmap.html">roadmap</a></li>
+    <li><a href="index.html#about">about</a></li>
+  </ul>
+  <a href="#me" class="nav-lock" title="Sign in">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+      <rect x="2" y="6.5" width="10" height="7" rx="1.5" stroke="currentColor" stroke-width="1" fill="none"/>
+      <path d="M4.5 6.5V5a2.5 2.5 0 0 1 5 0v1.5" stroke="currentColor" stroke-width="1" stroke-linecap="round" fill="none"/>
+      <circle cx="7" cy="10" r=".85" fill="currentColor"/>
+    </svg>
+  </a>
+</nav>
+
+<!-- PAGE HEADER -->
+<div class="ph">
+  <div class="ph-label">vkkatariya · work</div>
+  <h1 class="ph-title"><span class="hn-script">P</span>rojects</h1>
+  <p class="ph-sub">Things I've built and shipped — from personal finance trackers to homelab infrastructure to collaborative AI tools.</p>
+</div>
+
+<!-- PROJECT INDEX GRID -->
+<section style="position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:0 20px 80px">
+  <div class="proj-index">
+    <a href="#finance-buddy" class="pi" style="text-decoration:none;color:inherit">
+      <div class="pi-num">01 / 04</div>
+      <div class="pi-title">Finance Buddy</div>
+      <div class="pi-sub">Personal finance tracker · private</div>
+      <div class="pi-tags">
+        <span class="pi-tag">SvelteKit</span>
+        <span class="pi-tag">Fastify</span>
+        <span class="pi-tag">PostgreSQL</span>
+        <span class="pi-tag">Drizzle</span>
+        <span class="pi-tag">Chart.js</span>
+      </div>
+      <div class="pi-status s-done">Prototype complete</div>
+      <div class="pi-arrow">↗</div>
+    </a>
+    <a href="#homelab" class="pi" style="text-decoration:none;color:inherit">
+      <div class="pi-num">02 / 04</div>
+      <div class="pi-title">Homelab<br>Dashboard</div>
+      <div class="pi-sub">Realtime ops · 2-node cluster</div>
+      <div class="pi-tags">
+        <span class="pi-tag">Fastify</span>
+        <span class="pi-tag">WebSocket</span>
+        <span class="pi-tag">Docker</span>
+        <span class="pi-tag">Tailscale</span>
+      </div>
+      <div class="pi-status s-done">Prototype complete</div>
+      <div class="pi-arrow">↗</div>
+    </a>
+    <a href="#typeshift" class="pi" style="text-decoration:none;color:inherit">
+      <div class="pi-num">03 / 04</div>
+      <div class="pi-title">TypeShift</div>
+      <div class="pi-sub">Cross-platform AI writing · collab</div>
+      <div class="pi-tags">
+        <span class="pi-tag">Kotlin</span>
+        <span class="pi-tag">Swift</span>
+        <span class="pi-tag">C#</span>
+        <span class="pi-tag">AI</span>
+      </div>
+      <div class="pi-status s-wip">In progress</div>
+      <div class="pi-arrow">↗</div>
+    </a>
+    <a href="#orlon-bot" class="pi" style="text-decoration:none;color:inherit">
+      <div class="pi-num">04 / 04</div>
+      <div class="pi-title">orlon-bot</div>
+      <div class="pi-sub">QLoRA fine-tune · Telegram</div>
+      <div class="pi-tags">
+        <span class="pi-tag">Python</span>
+        <span class="pi-tag">QLoRA</span>
+        <span class="pi-tag">Unsloth</span>
+        <span class="pi-tag">Telegram</span>
+      </div>
+      <div class="pi-status s-wip">In progress</div>
+      <div class="pi-arrow">↗</div>
+    </a>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     CASE STUDIES
+═══════════════════════════════════════ -->
+<div class="cs">
+
+  <!-- ── 01: FINANCE BUDDY ── -->
+  <section class="cs-section" id="finance-buddy">
+    <div class="cs-hero">
+      <div>
+        <div class="cs-number">01 / 04</div>
+        <h2 class="cs-title">Finance<br>Buddy</h2>
+        <p class="cs-tagline">Personal finance tracker built from real transaction data — 993 entries across 44 months of actual spending and income.</p>
+        <div class="cs-badges">
+          <span class="cs-badge cb-green">Prototype complete</span>
+          <span class="cs-badge" style="border-color:var(--w12);color:var(--w30)">Private · Tailscale only</span>
+          <span class="cs-badge" style="border-color:var(--w12);color:var(--w30)">2025–2026</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="cs-stats">
+      <div class="cs-stat">
+        <div class="cs-stat-n">993</div>
+        <div class="cs-stat-l">transactions</div>
+      </div>
+      <div class="cs-stat">
+        <div class="cs-stat-n">44</div>
+        <div class="cs-stat-l">months of data</div>
+      </div>
+      <div class="cs-stat">
+        <div class="cs-stat-n">€43.7k</div>
+        <div class="cs-stat-l">total tracked</div>
+      </div>
+      <div class="cs-stat">
+        <div class="cs-stat-n">7</div>
+        <div class="cs-stat-l">dashboard tabs</div>
+      </div>
+    </div>
+
+    <!-- Spending breakdown visualization -->
+    <div class="vis-wrap">
+      <div class="vis-title">spending breakdown · Oct 2022 – May 2026</div>
+      <div class="bar-chart" id="financeChart"></div>
+    </div>
+
+    <!-- Body -->
+    <div class="cs-body">
+      <div>
+        <div class="cs-h">The problem</div>
+        <p class="cs-p">I had <strong>44 months of real transaction data</strong> exported from the Buddy app — but no way to see patterns across it. Which categories were eating my budget? What was genuinely avoidable? When would I realistically save €10k?</p>
+        <p class="cs-p">Spreadsheets didn't cut it. I needed a dashboard built specifically around my data.</p>
+      </div>
+      <div>
+        <div class="cs-h">What I built</div>
+        <p class="cs-p">A 7-tab self-hosted dashboard that parses, stores, and visualises all 993 transactions. Each tab answers a different question: where does the money go, is my spending trending up, what can I cut, and when will I hit my savings goals.</p>
+        <p class="cs-p">The <strong>Waste Audit</strong> tab alone surfaced <strong>€3,656 in avoidable spending</strong> I hadn't quantified before. The Savings Plan tab runs 3 scenarios — status quo, budget mode, and aggressive — showing projected savings dates.</p>
+      </div>
+    </div>
+
+    <!-- Features -->
+    <div class="cs-h">7 tabs · what each one does</div>
+    <div class="feat-list" style="margin-bottom:40px">
+      <div class="feat">
+        <div class="feat-icon">📊</div>
+        <div>
+          <div class="feat-title">Overview</div>
+          <div class="feat-desc">KPI sparklines · monthly flow bar+line chart · category donut · My Tracker widget with live add-expense form</div>
+        </div>
+      </div>
+      <div class="feat">
+        <div class="feat-icon">📈</div>
+        <div>
+          <div class="feat-title">Trends</div>
+          <div class="feat-desc">44-month spending flow · year-by-year grouped bars · stacked category composition chart</div>
+        </div>
+      </div>
+      <div class="feat">
+        <div class="feat-icon">🎯</div>
+        <div>
+          <div class="feat-title">Budget</div>
+          <div class="feat-desc">13 categories · avg monthly bars · over/under visual for each</div>
+        </div>
+      </div>
+      <div class="feat">
+        <div class="feat-icon">💼</div>
+        <div>
+          <div class="feat-title">Income</div>
+          <div class="feat-desc">7 income sources breakdown · employer cards · earned vs passive yearly chart</div>
+        </div>
+      </div>
+      <div class="feat">
+        <div class="feat-icon">🗑️</div>
+        <div>
+          <div class="feat-title">Waste Audit</div>
+          <div class="feat-desc">€3,656 avoidable spend identified · category bars · 6 corner-cutting guide cards</div>
+        </div>
+      </div>
+      <div class="feat">
+        <div class="feat-icon">💰</div>
+        <div>
+          <div class="feat-title">Savings Plan</div>
+          <div class="feat-desc">3 scenarios (status quo 2047 · budget 2031 · aggressive 2028) · 84-month trajectory chart</div>
+        </div>
+      </div>
+      <div class="feat">
+        <div class="feat-icon">🔍</div>
+        <div>
+          <div class="feat-title">Transactions</div>
+          <div class="feat-desc">44 months navigable · day-grouped Buddy-style list · arc doughnut · live debounced search across all 993 entries</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tech stack -->
+    <div class="cs-h">stack</div>
+    <div class="cs-stack" style="margin-bottom:40px">
+      <span class="cs-tech">SvelteKit + TypeScript</span>
+      <span class="cs-tech">Fastify (REST API)</span>
+      <span class="cs-tech">PostgreSQL 16</span>
+      <span class="cs-tech">Drizzle ORM</span>
+      <span class="cs-tech">Chart.js 4.x</span>
+      <span class="cs-tech">Tailscale (private)</span>
+      <span class="cs-tech">Docker + Caddy</span>
+      <span class="cs-tech">Argon2 JWT auth</span>
+    </div>
+
+    <!-- Architecture note -->
+    <div class="cs-body-full">
+      <div class="cs-h">access + privacy</div>
+      <p class="cs-p">Finance Buddy is <strong>private by design</strong> — it contains real financial data and is only accessible through Tailscale on authorised devices. The route <code style="font-family:'DM Mono',monospace;font-size:12px;color:var(--w30)">buddy.auxois-wyrm.ts.net</code> never touches the public internet. No public ports, all traffic through WireGuard.</p>
+    </div>
+  </section>
+
+  <!-- ── 02: HOMELAB DASHBOARD ── -->
+  <section class="cs-section" id="homelab">
+    <div class="cs-hero">
+      <div>
+        <div class="cs-number">02 / 04</div>
+        <h2 class="cs-title">Homelab<br>Dashboard</h2>
+        <p class="cs-tagline">Realtime ops dashboard for a self-hosted 2-node cluster — live metrics, service registry, and a Notion docs viewer.</p>
+        <div class="cs-badges">
+          <span class="cs-badge cb-green">Prototype complete</span>
+          <span class="cs-badge" style="border-color:var(--w12);color:var(--w30)">Private · Tailscale only</span>
+          <span class="cs-badge" style="border-color:var(--w12);color:var(--w30)">2025–2026</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="cs-stats">
+      <div class="cs-stat">
+        <div class="cs-stat-n">2</div>
+        <div class="cs-stat-l">physical nodes</div>
+      </div>
+      <div class="cs-stat">
+        <div class="cs-stat-n">48 GB</div>
+        <div class="cs-stat-l">total RAM</div>
+      </div>
+      <div class="cs-stat">
+        <div class="cs-stat-n">6+</div>
+        <div class="cs-stat-l">services running</div>
+      </div>
+      <div class="cs-stat">
+        <div class="cs-stat-n">3</div>
+        <div class="cs-stat-l">dashboard tabs</div>
+      </div>
+    </div>
+
+    <!-- Node diagram -->
+    <div class="vis-wrap">
+      <div class="vis-title">infrastructure · 2-node cluster</div>
+      <div class="node-diagram">
+        <div class="nd-node">
+          <div class="nd-name">athena</div>
+          <div class="nd-hw">Radxa Rock 5T · RK3588J ARM64 · 16 GB LPDDR5 · 6T NPU</div>
+          <div class="nd-svc">
+            <span class="nd-svc-item">OpenWebUI :3000</span>
+            <span class="nd-svc-item">OpenClaw :18789</span>
+            <span class="nd-svc-item">Stirling PDF :8080</span>
+            <span class="nd-svc-item">Cockpit :9090</span>
+            <span class="nd-svc-item">Home Assistant (KVM)</span>
+            <span class="nd-svc-item">Ollama :11434</span>
+          </div>
+        </div>
+        <div class="nd-connector">
+          <div class="nd-connector-line"></div>
+          <span style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:1.5px;color:var(--w30)">Tailscale<br>WireGuard</span>
+          <div class="nd-connector-line"></div>
+        </div>
+        <div class="nd-node">
+          <div class="nd-name">atlas</div>
+          <div class="nd-hw">Dell OptiPlex 7060 · i7-8700 x86_64 · 24 GB DDR4 · Proxmox VE</div>
+          <div class="nd-svc">
+            <span class="nd-svc-item">Proxmox WebUI :8006</span>
+            <span class="nd-svc-item" style="opacity:.5">Prometheus LXC ⬡</span>
+            <span class="nd-svc-item" style="opacity:.5">Grafana LXC ⬡</span>
+            <span class="nd-svc-item" style="opacity:.5">Gitea LXC ⬡</span>
+            <span class="nd-svc-item" style="opacity:.5">k3s VM ⬡ planned</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cs-body">
+      <div>
+        <div class="cs-h">Why I built it</div>
+        <p class="cs-p">Once you're running 6+ services across 2 nodes, `ssh + docker ps` stops scaling. I wanted a single pane of glass for the entire cluster — live metrics, service status, and the homelab docs I write in Notion, all in one place.</p>
+        <p class="cs-p">The <strong>NothingOS design system</strong> (dark `#1B1C1D`, `#E2201F` red, dot-matrix background) made the dashboard feel like a proper product rather than a dev tool.</p>
+      </div>
+      <div>
+        <div class="cs-h">What's in each tab</div>
+        <div class="feat-list">
+          <div class="feat">
+            <div class="feat-icon">⚡</div>
+            <div>
+              <div class="feat-title">Infrastructure</div>
+              <div class="feat-desc">CPU pie meters · RAM bar · storage verticals · network sparkline · services grid · uptime rings</div>
+            </div>
+          </div>
+          <div class="feat">
+            <div class="feat-icon">🔗</div>
+            <div>
+              <div class="feat-title">Services</div>
+              <div class="feat-desc">Service registry with URLs, ports, node tags · filter by node · access URL list</div>
+            </div>
+          </div>
+          <div class="feat">
+            <div class="feat-icon">📄</div>
+            <div>
+              <div class="feat-title">Docs &amp; Blueprints</div>
+              <div class="feat-desc">Notion homelab/DIY pages rendered as cards · slide-in detail panel with tabbed sections</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cs-h">stack</div>
+    <div class="cs-stack">
+      <span class="cs-tech">Fastify + TypeScript</span>
+      <span class="cs-tech">WebSocket (ws)</span>
+      <span class="cs-tech">systeminformation npm</span>
+      <span class="cs-tech">pm2</span>
+      <span class="cs-tech">Docker + Caddy</span>
+      <span class="cs-tech">Tailscale file-cert</span>
+      <span class="cs-tech">Notion MCP</span>
+      <span class="cs-tech">NothingOS CSS</span>
+    </div>
+  </section>
+
+  <!-- ── 03: TYPESHIFT ── -->
+  <section class="cs-section" id="typeshift">
+    <div class="cs-hero">
+      <div>
+        <div class="cs-number">03 / 04</div>
+        <h2 class="cs-title">TypeShift</h2>
+        <p class="cs-tagline">Cross-platform AI writing assistant — same AI, three native apps. Built in collaboration with nayalambaliya.</p>
+        <div class="cs-badges">
+          <span class="cs-badge cb-amber">In progress</span>
+          <span class="cs-badge" style="border-color:var(--w12);color:var(--w30)">Open source</span>
+          <span class="cs-badge" style="border-color:var(--w12);color:var(--w30)">Collaboration</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="cs-stats">
+      <div class="cs-stat">
+        <div class="cs-stat-n">3</div>
+        <div class="cs-stat-l">platforms</div>
+      </div>
+      <div class="cs-stat">
+        <div class="cs-stat-n">3</div>
+        <div class="cs-stat-l">languages</div>
+      </div>
+      <div class="cs-stat">
+        <div class="cs-stat-n">2</div>
+        <div class="cs-stat-l">contributors</div>
+      </div>
+      <div class="cs-stat">
+        <div class="cs-stat-n">1</div>
+        <div class="cs-stat-l">shared AI backend</div>
+      </div>
+    </div>
+
+    <!-- Platform grid -->
+    <div class="vis-wrap">
+      <div class="vis-title">three platforms · one experience</div>
+      <div class="platform-grid">
+        <div class="plat">
+          <span class="plat-icon">🤖</span>
+          <div class="plat-name">Android</div>
+          <div class="plat-lang">Kotlin · Jetpack Compose</div>
+          <div class="plat-feature">Native Material You design · full keyboard access · background AI processing</div>
+        </div>
+        <div class="plat">
+          <span class="plat-icon">🍎</span>
+          <div class="plat-name">macOS</div>
+          <div class="plat-lang">Swift · SwiftUI</div>
+          <div class="plat-feature">Native Mac experience · menu bar integration · system-wide text access</div>
+        </div>
+        <div class="plat">
+          <span class="plat-icon">🪟</span>
+          <div class="plat-name">Windows</div>
+          <div class="plat-lang">C# · WinUI 3</div>
+          <div class="plat-feature">Fluent Design · context menu integration · clipboard-aware transforms</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cs-body">
+      <div>
+        <div class="cs-h">The idea</div>
+        <p class="cs-p">Writing assistants are either web-only or locked to one OS. TypeShift is <strong>natively built for each platform</strong> — not a web wrapper — with a shared AI backend powering transformations across all three.</p>
+        <p class="cs-p">Select text anywhere on your device, invoke TypeShift, choose a transform (rewrite, summarise, improve tone), and get the result back in place.</p>
+      </div>
+      <div>
+        <div class="cs-h">My role</div>
+        <p class="cs-p">Joined as a collaborator on the project led by <strong>nayalambaliya</strong>. Contributed to the macOS CI release workflow, project scaffolding, and dev setup documentation. The cross-platform architecture decision — shared API backend, native UI per platform — was established early and I've helped build toward it.</p>
+        <p class="cs-p">Repo: <code style="font-family:'DM Mono',monospace;font-size:11px;color:var(--w30)">github.com/nayalambaliya/TypeShift</code></p>
+      </div>
+    </div>
+
+    <div class="cs-h">stack</div>
+    <div class="cs-stack">
+      <span class="cs-tech">Kotlin (Android)</span>
+      <span class="cs-tech">Swift / SwiftUI (macOS)</span>
+      <span class="cs-tech">C# / WinUI 3 (Windows)</span>
+      <span class="cs-tech">Shared AI API backend</span>
+      <span class="cs-tech">GitHub Actions CI</span>
+    </div>
+  </section>
+
+  <!-- ── 04: ORLON-BOT ── -->
+  <section class="cs-section" id="orlon-bot">
+    <div class="cs-hero">
+      <div>
+        <div class="cs-number">04 / 04</div>
+        <h2 class="cs-title">orlon-bot</h2>
+        <p class="cs-tagline">A Telegram bot with a custom fine-tuned LLM — trained on Kaggle T4 GPUs using QLoRA and Unsloth, running inference on a Rock 5T NPU.</p>
+        <div class="cs-badges">
+          <span class="cs-badge cb-amber">In progress</span>
+          <span class="cs-badge" style="border-color:rgba(192,132,252,.3);color:var(--purple)">ML / AI</span>
+          <span class="cs-badge" style="border-color:var(--w12);color:var(--w30)">2026</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="cs-stats">
+      <div class="cs-stat">
+        <div class="cs-stat-n">30h</div>
+        <div class="cs-stat-l">Kaggle T4 / week</div>
+      </div>
+      <div class="cs-stat">
+        <div class="cs-stat-n">6 TOPs</div>
+        <div class="cs-stat-l">Rock 5T NPU</div>
+      </div>
+      <div class="cs-stat">
+        <div class="cs-stat-n">QLoRA</div>
+        <div class="cs-stat-l">fine-tune method</div>
+      </div>
+      <div class="cs-stat">
+        <div class="cs-stat-n">Unsloth</div>
+        <div class="cs-stat-l">training framework</div>
+      </div>
+    </div>
+
+    <!-- ML Pipeline visualization -->
+    <div class="vis-wrap">
+      <div class="vis-title">ML pipeline · train to inference</div>
+      <div class="pipeline">
+        <div class="pipe-stage">
+          <div class="pipe-num">01</div>
+          <div class="pipe-name">Dataset</div>
+          <div class="pipe-detail">Custom training data · curated for personal assistant behaviour</div>
+          <div class="pipe-arrow">›</div>
+        </div>
+        <div class="pipe-stage">
+          <div class="pipe-num">02</div>
+          <div class="pipe-name">Kaggle T4</div>
+          <div class="pipe-detail">Free 30h/week T4 GPU · Jupyter notebook environment</div>
+          <div class="pipe-arrow">›</div>
+        </div>
+        <div class="pipe-stage">
+          <div class="pipe-num">03</div>
+          <div class="pipe-name">Unsloth</div>
+          <div class="pipe-detail">2× faster training · 70% less VRAM · QLoRA adapters</div>
+          <div class="pipe-arrow">›</div>
+        </div>
+        <div class="pipe-stage">
+          <div class="pipe-num">04</div>
+          <div class="pipe-name">Model export</div>
+          <div class="pipe-detail">GGUF format · quantised for edge deployment</div>
+          <div class="pipe-arrow">›</div>
+        </div>
+        <div class="pipe-stage">
+          <div class="pipe-num">05</div>
+          <div class="pipe-name">Rock 5T NPU</div>
+          <div class="pipe-detail">RK3588J · 6T NPU · rkllama inference on athena</div>
+          <div class="pipe-arrow">›</div>
+        </div>
+        <div class="pipe-stage">
+          <div class="pipe-num">06</div>
+          <div class="pipe-name">Telegram</div>
+          <div class="pipe-detail">Bot API · Python telegram-bot library · always-on via pm2</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cs-body">
+      <div>
+        <div class="cs-h">Why QLoRA + Unsloth</div>
+        <p class="cs-p">Full fine-tuning a 7B model requires 80 GB+ of VRAM — not available on free Kaggle T4s (16 GB). <strong>QLoRA</strong> fine-tunes only a small set of low-rank adapter matrices, cutting memory usage by ~4×. <strong>Unsloth</strong> adds another 2× speed improvement through kernel-level optimisations, making the Kaggle free tier genuinely viable.</p>
+        <p class="cs-p">The result: a model that responds in my style, knows my context, and runs entirely on hardware I own.</p>
+      </div>
+      <div>
+        <div class="cs-h">The NPU angle</div>
+        <p class="cs-p">The Rock 5T has a <strong>Rockchip RK3588J NPU with 6 TOPs</strong> — enough for inference on quantised models in the 1–7B range. Using <code style="font-family:'DM Mono',monospace;font-size:11px;color:var(--w30)">rkllama</code>, the model runs natively on the NPU rather than the CPU, giving better performance per watt.</p>
+        <p class="cs-p">The whole pipeline — training on Kaggle, deploying on the NPU, serving through Telegram — closes a loop between free cloud compute and self-hosted inference.</p>
+      </div>
+    </div>
+
+    <div class="cs-h">stack</div>
+    <div class="cs-stack">
+      <span class="cs-tech">Python</span>
+      <span class="cs-tech">Unsloth</span>
+      <span class="cs-tech">QLoRA (PEFT)</span>
+      <span class="cs-tech">Kaggle T4 GPU</span>
+      <span class="cs-tech">rkllama (NPU)</span>
+      <span class="cs-tech">Rock 5T (athena)</span>
+      <span class="cs-tech">Telegram Bot API</span>
+      <span class="cs-tech">pm2</span>
+    </div>
+
+    <!-- Bottom nav -->
+    <div class="proj-nav">
+      <a href="index.html" class="pnav-btn">← home</a>
+      <a href="#finance-buddy" class="pnav-btn">↑ back to top</a>
+    </div>
+  </section>
+
+</div><!-- /cs -->
+
+<script>
+// Finance spending chart
+const data = [
+  { label: 'Rent', pct: 34.8, color: '#5b9cf6', val: '€15,200' },
+  { label: 'Education', pct: 19.7, color: '#c084fc', val: '€8,615' },
+  { label: 'Shopping', pct: 10.9, color: '#3ddc84', val: '€4,758' },
+  { label: 'Groceries', pct: 9.2, color: '#ffbb33', val: '€4,023' },
+  { label: 'Insurance', pct: 9.2, color: '#ff8c42', val: '€4,023' },
+  { label: 'Transport', pct: 7.4, color: '#f472b6', val: '€3,234' },
+  { label: 'Dining', pct: 4.8, color: '#34d399', val: '€2,099' },
+  { label: 'Other', pct: 4.0, color: '#888', val: '€1,749' },
+];
+const chart = document.getElementById('financeChart');
+data.forEach(d => {
+  const row = document.createElement('div');
+  row.className = 'bar-row';
+  row.innerHTML = `
+    <span class="bar-lbl">${d.label}</span>
+    <div class="bar-track">
+      <div class="bar-fill" style="width:0%;background:${d.color}" data-w="${d.pct}"></div>
+    </div>
+    <span class="bar-val">${d.pct}%</span>
+  `;
+  chart.appendChild(row);
+});
+// Animate bars on scroll
+const obs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      document.querySelectorAll('.bar-fill').forEach(b => {
+        b.style.width = b.dataset.w + '%';
+      });
+      obs.disconnect();
+    }
+  });
+}, { threshold: .3 });
+obs.observe(chart);
+</script>
+</body>
+</html>
