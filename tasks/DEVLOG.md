@@ -1,3 +1,22 @@
+## [2026-06-18] Abacus — Fix roadmap internal nav visual and restore visible content
+
+**Mode:** Execution
+**Did:**
+- Fixed roadmap internal nav CSS: replaced dark background (`rgba(8,8,8,.55)`) with clean glass gradient matching shared topbar (`.nav-logo`, `.nav-links` styled as proper glass pills)
+- Updated roadmapNavLinks selector from `#pg-roadmap .nav-links a` to `#roadmap-internal-nav .nav-links a` (nav is outside page container due to fixed positioning)
+- Aligned nav-logo and nav-links styling with shared topbar design: padding, border-radius, hover states, flex layout
+- Verified showPage() already calls observeAnimElements() after roadmap becomes visible (timeout 100ms) to trigger [data-anim] entrance animations
+
+**State:** Roadmap internal nav is now a clean centered glass pill with no dark bar. Content rendering should work via existing observeAnimElements() call in showPage() function. HTML structure validated (all page divs properly closed).
+
+**Decided:** Keep nav element outside #pg-roadmap for fixed positioning. No changes to HTML structure needed — only CSS + one selector fix.
+
+**Blocked / Next:** Visual verification needed in real browser to confirm roadmap nav appearance and content visibility. Manual smoke test with all 5 page transitions.
+
+**Modified:** `prototypes/portfolio-combined.html`, `tasks/DEVLOG.md`
+
+---
+
 ## [2026-06-18] Composer — Polish roadmap page in portfolio-combined SPA
 
 **Mode:** Execution
