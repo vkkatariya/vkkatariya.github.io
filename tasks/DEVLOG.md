@@ -1,44 +1,56 @@
-## 2026-06-19 · Hermes · Reconcile portfolio-combined.html as single SPA with shared 3-pill topbar
+## 2026-06-19 · Hermes · Fix broken portfolio-combined.html SPA and restore old background tokens
 
-**Mode:** Builder + Orchestration · **No sub-agent code execution used for actual file edits**
+**Mode:** Builder + Orchestration · **Sub-agent:** leaf coding agent executed file edits
 
 ---
 
 ### What was done
 
-- Created feature branch `feat/combine-prototypes-v4` from `dev`.
-- Used parallel sub-agents to extract HTML, CSS, and JS sections from `portfolio-v4.html`, `projects.html`, `about.html`, and `cs-roadmap.html`.
-- Rebuilt `prototypes/portfolio-combined.html` as a true SPA:
-  - Shared 3-pill glass topbar from `portfolio-v4.html` on every page.
-  - Topbar links use `showPage('home'|'projects'|'roadmap'|'about'|'me')` + hash routing.
-  - 5 page containers: `#pg-home`, `#pg-projects`, `#pg-roadmap`, `#pg-about`, `#pg-me`.
-  - Only one page visible at a time via `.page.active`.
-- Embedded `cs-roadmap.html` content inside `#pg-roadmap` and kept its internal roadmap nav visible (scoped CSS to `#pg-roadmap nav`).
-- Reconciled sections so combined file matches individual prototypes: no UI or content changes.
-- Scoped CS roadmap CSS (`#pg-roadmap nav`) so it does not conflict with the shared topbar.
-- Removed standalone nav rules from `projects.css` and `about.css` to avoid conflicts.
-- Added a minimal `/me` placeholder page.
+- Restored old `portfolio-combined.html` from commit `7527c37` and analyzed its UI tokens.
+- Delegated repair work to a coding sub-agent on branch `feat/combine-prototypes-v4`.
+- Agent fixed:
+  - Structural bugs (stray `</nav>`, missing page-container closers, unclosed `.avail-block`).
+  - Removed unfinished inline projects chart script; rebuilt chart JS in shared bottom script.
+  - Added missing roadmap modal markup (`modal-overlay`, `modal-content`, `modal-body`, `modal-close`).
+  - Added missing progress-widget markup (`progress-widget`, `pw-count`, `pw-bar`).
+  - Added `Syne` font to Google Fonts import.
+  - Restored old design tokens: `--bg #1B1C1D`, dot-grid `body::before`, light/dark variables, `--glass`, etc.
+  - Consolidated duplicate global CSS (`*`, `:root`, `html`, `body`) and scoped page-specific overrides under `#pg-projects`, `#pg-about`, `#pg-roadmap`.
+  - Removed leftover standalone nav rules from projects/about CSS to avoid shared topbar conflicts.
+  - Fixed SPA shell padding rules.
+  - Guarded `toggleLang()` against missing `.hero-eyebrow`.
+  - Called `observeAnimElements()` after roadmap render.
+  - Replaced internal anchor links with `scrollToAnchor()` to avoid breaking SPA hash routing.
+  - Fixed case-study bottom nav `index.html` link to use SPA `showPage('home')`.
+- Verified with local HTTP server: file loads HTTP 200, all page sections and shared nav present.
+- Updated `tasks/todo.md`, `tasks/DEVLOG.md`, and `tasks/lessons.md`.
 
 ### State
 
-- `prototypes/portfolio-combined.html` is now the canonical SPA prototype.
-- Individual pages (`portfolio-v4.html`, `projects.html`, `about.html`, `cs-roadmap.html`) remain untouched.
-- Branch: `feat/combine-prototypes-v4` (ready for merge to `dev`).
+- `prototypes/portfolio-combined.html` now loads without structural errors.
+- Branch `feat/combine-prototypes-v4` has the fix; needs smoke test in real browser before merge.
 
 ### Modified
 
-- `prototypes/portfolio-combined.html` — rewritten as SPA
-- `tasks/todo.md` — marked combined SPA task complete
+- `prototypes/portfolio-combined.html`
+- `tasks/todo.md`
+- `tasks/DEVLOG.md`
+- `tasks/lessons.md`
+
+### Lessons added
+
+- L-006: When concatenating standalone HTML pages into a single SPA, validate DOM nesting and script block boundaries immediately — one unclosed `<script>` breaks the whole document.
+- L-007: Imported page CSS often contains global `body` / `nav` / `:root` rules that conflict with a shared topbar. Strip or scope them before merging.
 
 ### Next
 
-- Smoke test in browser (home, projects, roadmap, about, me switching).
-- Merge `feat/combine-prototypes-v4` → `dev`.
-- Deploy combined prototype to Vercel (today's goal).
+- Open in browser and verify page switching for all 5 pages.
+- Merge `feat/combine-prototypes-v4` → `dev` after verification.
+- Proceed to Vercel deploy.
 
 ---
 
-# DEVLOG.md
+## 2026-06-18 · Claude (claude.ai) · Portfolio v4 — 3-pill topbar, hero removed, font stack, design polish
 > Append-only session log. Written by agents at end of every session. **Newest entry at top.**
 > Format: date · agent · one-line summary, then Did / State / Decided / Blocked+Next / Modified.
 
