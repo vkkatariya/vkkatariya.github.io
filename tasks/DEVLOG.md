@@ -1,3 +1,43 @@
+## 2026-06-19 · Hermes · Reconcile portfolio-combined.html as single SPA with shared 3-pill topbar
+
+**Mode:** Builder + Orchestration · **No sub-agent code execution used for actual file edits**
+
+---
+
+### What was done
+
+- Created feature branch `feat/combine-prototypes-v4` from `dev`.
+- Used parallel sub-agents to extract HTML, CSS, and JS sections from `portfolio-v4.html`, `projects.html`, `about.html`, and `cs-roadmap.html`.
+- Rebuilt `prototypes/portfolio-combined.html` as a true SPA:
+  - Shared 3-pill glass topbar from `portfolio-v4.html` on every page.
+  - Topbar links use `showPage('home'|'projects'|'roadmap'|'about'|'me')` + hash routing.
+  - 5 page containers: `#pg-home`, `#pg-projects`, `#pg-roadmap`, `#pg-about`, `#pg-me`.
+  - Only one page visible at a time via `.page.active`.
+- Embedded `cs-roadmap.html` content inside `#pg-roadmap` and kept its internal roadmap nav visible (scoped CSS to `#pg-roadmap nav`).
+- Reconciled sections so combined file matches individual prototypes: no UI or content changes.
+- Scoped CS roadmap CSS (`#pg-roadmap nav`) so it does not conflict with the shared topbar.
+- Removed standalone nav rules from `projects.css` and `about.css` to avoid conflicts.
+- Added a minimal `/me` placeholder page.
+
+### State
+
+- `prototypes/portfolio-combined.html` is now the canonical SPA prototype.
+- Individual pages (`portfolio-v4.html`, `projects.html`, `about.html`, `cs-roadmap.html`) remain untouched.
+- Branch: `feat/combine-prototypes-v4` (ready for merge to `dev`).
+
+### Modified
+
+- `prototypes/portfolio-combined.html` — rewritten as SPA
+- `tasks/todo.md` — marked combined SPA task complete
+
+### Next
+
+- Smoke test in browser (home, projects, roadmap, about, me switching).
+- Merge `feat/combine-prototypes-v4` → `dev`.
+- Deploy combined prototype to Vercel (today's goal).
+
+---
+
 # DEVLOG.md
 > Append-only session log. Written by agents at end of every session. **Newest entry at top.**
 > Format: date · agent · one-line summary, then Did / State / Decided / Blocked+Next / Modified.
