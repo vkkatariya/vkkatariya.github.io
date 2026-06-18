@@ -141,6 +141,19 @@
 
 ---
 
+---
+
+## L-011 — Roadmap internal nav inherits shared topbar `.nav-links` absolute positioning
+
+**What failed:** After merging cs-roadmap into portfolio-combined.html, the roadmap internal nav stretched full-width or misaligned because global `.nav-links { position: absolute; left: 50%; transform: translateX(-50%) }` from the 3-pill shared topbar also applied to `#pg-roadmap .nav-links`.
+
+**Root cause:** Standalone cs-roadmap.html uses `.nav-links` as a simple flex row inside a glass pill nav. The combined SPA reuses the same class names for both the shared topbar center pill and the roadmap internal nav. Page-scoped CSS added glass styling but did not reset position/transform/background from the shared rules.
+
+**Prevention rule:**
+- When merging pages into an SPA, grep for shared class names (`.nav-links`, `.nav-logo`) and explicitly reset all inherited properties under the page container ID.
+- For internal page navs that must differ from the shell nav, prefer scoping: `#pg-roadmap .nav-links { position: static; transform: none; background: none; ... }`.
+- IntersectionObserver for section highlighting must be scoped to the page's nav (`#pg-roadmap .nav-links a`), not global `.nav-links a`.
+
 <!-- Add new lessons above this line using: -->
 <!-- ## L-00N — Short title -->
 <!-- **What failed:** ... -->
