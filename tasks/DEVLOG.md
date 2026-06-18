@@ -1,3 +1,25 @@
+## 2026-06-18 · Hermes — Fix roadmap topbar overlay in portfolio-combined.html
+
+**Mode:** Execution (manual patches after OpenCode baseline)
+
+---
+
+### What was done
+
+- Changed `#pg-roadmap nav` from `position: fixed` to `position: relative; margin-top: 90px`
+- Scoped roadmap `main` padding to `#pg-roadmap main { padding: 0 20px 80px }` so other pages are not affected
+- Removed mobile media query overrides for `#pg-roadmap nav` (860px + 560px breakpoints) that anchored it to the bottom
+- Added missing roadmap `<footer>` inside `#pg-roadmap`
+- Fixed roadmap internal anchor links to use new `scrollInRoadmap()` function (previously `scrollToAnchor()` always jumped to the projects page)
+- Fixed roadmap hero CTA and "back to portfolio" links to use SPA routing
+- All glass styling preserved; roadmap remains one scrollable page (not nested SPA pages)
+
+**State:** Roadmap nav now scrolls with the page below the shared topbar. No overlap. Roadmap content is one continuous scroll page like cs-roadmap.html.
+
+**Modified:** `prototypes/portfolio-combined.html`
+
+---
+
 ## 2026-06-19 · Hermes · Fix broken portfolio-combined.html SPA and restore old background tokens
 
 **Mode:** Builder + Orchestration · **Sub-agent:** leaf coding agent executed file edits

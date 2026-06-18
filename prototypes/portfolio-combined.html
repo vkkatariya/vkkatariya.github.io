@@ -1681,7 +1681,7 @@ footer {
 #pg-roadmap .nav-links a:hover, .nav-links a.active { color: var(--w); }
 
 /* ── main layout ── */
-main {
+#pg-roadmap main {
   position: relative; z-index: 1;
   max-width: 1100px; margin: 0 auto;
   padding: 0 20px 80px;
@@ -2230,7 +2230,7 @@ footer {
    RESPONSIVE
 ══════════════════════════════════════════ */
 @media (max-width: 860px) {
-  main { padding: 0 20px 100px; }
+  #pg-roadmap main { padding: 0 20px 100px; }
 }
 @media (max-width: 768px) {
   .phases-grid { grid-template-columns: repeat(2, 1fr); }
@@ -2244,7 +2244,7 @@ footer {
   .guide-grid { grid-template-columns: 1fr; }
 }
 @media (max-width: 560px) {
-  main { padding: 0 16px 100px; }
+  #pg-roadmap main { padding: 0 16px 100px; }
   .hero h1 { font-size: clamp(32px, 9vw, 56px); }
   .hero-sub { font-size: 15px; }
 }
@@ -3234,10 +3234,10 @@ footer {
 <nav aria-label="Site navigation">
   <a href="/" class="nav-logo">CS<em>.</em></a>
   <ul class="nav-links">
-    <li><a href="#roadmap">overview</a></li>
-    <li><a href="#topics">topics</a></li>
-    <li><a href="#careers">careers</a></li>
-    <li><a href="#resources">resources</a></li>
+    <li><a href="#roadmap" onclick="scrollInRoadmap('roadmap');return false;">overview</a></li>
+    <li><a href="#topics" onclick="scrollInRoadmap('topics');return false;">topics</a></li>
+    <li><a href="#careers" onclick="scrollInRoadmap('careers');return false;">careers</a></li>
+    <li><a href="#resources" onclick="scrollInRoadmap('resources');return false;">resources</a></li>
   </ul>
 </nav>
 
@@ -3254,8 +3254,8 @@ footer {
       <span class="stat-badge green">👥 50K+ Developers</span>
     </div>
     <div class="hero-cta">
-      <a class="np" href="#topics">Start Your Journey →</a>
-      <a class="np-ghost" href="/" style="font-size:10px">← back to portfolio</a>
+      <a class="np" href="#topics" onclick="scrollInRoadmap('topics');return false;">Start Your Journey →</a>
+      <a class="np-ghost" href="#home" onclick="showPage('home');return false;" style="font-size:10px">← back to portfolio</a>
     </div>
   </section>
 
@@ -3759,6 +3759,15 @@ footer {
   </section>
 
 </main>
+
+<footer>
+  <span class="footer-logo">CS Roadmap 2025 · vkkatariya</span>
+  <ul class="footer-links">
+    <li><a href="https://roadmap.sh" target="_blank" rel="noopener noreferrer">roadmap.sh ↗</a></li>
+    <li><a href="#" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">back to top ↑</a></li>
+  </ul>
+</footer>
+
 </div>
 <div class="page" id="pg-about">
 <div class="wrap">
@@ -4840,6 +4849,13 @@ observeAnimElements();
 
 function scrollToAnchor(id) {
   showPage('projects');
+  setTimeout(() => {
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({behavior:'smooth'});
+  }, 50);
+}
+function scrollInRoadmap(id) {
+  showPage('roadmap');
   setTimeout(() => {
     const el = document.getElementById(id);
     if (el) el.scrollIntoView({behavior:'smooth'});
