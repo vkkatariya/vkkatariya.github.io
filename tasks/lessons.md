@@ -114,6 +114,33 @@
 
 ---
 
+## L-009 — Concatenating standalone HTML pages into one SPA breaks easily
+
+**What failed:** The combined `portfolio-combined.html` SPA did not work in browser after stitching together `portfolio-v4.html`, `projects.html`, `about.html`, and `cs-roadmap.html`. Root causes: a stray `</nav>`, missing page-container closing `</div>`s, and an unfinished inline `<script>` that swallowed the rest of the document.
+
+**Root cause:** Each standalone page has its own `<html>`, `<head>`, `<body>`, CSS `:root`, and scripts. Concatenating them without stripping wrappers and validating DOM boundaries produces invalid HTML. One unclosed script block breaks *all* JavaScript in the file.
+
+**Prevention rule:**
+- Strip `<html/>/<head/>/<body/>/<!DOCTYPE>` wrappers from each imported section before assembly.
+- Validate DOM tree with a real HTML parser or at least count opening/closing tags for each page container.
+- Run the file in a browser immediately after assembly; do not assume concatenation is safe.
+- Move all inline scripts into one shared bottom `<script>` block with clean boundaries.
+
+---
+
+## L-010 — Imported page CSS contains global rules that conflict with shared UI
+
+**What failed:** After combining pages, the shared 3-pill topbar styling broke on some pages because `projects.html` and `about.html` defined their own `nav`, `.nav-links`, `.nav-logo`, and `body` rules. The font stack also flipped depending on which page CSS loaded last.
+
+**Root cause:** Standalone pages are designed to be standalone — they redefine global selectors. When merged into an SPA, those global rules fight with the shared shell.
+
+**Prevention rule:**
+- Before merging page CSS, strip or rename global `nav`, `.nav-logo`, `.nav-links`, `body`, `:root`, and `html` rules.
+- Scope remaining page-specific typography/layout overrides under the page container ID, e.g. `#pg-projects`, `#pg-about`, `#pg-roadmap`.
+- Keep exactly one `:root`, one `*`, one `html`, and one `body` rule in the combined file.
+
+---
+
 <!-- Add new lessons above this line using: -->
 <!-- ## L-00N — Short title -->
 <!-- **What failed:** ... -->

@@ -6,7 +6,7 @@
 <title>Vishal Katariya — Portfolio</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,600;1,700&family=DM+Mono:wght@300;400;500&family=Space+Grotesk:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,600;1,700&family=DM+Mono:wght@300;400;500&family=Space+Grotesk:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 /* === portfolio-v4 base + 3-pill topbar === */
 
@@ -14,28 +14,45 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 
 :root {
-  --bg: #080808;
-  --bg2: #0f0f0f;
-  --bg3: #141414;
-  --w: #f0f0f0;
-  --w60: rgba(240,240,240,.6);
-  --w30: rgba(240,240,240,.3);
-  --w12: rgba(240,240,240,.12);
-  --w06: rgba(240,240,240,.06);
-  --w03: rgba(240,240,240,.03);
-  --green: #3ddc84;
+  --bg: #1B1C1D;
+  --bg2: #1F2021;
+  --bg3: #252527;
+  --bg4: #2C2C2E;
+  --w: #F1F0F6;
+  --w80: rgba(241,240,246,.8);
+  --w60: rgba(241,240,246,.6);
+  --w30: rgba(241,240,246,.3);
+  --w12: rgba(241,240,246,.12);
+  --w06: rgba(241,240,246,.06);
+  --w03: rgba(241,240,246,.03);
+  --green: #34C77B;
+  --amber: #F5B55F;
+  --blue: #5B9CF6;
   --acc: #00D4AA;
-  --amber: #ffbb33;
-  --blue: #5b9cf6;
-  --red: #ff453a;
-  /* glass */
-  --gb: rgba(255,255,255,.055);
-  --gbd: rgba(255,255,255,.10);
-  /* neo-shadow */
-  --sd: rgba(0,0,0,.85);
-  --sl: rgba(255,255,255,.035);
-  /* neopop */
-  --np-off: 5px;
+  --red: #F05C5C;
+  --purple: #A78BFA;
+  --sd: rgba(0,0,0,.7);
+  --sl: rgba(255,255,255,.07);
+  --glass: rgba(27,28,29,.78);
+  --glass-b: rgba(241,240,246,.13);
+  --np-off: 4px;
+}
+[data-theme="light"] {
+  --bg: #F0F0EE;
+  --bg2: #FFFFFF;
+  --bg3: #F4F4F2;
+  --bg4: #E8E8E6;
+  --w: #0D0D0F;
+  --w80: rgba(13,13,15,.8);
+  --w60: rgba(13,13,15,.6);
+  --w30: rgba(13,13,15,.3);
+  --w12: rgba(13,13,15,.12);
+  --w06: rgba(13,13,15,.06);
+  --w03: rgba(13,13,15,.03);
+  --sd: rgba(0,0,0,.1);
+  --sl: rgba(255,255,255,.8);
+  --glass: rgba(255,255,255,.72);
+  --glass-b: rgba(13,13,15,.1);
 }
 
 html { scroll-behavior: smooth }
@@ -52,8 +69,8 @@ body {
 body::before {
   content: '';
   position: fixed; inset: 0;
-  background-image: radial-gradient(circle, rgba(255,255,255,.055) 1px, transparent 1px);
-  background-size: 22px 22px;
+  background-image: radial-gradient(circle, rgba(241,240,246,.04) 1px, transparent 1px);
+  background-size: 20px 20px;
   pointer-events: none;
   z-index: 0;
 }
@@ -68,6 +85,9 @@ body::after {
   background: radial-gradient(ellipse, rgba(93,161,246,.055) 0%, transparent 70%);
   pointer-events: none;
   z-index: 0;
+}
+[data-theme="light"] body::before {
+  background-image: radial-gradient(circle, rgba(0,0,0,.05) 1px, transparent 1px);
 }
 
 /* ══════════════════════════════════════════
@@ -1090,33 +1110,11 @@ footer {
 
 /* === projects page === */
 
+#pg-projects { font-family: "Syne", sans-serif; }
 
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --bg:#080808;--bg2:#0f0f0f;--bg3:#141414;
-  --w:#f0f0f0;--w80:rgba(240,240,240,.8);--w60:rgba(240,240,240,.6);
-  --w30:rgba(240,240,240,.3);--w12:rgba(240,240,240,.12);--w06:rgba(240,240,240,.06);
-  --green:#3ddc84;--amber:#ffbb33;--blue:#5b9cf6;--red:#ff453a;--purple:#c084fc;
-  --sd:rgba(0,0,0,.85);--sl:rgba(255,255,255,.035);
-}
-html{scroll-behavior:smooth}
-body{
-  background:var(--bg);color:var(--w);
-  font-family:'Syne',sans-serif;min-height:100vh;overflow-x:hidden;
-}
-body::before{
-  content:'';position:fixed;inset:0;
-  background-image:radial-gradient(circle,rgba(255,255,255,.045) 1px,transparent 1px);
-  background-size:22px 22px;pointer-events:none;z-index:0;
-}
+
 
 /* ── NAV (same as homepage) ── */
-.nav-logo em{color:var(--w30);font-style:normal}
-.nav-links a{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:1px;
-  color:var(--w30);text-decoration:none;transition:color .2s}
-.nav-links a:hover,.nav-links a.act{color:var(--w)}
-.nav-lock:hover{color:var(--w)}
-
 /* ── PAGE HEADER ── */
 .ph{
   position:relative;z-index:1;
@@ -1437,32 +1435,17 @@ body::before{
 /* ── RESPONSIVE NAV ── */
 @media(max-width:640px){
   .nav-links li{flex:1}
-  .nav-links a{display:flex;align-items:center;justify-content:center;padding:14px 8px;font-size:10px;border-right:1px solid rgba(255,255,255,.06)}
   .nav-links li:last-child a{border-right:none}
 }
 
 
 /* === about page === */
 
+#pg-about { font-family: "Syne", sans-serif; }
 
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --bg:#080808;--bg2:#0f0f0f;--bg3:#141414;
-  --w:#f0f0f0;--w60:rgba(240,240,240,.6);--w30:rgba(240,240,240,.3);
-  --w12:rgba(240,240,240,.12);--w06:rgba(240,240,240,.06);--w03:rgba(240,240,240,.03);
-  --green:#3ddc84;--amber:#ffbb33;--blue:#5b9cf6;--red:#ff453a;--purple:#c084fc;
-  --sd:rgba(0,0,0,.85);--sl:rgba(255,255,255,.035);
-}
-html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--w);font-family:'Syne',sans-serif;min-height:100vh;overflow-x:hidden}
-body::before{content:'';position:fixed;inset:0;background-image:radial-gradient(circle,rgba(255,255,255,.045) 1px,transparent 1px);background-size:22px 22px;pointer-events:none;z-index:0}
+
 
 /* ── NAV ── */
-.nav-logo em{color:var(--w30);font-style:normal}
-.nav-links a{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--w30);text-decoration:none;transition:color .2s}
-.nav-links a:hover,.nav-links a.act{color:var(--w)}
-.nav-lock:hover{color:var(--w)}
-
 /* ── LAYOUT ── */
 .wrap{position:relative;z-index:1;max-width:1000px;margin:0 auto;padding:130px 20px 100px}
 
@@ -1651,7 +1634,6 @@ body::before{content:'';position:fixed;inset:0;background-image:radial-gradient(
 /* ── RESPONSIVE NAV ── */
 @media(max-width:640px){
   .nav-links li{flex:1}
-  .nav-links a{display:flex;align-items:center;justify-content:center;padding:14px 8px;font-size:10px;border-right:1px solid rgba(255,255,255,.06)}
   .nav-links li:last-child a{border-right:none}
   .wrap{padding:120px 16px 100px}
 }
@@ -1659,48 +1641,9 @@ body::before{content:'';position:fixed;inset:0;background-image:radial-gradient(
 
 /* === cs-roadmap page (scoped to #pg-roadmap) === */
 
+#pg-roadmap { font-family: "Syne", sans-serif; }
 
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 
-:root {
-  --bg: #080808; --bg2: #0f0f0f; --bg3: #141414;
-  --w: #f0f0f0; --w60: rgba(240,240,240,.6); --w30: rgba(240,240,240,.3);
-  --w12: rgba(240,240,240,.12); --w06: rgba(240,240,240,.06); --w03: rgba(240,240,240,.03);
-  --green: #3ddc84; --amber: #ffbb33; --blue: #5b9cf6; --red: #ff453a; --purple: #c084fc;
-  --gb: rgba(255,255,255,.055); --gbd: rgba(255,255,255,.10);
-  --sd: rgba(0,0,0,.85); --sl: rgba(255,255,255,.035);
-  --np-off: 5px;
-}
-
-html { scroll-behavior: smooth; }
-
-body {
-  background: var(--bg);
-  color: var(--w);
-  font-family: 'Syne', sans-serif;
-  min-height: 100vh;
-  overflow-x: hidden;
-}
-
-body::before {
-  content: '';
-  position: fixed; inset: 0;
-  background-image: radial-gradient(circle, rgba(255,255,255,.055) 1px, transparent 1px);
-  background-size: 22px 22px;
-  pointer-events: none;
-  z-index: 0;
-}
-
-body::after {
-  content: '';
-  position: fixed;
-  top: -200px; left: 50%;
-  transform: translateX(-50%);
-  width: 900px; height: 500px;
-  background: radial-gradient(ellipse, rgba(93,161,246,.055) 0%, transparent 70%);
-  pointer-events: none;
-  z-index: 0;
-}
 
 /* ── scroll progress ── */
 #progress-bar {
@@ -2325,13 +2268,10 @@ footer {
 
 /* === SPA shell === */
 
-.page{display:none;min-height:100vh}
-
-.page.active{display:block}
-
-#pg-home main{padding-top:76px}
-
-#pg-projects, #pg-about, #pg-roadmap{padding-top:76px}
+.page { display: none; min-height: 100vh; position: relative; z-index: 1; }
+.page.active { display: block; }
+#pg-home main { padding-top: 76px; }
+#pg-projects main, #pg-about main, #pg-roadmap main { padding-top: 76px; }
 </style>
 </head>
 <body>
@@ -2374,7 +2314,6 @@ footer {
 </nav>
 
 <div class="page active" id="pg-home">
-</nav>
 
 <main id="work" style="padding-top:76px">
 
@@ -2794,7 +2733,7 @@ footer {
 <!-- PROJECT INDEX GRID -->
 <section style="position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:0 20px 80px">
   <div class="proj-index">
-    <a href="#finance-buddy" class="pi" style="text-decoration:none;color:inherit">
+    <a href="javascript:void(0)" class="pi" style="text-decoration:none;color:inherit" onclick="scrollToAnchor('finance-buddy')">
       <div class="pi-num">01 / 04</div>
       <div class="pi-title">Finance Buddy</div>
       <div class="pi-sub">Personal finance tracker · private</div>
@@ -2808,7 +2747,7 @@ footer {
       <div class="pi-status s-done">Prototype complete</div>
       <div class="pi-arrow">↗</div>
     </a>
-    <a href="#homelab" class="pi" style="text-decoration:none;color:inherit">
+    <a href="javascript:void(0)" class="pi" style="text-decoration:none;color:inherit" onclick="scrollToAnchor('homelab')">
       <div class="pi-num">02 / 04</div>
       <div class="pi-title">Homelab<br>Dashboard</div>
       <div class="pi-sub">Realtime ops · 2-node cluster</div>
@@ -2821,7 +2760,7 @@ footer {
       <div class="pi-status s-done">Prototype complete</div>
       <div class="pi-arrow">↗</div>
     </a>
-    <a href="#typeshift" class="pi" style="text-decoration:none;color:inherit">
+    <a href="javascript:void(0)" class="pi" style="text-decoration:none;color:inherit" onclick="scrollToAnchor('typeshift')">
       <div class="pi-num">03 / 04</div>
       <div class="pi-title">TypeShift</div>
       <div class="pi-sub">Cross-platform AI writing · collab</div>
@@ -2834,7 +2773,7 @@ footer {
       <div class="pi-status s-wip">In progress</div>
       <div class="pi-arrow">↗</div>
     </a>
-    <a href="#orlon-bot" class="pi" style="text-decoration:none;color:inherit">
+    <a href="javascript:void(0)" class="pi" style="text-decoration:none;color:inherit" onclick="scrollToAnchor('orlon-bot')">
       <div class="pi-num">04 / 04</div>
       <div class="pi-title">orlon-bot</div>
       <div class="pi-sub">QLoRA fine-tune · Telegram</div>
@@ -3288,44 +3227,14 @@ footer {
 
     <!-- Bottom nav -->
     <div class="proj-nav">
-      <a href="index.html" class="pnav-btn">← home</a>
+      <a href="#home" class="pnav-btn" onclick="showPage('home'); return false;">← home</a>
       <a href="#finance-buddy" class="pnav-btn">↑ back to top</a>
     </div>
   </section>
 
 </div><!-- /cs -->
+</div><!-- /pg-projects -->
 
-<script>
-// Finance spending chart
-const data = [
-  { label: 'Rent', pct: 34.8, color: '#5b9cf6', val: '€15,200' },
-  { label: 'Education', pct: 19.7, color: '#c084fc', val: '€8,615' },
-  { label: 'Shopping', pct: 10.9, color: '#3ddc84', val: '€4,758' },
-  { label: 'Groceries', pct: 9.2, color: '#ffbb33', val: '€4,023' },
-  { label: 'Insurance', pct: 9.2, color: '#ff8c42', val: '€4,023' },
-  { label: 'Transport', pct: 7.4, color: '#f472b6', val: '€3,234' },
-  { label: 'Dining', pct: 4.8, color: '#34d399', val: '€2,099' },
-  { label: 'Other', pct: 4.0, color: '#888', val: '€1,749' },
-];
-const chart = document.getElementById('financeChart');
-data.forEach(d => {
-  const row = document.createElement('div');
-  row.className = 'bar-row';
-  row.innerHTML = `
-    <span class="bar-lbl">${d.label}</span>
-    <div class="bar-track">
-      <div class="bar-fill" style="width:0%;background:${d.color}" data-w="${d.pct}"></div>
-    </div>
-    <span class="bar-val">${d.pct}%</span>
-  `;
-  chart.appendChild(row);
-});
-// Animate bars on scroll
-const obs = new IntersectionObserver((entries) => {
-  entries.forEach(e => {
-    if (e.isIntersecting) {
-      document.querySelectorAll('.bar-fill').forEach(b => {
-</div>
 <div class="page" id="pg-roadmap">
 <div id="progress-bar"></div>
 
@@ -4189,6 +4098,13 @@ const obs = new IntersectionObserver((entries) => {
     </div>
 
     <div class="avail-block">
+      <div class="ab-dot"></div>
+      <div>
+        <div class="ab-text">Available for internships</div>
+        <div class="ab-sub">Based in Dieburg · near Darmstadt</div>
+      </div>
+    </div>
+  </div>
 </div>
 <div class="page" id="pg-me">
 <div class="page-wrap" style="max-width:480px;padding-top:100px;margin:0 auto">
@@ -4245,7 +4161,7 @@ let lang = 'EN';
 function toggleLang() {
   lang = lang === 'EN' ? 'DE' : 'EN';
   document.getElementById('langBtn').textContent = lang;
-  document.querySelector('.hero-eyebrow').childNodes[2].nodeValue = ' ' + COPY[lang].eyebrow + ' ';
+  const eyebrow = document.querySelector('.hero-eyebrow'); if (eyebrow && eyebrow.childNodes[2]) eyebrow.childNodes[2].nodeValue = ' ' + COPY[lang].eyebrow + ' ';
   document.querySelector('.avail-badge').textContent = COPY[lang].avail;
 }
 
@@ -4920,11 +4836,63 @@ const savedProgress = JSON.parse(localStorage.getItem('cs-roadmap-progress') || 
 updateProgressWidget(savedProgress);
 
 // observe anim elements (includes newly rendered ones)
+observeAnimElements();
 
 /* === projects inline chart JS === */
 
 /* === SPA shell === */
 
+
+/* === shared SPA helpers === */
+
+function scrollToAnchor(id) {
+  showPage('projects');
+  setTimeout(() => {
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({behavior:'smooth'});
+  }, 50);
+}
+
+// ═══════════════════════════════════════════
+// PROJECTS — Finance spending chart
+// ═══════════════════════════════════════════
+const financeData = [
+  { label: 'Rent', pct: 34.8, color: '#5b9cf6', val: '€15,200' },
+  { label: 'Education', pct: 19.7, color: '#c084fc', val: '€8,615' },
+  { label: 'Shopping', pct: 10.9, color: '#3ddc84', val: '€4,758' },
+  { label: 'Groceries', pct: 9.2, color: '#ffbb33', val: '€4,023' },
+  { label: 'Insurance', pct: 9.2, color: '#ff8c42', val: '€4,023' },
+  { label: 'Transport', pct: 7.4, color: '#f472b6', val: '€3,234' },
+  { label: 'Dining', pct: 4.8, color: '#34d399', val: '€2,099' },
+  { label: 'Other', pct: 4.0, color: '#888', val: '€1,749' },
+];
+const financeChart = document.getElementById('financeChart');
+if (financeChart) {
+  financeData.forEach(d => {
+    const row = document.createElement('div');
+    row.className = 'bar-row';
+    row.innerHTML = `
+      <span class="bar-lbl">${d.label}</span>
+      <div class="bar-track">
+        <div class="bar-fill" style="width:0%;background:${d.color}" data-w="${d.pct}"></div>
+      </div>
+      <span class="bar-val">${d.pct}%</span>
+    `;
+    financeChart.appendChild(row);
+  });
+}
+const chartObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      document.querySelectorAll('#finance-buddy .bar-fill').forEach(b => {
+        b.style.width = b.dataset.w + '%';
+      });
+      chartObserver.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.2 });
+const financeChartWrap = document.getElementById('finance-buddy');
+if (financeChartWrap) chartObserver.observe(financeChartWrap);
 
 function showPage(id) {
   const valid = ['home','projects','roadmap','about','me'];
@@ -4957,5 +4925,20 @@ window.addEventListener('hashchange', (e) => {
 window.addEventListener('DOMContentLoaded', routeFromHash);
 
 </script>
+
+<!-- Roadmap modal -->
+<div class="modal-overlay" id="modal-overlay" onclick="if(event.target===this)closeModal()">
+  <div class="modal" id="modal-content" role="dialog" aria-modal="true" aria-labelledby="modal-title-text">
+    <button class="modal-close" id="modal-close" onclick="closeModal()">Close</button>
+    <div id="modal-body"></div>
+  </div>
+</div>
+
+<!-- Roadmap progress widget -->
+<div id="progress-widget">
+  <div class="pw-label">Progress</div>
+  <div class="pw-count" id="pw-count">0 <span>/ 11</span></div>
+  <div class="pw-bar-track"><div class="pw-bar-fill" id="pw-bar"></div></div>
+</div>
 </body>
 </html>
