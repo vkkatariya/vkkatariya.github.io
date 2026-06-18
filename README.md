@@ -4,29 +4,48 @@
 
 Personal portfolio web app. Live at `vishalkatariya.dev`.
 
-Widget-based homepage (iOS home screen aesthetic) with live homelab metrics, project showcase, and planned `/me` personal section.
+This is a **simple standalone portfolio** — not a monolith. Real projects (homelab dashboard, finance buddy) live on their own private subdomains and are linked from `/projects`. Private notes and tools live behind `/me` auth.
 
 ## Current state
 
-| Artefact | Status |
+| Prototype | Status |
 |---|---|
-| `prototypes/portfolio-prototype.html` | ✅ Feature-complete HTML prototype |
-| `prototypes/homelab-dashboard.html` | ✅ Feature-complete HTML prototype |
-| SvelteKit production build | ⬡ Not started |
-| Fastify + WebSocket backend | ⬡ Not started |
+| `prototypes/portfolio-v4.html` | Homepage — 3-pill topbar, widget grid, timeline |
+| `prototypes/projects.html` | Project showcase linking to standalone apps |
+| `prototypes/about.html` | Bio, education, skills, languages, contact |
+| `prototypes/cs-roadmap.html` | Dedicated CS roadmap page |
+| `prototypes/portfolio-combined.html` | Single-file SPA spike (reference only) |
+| SvelteKit production build | not started |
 
 See `tasks/todo.md` for the full phased task list.
 
 ---
 
-## Features (prototype)
+## Features
 
-- **Widget grid** — iOS home-screen layout: live clock, GitHub contribution heatmap, skill bars, homelab node status, featured project (NeoPOP card), tech stack list, about (Liquid Glass), contact (inverted white)
-- **Homelab dashboard** (`/lab`) — 3-tab ops dashboard: Infrastructure (CPU/RAM/storage/network widgets), Services (registry with URLs), Docs & Blueprints (Notion page viewer with slide-in panel)
-- **NothingOS design** — dot-matrix background, DM Mono monospace, Syne 800 display numerals, `#080808` base
-- **Liquid Glass navbar** — floating pill, `backdrop-filter: blur(28px)`, specular highlight, morphs to bottom dock on mobile
-- **Responsive** — 4-col desktop → 3-col tablet → 2-col mobile; tested on Mac, iPad, iPhone
-- **Animated SVG icons** — 3D server rack, rocket, chip, RAM stick, git branch, envelope, code brackets — all inline, no CDN
+- **Widget grid** — iOS home-screen layout with live clock, status widgets, project cards
+- **3-pill glass topbar** — left logo, center nav, right controls (search, EN/DE, theme, profile)
+- **Project showcase** — cards that link out to real standalone apps
+- **CS Roadmap** — dedicated `/roadmap` page in NothingOS style
+- **About/Contact** — bio, education, skills, 4 languages, interests
+- **Private `/me` section** — identity vault, Notion docs, notes (behind auth)
+- **Self-contained SVG icons** — no external CDN dependency
+
+---
+
+## Architecture v2
+
+| Route | Public/Private |
+|---|---|
+| `/` | public — homepage |
+| `/projects` | public — project links |
+| `/roadmap` | public — CS roadmap |
+| `/about` | public — about + contact |
+| `/me/*` | private — vault, docs, notes |
+
+Standalone projects:
+- `studio.auxois-wyrm.ts.net` — homelab dashboard
+- `buddy.auxois-wyrm.ts.net` — finance buddy
 
 ---
 
@@ -36,39 +55,41 @@ See `tasks/todo.md` for the full phased task list.
 |---|---|---|
 | Frontend | Self-contained HTML | SvelteKit + TypeScript |
 | Styling | Vanilla CSS | Shared `tokens.css` |
-| Realtime | Simulated JS | WebSocket — Fastify + `ws` |
-| Metrics | Static mock data | `systeminformation` on `athena` |
-| Backend | None | Fastify + TypeScript on `athena` |
-| Process | n/a | pm2 on `athena` |
-| Ingress | `file://` | Caddy + Tailscale file-cert |
-| Animations | CSS keyframes | Motion One |
-| DB | n/a | SQLite (`better-sqlite3`) |
+| Fonts | Google Fonts CDN | Same CDN |
+| Backend | none | none — external subdomains handle their own backends |
+| DB | none | none |
 
 ---
 
 ## Design system
 
+**Fonts:**
+- Cormorant Garamond italic — artistic `V`/`K` initials
+- Space Grotesk — display text, nav, headings
+- Outfit — body/readable text
+- DM Mono — data labels
+
 **Three design languages zoned by purpose:**
 
 | Layer | Design | CSS approach |
 |---|---|---|
-| Nav / frames | Liquid Glass (Apple iOS 26) | `backdrop-filter: blur(28px) saturate(200%)` + specular inset |
-| Widget surfaces | Neomorphism | dual `box-shadow` — dark + faint light |
-| CTAs / cards | NeoPOP (CRED) | offset 3D shadow in vanilla CSS |
+| Nav / frames | Liquid Glass | `backdrop-filter: blur(40px) saturate(180%)` |
+| Widget surfaces | Neomorphism | dual `box-shadow` |
+| CTAs / cards | NeoPOP | offset 3D shadow in vanilla CSS |
 | Widget internals | NothingOS | DM Mono, dot labels, dot-matrix bg |
 
-**Palette:** `#080808` base, `#f0f0f0` text, `#3DDC84` green, `#FFBB33` amber.  
-**Fonts:** `DM Mono` (data/labels) + `Syne 800` (display numerals) via Google Fonts CDN.  
-**Icons:** 34-symbol self-contained inline SVG system.
+**Palette:** `#080808` base, `#f0f0f0` text, `#3ddc84` green, `#00D4AA` teal accent.
 
 ---
 
 ## Running locally
 
 ```bash
-open prototypes/portfolio-prototype.html
-open prototypes/homelab-dashboard.html
-# No build step — fully self-contained
+open prototypes/portfolio-v4.html
+open prototypes/projects.html
+open prototypes/about.html
+open prototypes/cs-roadmap.html
+# No build step for prototypes
 ```
 
 ---
@@ -78,25 +99,29 @@ open prototypes/homelab-dashboard.html
 ```
 vkkatariya.github.io/
 ├── AGENTS.md               ← agent behavioural contract
-├── CONTEXT.md              ← project context (stack, infra, conventions)
+├── CONTEXT.md              ← project context (stack, infra, decisions)
 ├── README.md               ← this file
-├── prototypes/
-│   ├── portfolio-prototype.html
-│   └── homelab-dashboard.html
-├── tasks/
-│   ├── todo.md             ← sprint tracker (Vishal manages)
-│   ├── DEVLOG.md           ← append-only session log (agents write)
-│   └── lessons.md          ← prevention rules from corrections
-└── web/                    ← SvelteKit project (Phase 2, not started)
-    └── api/                ← Fastify project (Phase 1, not started)
+├── prototypes/             ← HTML prototypes
+│   ├── portfolio-v4.html
+│   ├── projects.html
+│   ├── about.html
+│   ├── cs-roadmap.html
+│   └── portfolio-combined.html
+├── ref:resources/          ← architecture diagrams, references
+│   └── portfolio_architecture_v2.html
+└── tasks/
+    ├── todo.md             ← sprint tracker
+    ├── DEVLOG.md           ← session log
+    └── lessons.md          ← prevention rules
 ```
 
 ---
 
 ## Related projects
 
-- **homelab-dashboard** — separate repo, separate AGENTS/CONTEXT/DEVLOG, shares design tokens
-- **finance-buddy** — separate repo, `vishalkatariya.dev/me/finance`
+- **notion-artifacts** — separate project that generates HTML docs from Notion for `/me/docs`
+- **homelab-dashboard** — separate project at `studio.auxois-wyrm.ts.net`
+- **finance-buddy** — separate project at `buddy.auxois-wyrm.ts.net`
 
 ---
 
@@ -104,6 +129,6 @@ vkkatariya.github.io/
 
 ```
 Project: portfolio-website
-Path: ~/dev/vkkatariya.github.io/
+Path: ~/dev-shared/projects/portfolio-website/
 Read: AGENTS.md, CONTEXT.md, last 5 entries of tasks/DEVLOG.md, tasks/todo.md
 ```

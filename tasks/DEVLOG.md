@@ -54,71 +54,62 @@
 **Did:**
 
 ### Portfolio v4 homepage (portfolio-v4.html)
-- Added `Cormorant Garamond` italic font to create the mixed-font artistic logo treatment (Zack Webster style): `V` and `K` in Cormorant Garamond 700 italic, `ishal` and `atariya` in Syne 800 bold
-- Hero section (90vh): full-width, centered, artistic name + role line (ML Engineering · Full-Stack · Infrastructure) + scroll indicator animation
-- New nav: replaced floating pill with the combined file topbar (see below). Standalone pages still have a pill nav linking between files.
-- Content corrections from CV: `Dieburg` (not Frankfurt), `Oct 2024` h_da start date (not "2nd year"), removed "two years in" claim, `CS` not "2nd yr" chip
-- Lang toggle: `EN/DE` button in nav, `COPY` object architecture for future full translation pass
+- Added `Cormorant Garamond` italic font to create the mixed-font artistic logo treatment: `V` and `K` in Cormorant Garamond 700 italic, `ishal` and `atariya` in Space Grotesk 800
+- Removed 90vh hero section; widget grid starts immediately below the 3-pill glass topbar
+- New 3-pill topbar: left logo pill, center nav pill, right controls pill
+- Content corrections from CV: `Dieburg` (not Frankfurt), `Oct 2024` h_da start date
+
+**Note:** `portfolio-combined.html` was a single-file SPA spike. Production architecture is multi-route SvelteKit app: `/`, `/projects`, `/roadmap`, `/about`.
 
 ### /projects page (projects.html)
 - 2×2 index grid — 4 cards, clickable, anchor-scroll to case studies
-- Full case studies for all 4 projects with inline visualizations:
-  - **Finance Buddy**: stats row (993 txns / 44mo / €43.7k / 7 tabs), animated spending breakdown bar chart (IntersectionObserver triggers on scroll), 7-tab feature list, full stack, privacy note
-  - **Homelab Dashboard**: 2-node infrastructure diagram (athena + atlas side-by-side with live services listed, Tailscale connector), 3-tab breakdown, stack
-  - **TypeShift**: 3-platform grid (Android/Kotlin · macOS/Swift · Windows/C#), collaboration context, my role
-  - **orlon-bot**: 6-stage ML pipeline (Dataset → Kaggle T4 → Unsloth → GGUF export → Rock 5T NPU → Telegram), QLoRA rationale, NPU explanation
+- Full case studies for all 4 projects with inline visualizations
 
 ### /about page (about.html)
-- Photo frame with `VK` initials in Cormorant Garamond italic as placeholder (matches logo aesthetic)
-- Three bio paragraphs with accurate content (Dieburg near Darmstadt, not Frankfurt; building while studying)
-- Education: h_da only (B.Sc. CS, Oct 2024–2028, modules grid, enrolled badge)
-- Skills: 7-item animated bar chart + 4 grouped chip clouds (Backend & Infra / AI & ML / Frontend / Soft) with 3 opacity tiers (hi/mid/lo)
-- Languages: all 4 (Deutsch B2-C1 / English C1-C2 / Hindi native / Gujarati native) — each with 5-dot visual, proficiency note, flag, context sentence. Native cards have green border accent.
-- Interests: 4 cards from CV (Programming / AI / Cricket / Entrepreneurship) with expanded copy
-- Contact: 4 link cards (email / GitHub / LinkedIn / site) + pulsing green availability badge
+- Photo frame with `VK` initials in Cormorant Garamond italic as placeholder
+- Bio, education, skills, 4 languages, interests, contact
 
-### portfolio-combined.html — combined single-file SPA
-- **Finance Buddy-style topbar**: full-width sticky 54px header, 3-column grid layout
-  - Left: artistic `V`ishal `K`atariya mixed-font logo + `vishalkatariya.dev` subtitle
-  - Center: 4 nav buttons (home · projects · about · roadmap) with active pill highlight
-  - Right: 4 controls — 🔍 search icon, `EN/DE` language toggle, ☀️/🌙 theme toggle, `VK` green-to-blue gradient profile circle
-- All 4 sections in one file: home (hero + widget grid + timeline + project preview cards), projects (index grid + 4 full case studies), about (full page), roadmap (11-topic overview grid + CTA to full cs-roadmap.html)
-- `/me` section stub: login page with GitHub OAuth placeholder + Tailscale note
-- **Search modal** (`Cmd+K` / click 🔍): searches 11 indexed items across all sections, jump-to-section on click, `Escape` closes
-- **Language toggle**: EN/DE switches nav labels and hero eyebrow text, `COPY` object architecture for future full translation
-- **Theme toggle**: dark (default) / light — swaps full CSS variable set, dot-matrix pattern inverts, chart grid colours adapt
-- **Finance bar chart**: 8-category spending breakdown, bars animate on IntersectionObserver scroll trigger
-- **Live clock**: ticks every second, day + date line
-- **GitHub contribution grid**: simulated 26×5 (18×5 mobile), animated counter
+### portfolio-combined.html — combined single-file SPA spike
+- Finance Buddy-style topbar, 4 sections in one file, search modal, language toggle, theme toggle
+- **Spike only** — not the production target
 
-**State:** All 5 HTML files working. Combined file is the primary deliverable — open in any browser, no build step. CS roadmap stays as separate linked file (too large to inline).
+### cs-roadmap.html
+- Dedicated `/roadmap` page, NothingOS style
+- Will be ported as a SvelteKit route
+
+**State:** 6 HTML prototypes working. Production target is multi-route SvelteKit app, not the combined SPA.
 
 **Decided:**
-- **Separated the hero name from the topbar logo**: hero uses `clamp(54px, 11vw, 124px)` for maximum impact; topbar uses `19px` compact version. Both use same Cormorant + Syne font mix.
-- **Topbar replaces the floating pill nav**: Finance Buddy-style full-width sticky bar is more appropriate for a multi-section portfolio than a floating pill
-- **Multi-page → single-file SPA**: all 4 sections in one HTML, JS navigation, URL hash for back-button support. Roadmap stays as a separate linked file (1878 lines, too large to inline)
-- **Education: h_da only** — B.Tech India not shown (user decision)
-- **Work experience: not included** — student jobs (Amazon, Moers) unrelated to CS
-- **Privacy**: phone number and full address NOT on any public page — email + GitHub + LinkedIn only
-- **4 languages as a differentiator**: German working proficiency is a genuine competitive advantage for German internship applications — given prominent placement on /about
-- **Dieburg not Frankfurt**: CV shows Dieburg (64807). Frankfurt mentioned only as "near Frankfurt" in context.
+- **Multi-page architecture** over single scroll — `/`, `/projects`, `/roadmap`, `/about`
+- **Standalone project sites** linked from `/projects`, not embedded:
+  - `studio.auxois-wyrm.ts.net` — homelab dashboard
+  - `buddy.auxois-wyrm.ts.net` — finance buddy
+- **Private `/me` section** behind auth — `/me/vault`, `/me/docs`, `/me/notes`
+- **Education: h_da only** — B.Tech India not shown
+- **Work experience: not included** — student jobs unrelated to CS
+- **Privacy**: phone number and full address NOT on any public page
+- **4 languages as a differentiator**
+- **Dieburg not Frankfurt**
+- **Font stack:** Cormorant Garamond italic + Space Grotesk + Outfit + DM Mono
 
 **Blocked / Next:**
-- [ ] Auth for `/me` private section (GitHub OAuth vs Tailscale vs simple JWT) — conversation deferred
-- [ ] Add email to contact section once confirmed as public-safe
-- [ ] Add actual photo to photo placeholder on /about
-- [ ] DE translation strings — fill in `COPY.DE` object for full bilingual support
-- [ ] Scaffold SvelteKit project — port combined.html to real components
-- [ ] Fastify + WS backend on athena — systeminformation pipe for live homelab metrics
-- [ ] notion-artifacts project for Hermes — batch-generate HTML artifacts from homelab/DIY Notion pages
+- [ ] Finalize homepage (`portfolio-v4.html`) as canonical reference
+- [ ] Decide `/me` auth mechanism
+- [ ] Scaffold SvelteKit project and port components
+- [ ] Continue `notion-artifacts` project for `/me/docs`
 
 **Modified:**
 - `prototypes/portfolio-v4.html`
 - `prototypes/projects.html`
 - `prototypes/about.html`
 - `prototypes/portfolio-combined.html`
+- `prototypes/cs-roadmap.html`
 - `tasks/DEVLOG.md` (this entry)
 - `tasks/todo.md`
+
+---
+
+## 2026-06-18 · Hermes · Portfolio docs aligned with v2 architecture — CONTEXT, README, todo rewritten
 
 ---
 

@@ -196,5 +196,21 @@ Definition of Done:
 Mode: <Strategic | Builder | Analytical | Execution | Mixed>
 Complexity: <Simple micro-loop | Non-trivial full workflow>
 
-Read: AGENTS.md, CONTEXT.md, last 5 entries of tasks/DEVLOG.md, tasks/todo.md
+Read: AGENTS.md, CONTEXT.md, last 5 entries of tasks/DEVLOG.md, tasks/todo.md, tasks/lessons.md
+```
+
+### Example for this project
+```markdown
+Project: portfolio-website
+Path: ~/dev-shared/projects/portfolio-website/
+Goal: <clear desired outcome>
+Constraints: <time / scope / tech / business constraints>
+Definition of Done:
+- <criterion 1>
+- <criterion 2>
+
+Mode: <Strategic | Builder | Analytical | Execution | Mixed>
+Complexity: <Simple micro-loop | Non-trivial full workflow>
+
+Read: AGENTS.md, CONTEXT.md, last 5 entries of tasks/DEVLOG.md, tasks/todo.md, tasks/lessons.md
 ```

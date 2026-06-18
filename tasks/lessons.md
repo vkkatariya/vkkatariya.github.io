@@ -56,52 +56,26 @@
 **Prevention rule:**
 - Always read `CONTEXT.md` at session start — the correct tailnet and node names are documented there
 - Current tailnet: `auxois-wyrm.ts.net` — use this everywhere
-- Current backend node: `athena` (Rock 5T, 192.168.178.198) — not `sovikata`, not `rock-5t`
+- Current backend node: `athena` (Rock 5T) — not `sovikata`, not `rock-5t`
 - Old VPS (`sovikata`, DigitalOcean) is **cancelled** — do not reference it
 
 ---
 
-## L-005 — WebSocket backend cannot run on Vercel serverless functions
+## L-005 — Context drift: project dev setup files described an old monolith architecture
 
-**What failed:** (Recorded proactively.) Considered deploying the Fastify + WS backend to Vercel alongside the SvelteKit frontend. Vercel serverless functions have a maximum execution time and do not support persistent WebSocket connections.
+**What failed:** `CONTEXT.md`, `README.md`, and `tasks/todo.md` described a monolith where the portfolio embeds a homelab dashboard (`/lab`), finance buddy (`/me/finance`), and a WebSocket backend. The actual v2 architecture is a standalone portfolio that links to separate subdomains and keeps private tools behind `/me` auth. This confused the project scope.
 
-**Root cause:** Serverless functions are stateless and short-lived. WebSockets require a persistent, long-lived process.
+**Root cause:** The architecture changed during design sessions (multi-page, standalone apps, private `/me`) but the dev setup files were not updated to match. Prototype files moved forward; documentation lagged behind.
 
 **Prevention rule:**
-- WS backend must run under **pm2 on `athena`** — a persistent process on a real server
-- Never deploy a WebSocket server to Vercel, Netlify, or any serverless platform
-- Split deploy is the correct pattern: SvelteKit → Vercel (CDN), Fastify+WS → `athena` (pm2)
-- Client must implement reconnect with exponential backoff (start 1s, max 30s) — `athena` can restart
+- When architecture decisions change, **update CONTEXT.md, README.md, and todo.md in the same session** — never let prototypes outrun docs
+- Treat `CONTEXT.md` as a living contract: if a decision is made, the contract must be rewritten
+- After any major design pivot, run a discrepancy check: compare dev setup files against the latest architecture reference and actual prototype files
+- Keep the mental model simple and explicit: "this project is X, not Y"
 
 ---
 
-## L-006 — ARM64 binary incompatibility on `athena`
-
-**What failed:** (Recorded proactively from known failure pattern.) Attempting to copy npm globals or Node.js binaries from an x86_64 machine to `athena` (aarch64) produces `Exec format error`.
-
-**Root cause:** Native bindings are compiled per architecture. Binaries are not portable between x86_64 and aarch64.
-
-**Prevention rule:**
-- Never copy binaries to `athena` from x86 machines — always `npm install` natively on `athena`
-- Verify architecture before any binary operation: `uname -m` must show `aarch64`
-- apt sources must include `arch=arm64` explicitly when adding repos on `athena`
-
----
-
-## L-007 — Docker containers bound to `0.0.0.0` bypass UFW via iptables
-
-**What failed:** (Recorded proactively.) A Docker service started with `ports: "7200:7200"` (no IP binding) becomes publicly reachable even with UFW deny rules, because Docker writes its own iptables rules that bypass UFW's `INPUT` chain.
-
-**Root cause:** Docker's iptables integration punches holes in the firewall directly, bypassing UFW.
-
-**Prevention rule:**
-- Always bind to `127.0.0.1` in Docker Compose: `ports: "127.0.0.1:7200:7200"`
-- After bringing up any service: `sudo ss -lntp | grep <port>` — must show `127.0.0.1`, never `0.0.0.0`
-- This is in the AGENTS.md completion checklist — run it as part of every Docker deployment
-
----
-
-## L-008 — Building new files from scratch wastes tokens; targeted edits are always faster
+## L-006 — Building new files from scratch wastes tokens; targeted edits are always faster
 
 **What failed:** Asked to redesign the homepage, built `portfolio-combined.html` from scratch (1181 lines) instead of editing the existing `portfolio-v4.html`. The combined file differed from the individual pages, required re-work, and burned significant credits.
 
@@ -114,7 +88,7 @@
 
 ---
 
-## L-009 — Confirm which file to edit before starting — don't assume
+## L-007 — Confirm which file to edit before starting — don't assume
 
 **What failed:** User said "fix the homepage" but I edited `portfolio-combined.html` instead of `portfolio-v4.html`. User had to explicitly correct this.
 
@@ -127,7 +101,7 @@
 
 ---
 
-## L-010 — Don't remove CSS classes when removing the HTML that uses them — check for other usages first
+## L-008 — Don't remove CSS classes when removing the HTML that uses them — check for other usages first
 
 **What failed:** When removing the hero section (`<section class="hero">`), the `.hn-script` and `.hn-sans` CSS classes were nearly deleted too. Those classes are also used in the nav logo pill and the identity widget.
 
@@ -139,7 +113,6 @@
 - Safe order: remove HTML → grep remaining usages → only then remove CSS if count = 0
 
 ---
-
 
 <!-- Add new lessons above this line using: -->
 <!-- ## L-00N — Short title -->
