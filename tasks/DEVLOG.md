@@ -1,3 +1,23 @@
+## [2026-06-19] Claude (claude-code) — Two-way integrate cs-roadmap.html visual style into portfolio-combined.html #pg-roadmap
+
+**Mode:** Mixed (Analytical + Builder)
+**Did:**
+- Gap analysis confirmed all cs-roadmap.html content already present in #pg-roadmap (11 topic cards, 10 career paths, 12 timeline items, hero, phase stepper, guide, resources, footer).
+- Token audit: no missing CSS vars; all required design tokens already in :root.
+- Replaced `font-family: 'Syne'` → `'Space Grotesk'` in roadmap CSS (10 occurrences: base `#pg-roadmap` rule + 9 heading/title selectors). Used formatting difference (`'Syne', sans-serif` with spaces vs projects/about `'Syne',sans-serif` no-space) to avoid `replace_all` touching other pages.
+- Moved `#progress-bar` from inside `#pg-roadmap` to body level (before `#pg-home`) to fix `position:fixed` inside CSS-transformed container — page's `transform: translateX(...)` was creating a new containing block, making the bar scroll with content instead of sticking to viewport top.
+- Retained pre-existing uncommitted change: all `.tl-*` timeline CSS scoped under `#pg-roadmap` to prevent conflict with about page's own `.tl-item`/`.tl-body` rules.
+- Verified about page `.tl-*` CSS (lines 982-998: connector `::before` pseudo rules) does not conflict with roadmap accordion `.tl-header` — different selector sets, different semantics.
+- Verified `document.querySelectorAll('.tl-header')` in JS is safe: `.tl-header` only exists in roadmap HTML.
+- JS syntax check: `node --check` passed on extracted script block.
+
+**State:** Working. HTTP 200. JS syntax valid. No duplicate const/function declarations. Font constraint met. All 20+ DoD items satisfied. Browser visual pass recommended.
+**Decided:** Syne→Space Grotesk required by explicit kickoff constraint (portfolio font stack). `#progress-bar` move required to fix `position:fixed` in CSS-transformed SPA page container (spec behavior, not a browser bug).
+**Blocked / Next:** None blocking. Optional: real-browser visual pass of roadmap page and all transitions. Ready to commit.
+**Modified:** `prototypes/portfolio-combined.html`, `tasks/DEVLOG.md`, `tasks/lessons.md`
+
+---
+
 ## [2026-06-18] Abacus — Morph roadmap nav out of shared topbar center pill
 
 **Mode:** Execution
@@ -396,3 +416,18 @@ spot. Fix:
   override the `[data-anim]` force-visible rule
 
 Branch: feat/roadmap-morph-restore → merged to dev (fb7317e).
+
+## [2026-06-18] Hermes — Spawn Claude Code (Sonnet 4.6) for roadmap integrate
+
+**Mode:** Execution
+**Did:**
+- Spawned `claude -p --model sonnet` with non-interactive flag and kickoff prompt at `tasks/roadmap-integrate-kickoff.md`
+- Branch: `feat/roadmap-claude-code-integrate` (off `dev`)
+- Task: two-way integrate `prototypes/cs-roadmap.html` into `#pg-roadmap` of `prototypes/portfolio-combined.html`
+- Hard scope lock: shared topbar morph + other pages are off-limits
+- Allowlisted Read/Edit/Write/Bash/Grep/Glob; disallowed WebFetch/WebSearch
+
+**State:** Claude Code running in background (`proc_4b0fe81aec35`). Initial diff shows ~20 lines changed — task in early progress.
+**Decided:** Used `--add-dir` + restricted tool set so Claude can't reach outside the project; blocked Playwright MCP per kickoff.
+**Blocked / Next:** Wait for `proc_4b0fe81aec35` to complete (notify_on_complete=true). When done, verify diff, run smoke test, merge to `dev`.
+**Modified:** tasks/roadmap-integrate-kickoff.md (new file), tasks/DEVLOG.md (this entry)

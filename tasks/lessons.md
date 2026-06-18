@@ -183,6 +183,17 @@
 <!-- **Root cause:** ... -->
 <!-- **Prevention rule:** ... -->
 
+## L-015 — `position:fixed` inside a CSS-transformed SPA page container doesn't stick to the viewport
+
+**What failed:** `#progress-bar { position:fixed; top:0 }` placed inside `#pg-roadmap` scrolled with page content instead of staying fixed at the top of the viewport.
+
+**Root cause:** CSS spec: any ancestor with `transform`, `filter`, `perspective`, or `will-change: transform` becomes the containing block for `position:fixed` descendants — even if it's not `position:relative`. SPA page containers use `transform: translateX(...)` for transitions, so `fixed` children are positioned relative to the page div, not the viewport.
+
+**Prevention rule:**
+- Never place `position:fixed` elements inside any div that uses CSS `transform` (including SPA page containers).
+- Move fixed UI (scroll progress bars, toasts, overlays) to be direct children of `<body>`, outside all page containers.
+- In a `.page { transform: ... }` SPA: only `position:absolute/relative` is safe inside page divs.
+
 ## L-014 — Long-running coding agents must be delegated, not run in foreground terminal
 
 **What failed:** Dispatched Claude Code for a large roadmap integration task by calling `terminal()` with `timeout=600`. The process was killed at 10 minutes mid-work, then relaunched via background `terminal()` and later killed again. Result: ~50% of Claude Code credits burned, only 20 lines changed, no deliverable, and an empty `tee` log.
