@@ -1655,7 +1655,7 @@ footer {
 
 /* ── nav ── */
 #pg-roadmap nav {
-  position: fixed; top: 18px; left: 50%; transform: translateX(-50%);
+  position: relative; margin-top: 90px;
   z-index: 200; display: flex; align-items: center; gap: 28px;
   padding: 11px 24px;
   background: rgba(8,8,8,.55);
@@ -1684,7 +1684,7 @@ footer {
 main {
   position: relative; z-index: 1;
   max-width: 1100px; margin: 0 auto;
-  padding: 108px 20px 80px;
+  padding: 0 20px 80px;
 }
 
 /* ── base card .w ── */
@@ -2230,8 +2230,7 @@ footer {
    RESPONSIVE
 ══════════════════════════════════════════ */
 @media (max-width: 860px) {
-  #pg-roadmap nav { top: auto; bottom: 18px; gap: 20px; }
-  main { padding: 40px 20px 100px; }
+  main { padding: 0 20px 100px; }
 }
 @media (max-width: 768px) {
   .phases-grid { grid-template-columns: repeat(2, 1fr); }
@@ -2245,13 +2244,7 @@ footer {
   .guide-grid { grid-template-columns: 1fr; }
 }
 @media (max-width: 560px) {
-  #pg-roadmap nav {
-    bottom: 0; left: 0; right: 0; top: auto;
-    transform: none; width: 100%; border-radius: 0;
-    border-left: none; border-right: none; border-bottom: none;
-    justify-content: space-around; gap: 0; padding: 12px 16px;
-  }
-  main { padding: 32px 16px 100px; }
+  main { padding: 0 16px 100px; }
   .hero h1 { font-size: clamp(32px, 9vw, 56px); }
   .hero-sub { font-size: 15px; }
 }
