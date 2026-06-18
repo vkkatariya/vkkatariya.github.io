@@ -23,6 +23,7 @@
 - [x] Combined single-file SPA spike (reference only)
 - [x] Reconcile portfolio-combined.html: shared 3-pill topbar + all page sections + SPA page switching
 - [x] Fix portfolio-combined.html structural bugs and restore old background design tokens
+- [x] Fix portfolio-combined.html roadmap page: slide-over topbar + render invisible topic/career cards
 - [x] Project dev setup: AGENTS.md, CONTEXT.md, README.md, DEVLOG.md, todo.md, lessons.md
 - [ ] Finalize homepage (portfolio-v4.html) as the canonical reference
 - [ ] Decide `/me` auth mechanism

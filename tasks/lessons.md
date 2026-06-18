@@ -154,6 +154,17 @@
 - For internal page navs that must differ from the shell nav, prefer scoping: `#pg-roadmap .nav-links { position: static; transform: none; background: none; ... }`.
 - IntersectionObserver for section highlighting must be scoped to the page's nav (`#pg-roadmap .nav-links a`), not global `.nav-links a`.
 
+## L-012 — SPA page transitions hide content because entrance animations were observed while pages were `display:none`
+
+**What failed:** In `portfolio-combined.html`, the roadmap "11 CORE TOPICS", "CAREER PATHS", and resources cards appeared empty after clicking the roadmap page. The cards existed in the DOM and the render functions ran, but all cards had `opacity:0` from `[data-anim]` CSS. The `IntersectionObserver` was set up once at initial page load when the roadmap page was hidden (`display:none`), so it never fired for those elements.
+
+**Root cause:** Standalone pages rely on `IntersectionObserver` to trigger entrance animations. In the SPA, most pages start hidden. Observing animated elements before their parent page is visible means the observer calculates intersections against a hidden/zero-size container and never calls back.
+
+**Prevention rule:**
+- For SPA page containers, re-run `observeAnimElements()` (and any other intersection-based setup) inside the page-switch function *after* the target page becomes `display:block`.
+- Before re-observing, `unobserve()` then `observe()` each element so the browser recalculates intersections against the now-visible layout.
+- Never assume a one-time observer setup at `DOMContentLoaded` works for content inside initially-hidden SPA pages.
+
 <!-- Add new lessons above this line using: -->
 <!-- ## L-00N — Short title -->
 <!-- **What failed:** ... -->
