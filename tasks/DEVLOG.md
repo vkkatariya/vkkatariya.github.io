@@ -375,3 +375,24 @@
 **Blocked / Next:** Begin prototyping widget grid in HTML before scaffolding SvelteKit.
 
 **Modified:** None (research and decision session)
+
+## [2026-06-18] Manual — Clean center-pill collapse (no ghost rectangle)
+
+Reverted the previous "inside-page nav" attempt and went back to the
+center-pill morph. The ghost rectangle came from the shared center pill
+only scaling to 0.82 + opacity:0 — its background, padding, and box-shadow
+still rendered visually while the roadmap nav was popping in at the same
+spot. Fix:
+
+- `#shared-nav.nav-hidden .nav-links` → `scale(0) + visibility:hidden`
+  (full collapse, not just shrink)
+- `#roadmap-internal-nav` base state → `scale(0) + visibility:hidden` for
+  clean pop-in instead of shrink-in
+- `visibility` transition uses `linear` delay so the element becomes
+  invisible only AFTER the transform/opacity transition finishes — no
+  flicker, no overlap rectangle
+- `#pg-roadmap.active .pcard` also forced to `animation:none` because
+  the global `.pcard` `widget-enter` keyframes use `both` fill mode and
+  override the `[data-anim]` force-visible rule
+
+Branch: feat/roadmap-morph-restore → merged to dev (fb7317e).
