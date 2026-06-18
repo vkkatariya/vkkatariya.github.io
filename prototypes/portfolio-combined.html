@@ -1655,8 +1655,12 @@ footer {
 
 /* ── nav ── */
 #pg-roadmap nav {
-  position: relative; margin-top: 90px;
-  z-index: 200; display: flex; align-items: center; gap: 28px;
+  position: relative;
+  top: auto; left: auto; right: auto;
+  width: fit-content; max-width: calc(100% - 40px);
+  margin: 90px auto 28px;
+  z-index: 10;
+  display: flex; align-items: center; gap: 28px;
   padding: 11px 24px;
   background: rgba(8,8,8,.55);
   backdrop-filter: blur(28px) saturate(200%) brightness(1.1);
@@ -1669,16 +1673,26 @@ footer {
 #pg-roadmap .nav-logo {
   font-family: 'DM Mono', monospace; font-size: 13px; font-weight: 500;
   letter-spacing: 2.5px; color: var(--w); text-decoration: none;
+  padding: 0; background: none; border: none; border-radius: 0;
+  box-shadow: none; backdrop-filter: none; -webkit-backdrop-filter: none;
 }
-.nav-logo em { color: var(--blue); font-style: normal; }
+#pg-roadmap .nav-logo:hover { box-shadow: none; }
+#pg-roadmap .nav-logo em { color: var(--blue); font-style: normal; }
 
-#pg-roadmap .nav-links { display: flex; gap: 20px; list-style: none; }
+#pg-roadmap .nav-links {
+  position: static; left: auto; transform: none;
+  display: flex; gap: 20px; list-style: none;
+  background: none; border: none; border-radius: 0;
+  box-shadow: none; padding: 0;
+}
 #pg-roadmap .nav-links a {
-  font-family: 'DM Mono', monospace; font-size: 11px;
+  display: inline; font-family: 'DM Mono', monospace; font-size: 11px;
   letter-spacing: 1px; color: var(--w30); text-decoration: none;
+  background: none; border: none; border-radius: 0; padding: 0;
   transition: color .2s;
 }
-#pg-roadmap .nav-links a:hover, .nav-links a.active { color: var(--w); }
+#pg-roadmap .nav-links a:hover,
+#pg-roadmap .nav-links a.active { color: var(--w); background: none; box-shadow: none; }
 
 /* ── main layout ── */
 #pg-roadmap main {
@@ -2216,15 +2230,15 @@ footer {
 }
 
 /* ── footer ── */
-footer {
+#pg-roadmap footer {
   position: relative; z-index: 1; border-top: 1px solid var(--w06);
   padding: 28px 20px; max-width: 1100px; margin: 0 auto;
   display: flex; align-items: center; justify-content: space-between;
 }
-.footer-logo { font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: 2px; color: var(--w30); }
-.footer-links { display: flex; gap: 20px; list-style: none; }
-.footer-links a { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 1px; color: var(--w30); text-decoration: none; transition: color .2s; }
-.footer-links a:hover { color: var(--w); }
+#pg-roadmap .footer-logo { font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: 2px; color: var(--w30); }
+#pg-roadmap .footer-links { display: flex; gap: 20px; list-style: none; }
+#pg-roadmap .footer-links a { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 1px; color: var(--w30); text-decoration: none; transition: color .2s; }
+#pg-roadmap .footer-links a:hover { color: var(--w); }
 
 /* ══════════════════════════════════════════
    RESPONSIVE
@@ -2261,10 +2275,24 @@ footer {
 
 /* === SPA shell === */
 
-.page { display: none; min-height: 100vh; position: relative; z-index: 1; }
-.page.active { display: block; }
+.page {
+  display: none;
+  min-height: 100vh;
+  position: relative;
+  z-index: 1;
+  opacity: 0;
+  transform: translateX(20px);
+  transition: opacity .38s ease, transform .38s ease;
+}
+.page.active {
+  display: block;
+}
+.page.active.page-visible {
+  opacity: 1;
+  transform: translateX(0);
+}
 #pg-home main { padding-top: 76px; }
-#pg-projects main, #pg-about main, #pg-roadmap main { padding-top: 76px; }
+#pg-projects main, #pg-about main { padding-top: 76px; }
 </style>
 </head>
 <body>
@@ -2306,7 +2334,7 @@ footer {
   </div>
 </nav>
 
-<div class="page active" id="pg-home">
+<div class="page active page-visible" id="pg-home">
 
 <main id="work" style="padding-top:76px">
 
@@ -4763,7 +4791,10 @@ document.querySelectorAll('.tl-header').forEach(header => {
 // SCROLL PROGRESS BAR
 // ═══════════════════════════════════════════
 function updateProgress() {
+  const roadmapPage = document.getElementById('pg-roadmap');
+  if (!roadmapPage || !roadmapPage.classList.contains('active')) return;
   const el = document.getElementById('progress-bar');
+  if (!el) return;
   const scrollTop = window.scrollY;
   const docHeight = document.documentElement.scrollHeight - window.innerHeight;
   const pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
@@ -4772,23 +4803,23 @@ function updateProgress() {
 window.addEventListener('scroll', updateProgress, {passive:true});
 
 // ═══════════════════════════════════════════
-// NAV ACTIVE SECTION
+// NAV ACTIVE SECTION (roadmap internal nav only)
 // ═══════════════════════════════════════════
-const navLinks = document.querySelectorAll('.nav-links a');
-const sections = document.querySelectorAll('section[id]');
+const roadmapNavLinks = document.querySelectorAll('#pg-roadmap .nav-links a');
+const roadmapSections = document.querySelectorAll('#pg-roadmap section[id]');
 
 const navObserver = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
       const id = entry.target.id;
-      navLinks.forEach(a => {
+      roadmapNavLinks.forEach(a => {
         a.classList.toggle('active', a.getAttribute('href') === '#' + id);
       });
     }
   });
 }, { rootMargin: '-40% 0px -50% 0px' });
 
-sections.forEach(s => navObserver.observe(s));
+roadmapSections.forEach(s => navObserver.observe(s));
 
 // ═══════════════════════════════════════════
 // ENTRANCE ANIMATIONS
@@ -4855,11 +4886,13 @@ function scrollToAnchor(id) {
   }, 50);
 }
 function scrollInRoadmap(id) {
-  showPage('roadmap');
+  const alreadyOnRoadmap = document.getElementById('pg-roadmap')?.classList.contains('active');
+  showPage('roadmap', { scrollTop: !alreadyOnRoadmap });
+  const delay = alreadyOnRoadmap ? 50 : 420;
   setTimeout(() => {
     const el = document.getElementById(id);
-    if (el) el.scrollIntoView({behavior:'smooth'});
-  }, 50);
+    if (el) el.scrollIntoView({behavior:'smooth', block:'start'});
+  }, delay);
 }
 
 // ═══════════════════════════════════════════
@@ -4903,16 +4936,27 @@ const chartObserver = new IntersectionObserver((entries) => {
 const financeChartWrap = document.getElementById('finance-buddy');
 if (financeChartWrap) chartObserver.observe(financeChartWrap);
 
-function showPage(id) {
+function showPage(id, opts) {
+  const options = opts || {};
   const valid = ['home','projects','roadmap','about','me'];
   if (!valid.includes(id)) return; // let in-page anchors work normally
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active', 'page-visible'));
   const page = document.getElementById('pg-' + id);
-  if (page) page.classList.add('active');
-  window.scrollTo({top: 0, behavior: 'smooth'});
+  if (page) {
+    page.classList.add('active');
+    void page.offsetWidth;
+    requestAnimationFrame(() => page.classList.add('page-visible'));
+  }
+  if (options.scrollTop !== false) {
+    window.scrollTo({top: 0, behavior: id === 'roadmap' ? 'auto' : 'smooth'});
+  }
   document.querySelectorAll('#shared-nav .nav-links a').forEach(a => a.classList.remove('act'));
   const navLink = document.querySelector('#shared-nav .nav-links a[href="#' + id + '"]');
   if (navLink) navLink.classList.add('act');
+  const progressWidget = document.getElementById('progress-widget');
+  if (progressWidget) {
+    progressWidget.style.display = id === 'roadmap' && progressWidget.classList.contains('show') ? 'block' : 'none';
+  }
 }
 function runSearch(q) {
   // TODO: implement search or remove
@@ -4922,6 +4966,10 @@ function routeFromHash() {
   const hash = location.hash.replace('#','') || 'home';
   const valid = ['home','projects','roadmap','about','me'];
   if (valid.includes(hash)) showPage(hash);
+  else {
+    const home = document.getElementById('pg-home');
+    if (home) home.classList.add('active', 'page-visible');
+  }
 }
 window.addEventListener('hashchange', (e) => {
   const hash = location.hash.replace('#','');

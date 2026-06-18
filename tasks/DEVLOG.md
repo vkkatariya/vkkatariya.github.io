@@ -1,3 +1,24 @@
+## [2026-06-18] Composer — Polish roadmap page in portfolio-combined SPA
+
+**Mode:** Execution
+**Did:**
+- Added CSS slide/fade page transitions (`.page` opacity + transform, `.page-visible` triggered by `showPage()` via `requestAnimationFrame`)
+- Fixed roadmap internal nav: centered compact glass pill (`width: fit-content`, `margin: 90px auto 28px`) below shared topbar; reset inherited shared `.nav-links` absolute positioning and `.nav-logo` pill styles
+- Removed duplicate `padding-top: 76px` from `#pg-roadmap main` (roadmap nav sits above main, not inside it)
+- Scoped roadmap footer CSS under `#pg-roadmap`; scoped nav section observer to `#pg-roadmap .nav-links a` only (was toggling shared topbar links)
+- Improved `scrollInRoadmap()`: skips scroll-to-top when already on roadmap; waits for page transition before smooth-scrolling to section
+- Progress bar and progress widget only active on roadmap page
+
+**State:** Roadmap page polished per abacus prompt — centered pill nav, smooth SPA transitions, single scroll page with full content. Shell/browser smoke test blocked (tool rejected); manual code review confirms structure. Ready for browser verification.
+
+**Decided:** Use enter-only transition (opacity + translateX) rather than exit animation — simpler, avoids layout flash with `display:none` pages.
+
+**Blocked / Next:** Run browser smoke test locally (all 5 pages + roadmap anchors + modal). Commit on branch `feat/roadmap-ui-polish`.
+
+**Modified:** `prototypes/portfolio-combined.html`, `tasks/DEVLOG.md`, `tasks/lessons.md`
+
+---
+
 ## 2026-06-18 · Hermes — Fix roadmap topbar overlay in portfolio-combined.html
 
 **Mode:** Execution (manual patches after OpenCode baseline)
