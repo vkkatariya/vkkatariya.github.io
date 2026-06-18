@@ -1,4 +1,22 @@
-## [2026-06-18] Abacus — Roadmap nav slide-from-left, kill dark bar, force content visible
+## [2026-06-18] Abacus — Morph roadmap nav out of shared topbar center pill
+
+**Mode:** Execution
+**Did:**
+- Task 1 (content parity): ran an Explore sub-agent to diff all four standalone prototypes (`portfolio-v4.html`, `projects.html`, `about.html`, `cs-roadmap.html`) against the combined SPA. Result: all sections, cards, footers, CTAs, charts, filters, modals, progress widgets, data arrays (`TOPICS`, `CAREERS`), functions and IntersectionObservers are already present under `#pg-home/#pg-projects/#pg-about/#pg-roadmap`. No missing content — no edits needed for Task 1.
+- Task 2 (center-pill morph): replaced the old "slide whole topbar left" behavior. Repurposed `#shared-nav.nav-hidden` so it no longer transforms the whole nav — instead it now only scales/fades the center `.nav-links` pill (`opacity:0; transform: translateX(-50%) scale(.82)`), keeping the left logo pill and right controls pill fully visible on the roadmap page.
+- Reworked `#roadmap-internal-nav`: anchored to the exact center-pill slot (`fixed; top:14px; left:50%`), starts at `translateX(-50%) scale(.82) opacity:0` and pops to `scale(1) opacity:1` on `.nav-visible` via a springy `cubic-bezier(.34,1.3,.64,1)` transform + opacity transition, so it reads as expanding out of the center pill. Swapped its dark-tinted fill for the same translucent glass gradient + shadow as the shared topbar pills. Bumped `z-index` to 201 so it layers above the fading center links.
+- Added `transform-origin: center center` + transition to the base `.nav-links` so the center pill scales from its own center during the morph.
+- Updated the `showPage()` comment to describe the morph (JS class toggles were already correct: `nav-hidden` on shared, `nav-visible` on roadmap nav).
+- Preserved prior fixes: `#pg-roadmap.active [data-anim]` force-visible override untouched; `scrollInRoadmap()` anchors untouched; roadmap remains one continuous scroll page.
+
+**State:** Working. Inline JS parses clean (`vm.Script` over the single script block — OK). HTML structure valid (1 DOCTYPE, 1 html, 1 body). `python3 -m http.server` smoke test returns HTTP 200 and serves the morph markup. Left + right shared pills stay visible on roadmap; center links morph into the roadmap nav. Browser visual pass still recommended.
+**Decided:** Chose Option A (sibling roadmap nav positioned over the center-pill slot) over moving markup inside the center pill — cleaner, avoids reflowing the shared topbar flex layout, and keeps logo/right pills untouched. Used a scale+opacity morph anchored at center rather than `scaleX`/width to get a natural "pop out of the pill" feel while preserving the glass aesthetic.
+**Blocked / Next:** None blocking. Optional: real-browser visual pass of the morph in/out across all 5 page transitions + roadmap anchor scrolling.
+**Modified:** `prototypes/portfolio-combined.html`, `tasks/DEVLOG.md`, `tasks/lessons.md`
+
+---
+
+
 
 **Mode:** Execution
 **Did:**
