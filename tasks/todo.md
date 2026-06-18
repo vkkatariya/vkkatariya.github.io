@@ -25,7 +25,16 @@
 - [x] Fix portfolio-combined.html structural bugs and restore old background design tokens
 - [x] Fix portfolio-combined.html roadmap page: slide-over topbar + render invisible topic/career cards
 - [x] Project dev setup: AGENTS.md, CONTEXT.md, README.md, DEVLOG.md, todo.md, lessons.md
+- [~] Finalize portfolio-combined.html roadmap page — match cs-roadmap.html content + style with clean topbar morph
 - [ ] Finalize homepage (portfolio-v4.html) as the canonical reference
+- [ ] Finalize about page (`about.html`) as canonical reference
+- [ ] Finalize projects page (`projects.html`) as canonical reference
+- [ ] Add page-transition animation spec to CONTEXT.md
+- [ ] Dark/light mode toggle with `localStorage` persistence
+- [ ] Contact form with email endpoint (Resend or Nodemailer)
+- [ ] CV/resume PDF download link
+- [ ] Real GitHub contribution grid via API
+- [ ] DE translation strings for full bilingual support
 - [ ] Decide `/me` auth mechanism
 
 ---
@@ -61,7 +70,8 @@
   - TypeShift, orlon-bot, other public projects
 
 ### 2c — Roadmap (`/roadmap`)
-- [ ] Port `cs-roadmap.html` into SvelteKit route
+- [ ] `src/routes/roadmap/+page.svelte` — port `cs-roadmap.html` as a real route with clean topbar morph
+- [ ] `src/lib/components/RoadmapPage.svelte` — self-contained roadmap component (content + interactions)
 - [ ] Link from topbar and homepage widget
 
 ### 2d — About (`/about`)
@@ -90,8 +100,4 @@
 
 ## Backlog (unscheduled)
 
-- [ ] Dark/light mode toggle with `localStorage` persistence
-- [ ] Contact form with email endpoint (Resend or Nodemailer)
-- [ ] CV/resume PDF download link
-- [ ] Real GitHub contribution grid via API
-- [ ] DE translation strings for full bilingual support
+_(empty — all items moved to Phase 0)_
