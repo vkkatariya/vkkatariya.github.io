@@ -1662,16 +1662,16 @@ footer {
 /* ── roadmap internal nav (slide-in pill) ── */
 #roadmap-internal-nav {
   position: fixed;
-  top: 14px; left: 50%; transform: translateX(-50%) translateX(100%);
+  top: 14px; left: 50%; transform: translateX(-50%) translateX(-100%);
   z-index: 200;
   width: fit-content; max-width: calc(100% - 40px);
   display: flex; align-items: center; gap: 20px;
   padding: 5px 5px;
-  background: linear-gradient(135deg, rgba(255,255,255,.10) 0%, rgba(255,255,255,.04) 100%);
+  background: linear-gradient(135deg, rgba(28,28,30,.78) 0%, rgba(18,18,20,.72) 100%);
   backdrop-filter: blur(40px) saturate(180%);
   -webkit-backdrop-filter: blur(40px) saturate(180%);
   border-radius: 100px; border: 1px solid rgba(255,255,255,.16);
-  box-shadow: 0 4px 28px rgba(0,0,0,.55), 0 1px 0 rgba(255,255,255,.12) inset;
+  box-shadow: 0 6px 20px rgba(0,0,0,.32), 0 1px 0 rgba(255,255,255,.12) inset;
   opacity: 0;
   pointer-events: none;
   transition: transform .4s ease, opacity .4s ease;
@@ -1831,6 +1831,9 @@ footer {
 [data-anim].visible {
   animation: widget-enter .5s cubic-bezier(.34,1.46,.64,1) forwards;
 }
+/* Roadmap is an initially-hidden SPA page; IntersectionObserver cannot fire
+   while display:none, so force its animated content visible once active. */
+#pg-roadmap.active [data-anim] { opacity: 1 !important; transform: none !important; }
 
 /* ══════════════════════════════════════════
    HERO
