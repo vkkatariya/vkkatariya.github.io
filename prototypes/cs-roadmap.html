@@ -1,0 +1,1878 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CS Fundamentals Roadmap 2025 — vkkatariya</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root {
+  --bg: #080808; --bg2: #0f0f0f; --bg3: #141414;
+  --w: #f0f0f0; --w60: rgba(240,240,240,.6); --w30: rgba(240,240,240,.3);
+  --w12: rgba(240,240,240,.12); --w06: rgba(240,240,240,.06); --w03: rgba(240,240,240,.03);
+  --green: #3ddc84; --amber: #ffbb33; --blue: #5b9cf6; --red: #ff453a; --purple: #c084fc;
+  --gb: rgba(255,255,255,.055); --gbd: rgba(255,255,255,.10);
+  --sd: rgba(0,0,0,.85); --sl: rgba(255,255,255,.035);
+  --np-off: 5px;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--w);
+  font-family: 'Syne', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: radial-gradient(circle, rgba(255,255,255,.055) 1px, transparent 1px);
+  background-size: 22px 22px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  top: -200px; left: 50%;
+  transform: translateX(-50%);
+  width: 900px; height: 500px;
+  background: radial-gradient(ellipse, rgba(93,161,246,.055) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── scroll progress ── */
+#progress-bar {
+  position: fixed; top: 0; left: 0; height: 3px;
+  background: linear-gradient(to right, var(--blue), var(--green));
+  width: 0%; z-index: 500;
+  transition: width .1s linear;
+}
+
+/* ── nav ── */
+nav {
+  position: fixed; top: 18px; left: 50%; transform: translateX(-50%);
+  z-index: 200; display: flex; align-items: center; gap: 28px;
+  padding: 11px 24px;
+  background: rgba(8,8,8,.55);
+  backdrop-filter: blur(28px) saturate(200%) brightness(1.1);
+  -webkit-backdrop-filter: blur(28px) saturate(200%) brightness(1.1);
+  border-radius: 100px; border: 1px solid rgba(255,255,255,.1);
+  box-shadow: 0 0 0 0.5px rgba(255,255,255,.04) inset, 0 1px 0 rgba(255,255,255,.09) inset,
+    0 -1px 0 rgba(0,0,0,.3) inset, 0 12px 40px rgba(0,0,0,.7), 0 2px 8px rgba(0,0,0,.4);
+}
+
+.nav-logo {
+  font-family: 'DM Mono', monospace; font-size: 13px; font-weight: 500;
+  letter-spacing: 2.5px; color: var(--w); text-decoration: none;
+}
+.nav-logo em { color: var(--blue); font-style: normal; }
+
+.nav-links { display: flex; gap: 20px; list-style: none; }
+.nav-links a {
+  font-family: 'DM Mono', monospace; font-size: 11px;
+  letter-spacing: 1px; color: var(--w30); text-decoration: none;
+  transition: color .2s;
+}
+.nav-links a:hover, .nav-links a.active { color: var(--w); }
+
+/* ── main layout ── */
+main {
+  position: relative; z-index: 1;
+  max-width: 1100px; margin: 0 auto;
+  padding: 108px 20px 80px;
+}
+
+/* ── base card .w ── */
+.w {
+  position: relative; border-radius: 28px; padding: 20px; overflow: hidden;
+  background: var(--bg2);
+  box-shadow: 5px 5px 16px var(--sd), -2px -2px 7px var(--sl),
+    inset 0 1px 0 rgba(255,255,255,.035), inset 0 -1px 0 rgba(0,0,0,.4);
+  border: 1px solid rgba(255,255,255,.055);
+  transition: transform .25s cubic-bezier(.34,1.46,.64,1), box-shadow .25s ease;
+}
+.w:hover { transform: translateY(-3px) scale(1.015); }
+.w.glass {
+  background: rgba(15,15,15,.6); backdrop-filter: blur(32px) saturate(180%);
+  -webkit-backdrop-filter: blur(32px) saturate(180%);
+  border-color: rgba(255,255,255,.1);
+  box-shadow: 0 0 0 .5px rgba(255,255,255,.04) inset, 0 1.5px 0 rgba(255,255,255,.08) inset,
+    0 -1px 0 rgba(0,0,0,.35) inset, 5px 8px 24px rgba(0,0,0,.7), 0 2px 8px rgba(0,0,0,.4);
+}
+
+/* ── pcard ── */
+.pcard {
+  padding: 22px; border-radius: 20px; background: var(--bg2);
+  border: 1px solid var(--w06);
+  box-shadow: 3px 3px 12px var(--sd), -1px -1px 5px var(--sl);
+  transition: transform .2s cubic-bezier(.34,1.46,.64,1), border-color .2s;
+}
+.pcard:hover { transform: translateY(-3px); border-color: var(--w12); }
+
+/* ── np button ── */
+.np {
+  display: inline-flex; align-items: center; gap: 7px; padding: 10px 18px;
+  background: var(--w); color: #080808;
+  font-family: 'DM Mono', monospace; font-size: 11px; font-weight: 500;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  border: none; cursor: pointer; border-radius: 5px; text-decoration: none;
+  box-shadow: var(--np-off) var(--np-off) 0 rgba(240,240,240,.28);
+  transition: transform .1s, box-shadow .1s;
+}
+.np:hover { transform: translate(-2px,-2px); box-shadow: 7px 7px 0 rgba(240,240,240,.28); }
+.np:active { transform: translate(5px,5px); box-shadow: none; }
+
+/* ── np-ghost ── */
+.np-ghost {
+  display: inline-flex; align-items: center; gap: 7px; padding: 9px 17px;
+  background: transparent; color: var(--w60);
+  font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase;
+  border: 1px solid var(--w12); cursor: pointer; border-radius: 5px; text-decoration: none;
+  transition: border-color .2s, color .2s;
+}
+.np-ghost:hover { border-color: var(--w30); color: var(--w); }
+
+/* ── wlbl-row ── */
+.wlbl-row {
+  display: flex; align-items: center; gap: 7px;
+  font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 3px;
+  color: var(--w30); text-transform: uppercase; margin-bottom: 10px;
+}
+
+/* ── chip ── */
+.chip {
+  display: inline-block; padding: 3px 8px; border: 1px solid var(--w12);
+  border-radius: 5px; font-family: 'DM Mono', monospace;
+  font-size: 10px; color: var(--w30); letter-spacing: .3px;
+}
+
+/* ── sbadge ── */
+.sbadge {
+  display: inline-flex; align-items: center; gap: 5px; padding: 4px 9px;
+  border-radius: 20px; border: 1px solid rgba(61,220,132,.2);
+  background: rgba(61,220,132,.07); font-family: 'DM Mono', monospace;
+  font-size: 10px; letter-spacing: .8px; color: var(--green);
+}
+.sbadge::before {
+  content: ''; width: 5px; height: 5px; border-radius: 50%;
+  background: var(--green); box-shadow: 0 0 5px var(--green);
+}
+
+/* ── stat badges (hero) ── */
+.stat-badge {
+  display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px;
+  border-radius: 20px; font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: .8px;
+}
+.stat-badge.blue { border: 1px solid rgba(91,156,246,.25); background: rgba(91,156,246,.08); color: var(--blue); }
+.stat-badge.amber { border: 1px solid rgba(255,187,51,.25); background: rgba(255,187,51,.08); color: var(--amber); }
+.stat-badge.green { border: 1px solid rgba(61,220,132,.2); background: rgba(61,220,132,.07); color: var(--green); }
+
+/* ── sec-head ── */
+.sec-head {
+  display: flex; align-items: center; gap: 14px; margin: 56px 0 24px;
+}
+.sec-head h2 {
+  font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 4px;
+  color: var(--w30); text-transform: uppercase; font-weight: 400; white-space: nowrap;
+}
+.sec-head::after {
+  content: ''; flex: 1; height: 1px;
+  background: linear-gradient(to right, var(--w06), transparent);
+}
+
+/* ── nd separator ── */
+.nd { display: flex; align-items: center; gap: 4px; margin: 10px 0; }
+.nd i { width: 3px; height: 3px; border-radius: 50%; background: var(--w12); flex-shrink: 0; }
+.nd .line { flex: 1; height: 1px; background: var(--w06); }
+
+/* ── animations ── */
+@keyframes widget-enter {
+  from { opacity: 0; transform: translateY(16px) scale(.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes glow-pulse {
+  0%,100% { box-shadow: 0 0 0 3px rgba(61,220,132,.15), 0 0 10px var(--green); }
+  50% { box-shadow: 0 0 0 5px rgba(61,220,132,.08), 0 0 4px var(--green); }
+}
+
+[data-anim] { opacity: 0; transform: translateY(16px) scale(.98); }
+[data-anim].visible {
+  animation: widget-enter .5s cubic-bezier(.34,1.46,.64,1) forwards;
+}
+
+/* ══════════════════════════════════════════
+   HERO
+══════════════════════════════════════════ */
+.hero {
+  padding: 80px 0 60px;
+  display: flex; flex-direction: column; gap: 24px;
+}
+.hero h1 {
+  font-family: 'Syne', sans-serif; font-weight: 700;
+  font-size: clamp(38px, 6vw, 72px); letter-spacing: -2px;
+  line-height: 1.05;
+}
+.hero-sub {
+  font-family: 'Syne', sans-serif; font-weight: 400; font-size: 18px;
+  color: var(--w60); line-height: 1.5; max-width: 600px;
+}
+.hero-stats { display: flex; gap: 12px; flex-wrap: wrap; }
+.hero-cta { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin-top: 8px; }
+
+/* ══════════════════════════════════════════
+   PHASES GRID
+══════════════════════════════════════════ */
+.phases-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px;
+  position: relative;
+}
+.phases-grid::before {
+  content: '';
+  position: absolute; top: 46px; left: 46px; right: 46px; height: 1px;
+  background: linear-gradient(to right, var(--w06), var(--w12), var(--w06));
+  z-index: 0; pointer-events: none;
+}
+.phase-card { position: relative; z-index: 1; }
+.phase-num {
+  font-family: 'DM Mono', monospace; font-size: 40px; font-weight: 500;
+  line-height: 1; margin-bottom: 12px; letter-spacing: -1px;
+}
+.phase-title {
+  font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 700;
+  margin-bottom: 4px;
+}
+.phase-months {
+  font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 1px;
+  color: var(--w30); margin-bottom: 14px;
+}
+.phase-chips { display: flex; flex-wrap: wrap; gap: 5px; }
+
+/* ══════════════════════════════════════════
+   BEGINNER GUIDE
+══════════════════════════════════════════ */
+.guide-card {
+  padding: 36px; border-radius: 28px;
+}
+.guide-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 40px;
+}
+.guide-col h3 {
+  font-family: 'Syne', sans-serif; font-size: 16px; font-weight: 700;
+  margin-bottom: 16px; color: var(--w);
+}
+.guide-col h4 {
+  font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 2px;
+  text-transform: uppercase; color: var(--w30); margin: 20px 0 10px;
+}
+.guide-col ol, .guide-col ul {
+  padding-left: 18px;
+  display: flex; flex-direction: column; gap: 8px;
+}
+.guide-col li {
+  font-family: 'DM Mono', monospace; font-size: 12px;
+  color: var(--w60); line-height: 1.6; letter-spacing: .2px;
+}
+.guide-col li::marker { color: var(--w12); }
+
+/* ══════════════════════════════════════════
+   TIMELINE
+══════════════════════════════════════════ */
+.timeline { position: relative; padding-left: 28px; }
+.timeline::before {
+  content: ''; position: absolute; left: 0; top: 6px; bottom: 6px;
+  width: 1px; background: var(--w06);
+}
+.tl-item { position: relative; margin-bottom: 6px; }
+.tl-dot {
+  position: absolute; left: -32px; top: 18px;
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--bg2); border: 1px solid var(--w12);
+  transition: border-color .2s, background .2s;
+}
+.tl-item.open .tl-dot { border-color: var(--w30); background: var(--w12); }
+.tl-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 20px; border-radius: 12px; cursor: pointer;
+  background: var(--bg2); border: 1px solid var(--w06);
+  transition: border-color .2s, background .2s;
+  user-select: none;
+}
+.tl-item.open .tl-header { border-color: var(--w12); background: var(--bg3); }
+.tl-header:hover { border-color: var(--w12); }
+.tl-header-left { display: flex; align-items: center; gap: 14px; }
+.tl-month {
+  font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 1.5px;
+  color: var(--w30); white-space: nowrap;
+}
+.tl-title {
+  font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 600; color: var(--w);
+}
+.tl-arrow {
+  font-family: 'DM Mono', monospace; font-size: 12px; color: var(--w30);
+  transition: transform .3s cubic-bezier(.34,1.46,.64,1);
+}
+.tl-item.open .tl-arrow { transform: rotate(90deg); }
+.tl-body {
+  max-height: 0; overflow: hidden;
+  transition: max-height .4s cubic-bezier(.4,0,.2,1);
+}
+.tl-item.open .tl-body { max-height: 400px; }
+.tl-body-inner {
+  padding: 14px 20px 18px;
+  border: 1px solid var(--w06); border-top: none;
+  border-radius: 0 0 12px 12px;
+  background: var(--bg3);
+}
+.tl-body-inner ul { padding-left: 16px; display: flex; flex-direction: column; gap: 7px; }
+.tl-body-inner li {
+  font-family: 'DM Mono', monospace; font-size: 12px;
+  color: var(--w60); line-height: 1.5; letter-spacing: .2px;
+}
+.tl-body-inner li::marker { color: var(--w12); }
+
+/* ══════════════════════════════════════════
+   TOPICS FILTER
+══════════════════════════════════════════ */
+.filter-bar { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 24px; }
+.filter-btn {
+  font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 1px;
+  padding: 7px 16px; border-radius: 100px; border: 1px solid var(--w12);
+  background: transparent; color: var(--w30); cursor: pointer;
+  transition: all .2s; text-transform: uppercase;
+}
+.filter-btn:hover { border-color: var(--w30); color: var(--w60); }
+.filter-btn.active { background: var(--w); color: #080808; border-color: var(--w); }
+
+/* ── topics grid ── */
+.topics-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px;
+}
+.topic-card {
+  position: relative; display: flex; flex-direction: column; gap: 10px;
+}
+.topic-card-top {
+  display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;
+}
+.topic-num {
+  font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 2px; color: var(--w30);
+}
+.topic-name {
+  font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 700; line-height: 1.2;
+}
+.topic-desc {
+  font-family: 'DM Mono', monospace; font-size: 11px; color: var(--w30); line-height: 1.6;
+  flex: 1;
+}
+.topic-footer {
+  display: flex; align-items: center; justify-content: space-between; margin-top: auto;
+}
+.topic-check-label {
+  display: flex; align-items: center; gap: 6px; cursor: pointer;
+  font-family: 'DM Mono', monospace; font-size: 10px; color: var(--w30);
+  letter-spacing: .5px;
+}
+.topic-check-label input[type="checkbox"] { display: none; }
+.checkmark {
+  width: 16px; height: 16px; border-radius: 4px;
+  border: 1px solid var(--w12); background: transparent;
+  display: flex; align-items: center; justify-content: center;
+  transition: all .2s; flex-shrink: 0;
+}
+.topic-check-label input:checked ~ .checkmark {
+  background: var(--green); border-color: var(--green);
+}
+.topic-check-label input:checked ~ .checkmark::after {
+  content: '✓'; font-size: 10px; color: #080808; font-weight: 700;
+}
+.topic-card.completed { border-color: rgba(61,220,132,.15); }
+
+/* ── topic badges ── */
+.badge {
+  display: inline-flex; padding: 3px 9px; border-radius: 5px;
+  font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: .5px;
+  font-weight: 500;
+}
+.badge-essential { background: rgba(61,220,132,.12); color: var(--green); border: 1px solid rgba(61,220,132,.25); }
+.badge-core { background: rgba(91,156,246,.12); color: var(--blue); border: 1px solid rgba(91,156,246,.25); }
+.badge-critical { background: rgba(255,187,51,.12); color: var(--amber); border: 1px solid rgba(255,187,51,.25); }
+.badge-professional { background: rgba(240,240,240,.07); color: var(--w60); border: 1px solid var(--w12); }
+.badge-system { background: rgba(255,69,58,.12); color: var(--red); border: 1px solid rgba(255,69,58,.25); }
+.badge-advanced { background: rgba(192,132,252,.12); color: var(--purple); border: 1px solid rgba(192,132,252,.25); }
+
+/* ── topic hidden ── */
+.topic-card.hidden { display: none; }
+
+/* ══════════════════════════════════════════
+   MODAL
+══════════════════════════════════════════ */
+.modal-overlay {
+  position: fixed; inset: 0; z-index: 800;
+  background: rgba(0,0,0,.85); backdrop-filter: blur(8px);
+  display: flex; align-items: center; justify-content: center;
+  padding: 20px; opacity: 0; pointer-events: none;
+  transition: opacity .25s ease;
+}
+.modal-overlay.open { opacity: 1; pointer-events: all; }
+.modal {
+  background: var(--bg2); border-radius: 24px;
+  border: 1px solid var(--w12);
+  box-shadow: 0 24px 80px rgba(0,0,0,.9);
+  width: 100%; max-width: 720px; max-height: 88vh;
+  overflow-y: auto; padding: 36px;
+  transform: translateY(20px) scale(.97);
+  transition: transform .3s cubic-bezier(.34,1.46,.64,1);
+  position: relative;
+}
+.modal-overlay.open .modal { transform: translateY(0) scale(1); }
+.modal::-webkit-scrollbar { width: 4px; }
+.modal::-webkit-scrollbar-track { background: transparent; }
+.modal::-webkit-scrollbar-thumb { background: var(--w12); border-radius: 2px; }
+.modal-close {
+  position: absolute; top: 20px; right: 20px;
+  background: var(--w06); border: 1px solid var(--w12); border-radius: 8px;
+  color: var(--w30); font-family: 'DM Mono', monospace; font-size: 11px;
+  padding: 6px 12px; cursor: pointer; letter-spacing: 1px;
+  transition: all .2s;
+}
+.modal-close:hover { background: var(--w12); color: var(--w); }
+.modal-header { margin-bottom: 28px; }
+.modal-num {
+  font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 2px; color: var(--w30);
+  margin-bottom: 8px;
+}
+.modal-title {
+  font-family: 'Syne', sans-serif; font-size: 28px; font-weight: 700; line-height: 1.1;
+  margin-bottom: 12px;
+}
+.modal-section { margin-bottom: 24px; }
+.modal-section-label {
+  font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 3px;
+  color: var(--w30); text-transform: uppercase; margin-bottom: 10px;
+  display: flex; align-items: center; gap: 8px;
+}
+.modal-section-label::after {
+  content: ''; flex: 1; height: 1px; background: var(--w06);
+}
+.modal p {
+  font-family: 'DM Mono', monospace; font-size: 12px; color: var(--w60); line-height: 1.7;
+}
+.modal ul, .modal ol {
+  padding-left: 18px; display: flex; flex-direction: column; gap: 7px;
+}
+.modal li {
+  font-family: 'DM Mono', monospace; font-size: 12px; color: var(--w60); line-height: 1.6;
+}
+.modal li::marker { color: var(--w30); }
+.modal-learn-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px;
+}
+.modal-learn-cat {
+  background: var(--bg3); border: 1px solid var(--w06); border-radius: 12px;
+  padding: 14px;
+}
+.modal-learn-cat h4 {
+  font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 1.5px;
+  color: var(--w30); text-transform: uppercase; margin-bottom: 10px;
+}
+.modal-learn-cat ul { padding-left: 14px; gap: 5px; }
+.modal-learn-cat li { font-size: 11px; }
+.modal-week-item {
+  padding: 10px 14px; background: var(--bg3); border: 1px solid var(--w06);
+  border-radius: 8px; margin-bottom: 6px;
+  font-family: 'DM Mono', monospace; font-size: 12px; color: var(--w60); line-height: 1.5;
+}
+.modal-daily {
+  padding: 10px 14px; background: rgba(61,220,132,.05);
+  border: 1px solid rgba(61,220,132,.12); border-radius: 8px;
+  font-family: 'DM Mono', monospace; font-size: 11px; color: var(--green);
+  margin-top: 8px;
+}
+.modal-projects-group { margin-bottom: 14px; }
+.modal-projects-label {
+  font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 1px; color: var(--w30);
+  text-transform: uppercase; margin-bottom: 8px;
+}
+.modal-projects-group ul { padding-left: 16px; gap: 6px; }
+.modal-resource-list { display: flex; flex-direction: column; gap: 8px; }
+.modal-resource-link {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 16px; background: var(--bg3); border: 1px solid var(--w06);
+  border-radius: 10px; text-decoration: none;
+  transition: border-color .2s, background .2s;
+}
+.modal-resource-link:hover { border-color: var(--w12); background: rgba(255,255,255,.03); }
+.modal-resource-link span {
+  font-family: 'DM Mono', monospace; font-size: 12px; color: var(--w60);
+}
+.modal-resource-link .arrow {
+  font-size: 12px; color: var(--w30); transition: color .2s;
+}
+.modal-resource-link:hover .arrow { color: var(--w); }
+
+/* ══════════════════════════════════════════
+   CAREERS
+══════════════════════════════════════════ */
+.careers-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px;
+}
+.career-card { display: flex; flex-direction: column; gap: 12px; }
+.career-title {
+  font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 700; line-height: 1.1;
+}
+.career-tagline {
+  font-family: 'DM Mono', monospace; font-size: 11px; color: var(--w30);
+  margin-top: 2px;
+}
+.career-pct-row { display: flex; align-items: baseline; gap: 8px; margin: 4px 0; }
+.career-pct {
+  font-family: 'DM Mono', monospace; font-size: 48px; font-weight: 500;
+  line-height: 1; letter-spacing: -2px;
+}
+.career-pct-label {
+  font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 1.5px;
+  color: var(--w30); text-transform: uppercase; line-height: 1.3;
+  max-width: 80px;
+}
+.career-bar-track {
+  height: 3px; background: var(--w06); border-radius: 2px; overflow: hidden;
+  box-shadow: inset 1px 1px 3px rgba(0,0,0,.7);
+}
+.career-bar-fill {
+  height: 100%; border-radius: 2px; width: 0%;
+  transition: width 1s cubic-bezier(.4,0,.2,1);
+}
+.career-section-label {
+  font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 2px;
+  color: var(--w30); text-transform: uppercase; margin-bottom: 6px;
+}
+.career-chips { display: flex; flex-wrap: wrap; gap: 5px; }
+.career-footer { margin-top: auto; padding-top: 8px; }
+
+/* ══════════════════════════════════════════
+   RESOURCES
+══════════════════════════════════════════ */
+.resources-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px;
+}
+.resource-group h3 {
+  font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 2px;
+  color: var(--w30); text-transform: uppercase; margin-bottom: 14px;
+}
+.resource-list { display: flex; flex-direction: column; gap: 8px; }
+.resource-item {
+  display: flex; flex-direction: column; gap: 6px;
+  padding: 14px; background: var(--bg3); border: 1px solid var(--w06);
+  border-radius: 12px; text-decoration: none;
+  transition: border-color .2s, background .2s;
+}
+.resource-item:hover { border-color: var(--w12); background: rgba(255,255,255,.02); }
+.resource-name {
+  font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 600; color: var(--w);
+  line-height: 1.3;
+}
+.resource-meta { display: flex; align-items: center; justify-content: space-between; }
+.resource-level {
+  font-family: 'DM Mono', monospace; font-size: 10px; padding: 2px 8px;
+  border-radius: 4px; letter-spacing: .5px;
+}
+.resource-level.beginner { background: rgba(61,220,132,.1); color: var(--green); border: 1px solid rgba(61,220,132,.2); }
+.resource-level.intermediate { background: rgba(255,187,51,.1); color: var(--amber); border: 1px solid rgba(255,187,51,.2); }
+.resource-level.advanced { background: rgba(255,69,58,.1); color: var(--red); border: 1px solid rgba(255,69,58,.2); }
+.resource-arrow { font-size: 12px; color: var(--w30); }
+.resource-item:hover .resource-arrow { color: var(--w); }
+
+/* ══════════════════════════════════════════
+   PROGRESS TRACKER WIDGET
+══════════════════════════════════════════ */
+#progress-widget {
+  position: fixed; bottom: 24px; left: 24px; z-index: 300;
+  background: var(--bg2); border: 1px solid var(--w12); border-radius: 16px;
+  padding: 14px 18px; min-width: 200px;
+  box-shadow: 4px 4px 20px var(--sd); display: none;
+  animation: widget-enter .4s cubic-bezier(.34,1.46,.64,1) forwards;
+}
+#progress-widget.show { display: block; }
+.pw-label {
+  font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 2px;
+  color: var(--w30); text-transform: uppercase; margin-bottom: 8px;
+}
+.pw-count {
+  font-family: 'DM Mono', monospace; font-size: 22px; font-weight: 500;
+  color: var(--green); line-height: 1; margin-bottom: 10px;
+}
+.pw-count span { font-size: 14px; color: var(--w30); }
+.pw-bar-track {
+  height: 3px; background: var(--w06); border-radius: 2px; overflow: hidden;
+}
+.pw-bar-fill {
+  height: 100%; border-radius: 2px;
+  background: linear-gradient(to right, var(--blue), var(--green));
+  transition: width .5s cubic-bezier(.4,0,.2,1);
+}
+
+/* ── footer ── */
+footer {
+  position: relative; z-index: 1; border-top: 1px solid var(--w06);
+  padding: 28px 20px; max-width: 1100px; margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.footer-logo { font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: 2px; color: var(--w30); }
+.footer-links { display: flex; gap: 20px; list-style: none; }
+.footer-links a { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 1px; color: var(--w30); text-decoration: none; transition: color .2s; }
+.footer-links a:hover { color: var(--w); }
+
+/* ══════════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════════ */
+@media (max-width: 860px) {
+  nav { top: auto; bottom: 18px; gap: 20px; }
+  main { padding: 40px 20px 100px; }
+}
+@media (max-width: 768px) {
+  .phases-grid { grid-template-columns: repeat(2, 1fr); }
+  .phases-grid::before { display: none; }
+  .topics-grid { grid-template-columns: repeat(2, 1fr); }
+  .careers-grid { grid-template-columns: repeat(2, 1fr); }
+  .resources-grid { grid-template-columns: repeat(2, 1fr); }
+  .guide-grid { grid-template-columns: 1fr; gap: 24px; }
+}
+@media (max-width: 640px) {
+  .guide-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 560px) {
+  nav {
+    bottom: 0; left: 0; right: 0; top: auto;
+    transform: none; width: 100%; border-radius: 0;
+    border-left: none; border-right: none; border-bottom: none;
+    justify-content: space-around; gap: 0; padding: 12px 16px;
+  }
+  main { padding: 32px 16px 100px; }
+  .hero h1 { font-size: clamp(32px, 9vw, 56px); }
+  .hero-sub { font-size: 15px; }
+}
+@media (max-width: 480px) {
+  .phases-grid { grid-template-columns: 1fr; }
+  .topics-grid { grid-template-columns: 1fr; }
+  .careers-grid { grid-template-columns: 1fr; }
+  .resources-grid { grid-template-columns: 1fr; }
+  .modal { padding: 24px 20px; }
+  .modal-title { font-size: 22px; }
+  .modal-learn-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div id="progress-bar"></div>
+
+<nav aria-label="Site navigation">
+  <a href="/" class="nav-logo">CS<em>.</em></a>
+  <ul class="nav-links">
+    <li><a href="#roadmap">overview</a></li>
+    <li><a href="#topics">topics</a></li>
+    <li><a href="#careers">careers</a></li>
+    <li><a href="#resources">resources</a></li>
+  </ul>
+</nav>
+
+<main>
+
+  <!-- ═══════════ HERO ═══════════ -->
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="wlbl-row">cs fundamentals · 2025</div>
+    <h1 id="hero-title">CS Fundamentals<br>Roadmap 2025</h1>
+    <p class="hero-sub">Your Complete Guide to Mastering Computer Science Fundamentals</p>
+    <div class="hero-stats">
+      <span class="stat-badge blue">📋 11 Core Topics</span>
+      <span class="stat-badge amber">⏱ 12–14 Months</span>
+      <span class="stat-badge green">👥 50K+ Developers</span>
+    </div>
+    <div class="hero-cta">
+      <a class="np" href="#topics">Start Your Journey →</a>
+      <a class="np-ghost" href="/" style="font-size:10px">← back to portfolio</a>
+    </div>
+  </section>
+
+  <!-- ═══════════ LEARNING PATH OVERVIEW ═══════════ -->
+  <section id="roadmap" aria-labelledby="roadmap-heading">
+    <div class="sec-head">
+      <h2 id="roadmap-heading">learning path overview</h2>
+    </div>
+    <div class="phases-grid">
+
+      <article class="pcard phase-card" data-anim>
+        <div class="phase-num" style="color:var(--blue)">01</div>
+        <div class="phase-title">Foundation</div>
+        <div class="phase-months">Months 0–3</div>
+        <div class="phase-chips">
+          <span class="chip">Programming Fundamentals</span>
+          <span class="chip">OOP</span>
+          <span class="chip">OOD</span>
+        </div>
+      </article>
+
+      <article class="pcard phase-card" data-anim style="animation-delay:.08s">
+        <div class="phase-num" style="color:var(--amber)">02</div>
+        <div class="phase-title">Core Skills</div>
+        <div class="phase-months">Months 3–7</div>
+        <div class="phase-chips">
+          <span class="chip">DS&amp;A</span>
+          <span class="chip">Design Patterns</span>
+          <span class="chip">Software Engineering</span>
+          <span class="chip">Databases</span>
+        </div>
+      </article>
+
+      <article class="pcard phase-card" data-anim style="animation-delay:.16s">
+        <div class="phase-num" style="color:var(--red)">03</div>
+        <div class="phase-title">System Core</div>
+        <div class="phase-months">Months 8–10</div>
+        <div class="phase-chips">
+          <span class="chip">OS</span>
+          <span class="chip">Networking</span>
+          <span class="chip">Computer Architecture</span>
+        </div>
+      </article>
+
+      <article class="pcard phase-card" data-anim style="animation-delay:.24s">
+        <div class="phase-num" style="color:var(--green)">04</div>
+        <div class="phase-title">Security &amp; Specialization</div>
+        <div class="phase-months">Months 11–14</div>
+        <div class="phase-chips">
+          <span class="chip">Security Fundamentals</span>
+          <span class="chip">Career Path</span>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ═══════════ GETTING STARTED ═══════════ -->
+  <section aria-labelledby="getting-started-heading">
+    <div class="sec-head">
+      <h2 id="getting-started-heading">getting started</h2>
+    </div>
+    <div class="w glass guide-card" data-anim>
+      <div class="guide-grid">
+        <div class="guide-col">
+          <h3>Where to Start</h3>
+          <ol>
+            <li>Choose C++ as your first language</li>
+            <li>Focus on concepts, not syntax</li>
+            <li>Start with simple programs</li>
+            <li>Practice daily — even 1 hour makes a difference</li>
+            <li>Join a community</li>
+          </ol>
+        </div>
+        <div class="guide-col">
+          <h3>Tips for Success</h3>
+          <ul>
+            <li>Be patient — progress is non-linear</li>
+            <li>Type code, don't copy-paste</li>
+            <li>Read error messages carefully</li>
+            <li>Build projects from the start</li>
+            <li>Take breaks — rest is learning</li>
+            <li>Celebrate small wins</li>
+          </ul>
+          <h4>Common Mistakes to Avoid</h4>
+          <ul>
+            <li>Jumping between languages constantly</li>
+            <li>Tutorial hell — watch but never build</li>
+            <li>Comparing yourself to others</li>
+            <li>Skipping fundamentals for frameworks</li>
+            <li>Not asking for help</li>
+            <li>Giving up too early</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ TIMELINE ═══════════ -->
+  <section id="timeline" aria-labelledby="timeline-heading">
+    <div class="sec-head">
+      <h2 id="timeline-heading">month-by-month timeline</h2>
+    </div>
+    <div class="timeline">
+
+      <div class="tl-item" data-anim>
+        <div class="tl-dot"></div>
+        <div class="tl-header" role="button" tabindex="0" aria-expanded="false">
+          <div class="tl-header-left">
+            <span class="tl-month">Month 1</span>
+            <span class="tl-title">Programming Fundamentals (C++)</span>
+          </div>
+          <span class="tl-arrow">›</span>
+        </div>
+        <div class="tl-body" role="region">
+          <div class="tl-body-inner">
+            <ul>
+              <li>Variables &amp; data types</li>
+              <li>Control structures (if/else, loops, switch)</li>
+              <li>Functions &amp; scope</li>
+              <li>Arrays &amp; strings</li>
+              <li>Pointers &amp; references</li>
+              <li>Daily: 2–3 hrs minimum · 3–5 problems/day · mini project weekly</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-item" data-anim>
+        <div class="tl-dot"></div>
+        <div class="tl-header" role="button" tabindex="0" aria-expanded="false">
+          <div class="tl-header-left">
+            <span class="tl-month">Month 2</span>
+            <span class="tl-title">Object-Oriented Programming</span>
+          </div>
+          <span class="tl-arrow">›</span>
+        </div>
+        <div class="tl-body" role="region">
+          <div class="tl-body-inner">
+            <ul>
+              <li>Classes &amp; objects</li>
+              <li>Inheritance &amp; polymorphism</li>
+              <li>Encapsulation &amp; abstraction</li>
+              <li>Constructors &amp; destructors</li>
+              <li>Virtual functions &amp; abstract classes</li>
+              <li>Build 2–3 OOP projects (Bank, Library, Game)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-item" data-anim>
+        <div class="tl-dot"></div>
+        <div class="tl-header" role="button" tabindex="0" aria-expanded="false">
+          <div class="tl-header-left">
+            <span class="tl-month">Month 3</span>
+            <span class="tl-title">Object-Oriented Design</span>
+          </div>
+          <span class="tl-arrow">›</span>
+        </div>
+        <div class="tl-body" role="region">
+          <div class="tl-body-inner">
+            <ul>
+              <li>SOLID principles (Single Responsibility, Open/Closed, Liskov, Interface Segregation, Dependency Inversion)</li>
+              <li>UML diagrams (class, use case, sequence, activity)</li>
+              <li>Design a complete system from scratch</li>
+              <li>Code reviews &amp; design trade-off analysis</li>
+              <li>Daily: 1–2 hrs · diagram at least one system per week</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-item" data-anim>
+        <div class="tl-dot"></div>
+        <div class="tl-header" role="button" tabindex="0" aria-expanded="false">
+          <div class="tl-header-left">
+            <span class="tl-month">Months 3–6</span>
+            <span class="tl-title">Data Structures &amp; Algorithms</span>
+          </div>
+          <span class="tl-arrow">›</span>
+        </div>
+        <div class="tl-body" role="region">
+          <div class="tl-body-inner">
+            <ul>
+              <li>Arrays, Linked Lists, Stacks, Queues</li>
+              <li>Trees (Binary Trees, BST, AVL, Heap)</li>
+              <li>Graphs (BFS, DFS, shortest paths)</li>
+              <li>Hash Tables &amp; Hash Maps</li>
+              <li>Sorting &amp; Searching algorithms</li>
+              <li>Dynamic Programming (Memoization, Tabulation)</li>
+              <li>Greedy algorithms · Big O Analysis (Time &amp; Space)</li>
+              <li>Target: Solve 150+ LeetCode problems</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-item" data-anim>
+        <div class="tl-dot"></div>
+        <div class="tl-header" role="button" tabindex="0" aria-expanded="false">
+          <div class="tl-header-left">
+            <span class="tl-month">Month 5</span>
+            <span class="tl-title">Design Patterns</span>
+          </div>
+          <span class="tl-arrow">›</span>
+        </div>
+        <div class="tl-body" role="region">
+          <div class="tl-body-inner">
+            <ul>
+              <li>Creational patterns: Singleton, Factory Method, Abstract Factory, Builder, Prototype</li>
+              <li>Structural patterns: Adapter, Decorator, Facade, Proxy, Composite</li>
+              <li>Behavioral patterns: Observer, Strategy, Command, Iterator, Template Method</li>
+              <li>23 classic Gang of Four (GoF) patterns</li>
+              <li>Apply patterns to real projects · Refactor existing code</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-item" data-anim>
+        <div class="tl-dot"></div>
+        <div class="tl-header" role="button" tabindex="0" aria-expanded="false">
+          <div class="tl-header-left">
+            <span class="tl-month">Month 6</span>
+            <span class="tl-title">Software Engineering</span>
+          </div>
+          <span class="tl-arrow">›</span>
+        </div>
+        <div class="tl-body" role="region">
+          <div class="tl-body-inner">
+            <ul>
+              <li>Clean code principles &amp; refactoring techniques</li>
+              <li>Git workflows (branching, PRs, code reviews)</li>
+              <li>Testing (unit, integration, TDD)</li>
+              <li>Documentation best practices</li>
+              <li>Agile/Scrum &amp; Kanban methodologies</li>
+              <li>DevOps &amp; CI/CD basics · Contribute to open source</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-item" data-anim>
+        <div class="tl-dot"></div>
+        <div class="tl-header" role="button" tabindex="0" aria-expanded="false">
+          <div class="tl-header-left">
+            <span class="tl-month">Month 7</span>
+            <span class="tl-title">Databases</span>
+          </div>
+          <span class="tl-arrow">›</span>
+        </div>
+        <div class="tl-body" role="region">
+          <div class="tl-body-inner">
+            <ul>
+              <li>SQL fundamentals (DDL, DML, JOINs, aggregate functions)</li>
+              <li>DB design &amp; normalization (1NF, 2NF, 3NF)</li>
+              <li>ER diagrams, primary &amp; foreign keys</li>
+              <li>Indexes, views &amp; performance optimization</li>
+              <li>NoSQL basics: MongoDB, document model</li>
+              <li>SQL vs NoSQL trade-offs · Redis basics</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-item" data-anim>
+        <div class="tl-dot"></div>
+        <div class="tl-header" role="button" tabindex="0" aria-expanded="false">
+          <div class="tl-header-left">
+            <span class="tl-month">Month 8</span>
+            <span class="tl-title">Computer Architecture</span>
+          </div>
+          <span class="tl-arrow">›</span>
+        </div>
+        <div class="tl-body" role="region">
+          <div class="tl-body-inner">
+            <ul>
+              <li>CPU internals: ALU, Control Unit, Registers</li>
+              <li>Instruction Fetch-Decode-Execute cycle</li>
+              <li>Memory hierarchy: Cache L1/L2/L3, RAM, virtual memory</li>
+              <li>Pipelining &amp; branch prediction</li>
+              <li>Performance optimization &amp; cache-friendly code</li>
+              <li>Modern architectures: RISC vs CISC, multi-core, GPU basics</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-item" data-anim>
+        <div class="tl-dot"></div>
+        <div class="tl-header" role="button" tabindex="0" aria-expanded="false">
+          <div class="tl-header-left">
+            <span class="tl-month">Month 9</span>
+            <span class="tl-title">Operating Systems</span>
+          </div>
+          <span class="tl-arrow">›</span>
+        </div>
+        <div class="tl-body" role="region">
+          <div class="tl-body-inner">
+            <ul>
+              <li>Process &amp; thread management</li>
+              <li>CPU scheduling algorithms</li>
+              <li>Memory management &amp; virtual memory</li>
+              <li>File systems &amp; I/O management</li>
+              <li>Deadlocks, synchronization (mutex, semaphore)</li>
+              <li>Linux basics: command line, shell scripting, process management</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-item" data-anim>
+        <div class="tl-dot"></div>
+        <div class="tl-header" role="button" tabindex="0" aria-expanded="false">
+          <div class="tl-header-left">
+            <span class="tl-month">Month 10</span>
+            <span class="tl-title">Computer Networking</span>
+          </div>
+          <span class="tl-arrow">›</span>
+        </div>
+        <div class="tl-body" role="region">
+          <div class="tl-body-inner">
+            <ul>
+              <li>OSI model: all 7 layers explained</li>
+              <li>TCP/IP suite · UDP vs TCP</li>
+              <li>HTTP/HTTPS, DNS, DHCP, TLS/SSL</li>
+              <li>IP addressing &amp; subnetting</li>
+              <li>Network security fundamentals</li>
+              <li>Build a networked application · Wireshark packet analysis</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-item" data-anim>
+        <div class="tl-dot"></div>
+        <div class="tl-header" role="button" tabindex="0" aria-expanded="false">
+          <div class="tl-header-left">
+            <span class="tl-month">Month 11</span>
+            <span class="tl-title">Security Fundamentals</span>
+          </div>
+          <span class="tl-arrow">›</span>
+        </div>
+        <div class="tl-body" role="region">
+          <div class="tl-body-inner">
+            <ul>
+              <li>Cryptography: hashing (SHA-256, bcrypt), encryption (AES, RSA)</li>
+              <li>OWASP Top 10: injection, XSS, broken auth, broken access control</li>
+              <li>Authentication &amp; authorization (JWT, OAuth)</li>
+              <li>Secure coding practices &amp; input validation</li>
+              <li>API security &amp; HTTPS everywhere</li>
+              <li>Practice on DVWA or WebGoat · security audit your own projects</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-item" data-anim>
+        <div class="tl-dot"></div>
+        <div class="tl-header" role="button" tabindex="0" aria-expanded="false">
+          <div class="tl-header-left">
+            <span class="tl-month">Months 12–14</span>
+            <span class="tl-title">Specialization &amp; Projects</span>
+          </div>
+          <span class="tl-arrow">›</span>
+        </div>
+        <div class="tl-body" role="region">
+          <div class="tl-body-inner">
+            <ul>
+              <li>Choose your career path (Frontend, Backend, ML, DevOps, etc.)</li>
+              <li>Build a portfolio of 3–5 substantial projects</li>
+              <li>Interview preparation: DS&amp;A, system design, behavioral</li>
+              <li>Open source contributions</li>
+              <li>Start applying to internships and entry-level roles</li>
+              <li>Network, attend meetups, build your online presence</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ═══════════ 11 CORE TOPICS ═══════════ -->
+  <section id="topics" aria-labelledby="topics-heading">
+    <div class="sec-head">
+      <h2 id="topics-heading">11 core topics</h2>
+    </div>
+    <div class="filter-bar" role="group" aria-label="Filter topics by phase">
+      <button class="filter-btn active" data-filter="all">All</button>
+      <button class="filter-btn" data-filter="foundation">Foundation</button>
+      <button class="filter-btn" data-filter="core">Core Skills</button>
+      <button class="filter-btn" data-filter="system">System Core</button>
+      <button class="filter-btn" data-filter="advanced">Advanced</button>
+    </div>
+    <div class="topics-grid" id="topics-grid">
+      <!-- Rendered by JS -->
+    </div>
+  </section>
+
+  <!-- ═══════════ CAREERS ═══════════ -->
+  <section id="careers" aria-labelledby="careers-heading">
+    <div class="sec-head">
+      <h2 id="careers-heading">career paths</h2>
+    </div>
+    <div class="careers-grid" id="careers-grid">
+      <!-- Rendered by JS -->
+    </div>
+  </section>
+
+  <!-- ═══════════ RESOURCES ═══════════ -->
+  <section id="resources" aria-labelledby="resources-heading">
+    <div class="sec-head">
+      <h2 id="resources-heading">curated resources</h2>
+    </div>
+    <div class="resources-grid">
+
+      <div class="resource-group" data-anim>
+        <h3>Programming &amp; OOP</h3>
+        <div class="resource-list">
+          <a class="resource-item" href="https://www.amazon.com/Primer-5th-Stanley-BLippman/dp/0321714113" target="_blank" rel="noopener noreferrer">
+            <span class="resource-name">C++ Primer 5th Edition</span>
+            <div class="resource-meta">
+              <span class="resource-level beginner-intermediate" style="background:rgba(61,220,132,.07);color:var(--green);border:1px solid rgba(61,220,132,.2);font-family:'DM Mono',monospace;font-size:10px;padding:2px 8px;border-radius:4px;letter-spacing:.5px;">Beginner–Intermediate</span>
+              <span class="resource-arrow">↗</span>
+            </div>
+          </a>
+          <a class="resource-item" href="https://www.stroustrup.com/programming.html" target="_blank" rel="noopener noreferrer">
+            <span class="resource-name">Programming: Principles and Practice Using C++ (Stroustrup)</span>
+            <div class="resource-meta">
+              <span class="resource-level beginner">Beginner</span>
+              <span class="resource-arrow">↗</span>
+            </div>
+          </a>
+          <a class="resource-item" href="https://www.amazon.com/Object-Oriented-Programming-4th-Robert-Lafore/dp/0672323087" target="_blank" rel="noopener noreferrer">
+            <span class="resource-name">OOP in C++ (Lafore)</span>
+            <div class="resource-meta">
+              <span class="resource-level intermediate">Intermediate</span>
+              <span class="resource-arrow">↗</span>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <div class="resource-group" data-anim style="animation-delay:.08s">
+        <h3>Data Structures &amp; Algorithms</h3>
+        <div class="resource-list">
+          <a class="resource-item" href="https://mitpress.mit.edu/books/introduction-algorithms-third-edition" target="_blank" rel="noopener noreferrer">
+            <span class="resource-name">Introduction to Algorithms — CLRS</span>
+            <div class="resource-meta">
+              <span class="resource-level advanced">Advanced</span>
+              <span class="resource-arrow">↗</span>
+            </div>
+          </a>
+          <a class="resource-item" href="https://www.crackingthecodinginterview.com/" target="_blank" rel="noopener noreferrer">
+            <span class="resource-name">Cracking the Coding Interview (McDowell)</span>
+            <div class="resource-meta">
+              <span class="resource-level intermediate">Intermediate</span>
+              <span class="resource-arrow">↗</span>
+            </div>
+          </a>
+          <a class="resource-item" href="https://www.algorist.com/" target="_blank" rel="noopener noreferrer">
+            <span class="resource-name">Algorithm Design Manual (Skiena)</span>
+            <div class="resource-meta">
+              <span class="resource-level intermediate">Intermediate</span>
+              <span class="resource-arrow">↗</span>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <div class="resource-group" data-anim style="animation-delay:.16s">
+        <h3>System Design &amp; Architecture</h3>
+        <div class="resource-list">
+          <a class="resource-item" href="https://www.amazon.com/Clean-Architecture-Craftsmans-Software-Structure/dp/0134494164" target="_blank" rel="noopener noreferrer">
+            <span class="resource-name">Clean Architecture (Robert C. Martin)</span>
+            <div class="resource-meta">
+              <span class="resource-level advanced">Advanced</span>
+              <span class="resource-arrow">↗</span>
+            </div>
+          </a>
+          <a class="resource-item" href="https://www.amazon.com/Design-Patterns-Elements-Reusable-Object-Oriented/dp/0201633612" target="_blank" rel="noopener noreferrer">
+            <span class="resource-name">Design Patterns — GoF</span>
+            <div class="resource-meta">
+              <span class="resource-level advanced">Advanced</span>
+              <span class="resource-arrow">↗</span>
+            </div>
+          </a>
+          <a class="resource-item" href="https://www.oreilly.com/library/view/head-first-design/0596007124/" target="_blank" rel="noopener noreferrer">
+            <span class="resource-name">Head First Design Patterns (O'Reilly)</span>
+            <div class="resource-meta">
+              <span class="resource-level intermediate">Intermediate</span>
+              <span class="resource-arrow">↗</span>
+            </div>
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <span class="footer-logo">CS Roadmap 2025 · vkkatariya</span>
+  <ul class="footer-links">
+    <li><a href="https://roadmap.sh" target="_blank" rel="noopener noreferrer">roadmap.sh ↗</a></li>
+    <li><a href="#" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">back to top ↑</a></li>
+  </ul>
+</footer>
+
+<!-- ═══════════ TOPIC MODAL ═══════════ -->
+<div class="modal-overlay" id="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-title-text">
+  <div class="modal" id="modal-content">
+    <button class="modal-close" id="modal-close">ESC ✕</button>
+    <div id="modal-body"></div>
+  </div>
+</div>
+
+<!-- ═══════════ PROGRESS WIDGET ═══════════ -->
+<div id="progress-widget" aria-live="polite">
+  <div class="pw-label">topics completed</div>
+  <div class="pw-count" id="pw-count">0 <span>/ 11</span></div>
+  <div class="pw-bar-track">
+    <div class="pw-bar-fill" id="pw-bar"></div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════
+// DATA
+// ═══════════════════════════════════════════
+const TOPICS = [
+  {
+    id:1, phase:'foundation', name:'Programming Fundamentals', badge:'Essential', badgeType:'essential',
+    desc:'Writing instructions for computers, problem-solving methodology. C++ recommended.',
+    what:'Programming is the art of writing instructions for computers. It builds logical thinking and problem-solving skills through structured code. C++ is recommended because it teaches memory management and low-level thinking.',
+    why:['Foundation for everything in CS — every other topic builds on this','Builds logical thinking and problem-solving skills','Opens all career paths in software engineering','C++ teaches memory management and system-level thinking'],
+    learn:[
+      {cat:'Core',items:['Variables & Data Types (int, float, char, bool)','Operators (arithmetic, logical, bitwise)','Control Flow (if/else, switch, loops)','Functions (params, return, scope)','Arrays & Strings','Pointers & References','Input/Output (cin/cout)','Error Handling (try/catch)']}
+    ],
+    plan:{duration:'Month 1 — 4 Weeks',
+      weeks:['Week 1: Setup environment, first program, variables, data types','Week 2: Operators, if/else, switch statements','Week 3: Loops, nested loops, pattern problems','Week 4: Functions, parameters, recursion basics'],
+      daily:'2–3 hours minimum · 3–5 problems/day · mini project weekly'},
+    projects:[{label:'Weeks 1–2',items:['Calculator','Temperature Converter','Grade Calculator']},{label:'Weeks 3–4',items:['Number Guessing Game','Pattern Printing','Prime Number Checker']},{label:'Month End',items:['Student Management System']}],
+    resources:[
+      {name:'CS50 Harvard (Free)',url:'https://cs50.harvard.edu/x/'},
+      {name:'C++ Primer 5th Edition',url:'https://www.amazon.com/Primer-5th-Stanley-BLippman/dp/0321714113'},
+      {name:'Programming: Principles and Practice Using C++ (Stroustrup)',url:'https://www.stroustrup.com/programming.html'},
+      {name:'Mohamed Moshrif C++ Course (Arabic)',url:'https://www.linkedin.com/in/mmeshref/'}
+    ]
+  },
+  {
+    id:2, phase:'foundation', name:'Object-Oriented Programming', badge:'Core', badgeType:'core',
+    desc:'OOP = Objects + Classes. The 4 pillars: Encapsulation, Inheritance, Polymorphism, Abstraction.',
+    what:'OOP models real-world entities as objects with data and behavior. The 4 pillars — Encapsulation, Inheritance, Polymorphism, Abstraction — are the basis of most modern software.',
+    why:['Industry standard in enterprise software','Makes code reusable and maintainable','Required for most software engineering jobs','Foundation for design patterns and frameworks'],
+    learn:[
+      {cat:'Core Concepts',items:['Classes & Objects','Constructors & Destructors','Access Modifiers (public/private/protected)','Getters & Setters']},
+      {cat:'Inheritance',items:['Single inheritance','Multiple inheritance','Multilevel inheritance']},
+      {cat:'Polymorphism',items:['Compile-time (overloading)','Runtime (overriding)','Virtual Functions','Abstract Classes & Interfaces']},
+      {cat:'Advanced',items:['Operator Overloading','Friend Functions']}
+    ],
+    plan:{duration:'Month 2 — 4 Weeks',
+      weeks:['Week 1: Classes, Objects, Constructors','Week 2: Encapsulation, Access Modifiers','Week 3: Inheritance, types of inheritance','Week 4: Polymorphism, Virtual Functions'],
+      daily:'2–3 hours · build one small OOP project each week'},
+    projects:[{label:'Projects',items:['Bank Management System','Library Management System','Simple Game using OOP']}],
+    resources:[
+      {name:'Mohamed Meshref OOP Course (Arabic)',url:'https://www.linkedin.com/in/mmeshref/'},
+      {name:'OOP in C++ — Lafore',url:'https://www.amazon.com/Object-Oriented-Programming-4th-Robert-Lafore/dp/0672323087'},
+      {name:'Head First Object-Oriented Analysis and Design',url:'https://www.oreilly.com/library/view/head-first-object-oriented/0596008678/'}
+    ]
+  },
+  {
+    id:3, phase:'foundation', name:'Object-Oriented Design', badge:'Core', badgeType:'core',
+    desc:'Planning before coding — SOLID principles, UML diagrams, design trade-offs.',
+    what:'OOD is about planning software structure before writing code. You learn to design class hierarchies, define responsibilities, and use UML diagrams to communicate designs with teams.',
+    why:['Prevents costly architectural mistakes','Makes systems scalable and maintainable','Essential for senior engineering positions','Improves team communication through shared vocabulary'],
+    learn:[
+      {cat:'SOLID Principles',items:['Single Responsibility','Open/Closed','Liskov Substitution','Interface Segregation','Dependency Inversion']},
+      {cat:'UML Diagrams',items:['Class Diagrams','Use Case Diagrams','Sequence Diagrams','Activity Diagrams']},
+      {cat:'Design Skills',items:['Identifying classes & responsibilities','Defining relationships (inheritance, composition)','Creating clean interfaces','Evaluating design trade-offs']}
+    ],
+    plan:{duration:'Month 3 — 4 Weeks',
+      weeks:['Week 1: SOLID principles deep dive','Week 2: UML basics and class diagrams','Week 3: Design case studies','Week 4: Complete system design project'],
+      daily:'1–2 hours · diagram at least one system per week'},
+    projects:[{label:'Projects',items:['Online Shopping System','Parking Lot System','Hotel Management System']}],
+    resources:[
+      {name:'Mohamed Meshref SOLID & Design (Arabic)',url:'https://www.linkedin.com/in/mmeshref/'},
+      {name:'Clean Architecture — Robert C. Martin',url:'https://www.amazon.com/Clean-Architecture-Craftsmans-Software-Structure/dp/0134494164'},
+      {name:'UML Distilled — Martin Fowler',url:'https://www.amazon.com/UML-Distilled-Standard-Modeling-Language/dp/0321193687'}
+    ]
+  },
+  {
+    id:4, phase:'core', name:'Data Structures & Algorithms', badge:'Critical', badgeType:'critical',
+    desc:'Arrays, Linked Lists, Trees, Graphs, Hash Tables. Sorting, Searching, Dynamic Programming.',
+    what:"DS&A is the study of organizing data efficiently and solving problems algorithmically. It is the #1 topic for technical interviews at every major tech company.",
+    why:['#1 topic for technical interviews at all major companies','Required by Google, Meta, Amazon, Microsoft','Foundation for system design','You cannot get a good job without DS&A'],
+    learn:[
+      {cat:'Linear Structures',items:['Arrays','Linked Lists','Stacks','Queues']},
+      {cat:'Trees',items:['Binary Trees','BST','AVL Tree','Heap']},
+      {cat:'Hashing',items:['Hash Tables','Hash Maps']},
+      {cat:'Graphs',items:['Representation','BFS','DFS','Shortest paths']},
+      {cat:'Sorting',items:['Bubble','Selection','Insertion','Merge','Quick']},
+      {cat:'Advanced',items:['Dynamic Programming (Memoization, Tabulation)','Greedy (Activity Selection, Huffman Coding)','Big O Analysis (Time & Space)']}
+    ],
+    plan:{duration:'Months 4–6 — 12 Weeks',
+      weeks:['Month 4: Arrays, Strings, Two Pointers → Linked Lists, Stacks, Queues','Month 5: Binary Trees, BST → Graphs, BFS/DFS','Month 6: Dynamic Programming → Practice & Review'],
+      daily:'Target: Solve 150+ LeetCode problems total'},
+    projects:[{label:'Practice',items:['150+ LeetCode problems','Implement each data structure from scratch','Build a mini search engine','Implement a pathfinding visualizer']}],
+    resources:[
+      {name:'Mohamed Meshref DS&A (Arabic)',url:'https://www.linkedin.com/in/mmeshref/'},
+      {name:'Ahmed Metwally Cloud Native Base Camp (Arabic)',url:'https://cloudnativebasecamp.com/'},
+      {name:'Introduction to Algorithms — CLRS',url:'https://mitpress.mit.edu/books/introduction-algorithms-third-edition'},
+      {name:'Cracking the Coding Interview',url:'https://www.crackingthecodinginterview.com/'},
+      {name:'LeetCode',url:'https://leetcode.com/'}
+    ]
+  },
+  {
+    id:5, phase:'core', name:'Design Patterns', badge:'Core', badgeType:'core',
+    desc:'23 classic Gang of Four patterns. Creational, Structural, Behavioral categories.',
+    what:'Design patterns are reusable solutions to common software design problems. The 23 classic Gang of Four patterns are the industry standard vocabulary for communicating solutions.',
+    why:['Cleaner, more maintainable code','Common vocabulary for team communication','Understand framework internals (Spring, Rails, Angular all use patterns)','Required knowledge for senior developer roles'],
+    learn:[
+      {cat:'Creational',items:['Singleton','Factory Method','Abstract Factory','Builder','Prototype']},
+      {cat:'Structural',items:['Adapter','Decorator','Facade','Proxy','Composite']},
+      {cat:'Behavioral',items:['Observer','Strategy','Command','Iterator','Template Method']}
+    ],
+    plan:{duration:'Month 5 — 4 Weeks',
+      weeks:['Week 1: Creational patterns (Singleton, Factory, Builder)','Week 2: Structural patterns (Adapter, Decorator, Facade)','Week 3: Behavioral patterns (Observer, Strategy, Command)','Week 4: Apply patterns to real projects'],
+      daily:'Implement 2–3 patterns per week from scratch'},
+    projects:[{label:'Projects',items:['Implement each pattern from scratch','Refactor existing code to use patterns','Build a mini plugin framework','Design a notification system']}],
+    resources:[
+      {name:'Mohamed Meshref Design Patterns (Arabic)',url:'https://www.linkedin.com/in/mmeshref/'},
+      {name:'Head First Design Patterns',url:'https://www.oreilly.com/library/view/head-first-design/0596007124/'},
+      {name:'Design Patterns — GoF',url:'https://www.amazon.com/Design-Patterns-Elements-Reusable-Object-Oriented/dp/0201633612'},
+      {name:'Refactoring Guru (Free)',url:'https://refactoring.guru/'}
+    ]
+  },
+  {
+    id:6, phase:'core', name:'Software Engineering', badge:'Professional', badgeType:'professional',
+    desc:'Engineering methodology, clean code, Git workflows, testing, Agile/Scrum.',
+    what:'Software engineering is the disciplined, systematic approach to developing software. It covers the full SDLC — from requirements to deployment — and the practices that let teams build reliable software together.',
+    why:['Work effectively in professional teams','Deliver projects on time and on budget','Reduce bugs and technical debt','Essential for career growth beyond junior level'],
+    learn:[
+      {cat:'Practices',items:['Clean Code principles','Version Control (Git/GitHub)','Code Reviews','Documentation','Unit & Integration Testing','Debugging strategies']},
+      {cat:'Methodologies',items:['Agile/Scrum','Kanban','Waterfall','DevOps & CI/CD basics']},
+      {cat:'Principles',items:["DRY (Don't Repeat Yourself)",'KISS (Keep It Simple)','YAGNI','SOLID in practice']}
+    ],
+    plan:{duration:'Month 6 — 4 Weeks',
+      weeks:['Week 1: Clean code principles and refactoring','Week 2: Git mastery & team workflows','Week 3: Testing fundamentals (unit, integration, TDD)','Week 4: Agile/Scrum & project management tools'],
+      daily:'Contribute to open source · practice code reviews · set up CI/CD pipeline'},
+    projects:[{label:'Hands-on',items:['Contribute to an open source project','Set up a full CI/CD pipeline','Write a test suite for an existing project','Document a project end-to-end']}],
+    resources:[
+      {name:'Clean Code — Robert C. Martin',url:'https://www.amazon.com/Clean-Code-Handbook-Software-Craftsmanship/dp/0132350882'},
+      {name:'The Pragmatic Programmer',url:'https://www.amazon.com/Pragmatic-Programmer-journey-mastery-Anniversary/dp/0135957052'},
+      {name:'Pro Git (Free)',url:'https://git-scm.com/book'},
+      {name:'Agile Alliance Resources',url:'https://www.agilealliance.org/agile101/'}
+    ]
+  },
+  {
+    id:7, phase:'core', name:'Databases', badge:'Core', badgeType:'core',
+    desc:'SQL (MySQL, PostgreSQL) and NoSQL (MongoDB). DB design, normalization, ACID.',
+    what:'Databases store and organize the data that powers every application. SQL databases offer ACID guarantees and relational structure; NoSQL databases offer flexible schemas and horizontal scaling.',
+    why:['Every application needs data storage','Core backend engineering skill','Essential for full-stack development','Database design decisions impact performance for years'],
+    learn:[
+      {cat:'SQL',items:['DDL: CREATE, ALTER, DROP','DML: SELECT, INSERT, UPDATE, DELETE','JOINs (INNER, LEFT, RIGHT, FULL)','Aggregate Functions','Subqueries & Views','Indexes & Performance']},
+      {cat:'DB Design',items:['ER Diagrams','Normalization (1NF, 2NF, 3NF)','Primary & Foreign Keys','Relationships (1:1, 1:N, N:N)']},
+      {cat:'NoSQL',items:['MongoDB fundamentals','Document model vs relational','When to use NoSQL vs SQL','Redis basics']}
+    ],
+    plan:{duration:'Month 7 — 4 Weeks',
+      weeks:['Week 1: SQL basics, simple queries','Week 2: JOINs, functions, complex queries','Week 3: Database design, normalization','Week 4: MongoDB basics, SQL vs NoSQL comparison'],
+      daily:'Build a small project that uses a database'},
+    projects:[{label:'Projects',items:['E-commerce database schema','Social media DB design','REST API backed by PostgreSQL','MongoDB document store for a blog']}],
+    resources:[
+      {name:'W3Schools SQL Tutorial (Free)',url:'https://www.w3schools.com/sql/'},
+      {name:'Database System Concepts — Silberschatz',url:'https://www.amazon.com/Database-System-Concepts-Abraham-Silberschatz/dp/0078022150'},
+      {name:'MongoDB University (Free)',url:'https://university.mongodb.com/'}
+    ]
+  },
+  {
+    id:8, phase:'system', name:'Computer Architecture', badge:'System Core', badgeType:'system',
+    desc:'CPU internals, memory hierarchy (Cache/RAM), instruction execution, performance.',
+    what:'Computer architecture explains how hardware executes your code. Understanding CPU pipelines, cache hierarchies, and memory layouts lets you write code that is orders of magnitude faster.',
+    why:['Write high-performance, cache-friendly code','Understand why array access is faster than linked list traversal','Debug performance bottlenecks at the hardware level','Required for embedded, systems, and ML engineering'],
+    learn:[
+      {cat:'CPU Fundamentals',items:['ALU, Control Unit, Registers','Instruction Fetch-Decode-Execute cycle','Pipelining','Branch prediction']},
+      {cat:'Memory Hierarchy',items:['Cache L1/L2/L3','RAM and virtual memory','Cache coherence','I/O systems']},
+      {cat:'Architectures',items:['Von Neumann vs Harvard','RISC vs CISC','Multi-core processors','GPU architecture basics','Performance metrics']}
+    ],
+    plan:{duration:'Month 8 — 4 Weeks',
+      weeks:['Week 1: CPU basics and instruction cycle','Week 2: Memory hierarchy and cache','Week 3: Pipelining and parallelism','Week 4: Modern architectures and optimization'],
+      daily:'Write cache-friendly code · read basic assembly · use performance counters'},
+    projects:[{label:'Practical',items:['Write and benchmark cache-friendly vs cache-unfriendly code','Read assembly output of C++ programs','Complete nand2tetris Part 1']}],
+    resources:[
+      {name:'Computer Organization and Design — Patterson & Hennessy',url:'https://www.amazon.com/Computer-Organization-Design-MIPS-Architecture/dp/0124077269'},
+      {name:'Computer Architecture: A Quantitative Approach',url:'https://www.amazon.com/Computer-Architecture-Quantitative-Approach-Kaufmann/dp/012383872X'},
+      {name:'nand2tetris (Free)',url:'https://www.nand2tetris.org/'}
+    ]
+  },
+  {
+    id:9, phase:'system', name:'Operating Systems', badge:'System Core', badgeType:'system',
+    desc:'Processes, threads, memory management, file systems, Linux command line.',
+    what:'The operating system manages hardware resources and provides services to applications. Understanding OS internals makes you a much more effective systems programmer and debugger.',
+    why:['Understand system-level issues and debug complex problems','Write efficient programs that work with the OS, not against it','Required for systems programming, cloud, and DevOps','Linux knowledge is mandatory in the industry'],
+    learn:[
+      {cat:'Core Concepts',items:['Processes & Threads','CPU Scheduling','Memory Management','Virtual Memory','File Systems']},
+      {cat:'Concurrency',items:['Deadlocks','Synchronization (mutex, semaphore)','Inter-process Communication (IPC)','Race conditions']},
+      {cat:'Linux Practical',items:['Command line navigation','File permissions','Process management (ps, top, kill)','Shell scripting basics','Package management']}
+    ],
+    plan:{duration:'Month 9 — 4 Weeks',
+      weeks:['Week 1: Processes and threads','Week 2: Memory management','Week 3: File systems and I/O','Week 4: Linux basics and shell scripting'],
+      daily:'Install Ubuntu/Fedora · write shell scripts · use process management commands daily'},
+    projects:[{label:'Hands-on',items:['Install Linux (Ubuntu or Fedora)','Write 10 shell scripts','Implement a simple shell','Monitor system processes with custom scripts']}],
+    resources:[
+      {name:'Ahmed Metwally Cloud Native Base Camp — OS + Linux (Arabic)',url:'https://cloudnativebasecamp.com/'},
+      {name:'Operating System Concepts — Silberschatz',url:'https://www.amazon.com/Operating-System-Concepts-Abraham-Silberschatz/dp/1119800366'},
+      {name:'Modern Operating Systems — Tanenbaum',url:'https://www.amazon.com/Modern-Operating-Systems-Andrew-Tanenbaum/dp/013359162X'}
+    ]
+  },
+  {
+    id:10, phase:'system', name:'Computer Networking', badge:'System Core', badgeType:'system',
+    desc:'OSI model, TCP/IP, HTTP/HTTPS, DNS. How the internet actually works.',
+    what:'Networking is how computers communicate. Every web application, API call, and cloud service depends on these protocols. Understanding them lets you debug connectivity issues, design distributed systems, and build secure applications.',
+    why:['Everything is connected — networking is unavoidable','Web development foundation (HTTP, DNS, TLS)','Debug network issues in production','Cloud computing and distributed systems require this'],
+    learn:[
+      {cat:'OSI Model (7 Layers)',items:['Physical layer','Data Link (MAC, switches)','Network layer (IP, routing)','Transport layer (TCP, UDP)','Application layer (HTTP, DNS)']},
+      {cat:'Protocols',items:['TCP/IP suite','HTTP/HTTPS','DNS & DHCP','TLS/SSL']},
+      {cat:'Practical',items:['IP addressing & subnetting','Routing & switching basics','Network security','Wireshark packet analysis']}
+    ],
+    plan:{duration:'Month 10 — 4 Weeks',
+      weeks:['Week 1: OSI model and network basics','Week 2: TCP/IP protocols in depth','Week 3: HTTP, DNS, and web infrastructure','Week 4: Security and hands-on labs'],
+      daily:'Wireshark captures · configure a home network · build a client-server app'},
+    projects:[{label:'Labs',items:['Analyze HTTP traffic with Wireshark','Build a TCP client-server chat app','Set up a local DNS resolver','Configure VLANs in a network simulator']}],
+    resources:[
+      {name:'Computer Networking: A Top-Down Approach — Kurose & Ross',url:'https://www.amazon.com/Computer-Networking-Top-Down-Approach-7th/dp/0133594149'},
+      {name:'TCP/IP Illustrated — Stevens',url:'https://www.amazon.com/TCP-Illustrated-Vol-Addison-Wesley-Professional/dp/0321336313'},
+      {name:'Professor Messer Network+ (Free)',url:'https://www.professormesser.com/network-plus/n10-008/n10-008-video/n10-008-training-course/'}
+    ]
+  },
+  {
+    id:11, phase:'advanced', name:'Security Fundamentals', badge:'Advanced', badgeType:'advanced',
+    desc:'Cryptography, OWASP Top 10, authentication, secure coding practices.',
+    what:"Security is about protecting systems, data, and users from attack. 90% of breaches result from basic security mistakes that are entirely preventable with the right knowledge.",
+    why:['Data breaches cost millions and destroy trust','Legal compliance: GDPR, HIPAA, SOC2 all require security knowledge',"Protect your users' privacy and data",'Every developer is responsible for security — not just security teams'],
+    learn:[
+      {cat:'Cryptography',items:['Hashing (SHA-256, MD5, bcrypt)','Symmetric encryption (AES)','Asymmetric encryption (RSA)','Encoding (Base64, URL)','Public Key Infrastructure','SSL/TLS']},
+      {cat:'OWASP Top 10',items:['Injection attacks (SQL, command)','Broken Authentication','Cross-Site Scripting (XSS)','Broken Access Control','Security Misconfiguration','Sensitive Data Exposure']},
+      {cat:'Security Practices',items:['Input validation & sanitization','Secure coding guidelines','JWT & OAuth','API security','Security testing basics','HTTPS everywhere']}
+    ],
+    plan:{duration:'Month 11 — 4 Weeks',
+      weeks:['Week 1: Cryptography fundamentals','Week 2: OWASP Top 10 in depth','Week 3: Authentication & Authorization patterns','Week 4: Secure coding & security testing'],
+      daily:'Practice on DVWA or WebGoat · audit your own projects · set up HTTPS locally'},
+    projects:[{label:'Hands-on',items:['Build a secure authentication system (JWT + bcrypt)','Complete OWASP WebGoat labs','Security audit one of your existing projects','Set up HTTPS with self-signed cert locally']}],
+    resources:[
+      {name:'OWASP Top 10 (Free)',url:'https://owasp.org/www-project-top-ten/'},
+      {name:'Web Application Security — Beginners Guide',url:'https://www.amazon.com/Web-Application-Security-Beginners-Guide/dp/0071776168'},
+      {name:'Crypto101 (Free)',url:'https://www.crypto101.io/'},
+      {name:'PortSwigger Web Security Academy (Free)',url:'https://portswigger.net/web-security'},
+      {name:'Professor Messer Security+ (Free)',url:'https://www.professormesser.com/security-plus/sy0-601/sy0-601-video/sy0-601-security-plus-course/'}
+    ]
+  }
+];
+
+const CAREERS = [
+  {id:1,title:'Frontend Developer',tagline:'Build the web users see',pct:40,
+   csReq:['Programming','Basic DS&A','Design Patterns basics'],
+   additional:['HTML/CSS mastery','JS frameworks (React/Vue)','Responsive design','API integration'],
+   tags:['HTML/CSS','JavaScript','React/Vue/Angular','TypeScript','Webpack','SASS/Tailwind'],
+   url:'https://roadmap.sh/frontend'},
+  {id:2,title:'Backend Developer',tagline:'Power the systems behind apps',pct:70,
+   csReq:['All programming concepts','DS&A','Databases','OS basics','Networking'],
+   additional:['API design','Authentication','Caching','Message queues','Microservices'],
+   tags:['Node.js/Python/Java','Express/Django/Spring','PostgreSQL/MongoDB','Redis','Docker','AWS/GCP'],
+   url:'https://roadmap.sh/backend'},
+  {id:3,title:'Full-Stack Developer',tagline:'Own the entire product',pct:60,
+   csReq:['Programming','DS&A','Databases','Basic networking'],
+   additional:['Frontend + Backend skills','DevOps basics','System design'],
+   tags:['JavaScript/TypeScript','React + Node.js','SQL + NoSQL','Docker','CI/CD','Cloud basics'],
+   url:'https://roadmap.sh/full-stack'},
+  {id:4,title:'Mobile Developer',tagline:'Build apps for billions of devices',pct:50,
+   csReq:['Programming','OOP','Basic DS&A','Design patterns'],
+   additional:['Mobile UI/UX','Platform guidelines','App store deployment'],
+   tags:['Swift/Kotlin','React Native/Flutter','iOS/Android SDK','Firebase','Mobile UI patterns'],
+   url:'https://roadmap.sh/android'},
+  {id:5,title:'DevOps Engineer',tagline:'Ship faster, break less',pct:60,
+   csReq:['Programming','OS mastery','Networking','Basic architecture'],
+   additional:['Cloud platforms','Containerization','CI/CD pipelines','Infrastructure as Code'],
+   tags:['Docker/Kubernetes','AWS/Azure/GCP','Terraform','Jenkins/GitLab CI','Python/Go','Ansible'],
+   url:'https://roadmap.sh/devops'},
+  {id:6,title:'Data Engineer',tagline:'Build the data pipelines',pct:65,
+   csReq:['Programming','DS&A','Databases mastery','Basic OS'],
+   additional:['Big data tools','ETL/ELT pipelines','Data warehousing','Stream processing'],
+   tags:['Python/Scala','Apache Spark','Airflow','SQL/NoSQL','Kafka','Data Lakes'],
+   url:'https://roadmap.sh/data-analyst'},
+  {id:7,title:'ML Engineer',tagline:'Build intelligent systems',pct:75,
+   csReq:['Strong programming','DS&A mastery','Architecture understanding'],
+   additional:['Mathematics & Statistics','ML algorithms','Deep learning','MLOps'],
+   tags:['Python','TensorFlow/PyTorch','Scikit-learn','NumPy/Pandas','MLOps','CUDA'],
+   url:'https://roadmap.sh/ai-data-scientist'},
+  {id:8,title:'Embedded Systems',tagline:'Program the metal directly',pct:80,
+   csReq:['C/C++ mastery','OS deep knowledge','Architecture mastery'],
+   additional:['Hardware interfaces','Real-time systems','Low-level programming'],
+   tags:['C/C++','Assembly','RTOS','Arduino/Raspberry Pi','Hardware protocols','IoT'],
+   url:'https://roadmap.sh/embedded-systems'},
+  {id:9,title:'Game Developer',tagline:'Build worlds, not just apps',pct:70,
+   csReq:['Strong programming','DS&A','OOP mastery','Architecture basics'],
+   additional:['Game engines','Physics simulation','Graphics programming','Game design'],
+   tags:['C++/C#','Unity/Unreal','Graphics APIs','Game physics','AI for games','Optimization'],
+   url:'https://roadmap.sh/game-developer'},
+  {id:10,title:'Blockchain Developer',tagline:'Build decentralized systems',pct:65,
+   csReq:['Programming','DS&A','Networking','Basic cryptography'],
+   additional:['Smart contracts','DeFi protocols','Web3 development'],
+   tags:['Solidity','Web3.js','Ethereum','Smart Contracts','DeFi','IPFS'],
+   url:'https://roadmap.sh/blockchain'}
+];
+
+// ═══════════════════════════════════════════
+// HELPERS
+// ═══════════════════════════════════════════
+function pctColor(p) {
+  if (p <= 50) return 'var(--blue)';
+  if (p <= 69) return 'var(--amber)';
+  return 'var(--green)';
+}
+
+function esc(str) {
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ═══════════════════════════════════════════
+// RENDER TOPICS
+// ═══════════════════════════════════════════
+function renderTopics() {
+  const grid = document.getElementById('topics-grid');
+  const saved = JSON.parse(localStorage.getItem('cs-roadmap-progress') || '{}');
+  grid.innerHTML = '';
+
+  TOPICS.forEach((t, idx) => {
+    const done = !!saved[t.id];
+    const card = document.createElement('article');
+    card.className = 'pcard topic-card' + (done ? ' completed' : '');
+    card.dataset.phase = t.phase;
+    card.dataset.id = t.id;
+    card.setAttribute('data-anim', '');
+    card.style.animationDelay = (idx * 0.05) + 's';
+
+    card.innerHTML = `
+      <div class="topic-card-top">
+        <span class="topic-num">${String(t.id).padStart(2,'0')} / 11</span>
+        <span class="badge badge-${t.badgeType}">${esc(t.badge)}</span>
+      </div>
+      <h3 class="topic-name">${esc(t.name)}</h3>
+      <p class="topic-desc">${esc(t.desc)}</p>
+      <div class="nd"><i></i><i></i><div class="line"></div></div>
+      <div class="topic-footer">
+        <label class="topic-check-label">
+          <input type="checkbox" data-topic-id="${t.id}" ${done ? 'checked' : ''}>
+          <span class="checkmark">${done ? '✓' : ''}</span>
+          <span>${done ? 'done' : 'mark done'}</span>
+        </label>
+        <button class="np-ghost" style="font-size:10px;padding:6px 12px" data-expand="${t.id}">expand →</button>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+
+  // bind checkboxes
+  grid.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+    cb.addEventListener('change', handleCheckbox);
+  });
+
+  // bind expand buttons
+  grid.querySelectorAll('[data-expand]').forEach(btn => {
+    btn.addEventListener('click', () => openModal(parseInt(btn.dataset.expand)));
+  });
+}
+
+function handleCheckbox(e) {
+  const id = parseInt(e.target.dataset.topicId);
+  const saved = JSON.parse(localStorage.getItem('cs-roadmap-progress') || '{}');
+  if (e.target.checked) {
+    saved[id] = true;
+  } else {
+    delete saved[id];
+  }
+  localStorage.setItem('cs-roadmap-progress', JSON.stringify(saved));
+  updateProgressWidget(saved);
+  // update card style
+  const card = e.target.closest('.topic-card');
+  if (e.target.checked) {
+    card.classList.add('completed');
+    const cm = card.querySelector('.checkmark');
+    cm.textContent = '✓';
+    const lbl = card.querySelector('.topic-check-label span:last-child');
+    lbl.textContent = 'done';
+  } else {
+    card.classList.remove('completed');
+    const cm = card.querySelector('.checkmark');
+    cm.textContent = '';
+    const lbl = card.querySelector('.topic-check-label span:last-child');
+    lbl.textContent = 'mark done';
+  }
+}
+
+function updateProgressWidget(saved) {
+  const count = Object.keys(saved).length;
+  const widget = document.getElementById('progress-widget');
+  const countEl = document.getElementById('pw-count');
+  const barEl = document.getElementById('pw-bar');
+  if (count > 0) {
+    widget.classList.add('show');
+    countEl.innerHTML = count + ' <span>/ 11</span>';
+    barEl.style.width = ((count / 11) * 100) + '%';
+  } else {
+    widget.classList.remove('show');
+  }
+}
+
+// ═══════════════════════════════════════════
+// RENDER CAREERS
+// ═══════════════════════════════════════════
+function renderCareers() {
+  const grid = document.getElementById('careers-grid');
+  grid.innerHTML = '';
+
+  CAREERS.forEach((c, idx) => {
+    const color = pctColor(c.pct);
+    const card = document.createElement('article');
+    card.className = 'pcard career-card';
+    card.dataset.pct = c.pct;
+    card.setAttribute('data-anim', '');
+    card.style.animationDelay = (idx * 0.06) + 's';
+
+    const csChips = c.csReq.map(r => `<span class="chip">${esc(r)}</span>`).join('');
+    const addChips = c.additional.map(r => `<span class="chip">${esc(r)}</span>`).join('');
+
+    card.innerHTML = `
+      <div>
+        <h3 class="career-title">${esc(c.title)}</h3>
+        <p class="career-tagline">${esc(c.tagline)}</p>
+      </div>
+      <div class="career-pct-row">
+        <span class="career-pct" style="color:${color}">${c.pct}%</span>
+        <span class="career-pct-label">CS Fundamentals Required</span>
+      </div>
+      <div class="career-bar-track">
+        <div class="career-bar-fill" style="background:${color}" data-target="${c.pct}"></div>
+      </div>
+      <div>
+        <div class="career-section-label">CS Required</div>
+        <div class="career-chips">${csChips}</div>
+      </div>
+      <div>
+        <div class="career-section-label">Additional Skills</div>
+        <div class="career-chips">${addChips}</div>
+      </div>
+      <div class="career-footer">
+        <a class="np-ghost" href="${esc(c.url)}" target="_blank" rel="noopener noreferrer" style="font-size:10px;padding:6px 12px">View Roadmap →</a>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+// ═══════════════════════════════════════════
+// MODAL
+// ═══════════════════════════════════════════
+function openModal(id) {
+  const t = TOPICS.find(x => x.id === id);
+  if (!t) return;
+
+  const learnHTML = t.learn.map(cat => `
+    <div class="modal-learn-cat">
+      <h4>${esc(cat.cat)}</h4>
+      <ul>${cat.items.map(i => `<li>${esc(i)}</li>`).join('')}</ul>
+    </div>
+  `).join('');
+
+  const projectsHTML = t.projects.map(g => `
+    <div class="modal-projects-group">
+      <div class="modal-projects-label">${esc(g.label)}</div>
+      <ul>${g.items.map(i => `<li>${esc(i)}</li>`).join('')}</ul>
+    </div>
+  `).join('');
+
+  const resourcesHTML = t.resources.map(r => `
+    <a class="modal-resource-link" href="${esc(r.url)}" target="_blank" rel="noopener noreferrer">
+      <span>${esc(r.name)}</span>
+      <span class="arrow">↗</span>
+    </a>
+  `).join('');
+
+  const weeksHTML = t.plan.weeks.map(w => `<div class="modal-week-item">${esc(w)}</div>`).join('');
+
+  document.getElementById('modal-body').innerHTML = `
+    <div class="modal-header">
+      <div class="modal-num">${String(t.id).padStart(2,'0')} / 11 · ${esc(t.phase.toUpperCase())}</div>
+      <h3 class="modal-title" id="modal-title-text">${esc(t.name)}</h3>
+      <span class="badge badge-${t.badgeType}">${esc(t.badge)}</span>
+    </div>
+
+    <div class="modal-section">
+      <div class="modal-section-label">What is this</div>
+      <p>${esc(t.what)}</p>
+    </div>
+
+    <div class="modal-section">
+      <div class="modal-section-label">Why it matters</div>
+      <ul>${t.why.map(w => `<li>${esc(w)}</li>`).join('')}</ul>
+    </div>
+
+    <div class="modal-section">
+      <div class="modal-section-label">What to learn</div>
+      <div class="modal-learn-grid">${learnHTML}</div>
+    </div>
+
+    <div class="modal-section">
+      <div class="modal-section-label">Learning plan — ${esc(t.plan.duration)}</div>
+      ${weeksHTML}
+      <div class="modal-daily">${esc(t.plan.daily)}</div>
+    </div>
+
+    <div class="modal-section">
+      <div class="modal-section-label">Projects</div>
+      ${projectsHTML}
+    </div>
+
+    <div class="modal-section">
+      <div class="modal-section-label">Resources</div>
+      <div class="modal-resource-list">${resourcesHTML}</div>
+    </div>
+  `;
+
+  const overlay = document.getElementById('modal-overlay');
+  overlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  document.getElementById('modal-content').scrollTop = 0;
+}
+
+function closeModal() {
+  document.getElementById('modal-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+document.getElementById('modal-overlay').addEventListener('click', (e) => {
+  if (e.target === e.currentTarget) closeModal();
+});
+document.getElementById('modal-close').addEventListener('click', closeModal);
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closeModal();
+});
+
+// ═══════════════════════════════════════════
+// TOPIC FILTER
+// ═══════════════════════════════════════════
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const filter = btn.dataset.filter;
+    document.querySelectorAll('.topic-card').forEach(card => {
+      if (filter === 'all' || card.dataset.phase === filter) {
+        card.classList.remove('hidden');
+      } else {
+        card.classList.add('hidden');
+      }
+    });
+  });
+});
+
+// ═══════════════════════════════════════════
+// TIMELINE ACCORDION
+// ═══════════════════════════════════════════
+document.querySelectorAll('.tl-header').forEach(header => {
+  header.addEventListener('click', () => {
+    const item = header.closest('.tl-item');
+    const isOpen = item.classList.contains('open');
+    // close all
+    document.querySelectorAll('.tl-item.open').forEach(i => {
+      i.classList.remove('open');
+      i.querySelector('.tl-header').setAttribute('aria-expanded','false');
+    });
+    if (!isOpen) {
+      item.classList.add('open');
+      header.setAttribute('aria-expanded','true');
+    }
+  });
+  header.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); header.click(); }
+  });
+});
+
+// ═══════════════════════════════════════════
+// SCROLL PROGRESS BAR
+// ═══════════════════════════════════════════
+function updateProgress() {
+  const el = document.getElementById('progress-bar');
+  const scrollTop = window.scrollY;
+  const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+  const pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+  el.style.width = pct + '%';
+}
+window.addEventListener('scroll', updateProgress, {passive:true});
+
+// ═══════════════════════════════════════════
+// NAV ACTIVE SECTION
+// ═══════════════════════════════════════════
+const navLinks = document.querySelectorAll('.nav-links a');
+const sections = document.querySelectorAll('section[id]');
+
+const navObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const id = entry.target.id;
+      navLinks.forEach(a => {
+        a.classList.toggle('active', a.getAttribute('href') === '#' + id);
+      });
+    }
+  });
+}, { rootMargin: '-40% 0px -50% 0px' });
+
+sections.forEach(s => navObserver.observe(s));
+
+// ═══════════════════════════════════════════
+// ENTRANCE ANIMATIONS
+// ═══════════════════════════════════════════
+const animObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      animObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.08 });
+
+function observeAnimElements() {
+  document.querySelectorAll('[data-anim]').forEach(el => {
+    animObserver.observe(el);
+  });
+}
+
+// ═══════════════════════════════════════════
+// CAREER BAR ANIMATIONS
+// ═══════════════════════════════════════════
+const barObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const fill = entry.target.querySelector('.career-bar-fill');
+      if (fill) {
+        const target = fill.dataset.target;
+        setTimeout(() => { fill.style.width = target + '%'; }, 100);
+      }
+      barObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.2 });
+
+// ═══════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════
+renderTopics();
+renderCareers();
+
+// observe career cards for bar animation
+document.querySelectorAll('.career-card').forEach(c => barObserver.observe(c));
+
+// restore progress
+const savedProgress = JSON.parse(localStorage.getItem('cs-roadmap-progress') || '{}');
+updateProgressWidget(savedProgress);
+
+// observe anim elements (includes newly rendered ones)
+observeAnimElements();
+</script>
+</body>
+</html>
