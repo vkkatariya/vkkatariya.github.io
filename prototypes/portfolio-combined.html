@@ -1662,17 +1662,16 @@ footer {
 /* ── roadmap internal nav (slide-in pill) ── */
 #roadmap-internal-nav {
   position: fixed;
-  top: 14px; left: 50%; transform: translateX(-50%) translateX(100%);
+  top: 14px; left: 50%; transform: translateX(-50%) translateX(-100%);
   z-index: 200;
   width: fit-content; max-width: calc(100% - 40px);
-  display: flex; align-items: center; gap: 28px;
-  padding: 11px 24px;
-  background: rgba(8,8,8,.55);
-  backdrop-filter: blur(28px) saturate(200%) brightness(1.1);
-  -webkit-backdrop-filter: blur(28px) saturate(200%) brightness(1.1);
-  border-radius: 100px; border: 1px solid rgba(255,255,255,.1);
-  box-shadow: 0 0 0 0.5px rgba(255,255,255,.04) inset, 0 1px 0 rgba(255,255,255,.09) inset,
-    0 -1px 0 rgba(0,0,0,.3) inset, 0 12px 40px rgba(0,0,0,.7), 0 2px 8px rgba(0,0,0,.4);
+  display: flex; align-items: center; gap: 20px;
+  padding: 5px 5px;
+  background: linear-gradient(135deg, rgba(28,28,30,.78) 0%, rgba(18,18,20,.72) 100%);
+  backdrop-filter: blur(40px) saturate(180%);
+  -webkit-backdrop-filter: blur(40px) saturate(180%);
+  border-radius: 100px; border: 1px solid rgba(255,255,255,.16);
+  box-shadow: 0 6px 20px rgba(0,0,0,.32), 0 1px 0 rgba(255,255,255,.12) inset;
   opacity: 0;
   pointer-events: none;
   transition: transform .4s ease, opacity .4s ease;
@@ -1686,26 +1685,27 @@ footer {
 #roadmap-internal-nav .nav-logo {
   font-family: 'DM Mono', monospace; font-size: 13px; font-weight: 500;
   letter-spacing: 2.5px; color: var(--w); text-decoration: none;
-  padding: 0; background: none; border: none; border-radius: 0;
+  padding: 7px 16px; background: none; border: none; border-radius: 100px;
   box-shadow: none; backdrop-filter: none; -webkit-backdrop-filter: none;
+  transition: color .2s;
 }
-#roadmap-internal-nav .nav-logo:hover { box-shadow: none; }
+#roadmap-internal-nav .nav-logo:hover { box-shadow: none; color: var(--w); }
 #roadmap-internal-nav .nav-logo em { color: var(--blue); font-style: normal; }
 
 #roadmap-internal-nav .nav-links {
   position: static; left: auto; transform: none;
-  display: flex; gap: 20px; list-style: none;
+  display: flex; gap: 0; list-style: none;
   background: none; border: none; border-radius: 0;
   box-shadow: none; padding: 0;
 }
 #roadmap-internal-nav .nav-links a {
-  display: inline; font-family: 'DM Mono', monospace; font-size: 11px;
-  letter-spacing: 1px; color: var(--w30); text-decoration: none;
-  background: none; border: none; border-radius: 0; padding: 0;
-  transition: color .2s;
+  display: flex; align-items: center; font-family: 'DM Mono', monospace; font-size: 11px;
+  letter-spacing: .8px; color: rgba(241,240,246,.38); text-decoration: none;
+  background: none; border: none; border-radius: 100px; padding: 7px 16px;
+  transition: color .13s, background .13s;
 }
 #roadmap-internal-nav .nav-links a:hover,
-#roadmap-internal-nav .nav-links a.active { color: var(--w); background: none; box-shadow: none; }
+#roadmap-internal-nav .nav-links a.active { color: var(--w); background: rgba(255,255,255,.07); }
 
 /* ── main layout ── */
 #pg-roadmap main {
@@ -1831,6 +1831,9 @@ footer {
 [data-anim].visible {
   animation: widget-enter .5s cubic-bezier(.34,1.46,.64,1) forwards;
 }
+/* Roadmap is an initially-hidden SPA page; IntersectionObserver cannot fire
+   while display:none, so force its animated content visible once active. */
+#pg-roadmap.active [data-anim] { opacity: 1 !important; transform: none !important; }
 
 /* ══════════════════════════════════════════
    HERO
@@ -4819,7 +4822,7 @@ window.addEventListener('scroll', updateProgress, {passive:true});
 // ═══════════════════════════════════════════
 // NAV ACTIVE SECTION (roadmap internal nav only)
 // ═══════════════════════════════════════════
-const roadmapNavLinks = document.querySelectorAll('#pg-roadmap .nav-links a');
+const roadmapNavLinks = document.querySelectorAll('#roadmap-internal-nav .nav-links a');
 const roadmapSections = document.querySelectorAll('#pg-roadmap section[id]');
 
 const navObserver = new IntersectionObserver((entries) => {

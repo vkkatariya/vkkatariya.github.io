@@ -1,3 +1,37 @@
+## [2026-06-18] Abacus — Roadmap nav slide-from-left, kill dark bar, force content visible
+
+**Mode:** Execution
+**Did:**
+- Fix A (slide direction): changed `#roadmap-internal-nav` hidden state from `translateX(-50%) translateX(100%)` to `translateX(-50%) translateX(-100%)` so it starts off-screen LEFT and slides to center on `.nav-visible`, matching the shared topbar sliding left.
+- Fix B (dark bar): replaced the translucent white glass gradient with a dark-tinted glass fill `linear-gradient(135deg, rgba(28,28,30,.78), rgba(18,18,20,.72))` and softened the heavy drop shadow (`0 4px 28px rgba(0,0,0,.55)` → `0 6px 20px rgba(0,0,0,.32)`). Nav stays `width: fit-content`, centered, pill-shaped — no separate full-width bar.
+- Fix C (content not rendering): added CSS rule `#pg-roadmap.active [data-anim] { opacity:1 !important; transform:none !important; }` so topic/career/resource cards are visible whenever the roadmap page is active, independent of the IntersectionObserver that cannot fire while the page is `display:none`. Other pages' entrance animations untouched.
+
+**State:** Working. HTML structure valid (1 DOCTYPE, 1 html, 1 body). Inline JS passes `node --check`. Local `python3 -m http.server` smoke test returns HTTP 200 and serves roadmap markup. Visual confirmation in a real browser still recommended.
+**Decided:** Used the CSS force-visible override (option 1 from the prompt) over re-observe timing for reliability — guarantees content shows regardless of observer state. Used a dark-tinted glass fill rather than adding a backing element, keeping a single clean pill.
+**Blocked / Next:** None blocking. Optional: browser visual pass on all 5 page transitions + roadmap anchors.
+**Modified:** `prototypes/portfolio-combined.html`, `tasks/DEVLOG.md`
+
+---
+
+## [2026-06-18] Abacus — Fix roadmap internal nav visual and restore visible content
+
+**Mode:** Execution
+**Did:**
+- Fixed roadmap internal nav CSS: replaced dark background (`rgba(8,8,8,.55)`) with clean glass gradient matching shared topbar (`.nav-logo`, `.nav-links` styled as proper glass pills)
+- Updated roadmapNavLinks selector from `#pg-roadmap .nav-links a` to `#roadmap-internal-nav .nav-links a` (nav is outside page container due to fixed positioning)
+- Aligned nav-logo and nav-links styling with shared topbar design: padding, border-radius, hover states, flex layout
+- Verified showPage() already calls observeAnimElements() after roadmap becomes visible (timeout 100ms) to trigger [data-anim] entrance animations
+
+**State:** Roadmap internal nav is now a clean centered glass pill with no dark bar. Content rendering should work via existing observeAnimElements() call in showPage() function. HTML structure validated (all page divs properly closed).
+
+**Decided:** Keep nav element outside #pg-roadmap for fixed positioning. No changes to HTML structure needed — only CSS + one selector fix.
+
+**Blocked / Next:** Visual verification needed in real browser to confirm roadmap nav appearance and content visibility. Manual smoke test with all 5 page transitions.
+
+**Modified:** `prototypes/portfolio-combined.html`, `tasks/DEVLOG.md`
+
+---
+
 ## [2026-06-18] Composer — Polish roadmap page in portfolio-combined SPA
 
 **Mode:** Execution
