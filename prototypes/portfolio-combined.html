@@ -93,7 +93,7 @@ body::after {
 /* ══════════════════════════════════════════
    LIQUID GLASS NAVBAR
 ══════════════════════════════════════════ */
-nav {
+#shared-nav {
   position: fixed;
   top: 14px; left: 0; right: 0;
   z-index: 200;
@@ -105,6 +105,12 @@ nav {
   border: none;
   box-shadow: none;
   height: auto;
+  transition: transform .4s ease, opacity .4s ease;
+}
+#shared-nav.nav-hidden {
+  transform: translateX(-100%);
+  opacity: 0;
+  pointer-events: none;
 }
 
 /* ═══ 3 FLOATING PILLS ═══ */
@@ -1653,13 +1659,12 @@ footer {
   transition: width .1s linear;
 }
 
-/* ── nav ── */
-#pg-roadmap nav {
-  position: relative;
-  top: auto; left: auto; right: auto;
+/* ── roadmap internal nav (slide-in pill) ── */
+#roadmap-internal-nav {
+  position: fixed;
+  top: 14px; left: 50%; transform: translateX(-50%) translateX(100%);
+  z-index: 200;
   width: fit-content; max-width: calc(100% - 40px);
-  margin: 90px auto 28px;
-  z-index: 10;
   display: flex; align-items: center; gap: 28px;
   padding: 11px 24px;
   background: rgba(8,8,8,.55);
@@ -1668,37 +1673,45 @@ footer {
   border-radius: 100px; border: 1px solid rgba(255,255,255,.1);
   box-shadow: 0 0 0 0.5px rgba(255,255,255,.04) inset, 0 1px 0 rgba(255,255,255,.09) inset,
     0 -1px 0 rgba(0,0,0,.3) inset, 0 12px 40px rgba(0,0,0,.7), 0 2px 8px rgba(0,0,0,.4);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform .4s ease, opacity .4s ease;
+}
+#roadmap-internal-nav.nav-visible {
+  transform: translateX(-50%) translateX(0);
+  opacity: 1;
+  pointer-events: auto;
 }
 
-#pg-roadmap .nav-logo {
+#roadmap-internal-nav .nav-logo {
   font-family: 'DM Mono', monospace; font-size: 13px; font-weight: 500;
   letter-spacing: 2.5px; color: var(--w); text-decoration: none;
   padding: 0; background: none; border: none; border-radius: 0;
   box-shadow: none; backdrop-filter: none; -webkit-backdrop-filter: none;
 }
-#pg-roadmap .nav-logo:hover { box-shadow: none; }
-#pg-roadmap .nav-logo em { color: var(--blue); font-style: normal; }
+#roadmap-internal-nav .nav-logo:hover { box-shadow: none; }
+#roadmap-internal-nav .nav-logo em { color: var(--blue); font-style: normal; }
 
-#pg-roadmap .nav-links {
+#roadmap-internal-nav .nav-links {
   position: static; left: auto; transform: none;
   display: flex; gap: 20px; list-style: none;
   background: none; border: none; border-radius: 0;
   box-shadow: none; padding: 0;
 }
-#pg-roadmap .nav-links a {
+#roadmap-internal-nav .nav-links a {
   display: inline; font-family: 'DM Mono', monospace; font-size: 11px;
   letter-spacing: 1px; color: var(--w30); text-decoration: none;
   background: none; border: none; border-radius: 0; padding: 0;
   transition: color .2s;
 }
-#pg-roadmap .nav-links a:hover,
-#pg-roadmap .nav-links a.active { color: var(--w); background: none; box-shadow: none; }
+#roadmap-internal-nav .nav-links a:hover,
+#roadmap-internal-nav .nav-links a.active { color: var(--w); background: none; box-shadow: none; }
 
 /* ── main layout ── */
 #pg-roadmap main {
   position: relative; z-index: 1;
   max-width: 1100px; margin: 0 auto;
-  padding: 0 20px 80px;
+  padding: 76px 20px 80px;
 }
 
 /* ── base card .w ── */
@@ -2244,7 +2257,7 @@ footer {
    RESPONSIVE
 ══════════════════════════════════════════ */
 @media (max-width: 860px) {
-  #pg-roadmap main { padding: 0 20px 100px; }
+  #pg-roadmap main { padding: 76px 20px 100px; }
 }
 @media (max-width: 768px) {
   .phases-grid { grid-template-columns: repeat(2, 1fr); }
@@ -2258,7 +2271,7 @@ footer {
   .guide-grid { grid-template-columns: 1fr; }
 }
 @media (max-width: 560px) {
-  #pg-roadmap main { padding: 0 16px 100px; }
+  #pg-roadmap main { padding: 76px 16px 100px; }
   .hero h1 { font-size: clamp(32px, 9vw, 56px); }
   .hero-sub { font-size: 15px; }
 }
@@ -2332,6 +2345,17 @@ footer {
     </button>
     <button class="nav-profile" onclick="showPage('me')" title="Private section">VK</button>
   </div>
+</nav>
+
+<!-- Roadmap internal nav (slides in when roadmap page active) -->
+<nav id="roadmap-internal-nav">
+  <a href="#" class="nav-logo" onclick="showPage('home');return false;">CS<em>.</em></a>
+  <ul class="nav-links">
+    <li><a href="#roadmap" onclick="scrollInRoadmap('roadmap');return false;">overview</a></li>
+    <li><a href="#topics" onclick="scrollInRoadmap('topics');return false;">topics</a></li>
+    <li><a href="#careers" onclick="scrollInRoadmap('careers');return false;">careers</a></li>
+    <li><a href="#resources" onclick="scrollInRoadmap('resources');return false;">resources</a></li>
+  </ul>
 </nav>
 
 <div class="page active page-visible" id="pg-home">
@@ -3258,16 +3282,6 @@ footer {
 
 <div class="page" id="pg-roadmap">
 <div id="progress-bar"></div>
-
-<nav aria-label="Site navigation">
-  <a href="/" class="nav-logo">CS<em>.</em></a>
-  <ul class="nav-links">
-    <li><a href="#roadmap" onclick="scrollInRoadmap('roadmap');return false;">overview</a></li>
-    <li><a href="#topics" onclick="scrollInRoadmap('topics');return false;">topics</a></li>
-    <li><a href="#careers" onclick="scrollInRoadmap('careers');return false;">careers</a></li>
-    <li><a href="#resources" onclick="scrollInRoadmap('resources');return false;">resources</a></li>
-  </ul>
-</nav>
 
 <main>
 
@@ -4835,6 +4849,7 @@ const animObserver = new IntersectionObserver((entries) => {
 
 function observeAnimElements() {
   document.querySelectorAll('[data-anim]').forEach(el => {
+    animObserver.unobserve(el);
     animObserver.observe(el);
   });
 }
@@ -4950,6 +4965,24 @@ function showPage(id, opts) {
   if (options.scrollTop !== false) {
     window.scrollTo({top: 0, behavior: id === 'roadmap' ? 'auto' : 'smooth'});
   }
+  // Re-observe animations for the now-visible page (elements were hidden at init)
+  if (id === 'roadmap') {
+    setTimeout(() => {
+      observeAnimElements();
+      document.querySelectorAll('#pg-roadmap .career-card').forEach(c => barObserver.observe(c));
+    }, 100);
+  }
+  // Slide-over topbar animation: shared nav ↔ roadmap internal nav
+  const sharedNav = document.getElementById('shared-nav');
+  const roadmapNav = document.getElementById('roadmap-internal-nav');
+  if (id === 'roadmap') {
+    sharedNav.classList.add('nav-hidden');
+    roadmapNav.classList.add('nav-visible');
+  } else {
+    sharedNav.classList.remove('nav-hidden');
+    roadmapNav.classList.remove('nav-visible');
+  }
+  // Update shared nav active link
   document.querySelectorAll('#shared-nav .nav-links a').forEach(a => a.classList.remove('act'));
   const navLink = document.querySelector('#shared-nav .nav-links a[href="#' + id + '"]');
   if (navLink) navLink.classList.add('act');
