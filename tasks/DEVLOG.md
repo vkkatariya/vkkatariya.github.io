@@ -1,3 +1,16 @@
+## [2026-06-19] OpenCode — roadmap topbar light-mode integration
+
+**Mode:** Execution (micro-loop)
+**Did:**
+- Replaced the `html.light #roadmap-internal-nav .nav-logo, html.light #roadmap-internal-nav .nav-links` rule (which gave each child its own separate glass pill, causing the disconnected two-pill look) with an override on the parent `#roadmap-internal-nav` itself.
+- The parent now renders as a single integrated light glass pill (`linear-gradient(135deg, rgba(255,255,255,.78) 0%, rgba(245,245,245,.72) 100%)`, `border-color: rgba(13,13,15,.12)`, soft shadow).
+- The internal `.nav-logo` and `.nav-links` are reset to `background: transparent`, `border-color: transparent`, `box-shadow: none`, `backdrop-filter: none`, so the "CS." label and nav items sit together inside one cohesive pill.
+- Kept dark-mode styles untouched and made no markup changes.
+- Verified HTTP 200 via `python3 -m http.server 8085` and `curl` against `portfolio-combined.html#roadmap`.
+
+**State:** Working — roadmap internal topbar in light mode now matches the single-pill integrated design seen in dark mode.
+**Modified:** `prototypes/portfolio-combined.html`
+
 ## [2026-06-19] OpenCode — light-mode about widget fix
 
 **Mode:** Execution (micro-loop)

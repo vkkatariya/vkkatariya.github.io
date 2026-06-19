@@ -2341,12 +2341,23 @@ footer {
 html.light .nav-logo,
 html.light .nav-links,
 html.light .nav-right,
-html.light #roadmap-internal-nav .nav-logo,
-html.light #roadmap-internal-nav .nav-links {
+html.light #roadmap-internal-nav {
   background: linear-gradient(135deg, rgba(255,255,255,.78) 0%, rgba(245,245,245,.72) 100%);
   border-color: rgba(13,13,15,.12);
   box-shadow: 0 4px 24px rgba(0,0,0,.10), 0 1px 0 rgba(255,255,255,.95) inset;
 }
+html.light #roadmap-internal-nav .nav-logo,
+html.light #roadmap-internal-nav .nav-links {
+  background: transparent;
+  border-color: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+html.light #roadmap-internal-nav .nav-logo { color: var(--w); }
+html.light #roadmap-internal-nav .nav-links a { color: rgba(13,13,15,.45); }
+html.light #roadmap-internal-nav .nav-links a:hover { color: rgba(13,13,15,.8); background: rgba(0,0,0,.05); }
+html.light #roadmap-internal-nav .nav-links a.active { background: rgba(0,0,0,.08); color: var(--w); }
 html.light .nav-links a { color: rgba(13,13,15,.45); }
 html.light .nav-links a:hover { color: rgba(13,13,15,.8); background: rgba(0,0,0,.05); }
 html.light .nav-links a.act { background: rgba(0,0,0,.08); color: var(--w); }

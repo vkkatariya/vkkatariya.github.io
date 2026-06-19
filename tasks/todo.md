@@ -32,7 +32,7 @@
 - [x] Fix portfolio-combined.html structural bugs and restore old background design tokens
 - [x] Fix portfolio-combined.html roadmap page: slide-over topbar + render invisible topic/career cards
 - [x] Project dev setup: AGENTS.md, CONTEXT.md, README.md, DEVLOG.md, todo.md, lessons.md
-- [~] Finalize portfolio-combined.html roadmap page — match cs-roadmap.html content + style with clean topbar morph
+- [x] Finalize portfolio-combined.html roadmap page — match cs-roadmap.html content + style with clean topbar morph
 
 ### Roadmap page (#pg-roadmap) — mobile/JS bugfix pass — 2026-06-19
 - [x] Fix JS crash from modal-overlay/modal-close referenced before existing in DOM
