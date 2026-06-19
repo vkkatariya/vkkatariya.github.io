@@ -1,3 +1,28 @@
+## [2026-06-19] [Claude] — Fixed #pg-roadmap: JS crash emptying topic/career grids, modal positioning, and the mobile "ghost pill" nav bug
+
+**Mode:** Mixed (Analytical + Execution)
+**Did:**
+- Diagnosed via headless Playwright that `#modal-overlay`/`#modal-close` were referenced through `getElementById().addEventListener()` before those nodes existed in the DOM (markup sat physically after `</script>`), throwing an uncaught TypeError that silently halted ~40% of the script — `renderTopics()`, `renderCareers()`, all IntersectionObservers, filter buttons, timeline accordion, and hashchange/DOMContentLoaded routing never ran. This is why topics/careers grids were rendering empty.
+- Relocated the roadmap modal + progress-widget markup to a verified body-level insertion point (between `#pg-roadmap`'s closing `</div>` and `#pg-about`'s opening tag) — had to dodge a separate pre-existing unclosed-`</div>` bug in `#pg-about` that would have trapped the modal inside a `transform`-bearing ancestor and broken `position:fixed`.
+- Fixed a visibility race in `updateProgressWidget()` — a stale inline `style.display:none` (set by `showPage()` on every navigation) was fighting the `.show` CSS class.
+- Root-caused the actual "dark rectangle / ghost pill": two `@media` blocks (`max-width:860px`, `max-width:560px`) contained bare `nav {}` / `.nav-links {}` / `.nav-logo {}` rules left over from standalone `cs-roadmap.html`'s single-nav design. After merging into the 3-pill topbar these leaked onto **both** `#shared-nav` and `#roadmap-internal-nav`, forcing both fixed-position elements to stretch `top` + `bottom` simultaneously (~670px tall). Rescoped all of them to `#roadmap-internal-nav` only.
+- Hit a follow-up cascade-specificity bug: the rescoped `top:auto` still lost to the base `#roadmap-internal-nav{top:14px}` rule (same ID specificity, later in source order) — added one targeted `!important` to resolve it.
+- Verified end-to-end via headless Playwright across desktop/tablet/mobile (1440/820/390px): topics grid (11 cards) + careers grid (10 cards) render, filters/accordion/checkbox→progress-widget/modal all functional, nav morph transition clean, zero console errors, `#pg-home`/`#pg-projects`/`#pg-about`/`#pg-me` confirmed untouched.
+
+**State:** `#pg-roadmap` fully working across all breakpoints, verified with screenshots + DOM assertions, not just visual spot-check. `#shared-nav` mobile rendering also incidentally fixed (was independently broken by the same leak — confirmed present on `#pg-home` too, before this session).
+
+**Decided:**
+- Kept the original mobile "bottom-dock tab bar" pattern for `#roadmap-internal-nav` (clearly the original cs-roadmap.html author's intent) instead of redesigning it to match the desktop floating pill — just fixed the scoping.
+- Used a scoped `!important` over reordering CSS blocks, to avoid the larger blast radius of moving the base rule earlier in a 5000-line stylesheet.
+
+**Blocked / Next:**
+- NOT fixed, explicitly out of scope: `#pg-about` is missing one closing `</div>`, which nests `#pg-me` inside it — `#pg-me` is currently unreachable/zero-size whenever `#pg-about` isn't simultaneously active. Confirmed pre-existing in the original uploaded file, not caused by this session.
+- Shared-nav's broader mobile layout (3 floating pills cramped/overlapping at ≤400px) is a separate, pre-existing, site-wide responsive gap — not touched.
+
+**Modified:** `prototypes/portfolio-combined.html` only — modal/progress-widget markup relocated, `updateProgressWidget()` JS patched, two `@media` blocks rescoped from bare `nav`/`.nav-links`/`.nav-logo` to `#roadmap-internal-nav`.
+
+---
+
 ## [2026-06-19] Claude (claude-code) — Two-way integrate cs-roadmap.html visual style into portfolio-combined.html #pg-roadmap
 
 **Mode:** Mixed (Analytical + Builder)

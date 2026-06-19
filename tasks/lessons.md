@@ -183,6 +183,52 @@
 <!-- **Root cause:** ... -->
 <!-- **Prevention rule:** ... -->
 
+## L-016 — Synchronous DOM access for elements defined later in HTML silently kills the rest of the script
+
+**What failed:** `#pg-roadmap`'s modal/progress-widget markup was placed after the closing `</script>` tag, but the script called `document.getElementById('modal-overlay').addEventListener(...)` synchronously at parse time — before that node existed. The uncaught TypeError halted every statement after it in that script block (function declarations stayed hoisted, masking the crash), silently breaking renderTopics/renderCareers/all observers/routing with no visible symptom unless the console was open.
+
+**Root cause:** Non-deferred `<script>` blocks execute top-to-bottom as parsed; any `getElementById`/`querySelector` target must already exist above the `<script>` tag, or the call must be deferred to `DOMContentLoaded`.
+
+**Prevention rule:**
+- Markup referenced via `getElementById`/`querySelector` in a top-level (non-deferred) script must live ABOVE that script tag.
+- After any HTML reorg near a `<script>`, headlessly load the page and check `pageerror` events — don't trust visual screenshots alone, hoisted functions can make a dead script body look fine.
+- If a page "loads fine" but specific dynamic content is empty, suspect a silent JS crash before assuming CSS/animation is the cause.
+
+---
+
+## L-017 — Bare element-type CSS selectors inside @media blocks leak onto every element sharing that tag
+
+**What failed:** Mobile-breakpoint rules (`nav {}`, `.nav-links {}`, `.nav-logo {}`) written for standalone `cs-roadmap.html`'s single `<nav>` were never rescoped after merging into the 3-pill topbar. At ≤860px/≤560px they matched BOTH `#shared-nav` and `#roadmap-internal-nav`, stretching both fixed-position elements between `top`+`bottom` simultaneously — a near-full-viewport dark rectangle on every page, not just roadmap.
+
+**Root cause:** Copy-pasting CSS from a standalone single-page file into a combined multi-page file without auditing for selectors that assume "there is only one of this tag on the page."
+
+**Prevention rule:**
+- After merging standalone HTML/CSS into a combined file, grep for bare element-type selectors (`nav {`, `header {`, `button {`) inside `@media` blocks and rescope every one to an ID/class.
+- Test responsive bugs at real mobile/tablet widths (390px, 820px) headlessly — desktop-only screenshots will not catch these.
+- An unexplained full-screen overlay report is itself a strong signal to check `getBoundingClientRect()` on fixed-position elements before assuming z-index/animation is the cause.
+
+---
+
+## L-018 — Equal-specificity CSS: later source order wins even when the earlier rule is inside a matching @media block
+**What failed:** After rescoping the leak to `#roadmap-internal-nav { top: auto; }` inside `@media(max-width:860px)`, the fix silently didn't apply — the base, always-active `#roadmap-internal-nav { top: 14px; }` rule (same ID specificity, but positioned LATER in the stylesheet) kept winning. A matching `@media` condition grants zero extra cascade priority over a same-specificity rule outside any media query.
+
+**Root cause:** Assumed "more specific media condition" implies "wins the cascade" — cascade ties are resolved purely by source position, not by how conditional the rule is.
+
+**Prevention rule:**
+- When an `@media` override doesn't visibly apply, check matched rules (`element.matches(selector)` + cssText, in source order) for a same-specificity rule appearing later before reaching for `!important`.
+- Prefer moving the base/unconditional rule earlier in the stylesheet over `!important` when safe; use `!important` only as a surgical, commented exception when reordering risks a larger blast radius.
+
+---
+
+## L-019 — Flag pre-existing, out-of-scope structural bugs explicitly instead of silently fixing or silently ignoring them
+
+**What failed:** N/A — not a mistake, a pattern worth recording. Discovered `#pg-about` is missing a closing `</div>`, trapping `#pg-me` inside it (collapses to zero size, page unreachable) while debugging an unrelated `#pg-roadmap` modal positioning bug. Did not fix it — outside the stated scope (#pg-roadmap only).
+
+**Prevention rule:**
+- When a debugging trail surfaces a real bug outside the current task's scope, name it explicitly (element/symptom/why it's out of scope) rather than fixing it unprompted or letting it pass unmentioned.
+- Before relying on any new insertion point in a large HTML file, verify it isn't accidentally nested inside an unrelated broken element — check the actual `parentElement` chain via DOM inspection, not just source-line proximity.
+
+
 ## L-015 — `position:fixed` inside a CSS-transformed SPA page container doesn't stick to the viewport
 
 **What failed:** `#progress-bar { position:fixed; top:0 }` placed inside `#pg-roadmap` scrolled with page content instead of staying fixed at the top of the viewport.

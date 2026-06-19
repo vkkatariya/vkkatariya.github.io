@@ -1,5 +1,5 @@
 # tasks/todo.md — portfolio-website
-> Current sprint items. Vishal manages this file.
+> Current sprint items. Vishal/Hermes/openclaw manages this file.
 > Agents: read at session start. Mark items complete as you go.
 
 ---
@@ -26,6 +26,20 @@
 - [x] Fix portfolio-combined.html roadmap page: slide-over topbar + render invisible topic/career cards
 - [x] Project dev setup: AGENTS.md, CONTEXT.md, README.md, DEVLOG.md, todo.md, lessons.md
 - [~] Finalize portfolio-combined.html roadmap page — match cs-roadmap.html content + style with clean topbar morph
+
+### Roadmap page (#pg-roadmap) — mobile/JS bugfix pass — 2026-06-19
+- [x] Fix JS crash from modal-overlay/modal-close referenced before existing in DOM
+- [x] Relocate modal + progress-widget markup to a safe body-level position
+- [x] Fix progress-widget visibility race in updateProgressWidget()
+- [x] Find + fix "dark rectangle/ghost pill" — rescope leaked nav{}/.nav-links{}/.nav-logo{} rules to #roadmap-internal-nav
+- [x] Fix cascade specificity issue blocking the rescoped top:auto (targeted !important)
+- [x] Verify topics grid (11 cards) + careers grid (10 cards) render
+- [x] Verify filters, timeline accordion, checkbox→progress-widget, modal open/close
+- [x] Verify desktop (1440px) / tablet (820px) / mobile (390px) — no regressions, console clean
+- [!] #pg-about missing closing </div>, traps #pg-me inside it (zero-size, unreachable) — flagged, NOT fixed, out of scope for this pass
+- [ ] Fix #pg-about unclosed div (separate task — blocks /me page entirely)
+- [ ] Shared-nav mobile layout still cramped at ≤400px (3 pills overlap) — separate, pre-existing, not roadmap-specific
+
 - [ ] Finalize homepage (portfolio-v4.html) as the canonical reference
 - [ ] Finalize about page (`about.html`) as canonical reference
 - [ ] Finalize projects page (`projects.html`) as canonical reference
