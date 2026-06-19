@@ -121,6 +121,47 @@ A personal portfolio web app at `vishalkatariya.dev`.
 
 ---
 
+## Page transitions & animation spec
+
+**Rule:** Page transitions are optional in Phase 0, mandatory in Phase 1. No jarring hard cuts.
+
+### HTML prototype behavior (Phase 0)
+
+`portfolio-combined.html` uses an inline SPA switch via `showPage(slug)`:
+- The active page gets `.active` (`opacity:1; pointer-events:auto; transform:translateY(0) scale(1)`).
+- Inactive pages keep `.page` (`opacity:0; pointer-events:none; transform:translateY(10px) scale(.99)`).
+- Transition: `opacity .45s cubic-bezier(.22,.61,.36,1), transform .55s cubic-bezier(.22,.61,.36,1)`.
+- Scroll resets to top on every switch (`window.scrollTo(0,0)`).
+- No exit animation — fade-in only (simplest and avoids layout thrash).
+
+### SvelteKit behavior (Phase 1)
+
+Use `svelte/transition` with a global layout wrapper keyed to `$page.url.pathname`:
+```ts
+import { fly, fade } from 'svelte/transition';
+import { cubicOut } from 'svelte/easing';
+
+const pageTransition = (node, { y = 16, duration = 350 }) =>
+  fly(node, { y, duration, easing: cubicOut });
+```
+- Enter: `fly` from `y:16` + `fade` from `0` (simultaneous).
+- Exit: none (Phase 1 MVP) or a fast `fade` if performance budget allows.
+- Easing: `cubic-bezier(.22,.61,.36,1)` (`cubicOut` in Svelte).
+- Duration: 350–450ms on desktop, 250ms on mobile (`prefers-reduced-motion` → instant).
+- Scroll behavior: `scrollTo(0,0)` on route change.
+
+### Motion budget
+
+- Avoid layout-triggering animations (no `width`/`height` transitions on route change).
+- Prefer `transform` + `opacity`.
+- Respect `prefers-reduced-motion: reduce` — disable all transitions.
+
+### Roadmap exception
+
+`/roadmap` is a **single long scrollable page**, not a nested SPA. Internal anchors (overview, topics, careers, resources) scroll smoothly within the page. The roadmap internal nav morphs from the shared topbar center pill.
+
+---
+
 ## File conventions
 
 | Pattern | Usage |

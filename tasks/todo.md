@@ -44,7 +44,7 @@
 - [x] Update `projects.html` — shared 3-pill topbar, remove Syne, fix link targets, keep project cards
 - [x] Update `about.html` — shared 3-pill topbar, remove Syne, fix link targets, keep bio/timeline/skills
 - [x] Sync `portfolio-v4.html` nav links to point to updated `projects.html`, `about.html`, `cs-roadmap.html`
-- [ ] Add page-transition animation spec to CONTEXT.md
+- [x] Add page-transition animation spec to CONTEXT.md
 - [ ] Dark/light mode toggle with `localStorage` persistence
 - [ ] Contact form with email endpoint (Resend or Nodemailer)
 - [ ] CV/resume PDF download link
