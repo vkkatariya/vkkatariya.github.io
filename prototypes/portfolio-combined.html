@@ -2062,6 +2062,35 @@ footer {
 .badge-system { background: rgba(255,69,58,.12); color: var(--red); border: 1px solid rgba(255,69,58,.25); }
 .badge-advanced { background: rgba(192,132,252,.12); color: var(--purple); border: 1px solid rgba(192,132,252,.25); }
 
+/* ── Home/projects accent palette (tinted-pill formula) ── */
+/* Numbered items: sequential = acc */
+.proj-num, .pcard-num, .pi-num, .cs-number { color: var(--acc); }
+/* Timeline badges: edu=blue, lab=amber, proj=green, collab=purple, ai=green, goal=acc */
+.tl-badge.edu { border-color: rgba(91,156,246,.25); background: rgba(91,156,246,.1); color: var(--blue); }
+.tl-badge.lab { border-color: rgba(245,181,95,.2); background: rgba(245,181,95,.08); color: var(--amber); }
+.tl-badge.proj { border-color: rgba(52,199,123,.2); background: rgba(52,199,123,.08); color: var(--green); }
+.tl-badge.collab { border-color: rgba(167,139,250,.25); background: rgba(167,139,250,.1); color: var(--purple); }
+.tl-badge.ai { border-color: rgba(52,199,123,.2); background: rgba(52,199,123,.08); color: var(--green); }
+.tl-badge.goal { border-color: rgba(0,212,170,.25); background: rgba(0,212,170,.1); color: var(--acc); }
+/* Skill fill/pct: ≥80 green, 70-79 blue, <70 amber */
+.skill-row.pct-high .skill-pct { color: var(--green); }
+.skill-row.pct-high .skill-fill { background: var(--green); }
+.skill-row.pct-mid .skill-pct { color: var(--blue); }
+.skill-row.pct-mid .skill-fill { background: var(--blue); }
+.skill-row.pct-low .skill-pct { color: var(--amber); }
+.skill-row.pct-low .skill-fill { background: var(--amber); }
+/* Project footer labels: app=blue, collab=purple, ai=green */
+.pfoot-type.app { color: var(--blue); }
+.pfoot-type.collab { color: var(--purple); }
+.pfoot-type.ai { color: var(--green); }
+/* cs-badge tints: private→blue, open→green, collab→purple, year→acc */
+.cb-blue { border-color: rgba(91,156,246,.25); background: rgba(91,156,246,.08); color: var(--blue); }
+.cb-blue::before { background: var(--blue); }
+.cb-purple { border-color: rgba(167,139,250,.25); background: rgba(167,139,250,.08); color: var(--purple); }
+.cb-purple::before { background: var(--purple); }
+.cb-acc { border-color: rgba(0,212,170,.25); background: rgba(0,212,170,.08); color: var(--acc); }
+.cb-acc::before { background: var(--acc); }
+
 /* ── topic hidden ── */
 .topic-card.hidden { display: none; }
 
@@ -2427,6 +2456,20 @@ html.light .skill-track {
 }
 html.light .skill-fill { background: var(--w30) !important; }
 html.light .skill-pct { color: var(--w30); }
+/* Light-mode overrides for home/projects tinted skill bars */
+html.light .skill-row.pct-high .skill-fill { background: var(--green) !important; }
+html.light .skill-row.pct-mid .skill-fill { background: var(--blue) !important; }
+html.light .skill-row.pct-low .skill-fill { background: var(--amber) !important; }
+html.light .skill-row.pct-high .skill-pct { color: var(--green); }
+html.light .skill-row.pct-mid .skill-pct { color: var(--blue); }
+html.light .skill-row.pct-low .skill-pct { color: var(--amber); }
+/* Light-mode overrides for home/projects tinted timeline badges */
+html.light .tl-badge.edu { background: rgba(91,156,246,.1); border-color: rgba(91,156,246,.25); color: var(--blue); }
+html.light .tl-badge.lab { background: rgba(245,181,95,.08); border-color: rgba(245,181,95,.2); color: var(--amber); }
+html.light .tl-badge.proj { background: rgba(52,199,123,.08); border-color: rgba(52,199,123,.2); color: var(--green); }
+html.light .tl-badge.collab { background: rgba(167,139,250,.1); border-color: rgba(167,139,250,.25); color: var(--purple); }
+html.light .tl-badge.ai { background: rgba(52,199,123,.08); border-color: rgba(52,199,123,.2); color: var(--green); }
+html.light .tl-badge.goal { background: rgba(0,212,170,.1); border-color: rgba(0,212,170,.25); color: var(--acc); }
 html.light .skb-track { background: rgba(0,0,0,.08) !important; box-shadow: inset 1px 1px 2px rgba(0,0,0,.1) !important; }
 html.light .skb-fill { background: var(--w30) !important; }
 html.light .skb-v { color: var(--w30); }
@@ -2626,12 +2669,12 @@ html.light footer.roadmap-footer a { color: var(--w); }
         skills
       </div>
       <div style="flex:1;display:flex;flex-direction:column;justify-content:center;">
-        <div class="skill-row"><span class="skill-n">Python</span><div class="skill-track"><div class="skill-fill" style="width:90%;animation-delay:.2s"></div></div><span class="skill-pct">90</span></div>
-        <div class="skill-row"><span class="skill-n">ML / AI</span><div class="skill-track"><div class="skill-fill" style="width:82%;animation-delay:.3s"></div></div><span class="skill-pct">82</span></div>
-        <div class="skill-row"><span class="skill-n">TypeScript</span><div class="skill-track"><div class="skill-fill" style="width:68%;animation-delay:.4s"></div></div><span class="skill-pct">68</span></div>
-        <div class="skill-row"><span class="skill-n">Docker</span><div class="skill-track"><div class="skill-fill" style="width:76%;animation-delay:.5s"></div></div><span class="skill-pct">76</span></div>
-        <div class="skill-row"><span class="skill-n">Linux</span><div class="skill-track"><div class="skill-fill" style="width:80%;animation-delay:.6s"></div></div><span class="skill-pct">80</span></div>
-        <div class="skill-row"><span class="skill-n">SvelteKit</span><div class="skill-track"><div class="skill-fill" style="width:55%;animation-delay:.7s"></div></div><span class="skill-pct">55</span></div>
+        <div class="skill-row pct-high"><span class="skill-n">Python</span><div class="skill-track"><div class="skill-fill" style="width:90%;animation-delay:.2s"></div></div><span class="skill-pct">90</span></div>
+        <div class="skill-row pct-high"><span class="skill-n">ML / AI</span><div class="skill-track"><div class="skill-fill" style="width:82%;animation-delay:.3s"></div></div><span class="skill-pct">82</span></div>
+        <div class="skill-row pct-low"><span class="skill-n">TypeScript</span><div class="skill-track"><div class="skill-fill" style="width:68%;animation-delay:.4s"></div></div><span class="skill-pct">68</span></div>
+        <div class="skill-row pct-mid"><span class="skill-n">Docker</span><div class="skill-track"><div class="skill-fill" style="width:76%;animation-delay:.5s"></div></div><span class="skill-pct">76</span></div>
+        <div class="skill-row pct-high"><span class="skill-n">Linux</span><div class="skill-track"><div class="skill-fill" style="width:80%;animation-delay:.6s"></div></div><span class="skill-pct">80</span></div>
+        <div class="skill-row pct-low"><span class="skill-n">SvelteKit</span><div class="skill-track"><div class="skill-fill" style="width:55%;animation-delay:.7s"></div></div><span class="skill-pct">55</span></div>
       </div>
       <div class="nd"><div class="line"></div><i></i><i></i><i></i><div class="line"></div></div>
       <span class="sub">6 core · always building</span>
@@ -2799,37 +2842,37 @@ html.light footer.roadmap-footer a { color: var(--w); }
   <div class="tl-outer">
     <div class="tl-body">
       <div class="tl-item">
-        <div class="tl-meta"><span class="tl-year">Oct 2024</span><span class="tl-badge">education</span></div>
+        <div class="tl-meta"><span class="tl-year">Oct 2024</span><span class="tl-badge edu">education</span></div>
         <div class="tl-title">Started CS at h_da</div>
         <div class="tl-desc">Hochschule Darmstadt · CS · since Oct 2024</div>
       </div>
       <div class="tl-item">
-        <div class="tl-meta"><span class="tl-year">2024</span><span class="tl-badge">homelab</span></div>
+        <div class="tl-meta"><span class="tl-year">2024</span><span class="tl-badge lab">homelab</span></div>
         <div class="tl-title">First homelab — Rock 5T</div>
         <div class="tl-desc">Radxa Rock 5T · RK3588J ARM64 · 16 GB LPDDR5<br>Docker · Tailscale · self-hosted from scratch</div>
       </div>
       <div class="tl-item">
-        <div class="tl-meta"><span class="tl-year">2025</span><span class="tl-badge">project</span></div>
+        <div class="tl-meta"><span class="tl-year">2025</span><span class="tl-badge proj">project</span></div>
         <div class="tl-title">Finance Buddy</div>
         <div class="tl-desc">993 real transactions · 44 months · Oct 2022–May 2026<br>SvelteKit + Fastify + Postgres + Drizzle + Chart.js</div>
       </div>
       <div class="tl-item">
-        <div class="tl-meta"><span class="tl-year">2025</span><span class="tl-badge">homelab</span></div>
+        <div class="tl-meta"><span class="tl-year">2025</span><span class="tl-badge lab">homelab</span></div>
         <div class="tl-title">Homelab v2 — Proxmox cluster</div>
         <div class="tl-desc">+ Dell OptiPlex 7060 · Proxmox VE · 2-node cluster<br>KVM / libvirt · LXC containers · 48 GB total RAM</div>
       </div>
       <div class="tl-item">
-        <div class="tl-meta"><span class="tl-year">2026</span><span class="tl-badge">collab</span></div>
+        <div class="tl-meta"><span class="tl-year">2026</span><span class="tl-badge collab">collab</span></div>
         <div class="tl-title">TypeShift</div>
         <div class="tl-desc">Cross-platform AI writing assistant · with nayalambaliya<br>Android (Kotlin) · macOS (Swift) · Windows (C#)</div>
       </div>
       <div class="tl-item">
-        <div class="tl-meta"><span class="tl-year">2026</span><span class="tl-badge">AI · ML</span></div>
+        <div class="tl-meta"><span class="tl-year">2026</span><span class="tl-badge ai">AI · ML</span></div>
         <div class="tl-title">orlon-bot — in progress</div>
         <div class="tl-desc">Telegram bot · QLoRA fine-tune on Kaggle T4 GPUs<br>Unsloth · inference on Rock 5T NPU (6 TOPs)</div>
       </div>
       <div class="tl-item future">
-        <div class="tl-meta"><span class="tl-year">2028</span><span class="tl-badge">goal</span></div>
+        <div class="tl-meta"><span class="tl-year">2028</span><span class="tl-badge goal">goal</span></div>
         <div class="tl-title">B.Sc. Computer Science</div>
         <div class="tl-desc">Hochschule Darmstadt · expected graduation</div>
       </div>
@@ -2874,7 +2917,7 @@ html.light footer.roadmap-footer a { color: var(--w); }
       <div class="pcard-desc">Realtime ops dashboard for a 2-node homelab cluster. Live CPU/RAM/network metrics via WebSocket, NothingOS design, Notion docs viewer and service registry.</div>
       <div class="pcard-tags"><span class="chip">Fastify</span><span class="chip">WebSocket</span><span class="chip">Docker</span><span class="chip">Tailscale</span></div>
       <div class="pcard-foot">
-        <span>App · private</span>
+        <span class="pfoot-type app">App · private</span>
         <button class="np-ghost" style="padding:6px 12px;font-size:10px;">view →</button>
       </div>
     </div>
@@ -2892,7 +2935,7 @@ html.light footer.roadmap-footer a { color: var(--w); }
       <div class="pcard-desc">Cross-platform AI writing assistant built in collaboration with nayalambaliya. Android (Kotlin), macOS (Swift), Windows (C#) — shared AI backend for text transformation.</div>
       <div class="pcard-tags"><span class="chip">Kotlin</span><span class="chip">Swift</span><span class="chip">C#</span><span class="chip">AI</span></div>
       <div class="pcard-foot">
-        <span>Collab · open source</span>
+        <span class="pfoot-type collab">Collab · open source</span>
         <button class="np-ghost" style="padding:6px 12px;font-size:10px;">github →</button>
       </div>
     </div>
@@ -2910,7 +2953,7 @@ html.light footer.roadmap-footer a { color: var(--w); }
       <div class="pcard-desc">Telegram bot with a custom QLoRA fine-tuned model. Trained on Kaggle T4 GPUs via Unsloth. Inference on Rock 5T NPU (6 TOPs). Personal AI assistant — in progress.</div>
       <div class="pcard-tags"><span class="chip">Python</span><span class="chip">QLoRA</span><span class="chip">Unsloth</span><span class="chip">Telegram</span></div>
       <div class="pcard-foot">
-        <span>AI · ML · in progress</span>
+        <span class="pfoot-type ai">AI · ML · in progress</span>
         <button class="np-ghost" style="padding:6px 12px;font-size:10px;">view →</button>
       </div>
     </div>
@@ -3026,8 +3069,8 @@ html.light footer.roadmap-footer a { color: var(--w); }
         <p class="cs-tagline">Personal finance tracker built from real transaction data — 993 entries across 44 months of actual spending and income.</p>
         <div class="cs-badges">
           <span class="cs-badge cb-green">Prototype complete</span>
-          <span class="cs-badge" style="border-color:var(--w12);color:var(--w30)">Private · Tailscale only</span>
-          <span class="cs-badge" style="border-color:var(--w12);color:var(--w30)">2025–2026</span>
+          <span class="cs-badge cb-blue">Private · Tailscale only</span>
+          <span class="cs-badge cb-acc">2025–2026</span>
         </div>
       </div>
     </div>
@@ -3155,8 +3198,8 @@ html.light footer.roadmap-footer a { color: var(--w); }
         <p class="cs-tagline">Realtime ops dashboard for a self-hosted 2-node cluster — live metrics, service registry, and a Notion docs viewer.</p>
         <div class="cs-badges">
           <span class="cs-badge cb-green">Prototype complete</span>
-          <span class="cs-badge" style="border-color:var(--w12);color:var(--w30)">Private · Tailscale only</span>
-          <span class="cs-badge" style="border-color:var(--w12);color:var(--w30)">2025–2026</span>
+          <span class="cs-badge cb-blue">Private · Tailscale only</span>
+          <span class="cs-badge cb-acc">2025–2026</span>
         </div>
       </div>
     </div>
@@ -3272,8 +3315,8 @@ html.light footer.roadmap-footer a { color: var(--w); }
         <p class="cs-tagline">Cross-platform AI writing assistant — same AI, three native apps. Built in collaboration with nayalambaliya.</p>
         <div class="cs-badges">
           <span class="cs-badge cb-amber">In progress</span>
-          <span class="cs-badge" style="border-color:var(--w12);color:var(--w30)">Open source</span>
-          <span class="cs-badge" style="border-color:var(--w12);color:var(--w30)">Collaboration</span>
+          <span class="cs-badge cb-green">Open source</span>
+          <span class="cs-badge cb-purple">Collaboration</span>
         </div>
       </div>
     </div>
@@ -3356,7 +3399,7 @@ html.light footer.roadmap-footer a { color: var(--w); }
         <div class="cs-badges">
           <span class="cs-badge cb-amber">In progress</span>
           <span class="cs-badge" style="border-color:rgba(192,132,252,.3);color:var(--purple)">ML / AI</span>
-          <span class="cs-badge" style="border-color:var(--w12);color:var(--w30)">2026</span>
+          <span class="cs-badge cb-acc">2026</span>
         </div>
       </div>
     </div>
