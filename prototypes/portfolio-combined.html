@@ -760,14 +760,14 @@ main {
 @media (max-width: 860px) {
   .hero { min-height: 80vh; }
   .hero-name { letter-spacing: -3px; }
-  nav {
-    top: auto;
+  #roadmap-internal-nav {
+    top: auto !important;
     bottom: 20px;
     gap: 20px;
     padding: 12px 20px;
   }
-  .nav-links { gap: 0; }
-  .nav-links a { font-size: 10px; padding: 6px 11px; }
+  #roadmap-internal-nav .nav-links { gap: 0; }
+  #roadmap-internal-nav .nav-links a { font-size: 10px; padding: 6px 11px; }
   .nav-avail { display: none; }
 
   main {
@@ -811,7 +811,7 @@ main {
   .hero { min-height: 75vh; padding: 70px 16px 0; }
   .hero-role { font-size: 10px; letter-spacing: 1.5px; gap: 8px 10px; }
   .nav-lang { display: none; }
-  nav {
+  #roadmap-internal-nav {
     bottom: 16px;
     gap: 0;
     padding: 0;
@@ -826,13 +826,13 @@ main {
       0 1px 0 rgba(255,255,255,.1) inset,
       0 16px 48px rgba(0,0,0,.8);
   }
-  .nav-logo { display: none; }
-  .nav-links {
+  #roadmap-internal-nav .nav-logo { display: none; }
+  #roadmap-internal-nav .nav-links {
     display: flex;
     gap: 0;
   }
-  .nav-links li { flex: 1; }
-  .nav-links a {
+  #roadmap-internal-nav .nav-links li { flex: 1; }
+  #roadmap-internal-nav .nav-links a {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -841,8 +841,8 @@ main {
     letter-spacing: 1.5px;
     border-right: 1px solid rgba(255,255,255,.06);
   }
-  .nav-links li:last-child a { border-right: none; }
-  .nav-links a:hover { background: rgba(255,255,255,.05); }
+  #roadmap-internal-nav .nav-links li:last-child a { border-right: none; }
+  #roadmap-internal-nav .nav-links a:hover { background: rgba(255,255,255,.05); }
 
   main {
     padding: 20px 12px 110px;
@@ -3836,6 +3836,23 @@ footer {
 </footer>
 
 </div>
+<!-- /pg-roadmap -->
+
+<!-- Roadmap modal (supports #pg-roadmap topic-expand cards) -->
+<div class="modal-overlay" id="modal-overlay" onclick="if(event.target===this)closeModal()">
+  <div class="modal" id="modal-content" role="dialog" aria-modal="true" aria-labelledby="modal-title-text">
+    <button class="modal-close" id="modal-close" onclick="closeModal()">Close</button>
+    <div id="modal-body"></div>
+  </div>
+</div>
+
+<!-- Roadmap progress widget (supports #pg-roadmap topic checkboxes) -->
+<div id="progress-widget">
+  <div class="pw-label">Progress</div>
+  <div class="pw-count" id="pw-count">0 <span>/ 11</span></div>
+  <div class="pw-bar-track"><div class="pw-bar-fill" id="pw-bar"></div></div>
+</div>
+
 <div class="page" id="pg-about">
 <div class="wrap">
 
@@ -4643,12 +4660,15 @@ function updateProgressWidget(saved) {
   const widget = document.getElementById('progress-widget');
   const countEl = document.getElementById('pw-count');
   const barEl = document.getElementById('pw-bar');
+  const onRoadmap = document.getElementById('pg-roadmap')?.classList.contains('active');
   if (count > 0) {
     widget.classList.add('show');
+    widget.style.display = onRoadmap ? 'block' : 'none';
     countEl.innerHTML = count + ' <span>/ 11</span>';
     barEl.style.width = ((count / 11) * 100) + '%';
   } else {
     widget.classList.remove('show');
+    widget.style.display = 'none';
   }
 }
 
@@ -5040,20 +5060,5 @@ window.addEventListener('hashchange', (e) => {
 window.addEventListener('DOMContentLoaded', routeFromHash);
 
 </script>
-
-<!-- Roadmap modal -->
-<div class="modal-overlay" id="modal-overlay" onclick="if(event.target===this)closeModal()">
-  <div class="modal" id="modal-content" role="dialog" aria-modal="true" aria-labelledby="modal-title-text">
-    <button class="modal-close" id="modal-close" onclick="closeModal()">Close</button>
-    <div id="modal-body"></div>
-  </div>
-</div>
-
-<!-- Roadmap progress widget -->
-<div id="progress-widget">
-  <div class="pw-label">Progress</div>
-  <div class="pw-count" id="pw-count">0 <span>/ 11</span></div>
-  <div class="pw-bar-track"><div class="pw-bar-fill" id="pw-bar"></div></div>
-</div>
 </body>
 </html>
