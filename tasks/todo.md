@@ -36,11 +36,11 @@
 - [x] Verify topics grid (11 cards) + careers grid (10 cards) render
 - [x] Verify filters, timeline accordion, checkbox→progress-widget, modal open/close
 - [x] Verify desktop (1440px) / tablet (820px) / mobile (390px) — no regressions, console clean
-- [!] #pg-about missing closing </div>, traps #pg-me inside it (zero-size, unreachable) — flagged, NOT fixed, out of scope for this pass
-- [ ] Fix #pg-about unclosed div (separate task — blocks /me page entirely)
+- [x] Fix #pg-about missing closing </div>, unblocking /me page
 - [ ] Shared-nav mobile layout still cramped at ≤400px (3 pills overlap) — separate, pre-existing, not roadmap-specific
 
-- [ ] Finalize homepage (portfolio-v4.html) as the canonical reference
+- [~] Verify `portfolio-combined.html` end-to-end in real browser before marking Phase 0 done
+- [ ] Finalize homepage (`portfolio-v4.html`) as canonical reference
 - [ ] Finalize about page (`about.html`) as canonical reference
 - [ ] Finalize projects page (`projects.html`) as canonical reference
 - [ ] Add page-transition animation spec to CONTEXT.md
