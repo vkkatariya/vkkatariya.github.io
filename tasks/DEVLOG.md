@@ -1,3 +1,17 @@
+## [2026-06-20] Antigravity — add pop-out hover on projects page widgets
+
+**Mode:** Execution
+**Did:**
+- Added projects page widget hover CSS (`.pi`, `.proj-index`, `.pcard`, `.pcard-num`, `.pcard-title`, `.pcard-desc`, `.pcard-tags`, `.pcard-foot`, `.pfoot-type`, `.phase-card`, `.pipeline`, `.pipe-stage`, `.platform-grid`, `.plat`, `.cs-section`) matching the global hover effect (`translateY(-2px) scale(1.012)`, shadow lift, border tint).
+- Replaced inline `overflow:hidden` with `overflow:visible` on the 3 existing `.pcard` elements so the hover shadow and lift effect can render properly.
+- Kept shared topbar, roadmap page, JS, HTML structure, routes, light-mode rules, and color-profile tokens completely untouched.
+- Verified changes using `grep_search`.
+
+**State:** Working — the projects page widgets and case-study cards now pop outward on hover with scale + lift + shadow + border tint, matching the global widgets.
+**Decided:** Used the exact specified list of CSS selectors for projects page widgets and preserved the exact style defined by the global widget block. Modified only the inline `overflow` properties on the `.pcard` divs to allow shadows to escape.
+**Blocked / Next:** None blocking. Ready for browser verification.
+**Modified:** `prototypes/portfolio-combined.html`
+
 ## [2026-06-19] OpenCode — pop-out hover effect on all widgets/blocks
 
 **Mode:** Execution (micro-loop)

@@ -2530,6 +2530,16 @@ html.light footer.roadmap-footer a { color: var(--w); }
   box-shadow: 8px 10px 24px var(--sd), -2px -2px 10px var(--sl) !important;
   border-color: var(--w06) !important;
 }
+/* Projects page widget hover CSS */
+.pi, .proj-index, .pcard, .pcard-num, .pcard-title, .pcard-desc, .pcard-tags, .pcard-foot, .pfoot-type, .phase-card, .pipeline, .pipe-stage, .platform-grid, .plat, .cs-section {
+  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+}
+
+.pi:hover, .proj-index:hover, .pcard:hover, .pcard-num:hover, .pcard-title:hover, .pcard-desc:hover, .pcard-tags:hover, .pcard-foot:hover, .pfoot-type:hover, .phase-card:hover, .pipeline:hover, .pipe-stage:hover, .platform-grid:hover, .plat:hover, .cs-section:hover {
+  transform: translateY(-2px) scale(1.012);
+  box-shadow: 8px 10px 24px var(--sd), -2px -2px 10px var(--sl);
+  border-color: var(--w06);
+}
 </style>
 </head>
 <body>
@@ -2915,7 +2925,7 @@ html.light footer.roadmap-footer a { color: var(--w); }
   <div class="sec-head"><h2>all projects</h2></div>
 
   <div class="proj-row">
-    <div class="pcard" style="animation-delay:.65s;position:relative;overflow:hidden">
+    <div class="pcard" style="animation-delay:.65s;position:relative;overflow:visible">
       <div style="position:absolute;right:14px;top:14px;opacity:.08;pointer-events:none">
         <svg class="ico-float" width="38" height="38" viewBox="0 0 38 38" fill="none">
           <rect x="2" y="11" width="34" height="18" rx="3" fill="rgba(255,255,255,.6)" stroke="rgba(255,255,255,.8)" stroke-width="1"/>
@@ -2934,7 +2944,7 @@ html.light footer.roadmap-footer a { color: var(--w); }
       </div>
     </div>
 
-    <div class="pcard" style="animation-delay:.70s;position:relative;overflow:hidden">
+    <div class="pcard" style="animation-delay:.70s;position:relative;overflow:visible">
       <div style="position:absolute;right:14px;top:14px;opacity:.08;pointer-events:none">
         <svg class="ico-float2" width="38" height="38" viewBox="0 0 38 38" fill="none">
           <rect x="6" y="2" width="10" height="34" rx="4" fill="rgba(255,255,255,.5)" stroke="rgba(255,255,255,.8)" stroke-width="1"/>
@@ -2952,7 +2962,7 @@ html.light footer.roadmap-footer a { color: var(--w); }
       </div>
     </div>
 
-    <div class="pcard" style="animation-delay:.75s;position:relative;overflow:hidden">
+    <div class="pcard" style="animation-delay:.75s;position:relative;overflow:visible">
       <div style="position:absolute;right:14px;top:14px;opacity:.08;pointer-events:none">
         <svg class="ico-float" width="38" height="38" viewBox="0 0 38 38" fill="none">
           <circle cx="19" cy="19" r="15" fill="rgba(255,255,255,.3)" stroke="rgba(255,255,255,.7)" stroke-width="1.2"/>
