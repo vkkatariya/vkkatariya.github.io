@@ -40,9 +40,10 @@
 - [ ] Shared-nav mobile layout still cramped at ≤400px (3 pills overlap) — separate, pre-existing, not roadmap-specific
 
 - [x] Verify `portfolio-combined.html` end-to-end in real browser before marking Phase 0 done
-- [ ] Finalize homepage (`portfolio-v4.html`) as canonical reference
-- [ ] Finalize about page (`about.html`) as canonical reference
-- [ ] Finalize projects page (`projects.html`) as canonical reference
+- [~] Option C: `portfolio-v4.html` is canonical homepage; update `projects.html` + `about.html` to match final topbar/fonts/links
+- [x] Update `projects.html` — shared 3-pill topbar, remove Syne, fix link targets, keep project cards
+- [x] Update `about.html` — shared 3-pill topbar, remove Syne, fix link targets, keep bio/timeline/skills
+- [x] Sync `portfolio-v4.html` nav links to point to updated `projects.html`, `about.html`, `cs-roadmap.html`
 - [ ] Add page-transition animation spec to CONTEXT.md
 - [ ] Dark/light mode toggle with `localStorage` persistence
 - [ ] Contact form with email endpoint (Resend or Nodemailer)

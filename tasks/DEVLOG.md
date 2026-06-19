@@ -1,3 +1,21 @@
+## [2026-06-19] [AbacusAI] — Update standalone `projects.html` and `about.html` to final 3-pill topbar + font stack
+
+**Mode:** Execution
+**Did:**
+- Replaced Google Fonts link on both pages with final stack: Cormorant Garamond (600/700 italic) + DM Mono (300/400/500) + Space Grotesk (400-800) + Outfit (400-700).
+- Replaced all `font-family:'Syne',sans-serif` references with `'Space Grotesk',sans-serif` in `projects.html` (page title + case-study titles) and `about.html` (page title).
+- Replaced legacy single-pill nav CSS with full 3-pill liquid-glass topbar from `portfolio-v4.html`: left logo pill (`Vishal Katariya`), center nav pill with `available` dot, right controls pill (search + lang + theme + profile).
+- Replaced `<nav>` markup on both pages with the 3-pill floating glass pills structure; updated links so `projects.html` has `projects` active and `about.html` has `about` active; home points to `portfolio-v4.html`, roadmap to `cs-roadmap.html`.
+- Added missing `:root` variables from `portfolio-v4.html`: `--acc:#00D4AA;`, `--gb`, `--gbd`, `--np-off:5px;`, `--w03`.
+- Confirmed `portfolio-v4.html` already links to `projects.html`, `cs-roadmap.html`, `about.html` — no changes needed.
+- Verified all three pages serve HTTP 200; grep confirms zero `Syne` references in `projects.html`/`about.html` and positive counts for `Space Grotesk` / `nav-links` / `nav-logo`.
+- Updated `tasks/todo.md`: marked the three update items `[x]`.
+
+**State:** Working. Standalone prototypes now share the same topbar component and font stack as the canonical homepage.
+**Modified:** `prototypes/projects.html`, `prototypes/about.html`, `tasks/todo.md`
+
+---
+
 ## [2026-06-19] [Claude] — Fixed #pg-roadmap: JS crash emptying topic/career grids, modal positioning, and the mobile "ghost pill" nav bug
 
 **Mode:** Mixed (Analytical + Execution)
