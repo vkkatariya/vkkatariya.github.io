@@ -14,6 +14,13 @@
 
 ## Phase 0 — HTML Prototypes (in progress)
 
+### Visual polish / interaction pass
+- [ ] Pop-out hover effect on all widgets/blocks across all pages
+- [ ] Font stack update: add Nothing NDOT font where it suits (complement or replace Space Grotesk)
+- [ ] Redesign top-right nav pill: fully rounded + liquid glass effect
+- [ ] Redesign top-left logo
+
+### Core prototype tasks
 - [x] Design system defined: NothingOS + Liquid Glass + Neomorphism + NeoPOP
 - [x] Font stack decided: Cormorant Garamond + Space Grotesk + Outfit + DM Mono
 - [x] Portfolio v4 homepage — 3-pill glass topbar, widget grid, hero removed
@@ -32,20 +39,17 @@
 - [x] Relocate modal + progress-widget markup to a safe body-level position
 - [x] Fix progress-widget visibility race in updateProgressWidget()
 - [x] Find + fix "dark rectangle/ghost pill" — rescope leaked nav{}/.nav-links{}/.nav-logo{} rules to #roadmap-internal-nav
-- [x] Fix cascade specificity issue blocking the rescoped top:auto (targeted !important)
+- [x] Fix cascade specificity issue blocking the targeted top:auto rule
 - [x] Verify topics grid (11 cards) + careers grid (10 cards) render
 - [x] Verify filters, timeline accordion, checkbox→progress-widget, modal open/close
 - [x] Verify desktop (1440px) / tablet (820px) / mobile (390px) — no regressions, console clean
 - [x] Fix #pg-about missing closing </div>, unblocking /me page
 - [ ] Shared-nav mobile layout still cramped at ≤400px (3 pills overlap) — separate, pre-existing, not roadmap-specific
 
-- [x] Verify `portfolio-combined.html` end-to-end in real browser before marking Phase 0 done
-- [x] Option C: `portfolio-v4.html` is canonical homepage; update `projects.html` + `about.html` to match final topbar/fonts/links
-- [x] Update `projects.html` — shared 3-pill topbar, remove Syne, fix link targets, keep project cards
-- [x] Update `about.html` — shared 3-pill topbar, remove Syne, fix link targets, keep bio/timeline/skills
-- [x] Sync `portfolio-v4.html` nav links to point to updated `projects.html`, `about.html`, `cs-roadmap.html`
-- [x] Add page-transition animation spec to CONTEXT.md
+### Theme + color
 - [x] Dark/light mode toggle with `localStorage` persistence (standalone pages: `html.light` + `vk-theme`)
+- [x] Finish light mode on `portfolio-combined.html` — fix remaining dark rectangles/buttons/widgets
+- [ ] Extend roadmap color profile to home/projects/about/me in `portfolio-combined.html`
 - [ ] Contact form with email endpoint (Resend or Nodemailer)
 - [ ] CV/resume PDF download link
 - [ ] Real GitHub contribution grid via API
