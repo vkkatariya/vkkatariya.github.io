@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<script>
+(function(){
+  if(localStorage.getItem('vk-theme') === 'light'){
+    document.documentElement.classList.add('light');
+  }
+})();
+</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>vkkatariya — portfolio</title>
@@ -1082,9 +1089,89 @@ footer {
   .about-grid{grid-template-columns:1fr}
   .about-contact{width:auto}
 }
+
+/* ═══ LIGHT MODE ═══ */
+html.light {
+  --bg: #F2F2F0;
+  --bg2: #EAEAE8;
+  --bg3: #FFFFFF;
+  --w: #111113;
+  --w60: rgba(17,17,19,.62);
+  --w30: rgba(17,17,19,.36);
+  --w12: rgba(17,17,19,.10);
+  --w06: rgba(17,17,19,.05);
+  --w03: rgba(17,17,19,.03);
+  --gb: rgba(0,0,0,.055);
+  --gbd: rgba(0,0,0,.12);
+  --sd: rgba(0,0,0,.10);
+  --sl: rgba(255,255,255,.8);
+}
+html.light body { background: var(--bg); color: var(--w); }
+html.light body::before {
+  background-image: radial-gradient(circle, rgba(17,17,19,.045) 1px, transparent 1px);
+}
+html.light .nav-logo,
+html.light .nav-links,
+html.light .nav-right {
+  background: linear-gradient(135deg, rgba(255,255,255,.78) 0%, rgba(245,245,245,.72) 100%);
+  border-color: rgba(17,17,19,.12);
+  box-shadow: 0 4px 24px rgba(0,0,0,.10), 0 1px 0 rgba(255,255,255,.95) inset;
+}
+html.light .nav-links a { color: rgba(17,17,19,.45); }
+html.light .nav-links a:hover { color: rgba(17,17,19,.8); background: rgba(0,0,0,.05); }
+html.light .nav-links a.act { background: rgba(0,0,0,.08); color: var(--w); }
+html.light .nav-search { color: rgba(17,17,19,.45); border-right-color: rgba(17,17,19,.08); }
+html.light .nav-search-input { color: var(--w); }
+html.light .nav-search-input::placeholder { color: rgba(17,17,19,.32); }
+html.light .nav-lang { color: rgba(17,17,19,.5); }
+html.light .nav-lang:hover { color: var(--w); background: rgba(0,0,0,.05); }
+html.light .nav-theme { color: rgba(17,17,19,.5); }
+html.light .nav-theme:hover { color: var(--w); background: rgba(0,0,0,.05); }
+html.light .nav-avail-dot { background: var(--green); }
+html.light .nav-avail-txt { color: var(--green); }
+
+html.light .w { background: var(--bg2); border-color: rgba(17,17,19,.08); box-shadow: 0 4px 28px rgba(0,0,0,.08); }
+html.light .w.glass { background: linear-gradient(135deg, rgba(255,255,255,.85) 0%, rgba(245,245,245,.75) 100%); }
+html.light .w.inv { background: var(--w); color: var(--bg); }
+html.light .lbl { background: rgba(0,0,0,.05); color: var(--w60); border-color: rgba(0,0,0,.08); }
+html.light .chip { background: rgba(0,0,0,.04); border-color: rgba(0,0,0,.08); color: var(--w60); }
+html.light .skill-track { background: rgba(0,0,0,.08); }
+html.light .skill-pct { color: var(--w60); }
+html.light .cc { background: rgba(0,0,0,.08); }
+html.light .cc.l1 { background: rgba(0,0,0,.15); }
+html.light .cc.l2 { background: rgba(0,0,0,.28); }
+html.light .cc.l3 { background: rgba(0,0,0,.45); }
+html.light .cc.l4 { background: rgba(0,0,0,.72); }
+html.light .si-name { color: var(--w); }
+html.light .si-tag { color: var(--w60); }
+html.light .pcard { background: var(--bg2); border-color: rgba(0,0,0,.08); }
+html.light .pcard-desc { color: var(--w60); }
+html.light .footer-logo { color: var(--w); }
+html.light .footer-links a { color: var(--w60); }
+html.light .footer-links a:hover { color: var(--w); }
+html.light .clock-h { color: var(--w); }
+html.light .clock-m { color: var(--w60); }
+html.light .clock-date { color: var(--w30); }
+html.light .sbadge { background: rgba(0,0,0,.04); border-color: rgba(0,0,0,.08); color: var(--w60); }
+html.light .nd i { color: var(--w30); }
+
+html.light .w.inv { background: var(--bg3); color: var(--w); border-color: rgba(0,0,0,.08); }
+html.light .pcard-foot .btn { background: var(--w); color: var(--bg); }
+html.light .pcard-foot .btn:hover { background: var(--w60); }
+html.light .sbadge { color: var(--w60); }
 </style>
 </head>
 <body>
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
+  <symbol id="ic-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></symbol>
+  <symbol id="ic-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="5"/>
+    <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+    <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+  </symbol>
+</svg>
 
 <!-- ── 3 Floating Glass Pills ── -->
 <nav>
@@ -1118,10 +1205,7 @@ footer {
     </div>
     <button class="nav-lang" id="langBtn" onclick="toggleLang()">EN</button>
     <button class="nav-theme" id="themeBtn" onclick="toggleTheme()" title="Toggle theme">
-      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" id="themeIcon">
-        <path d="M7 1v1M7 12v1M1 7H0M14 7h-1M2.1 2.1l.7.7M11.2 11.2l.7.7M11.9 2.1l-.7.7M2.8 11.2l-.7.7" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
-        <circle cx="7" cy="7" r="2.8" stroke="currentColor" stroke-width="1.1"/>
-      </svg>
+      <svg width="16" height="16" aria-hidden="true"><use id="theme-ico" href="#ic-moon"></use></svg>
     </button>
     <button class="nav-profile" onclick="location.href='#me'" title="Private section">VK</button>
   </div>
@@ -1561,13 +1645,16 @@ tick(); setInterval(tick, 1000);
 
 // ── Theme toggle
 function toggleTheme() {
-  const light = document.documentElement.getAttribute('data-theme') === 'light';
-  document.documentElement.setAttribute('data-theme', light ? 'dark' : 'light');
-  const icon = document.getElementById('themeIcon');
-  if (icon) icon.innerHTML = light
-    ? '<path d="M7 1v1M7 12v1M1 7H0M14 7h-1M2.1 2.1l.7.7M11.2 11.2l.7.7M11.9 2.1l-.7.7M2.8 11.2l-.7.7" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/><circle cx="7" cy="7" r="2.8" stroke="currentColor" stroke-width="1.1"/>'
-    : '<path d="M12 7a5 5 0 0 1-7 4.6A5 5 0 0 0 7 2c2.7 0 5 2.2 5 5z" fill="currentColor" opacity=".7"/>';
+  const html = document.documentElement;
+  const isLight = html.classList.toggle('light');
+  localStorage.setItem('vk-theme', isLight ? 'light' : 'dark');
+  const ico = document.getElementById('theme-ico');
+  if (ico) ico.setAttribute('href', isLight ? '#ic-sun' : '#ic-moon');
 }
+(function initThemeIcon(){
+  const ico = document.getElementById('theme-ico');
+  if (ico) ico.setAttribute('href', document.documentElement.classList.contains('light') ? '#ic-sun' : '#ic-moon');
+})();
 
 // ── Language toggle (EN/DE stub) ──
 const COPY = {

@@ -1,3 +1,19 @@
+## [2026-06-19] [Hermes] — Implement `html.light` light mode on standalone portfolio pages
+
+**Mode:** Execution (after `agy` Gemini 3.1 Pro and `opencode` both failed to persist edits, applied manually)
+**Did:**
+- Added head `<script>` to read `localStorage.getItem('vk-theme')` and set `document.documentElement.classList.add('light')` on page load in `portfolio-v4.html`, `projects.html`, and `about.html`.
+- Replaced the old `data-theme` toggle implementation with `html.light` class toggle, `vk-theme` persistence, and `<use id="theme-ico">` SVG symbol swap.
+- Added hidden SVG symbol block with `#ic-moon` and `#ic-sun` icons after `<body>` in each file.
+- Added base `html.light` CSS block inverting `--bg/--bg2/--bg3/--w/--w60/--w30/--gb/--gbd/--sd/--sl` to light values and flipping the dot-matrix + nav-pill glass colors.
+- Added file-specific component overrides for cards, widgets, timeline, skills, project case-study sections, infrastructure diagrams, education cards, languages, interests, and contact blocks.
+- Verified with headless Playwright that all three pages toggle to `html.light`, serve HTTP 200, and have zero console errors.
+
+**State:** Working pass. The big dark rectangles are gone, text is readable, nav inverts correctly.
+**Modified:** `prototypes/portfolio-v4.html`, `prototypes/projects.html`, `prototypes/about.html`
+
+---
+
 ## [2026-06-19] [AbacusAI] — Update standalone `projects.html` and `about.html` to final 3-pill topbar + font stack
 
 **Mode:** Execution

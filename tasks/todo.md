@@ -45,7 +45,7 @@
 - [x] Update `about.html` — shared 3-pill topbar, remove Syne, fix link targets, keep bio/timeline/skills
 - [x] Sync `portfolio-v4.html` nav links to point to updated `projects.html`, `about.html`, `cs-roadmap.html`
 - [x] Add page-transition animation spec to CONTEXT.md
-- [ ] Dark/light mode toggle with `localStorage` persistence
+- [x] Dark/light mode toggle with `localStorage` persistence (standalone pages: `html.light` + `vk-theme`)
 - [ ] Contact form with email endpoint (Resend or Nodemailer)
 - [ ] CV/resume PDF download link
 - [ ] Real GitHub contribution grid via API
