@@ -39,7 +39,7 @@
 - [x] Fix #pg-about missing closing </div>, unblocking /me page
 - [ ] Shared-nav mobile layout still cramped at ≤400px (3 pills overlap) — separate, pre-existing, not roadmap-specific
 
-- [~] Verify `portfolio-combined.html` end-to-end in real browser before marking Phase 0 done
+- [x] Verify `portfolio-combined.html` end-to-end in real browser before marking Phase 0 done
 - [ ] Finalize homepage (`portfolio-v4.html`) as canonical reference
 - [ ] Finalize about page (`about.html`) as canonical reference
 - [ ] Finalize projects page (`projects.html`) as canonical reference
