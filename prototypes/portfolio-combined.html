@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<script>
+(function(){
+  if(localStorage.getItem('vk-theme') === 'light'){
+    document.documentElement.classList.add('light');
+  }
+})();
+</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Vishal Katariya — Portfolio</title>
@@ -37,7 +44,7 @@
   --glass-b: rgba(241,240,246,.13);
   --np-off: 4px;
 }
-[data-theme="light"] {
+html.light {
   --bg: #F0F0EE;
   --bg2: #FFFFFF;
   --bg3: #F4F4F2;
@@ -86,7 +93,7 @@ body::after {
   pointer-events: none;
   z-index: 0;
 }
-[data-theme="light"] body::before {
+html.light body::before {
   background-image: radial-gradient(circle, rgba(0,0,0,.05) 1px, transparent 1px);
 }
 
@@ -2330,9 +2337,146 @@ footer {
 }
 #pg-home main { padding-top: 76px; }
 #pg-projects main, #pg-about main { padding-top: 76px; }
+
+html.light .nav-logo,
+html.light .nav-links,
+html.light .nav-right,
+html.light #roadmap-internal-nav .nav-logo,
+html.light #roadmap-internal-nav .nav-links {
+  background: linear-gradient(135deg, rgba(255,255,255,.78) 0%, rgba(245,245,245,.72) 100%);
+  border-color: rgba(13,13,15,.12);
+  box-shadow: 0 4px 24px rgba(0,0,0,.10), 0 1px 0 rgba(255,255,255,.95) inset;
+}
+html.light .nav-links a { color: rgba(13,13,15,.45); }
+html.light .nav-links a:hover { color: rgba(13,13,15,.8); background: rgba(0,0,0,.05); }
+html.light .nav-links a.act { background: rgba(0,0,0,.08); color: var(--w); }
+html.light .nav-search { color: rgba(13,13,15,.45); border-right-color: rgba(13,13,15,.08); }
+html.light .nav-search-input { color: var(--w); }
+html.light .nav-search-input::placeholder { color: rgba(13,13,15,.32); }
+html.light .nav-lang,
+html.light .nav-theme { color: rgba(13,13,15,.5); }
+html.light .nav-lang:hover,
+html.light .nav-theme:hover { color: var(--w); background: rgba(0,0,0,.05); }
+html.light .nav-avail-dot { background: var(--green); }
+html.light .nav-avail-txt { color: var(--green); }
+html.light .skill-track { background: rgba(0,0,0,.08); }
+html.light .skill-fill { background: var(--w30); }
+html.light .skb-track { background: rgba(0,0,0,.08); }
+html.light .skb-fill { background: var(--w30); }
+html.light .cc { background: rgba(0,0,0,.08); }
+html.light .cc.l1 { background: rgba(0,0,0,.15); }
+html.light .cc.l2 { background: rgba(0,0,0,.28); }
+html.light .cc.l3 { background: rgba(0,0,0,.45); }
+html.light .cc.l4 { background: rgba(0,0,0,.72); }
+html.light .modal-overlay { background: rgba(255,255,255,.72); backdrop-filter: blur(12px); }
+html.light .modal-card { background: var(--bg2); color: var(--w); border-color: rgba(0,0,0,.08); }
+html.light .w { background: var(--bg2); border-color: rgba(0,0,0,.08); box-shadow: 0 4px 28px rgba(0,0,0,.08); }
+html.light .w.glass { background: linear-gradient(135deg, rgba(255,255,255,.85) 0%, rgba(245,245,245,.75) 100%); }
+html.light .w.inv { background: var(--bg3); color: var(--w); box-shadow: 0 4px 28px rgba(0,0,0,.08); }
+html.light .lbl { background: rgba(0,0,0,.05); color: var(--w60); border-color: rgba(0,0,0,.08); }
+html.light .chip { background: rgba(0,0,0,.04); border-color: rgba(0,0,0,.08); color: var(--w60); }
+html.light .sbadge { background: rgba(0,0,0,.04); border-color: rgba(0,0,0,.08); color: var(--w60); }
+html.light .pcard { background: var(--bg2); border-color: rgba(0,0,0,.08); }
+html.light .pcard-desc { color: var(--w60); }
+html.light .tl-year { color: var(--w30); }
+html.light .tl-badge { background: rgba(0,0,0,.05); color: var(--w60); }
+html.light .tl-stat { background: var(--bg2); border-color: rgba(0,0,0,.08); }
+html.light .about-section { background: var(--bg2); border-color: rgba(0,0,0,.08); }
+html.light .about-bio { color: var(--w60); }
+html.light .contact-row { background: var(--bg2); border-color: rgba(0,0,0,.08); }
+html.light .np { background: var(--w); color: var(--bg); }
+html.light .np-ghost { border-color: rgba(0,0,0,.2); color: var(--w); }
+html.light .np-ghost:hover { background: rgba(0,0,0,.05); }
+html.light .roadmap-hero .np { background: var(--w); color: var(--bg); }
+html.light .roadmap-hero .np:hover { background: var(--w60); }
+
+html.light #pg-me button,
+html.light #pg-me .cta-btn {
+  background: var(--w) !important;
+  color: var(--bg) !important;
+  border-color: rgba(0,0,0,.08);
+}
+html.light #pg-me button:hover,
+html.light #pg-me .cta-btn:hover {
+  background: var(--w60) !important;
+}
+
+html.light .w,
+html.light .w.glass,
+html.light .w.inv { color: var(--w); }
+html.light .w .sub { color: var(--w30); }
+html.light .w [style*="color:rgba(240,240,240,.85)"],
+html.light .w [style*="color: rgba(240,240,240,.85)"] { color: var(--w) !important; }
+html.light .w [style*="color:var(--w30)"],
+html.light .w [style*="color: var(--w30)"] { color: var(--w30) !important; }
+
+html.light .skill-track {
+  background: rgba(0,0,0,.08) !important;
+  box-shadow: inset 1px 1px 3px rgba(0,0,0,.12), inset -1px -1px 1px rgba(255,255,255,.5) !important;
+}
+html.light .skill-fill { background: var(--w30) !important; }
+html.light .skill-pct { color: var(--w30); }
+html.light .skb-track { background: rgba(0,0,0,.08) !important; box-shadow: inset 1px 1px 2px rgba(0,0,0,.1) !important; }
+html.light .skb-fill { background: var(--w30) !important; }
+html.light .skb-v { color: var(--w30); }
+
+html.light .dp span { background: rgba(0,0,0,.12); }
+html.light .dp span.on { background: var(--w); }
+
+html.light .ico svg [stroke*="rgba(255,255,255"],
+html.light .ico svg [stroke*="rgba(255, 255, 255"] { stroke: rgba(13,13,15,.25) !important; }
+html.light .ico svg [fill*="rgba(255,255,255"],
+html.light .ico svg [fill*="rgba(255, 255, 255"] { fill: rgba(13,13,15,.06) !important; }
+html.light .ico svg [stroke*="rgba(61,220,132"],
+html.light .ico svg [fill*="rgba(61,220,132"] { stroke: var(--green); fill: var(--green); }
+html.light .ico-blink2,
+html.light .ico-blink3 { filter: brightness(.8); }
+
+html.light .modal-card h2,
+html.light .modal-card p,
+html.light .modal-card .modal-body,
+html.light .modal-card label,
+html.light .modal-card input,
+html.light .modal-card textarea,
+html.light .modal-card select { color: var(--w); }
+html.light .modal-card input,
+html.light .modal-card textarea,
+html.light .modal-card select {
+  background: rgba(0,0,0,.04);
+  border-color: rgba(0,0,0,.08);
+}
+
+html.light .contact-row { color: var(--w60); }
+html.light .contact-row:hover { color: var(--w); }
+html.light .avail-badge { border-color: rgba(0,0,0,.08); color: var(--green); }
+
+html.light .roadmap-hero h1,
+html.light .roadmap-hero p,
+html.light .roadmap-hero .sub,
+html.light .phase-card,
+html.light .phase-card h3,
+html.light .phase-card p,
+html.light .topic-card,
+html.light .topic-card h3,
+html.light .topic-card p,
+html.light .career-card,
+html.light .career-card h3,
+html.light .career-card p,
+html.light footer.roadmap-footer,
+html.light footer.roadmap-footer a { color: var(--w); }
 </style>
 </head>
 <body>
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
+  <symbol id="ic-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></symbol>
+  <symbol id="ic-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="5"/>
+    <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+    <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+  </symbol>
+</svg>
 <!-- 3 Floating Glass Pills -->
 <nav id="shared-nav">
   <a href="#home" class="nav-logo" onclick="showPage('home')">
@@ -2362,10 +2506,7 @@ footer {
     </div>
     <button class="nav-lang" id="langBtn" onclick="toggleLang()">EN</button>
     <button class="nav-theme" id="themeBtn" onclick="toggleTheme()" title="Toggle theme">
-      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" id="themeIcon">
-        <path d="M7 1v1M7 12v1M1 7H0M14 7h-1M2.1 2.1l.7.7M11.2 11.2l.7.7M11.9 2.1l-.7.7M2.8 11.2l-.7.7" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
-        <circle cx="7" cy="7" r="2.8" stroke="currentColor" stroke-width="1.1"/>
-      </svg>
+      <svg width="16" height="16" aria-hidden="true"><use id="theme-ico" href="#ic-moon"></use></svg>
     </button>
     <button class="nav-profile" onclick="showPage('me')" title="Private section">VK</button>
   </div>
@@ -4223,13 +4364,16 @@ tick(); setInterval(tick, 1000);
 
 // ── Theme toggle
 function toggleTheme() {
-  const light = document.documentElement.getAttribute('data-theme') === 'light';
-  document.documentElement.setAttribute('data-theme', light ? 'dark' : 'light');
-  const icon = document.getElementById('themeIcon');
-  if (icon) icon.innerHTML = light
-    ? '<path d="M7 1v1M7 12v1M1 7H0M14 7h-1M2.1 2.1l.7.7M11.2 11.2l.7.7M11.9 2.1l-.7.7M2.8 11.2l-.7.7" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/><circle cx="7" cy="7" r="2.8" stroke="currentColor" stroke-width="1.1"/>'
-    : '<path d="M12 7a5 5 0 0 1-7 4.6A5 5 0 0 0 7 2c2.7 0 5 2.2 5 5z" fill="currentColor" opacity=".7"/>';
+  const html = document.documentElement;
+  const isLight = html.classList.toggle('light');
+  localStorage.setItem('vk-theme', isLight ? 'light' : 'dark');
+  const ico = document.getElementById('theme-ico');
+  if (ico) ico.setAttribute('href', isLight ? '#ic-sun' : '#ic-moon');
 }
+(function initThemeIcon(){
+  const ico = document.getElementById('theme-ico');
+  if (ico) ico.setAttribute('href', document.documentElement.classList.contains('light') ? '#ic-sun' : '#ic-moon');
+})();
 
 // ── Language toggle (EN/DE stub) ──
 const COPY = {

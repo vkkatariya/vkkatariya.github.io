@@ -1,3 +1,9 @@
+## [2026-06-19] Agent — portfolio-combined light-mode CSS pass
+
+Added the remaining `html.light` overrides (buttons/np, .w text + widgets, skill/skb bars, dots, icon SVG strokes/fills, modal fields, contact rows, roadmap hero/phase/topic/career/footer) inside the existing `html.light` block in `prototypes/portfolio-combined.html`; verified the file serves HTTP 200 via `python3 -m http.server 8085`.
+
+`agent(abacus): style(portfolio-combined): add remaining light-mode overrides for buttons, widgets, skill bars, icons, modal`
+
 ## [2026-06-19] [Hermes] — Implement `html.light` light mode on standalone portfolio pages
 
 **Mode:** Execution (after `agy` Gemini 3.1 Pro and `opencode` both failed to persist edits, applied manually)
