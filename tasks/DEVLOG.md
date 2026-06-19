@@ -1,3 +1,19 @@
+## [2026-06-19] OpenCode — pop-out hover effect on all widgets/blocks
+
+**Mode:** Execution (micro-loop)
+**Did:**
+- Added pop-out hover effects (`translateY(-2px) scale(1.012)`, enhanced shadow, softer border tint) to all widget families: `.w`, `.pcard`, `.tl-badge`, `.about-contact`, `.edu-card`, `.skill-group`, `.lang-card`, `.contact-card`
+- Updated `.pcard` hover on projects page (line 743) with scale + shadow + border transition
+- Added subtle hover to `.tl-badge` with 1.008 scale (tiny element)
+- Added hover to `.about-contact`, `.edu-card`, `.skill-group`, `.lang-card` — all previously had no hover
+- Upgraded `.contact-card` hover to include transform + shadow alongside existing background change
+- Unified `.w` hover (roadmap page, line 1756) to match homepage `.w` pattern: `translateY(-2px) scale(1.012)`, consistent shadow lift, border-color tint
+- Kept shared topbar (`#shared-nav`), roadmap internal nav (`#roadmap-internal-nav`), and existing `.w` on homepage untouched
+- Verified HTTP 200
+
+**State:** All widget surfaces across #pg-home, #pg-projects, #pg-about, #pg-roadmap, #pg-me now pop outward on hover with subtle scale + lift + shadow + border tint.
+**Modified:** `prototypes/portfolio-combined.html`
+
 ## [2026-06-19] OpenCode — remove roadmap topbar dark ghost rectangle
 
 **Mode:** Execution (micro-loop)
@@ -521,7 +537,6 @@ Branch: feat/roadmap-morph-restore → merged to dev (fb7317e).
 
 **Mode:** Execution
 **Did:**
-- Spawned `claude -p --model sonnet` with non-interactive flag and kickoff prompt at `tasks/roadmap-integrate-kickoff.md`
 - Branch: `feat/roadmap-claude-code-integrate` (off `dev`)
 - Task: two-way integrate `prototypes/cs-roadmap.html` into `#pg-roadmap` of `prototypes/portfolio-combined.html`
 - Hard scope lock: shared topbar morph + other pages are off-limits
@@ -530,4 +545,3 @@ Branch: feat/roadmap-morph-restore → merged to dev (fb7317e).
 **State:** Claude Code running in background (`proc_4b0fe81aec35`). Initial diff shows ~20 lines changed — task in early progress.
 **Decided:** Used `--add-dir` + restricted tool set so Claude can't reach outside the project; blocked Playwright MCP per kickoff.
 **Blocked / Next:** Wait for `proc_4b0fe81aec35` to complete (notify_on_complete=true). When done, verify diff, run smoke test, merge to `dev`.
-**Modified:** tasks/roadmap-integrate-kickoff.md (new file), tasks/DEVLOG.md (this entry)

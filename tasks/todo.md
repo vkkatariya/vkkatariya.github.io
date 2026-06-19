@@ -15,7 +15,7 @@
 ## Phase 0 — HTML Prototypes (in progress)
 
 ### Visual polish / interaction pass
-- [ ] Pop-out hover effect on all widgets/blocks across all pages
+- [x] Pop-out hover effect on all widgets/blocks across all pages
 - [ ] Font stack update: add Nothing NDOT font where it suits (complement or replace Space Grotesk)
 - [ ] Redesign top-right nav pill: fully rounded + liquid glass effect
 - [ ] Redesign top-left logo
@@ -49,7 +49,8 @@
 ### Theme + color
 - [x] Dark/light mode toggle with `localStorage` persistence (standalone pages: `html.light` + `vk-theme`)
 - [x] Finish light mode on `portfolio-combined.html` — fix remaining dark rectangles/buttons/widgets
-- [ ] Extend roadmap color profile to home/projects/about/me in `portfolio-combined.html`
+- [x] Extend roadmap color profile to home/projects in `portfolio-combined.html`
+- [ ] Extend roadmap color profile to about/me in `portfolio-combined.html`
 - [ ] Contact form with email endpoint (Resend or Nodemailer)
 - [ ] CV/resume PDF download link
 - [ ] Real GitHub contribution grid via API
