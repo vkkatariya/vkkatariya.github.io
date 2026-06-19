@@ -177,6 +177,20 @@
 - Scope the hide behavior to only the swapped child (`#shared-nav.nav-hidden .nav-links`), never the whole nav container.
 - Match the sub-nav's glass fill/shadow to the shell pills so it looks like the same component expanding, not a foreign bar.
 
+## L-020 — Browser automation on athena: don't use system chromium
+
+**What failed:** `browser_navigate` failed with `Invalid ozone platform: headless`. System `/usr/bin/chromium` is broken on Rock 5T ARM64 due to a wrapper script hardcoding broken Vaapi flags.
+
+**Root cause:** Hermes browser tool defaults to `/usr/bin/chromium` on Linux, and that binary is incompatible with this ARM64 Mali GPU setup.
+
+**Fix:** Point Hermes to Playwright's bundled chromium via `~/.hermes/.env`:
+```
+AGENT_BROWSER_EXECUTABLE_PATH=/home/radxa/.cache/ms-playwright/chromium-1223/chrome-linux/chrome
+AGENT_BROWSER_ARGS=--no-sandbox
+```
+
+**Prevention rule:** On athena, always set `AGENT_BROWSER_EXECUTABLE_PATH` to the Playwright chromium path after running `playwright install chromium`. Remove any old `/usr/bin/chromium` executablePath entry. The change requires a new Hermes session to take effect.
+
 <!-- Add new lessons above this line using: -->
 <!-- ## L-00N — Short title -->
 <!-- **What failed:** ... -->
