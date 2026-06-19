@@ -2518,6 +2518,18 @@ html.light .career-card h3,
 html.light .career-card p,
 html.light footer.roadmap-footer,
 html.light footer.roadmap-footer a { color: var(--w); }
+/* ══════════════════════════════════════════
+   GLOBAL WIDGET HOVER EFFECT (All Pages)
+══════════════════════════════════════════ */
+.widget, .pcard, .skill-group, .lang-card, .lcard, .edu-card, .tl-badge, .card, .panel, .w {
+  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease !important;
+}
+
+.widget:hover, .pcard:hover, .skill-group:hover, .lang-card:hover, .lcard:hover, .edu-card:hover, .tl-badge:hover, .card:hover, .panel:hover, .w:hover {
+  transform: translateY(-2px) scale(1.012) !important;
+  box-shadow: 8px 10px 24px var(--sd), -2px -2px 10px var(--sl) !important;
+  border-color: var(--w06) !important;
+}
 </style>
 </head>
 <body>
