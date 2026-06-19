@@ -1,3 +1,15 @@
+## [2026-06-19] OpenCode — remove roadmap topbar dark ghost rectangle
+
+**Mode:** Execution (micro-loop)
+**Did:**
+- Found that `#roadmap-internal-nav .nav-links` was missing `backdrop-filter: none` reset, inheriting `backdrop-filter: blur(40px) saturate(180%)` from the global `.nav-links` rule, creating a visible rectangular double-blur region inside the parent glass pill in dark mode
+- Added `backdrop-filter: none; -webkit-backdrop-filter: none;` to the `#roadmap-internal-nav .nav-links` dark-mode rule
+- Light mode already had this property set correctly via `html.light` overrides — no change needed
+- Verified HTTP 200
+
+**State:** Working — dark mode roadmap internal topbar no longer has the darker rectangular ghost pill behind it; renders as a clean single glass pill matching the shared topbar pills.
+**Modified:** `prototypes/portfolio-combined.html`
+
 ## [2026-06-19] OpenCode — roadmap topbar light-mode integration
 
 **Mode:** Execution (micro-loop)
