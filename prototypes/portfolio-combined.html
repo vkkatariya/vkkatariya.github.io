@@ -845,7 +845,6 @@ main {
     justify-content: center;
     padding: 14px 12px;
     font-size: 11px;
-    letter-spacing: 1.5px;
     border-right: 1px solid rgba(255,255,255,.06);
   }
   #roadmap-internal-nav .nav-links li:last-child a { border-right: none; }
@@ -1705,7 +1704,7 @@ footer {
 
 #roadmap-internal-nav .nav-logo {
   font-family: 'DM Mono', monospace; font-size: 13px; font-weight: 500;
-  letter-spacing: 2.5px; color: var(--w); text-decoration: none;
+  letter-spacing: normal; color: var(--w); text-decoration: none;
   padding: 7px 16px; background: none; border: none; border-radius: 100px;
   box-shadow: none; backdrop-filter: none; -webkit-backdrop-filter: none;
   transition: color .2s;
@@ -1718,10 +1717,11 @@ footer {
   display: flex; gap: 0; list-style: none;
   background: none; border: none; border-radius: 0;
   box-shadow: none; padding: 0;
+  backdrop-filter: none; -webkit-backdrop-filter: none;
 }
 #roadmap-internal-nav .nav-links a {
   display: flex; align-items: center; font-family: 'DM Mono', monospace; font-size: 11px;
-  letter-spacing: .8px; color: rgba(241,240,246,.38); text-decoration: none;
+  letter-spacing: normal; color: rgba(241,240,246,.38); text-decoration: none;
   background: none; border: none; border-radius: 100px; padding: 7px 16px;
   transition: color .13s, background .13s;
 }
