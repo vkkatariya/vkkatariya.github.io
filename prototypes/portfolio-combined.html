@@ -2927,14 +2927,14 @@ html.light footer.roadmap-footer a { color: var(--w); }
   box-shadow: var(--glass-shadow);
 }
 
-/* Inverted contact widget needs dark text + keep its inner surface readable */
+/* Inverted contact widget keeps dark text but uses the same glass surface as other widgets */
 #pg-home .w.inv {
-  background: linear-gradient(135deg, rgba(255,255,255,.95) 0%, rgba(245,245,245,.92) 100%);
-  color: #080808;
+  background: var(--glass-bg);
+  color: #e8e8e8;
   border: 1px solid var(--glass-border);
   box-shadow: var(--glass-shadow);
 }
-#pg-home .w.inv:hover { background: linear-gradient(135deg, rgba(255,255,255,.98) 0%, rgba(250,250,250,.95) 100%); }
+#pg-home .w.inv:hover { background: var(--glass-bg); box-shadow: var(--glass-hover-shadow, 0 8px 36px rgba(0,0,0,.55), 0 1px 0 rgba(255,255,255,.12) inset); }
 
 /* Homepage widgets already using .glass get the same formula; remove stronger .glass stack */
 #pg-home .w.glass {
