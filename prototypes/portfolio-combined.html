@@ -1751,6 +1751,31 @@ html.light #pg-about .contact-card:nth-of-type(3) .cc-icon { color: var(--blue);
 html.light #pg-about .contact-card:nth-of-type(4) .cc-icon { color: var(--acc); border-color: rgba(0,212,170,.4); background: rgba(0,212,170,.08); }
 
 
+/* ══════════════════════════════════════════
+   POP-OUT HOVER (About Page)
+   Per-widget hover for the 4 widgets the user identified as missing it.
+   .photo-block and .core-tech-card lift as whole widgets (per L-021's
+   "one cohesive visual" rule). .int-card and .contact-card lift
+   individually (they are distinct interactive widgets, not data rows).
+   Reuses the same transform/shadow/transition as the global rule.
+══════════════════════════════════════════ */
+#pg-about .photo-block,
+#pg-about .core-tech-card,
+#pg-about .int-card,
+#pg-about .contact-card {
+  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+}
+
+#pg-about .photo-block:hover,
+#pg-about .core-tech-card:hover,
+#pg-about .int-card:hover,
+#pg-about .contact-card:hover {
+  transform: translateY(-2px) scale(1.012);
+  box-shadow: 8px 10px 24px var(--sd), -2px -2px 10px var(--sl);
+  border-color: var(--w06);
+}
+
+
 /* === cs-roadmap page (scoped to #pg-roadmap) === */
 
 #pg-roadmap { font-family: 'Space Grotesk', sans-serif; }
@@ -4310,7 +4335,7 @@ html.light footer.roadmap-footer a { color: var(--w); }
     </div>
 
     <!-- Key skill bars -->
-    <div style="padding:24px 28px;border-radius:20px;background:var(--bg2);border:1px solid var(--w06);box-shadow:4px 4px 14px var(--sd),-1px -1px 5px var(--sl);margin-bottom:14px">
+    <div class="core-tech-card" style="padding:24px 28px;border-radius:20px;background:var(--bg2);border:1px solid var(--w06);box-shadow:4px 4px 14px var(--sd),-1px -1px 5px var(--sl);margin-bottom:14px">
       <div style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:3px;color:var(--w30);text-transform:uppercase;margin-bottom:18px;display:flex;align-items:center;gap:7px"><span style="width:3px;height:3px;border-radius:50%;background:currentColor;flex-shrink:0;display:inline-block"></span>core technical</div>
       <div class="skill-bars">
         <div class="skb-row"><span class="skb-n">Python</span><div class="skb-track"><div class="skb-fill" style="width:86%;animation-delay:.1s"></div></div><span class="skb-v">86</span></div>
