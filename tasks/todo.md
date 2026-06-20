@@ -50,7 +50,7 @@
 - [x] Dark/light mode toggle with `localStorage` persistence (standalone pages: `html.light` + `vk-theme`)
 - [x] Finish light mode on `portfolio-combined.html` — fix remaining dark rectangles/buttons/widgets
 - [x] Extend roadmap color profile to home/projects in `portfolio-combined.html`
-- [~] Extend roadmap color profile to about/me in `portfolio-combined.html`
+- [x] Extend roadmap color profile to about/me in `portfolio-combined.html`
 - [ ] Contact form with email endpoint (Resend or Nodemailer)
 - [ ] CV/resume PDF download link
 - [ ] Real GitHub contribution grid via API
