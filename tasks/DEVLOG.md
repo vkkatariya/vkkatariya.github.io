@@ -1,3 +1,36 @@
+## [2026-06-20] agent(human) — feat/roadmap-title-cormorant: strip 2025 from roadmap hero + change title to Cormorant Garamond italic
+
+**Mode:** Inline (surgical markup + CSS, 9 lines, after L-025 contamination cleanup)
+**Did:**
+- Removed `· 2025` from the roadmap hero kicker → `<div class="wlbl-row">cs fundamentals</div>`
+- Removed ` 2025` from the hero title → `<h1 id="hero-title">CS Fundamentals<br>Roadmap</h1>`
+- Added a scoped CSS override under `#pg-roadmap` for `#hero-title` / `.hero h1`: `font-family: 'Cormorant Garamond', serif; font-style: italic; font-weight: 700; letter-spacing: -1px;`. Keeps the global `.hero h1` rule intact for other pages (none currently use it but the override is scoped).
+- Did NOT touch the global h1 rule, the `.wlbl-row` CSS (still JetBrains Mono uppercase), the `.hero-sub` subtitle, or any other "2025" occurrences (those in `tl-year` spans are content references, not the title year).
+
+**Verification:**
+- Browser `getComputedStyle` on `#hero-title` after navigating to #pg-roadmap: Cormorant Garamond, italic, 700.
+
+**Files changed:** 1 (prototypes/portfolio-combined.html)
+
+---
+
+## [2026-06-20] agent(human) — feat/logo-cormorant-wordmark: Cormorant Garamond italic V/K wordmark on topbar logo + About bio
+
+**Mode:** Inline (surgical CSS + 1 markup edit, 11 lines)
+**Did:**
+- Restyled `.nav-logo-name` (top-left logo) from NDOT 20px to Space Grotesk 24px with Cormorant Garamond italic caps via scoped `.nav-logo-name .hn-script { font-size: 1.5em; letter-spacing: -1px; }` override. The V and K caps now render visibly larger than the lowercase body, mimicking the reference wordmark (calligraphic caps + bold serif lowercase).
+- Bumped `.nav-logo-name .hn-sans` to font-weight 700 to match the visual weight of the new caps.
+- Wrapped the About page bio's `<strong>Vishal Katariya</strong>` in the same `.hn-script`/`.hn-sans`/`.hn-gap` span structure used in the topbar logo, so the brand mark reads consistently wherever the name appears in body copy.
+- Did NOT touch the `<title>Vishal Katariya — Portfolio</title>` tag (intentionally plain text for browser tabs/SEO), the `/me` page "VK" monogram (intentional circle), or the `#roadmap-internal-nav .nav-logo` "CS." (different context).
+
+**Verification:**
+- Browser `getComputedStyle` on `.nav-logo-name .hn-script`: Cormorant Garamond, italic, 700, 36px (1.5em × 24px parent), -1px letter-spacing. Dark mode + light mode both confirmed.
+- Bio `.hn-script`: Cormorant Garamond italic 700 16px (parent strong font-size).
+
+**Files changed:** 1 (prototypes/portfolio-combined.html)
+
+---
+
 ## [2026-06-20] agent(human) — feat/ndot-proj-title: NDOT to 4 missed accent title selectors
 
 **Mode:** Inline (one-shot, post-Branch-5 audit, 4 selectors, ~5 minutes)
