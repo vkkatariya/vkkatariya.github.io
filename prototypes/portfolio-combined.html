@@ -2646,10 +2646,18 @@ html.light footer.roadmap-footer a { color: var(--w); }
 /* ══════════════════════════════════════════
    POP-OUT HOVER (Projects Page)
    Only inner interactive widgets — wrapper elements
-   (.proj-index, .pipeline, .platform-grid, .cs-section, .node-diagram, .vis-wrap)
+   (.proj-index, .pipeline, .platform-grid, .cs-section, .node-diagram)
    are EXCLUDED because hovering a whole wrapper makes the section feel like
    one giant block. Each individual widget (a card, a tile, a stage, a
-   bar-row, a node card) gets its own pop-out independently.
+   node card) gets its own pop-out independently.
+
+   EXCEPTION: `.vis-wrap:has(> .bar-chart)` — the spending breakdown chart.
+   The chart IS the widget (the rows are data inside it, not separate
+   interactive widgets), so the whole chart card lifts as a unit.
+   `:has()` targets ONLY the vis-wrap that directly contains a .bar-chart,
+   leaving the other 3 vis-wraps (infrastructure, platforms, pipeline)
+   untouched so their inner widgets still hover individually.
+
    Reuses the same transform/shadow/transition as the global rule.
 ══════════════════════════════════════════ */
 #pg-projects .pi,
@@ -2666,7 +2674,7 @@ html.light footer.roadmap-footer a { color: var(--w); }
 #pg-projects .nd-node,
 #pg-projects .nd-name,
 #pg-projects .nd-hw,
-#pg-projects .bar-row {
+#pg-projects .vis-wrap:has(> .bar-chart) {
   transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
 }
 
@@ -2684,7 +2692,7 @@ html.light footer.roadmap-footer a { color: var(--w); }
 #pg-projects .nd-node:hover,
 #pg-projects .nd-name:hover,
 #pg-projects .nd-hw:hover,
-#pg-projects .bar-row:hover {
+#pg-projects .vis-wrap:has(> .bar-chart):hover {
   transform: translateY(-2px) scale(1.012);
   box-shadow: 8px 10px 24px var(--sd), -2px -2px 10px var(--sl);
   border-color: var(--w06);

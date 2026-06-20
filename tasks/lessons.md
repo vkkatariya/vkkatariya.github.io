@@ -13,9 +13,14 @@
 
 **Prevention rule:**
 - Before adding hover to any selector, classify it: **interactive widget** (card, tile, stage, button) vs **wrapper** (container that holds multiple interactive widgets). Only interactive widgets get pop-out.
-- On the projects page, the wrappers are: `.proj-index` (the top 4-card row), `.pipeline` (the ML pipeline strip), `.platform-grid` (the 3 platform tiles container), `.cs-section` (each project's case-study section), `.node-diagram` (athena+atlas diagram), `.vis-wrap` (chart/visualization wrapper). Their INNER widgets are what gets hover: `.pi`, `.pcard`, `.pcard-*`, `.phase-card`, `.pipe-stage`, `.plat`, `.nd-node` + `.nd-name` + `.nd-hw`, `.bar-row`.
+- On the projects page, the wrappers are: `.proj-index` (the top 4-card row), `.pipeline` (the ML pipeline strip), `.platform-grid` (the 3 platform tiles container), `.cs-section` (each project's case-study section), `.node-diagram` (athena+atlas diagram). Their INNER widgets are what gets hover: `.pi`, `.pcard`, `.pcard-*`, `.phase-card`, `.pipe-stage`, `.plat`, `.nd-node` + `.nd-name` + `.nd-hw`.
 - General rule: when in doubt, hover the smallest interactive element inside the wrapper, not the wrapper itself.
-- **Audit pass is required.** When adding hover to a page, do a full visual review at the actual rendered page (not just grep'd selector lists) — JS-generated widgets and project-specific custom widgets are easy to miss. Two widgets were missed on the first projects pass and only surfaced after the user reviewed the live page: `.nd-node` (infrastructure cards) and `.bar-row` (spending breakdown rows).
+- **Audit pass is required.** When adding hover to a page, do a full visual review at the actual rendered page (not just grep'd selector lists) — JS-generated widgets and project-specific custom widgets are easy to miss. Two widgets were missed on the first projects pass and only surfaced after the user reviewed the live page: `.nd-node` (infrastructure cards) and `.vis-wrap:has(> .bar-chart)` (spending breakdown chart card).
+- **Refinement — sometimes the wrapper IS the widget.** L-021's first version said "wrappers don't get hover" but this was too rigid. Distinguish two cases:
+  - **Wrapper with multiple distinct interactive widgets** (e.g. `.pipeline` containing 6 `.pipe-stage` cells, `.platform-grid` containing 3 `.plat` tiles) → hover the INNER widgets, NOT the wrapper. Hovering the wrapper lifts the whole group, which feels like a single mega-block.
+  - **Wrapper containing one cohesive visual element** (e.g. `.vis-wrap` containing a single `.bar-chart` of related rows) → hover the WHOLE wrapper, NOT the inner data rows. Hovering individual rows (e.g. `.bar-row`) makes the chart feel fragmented — you want the whole chart card to lift as one unit.
+  - The rule of thumb: ask "is this element ONE widget (a card, a chart, a node) or MANY widgets (a row of cells, a grid of tiles)?" One = hover the wrapper. Many = hover the inner widgets.
+  - When using `:has()` to disambiguate, name the specific child that determines the type (e.g. `.vis-wrap:has(> .bar-chart)` targets only the chart wrapper, not the other 3 vis-wraps on the page that contain different content).
 
 ---
 
