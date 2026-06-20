@@ -1130,5 +1130,27 @@ Branch: feat/roadmap-morph-restore → merged to dev (fb7317e).
 
 **Issues encountered:**
 - The `opencode` local CLI (`opencode run --dangerously-skip-permissions`) started and produced an initial plan but hung for >4 minutes with no further output or disk changes, so the edits were completed inline with the patch tool and Python validation instead.
-- After the first attempted markup rewrite, a stray conflict marker and partial `.tl-stat` divs appeared because the replacement regex matched across item boundaries; this was corrected by reverting and reapplying the patch cleanly.
+|- After the first attempted markup rewrite, a stray conflict marker and partial `.tl-stat` divs appeared because the replacement regex matched across item boundaries; this was corrected by reverting and reapplying the patch cleanly.
+---
+
+## [2026-06-20] agent(opencode) — feat/roadmap-header-matches-aesthetic
+
+**Mode:** Execution (surgical markup + CSS cleanup)
+**Did:**
+- Updated roadmap hero header markup to match Projects/About page aesthetic.
+- Replaced `.wlbl-row` kicker with `.ph-label`: `<div class="ph-label">vkkatariya · roadmap</div>`.
+- Replaced `<h1 id="hero-title">CS Fundamentals<br>Roadmap</h1>` with `<h1 class="ph-title"><span class="hn-script">R</span>oadmap</h1>`.
+- Removed obsolete `#pg-roadmap #hero-title` / `#pg-roadmap .hero h1` CSS override so `.ph-title` (Syne 800) + `.hn-script` (Cormorant Garamond italic first letter) takes over.
+- Updated `<section>` accessibility from `aria-labelledby="hero-title"` to `aria-label="Roadmap"` since the H1 no longer carries an ID.
+
+**Verification:**
+- `rg -n '<div class="wlbl-row">' prototypes/portfolio-combined.html` count decreased from 15 to 14 (1 less, all other usages unchanged).
+- `rg -n 'hero-title' prototypes/portfolio-combined.html` returned 0 matches.
+- `rg -n '\.ph-label|\.ph-title|\.hn-script'` rules unchanged; usage count for each increased by 1 on roadmap hero.
+- `git diff --stat`: 1 file changed, 3 insertions(+), 10 deletions(-).
+- Commit: TBD.
+
+**Files changed:** 1 (`prototypes/portfolio-combined.html`)
+
+
 
