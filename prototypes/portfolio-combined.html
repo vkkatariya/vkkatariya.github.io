@@ -2088,6 +2088,13 @@ html.light #pg-about .contact-card:nth-of-type(4) .cc-icon { color: var(--acc); 
   font-size: clamp(38px, 6vw, 72px); letter-spacing: -2px;
   line-height: 1.05;
 }
+#pg-roadmap #hero-title,
+#pg-roadmap .hero h1 {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-weight: 700;
+  letter-spacing: -1px;
+}
 .hero-sub {
   font-family: 'Space Grotesk', sans-serif; font-weight: 400; font-size: 18px;
   color: var(--w60); line-height: 1.5; max-width: 600px;
@@ -3279,7 +3286,7 @@ html.light footer.roadmap-footer a { color: var(--w); }
     <div class="sec-head"><h2>about</h2></div>
     <div class="about-grid">
       <div class="about-bio">
-        <p>I'm <strong>Vishal</strong> — a CS student at Hochschule Darmstadt, building production systems while studying.</p>
+        <p>I'm <strong><span class="hn-script">V</span><span class="hn-sans">ishal</span></strong> — a CS student at Hochschule Darmstadt, building production systems while studying.</p>
         <p>I work across the full stack: fine-tuning language models, building REST and WebSocket backends, designing interfaces, and managing self-hosted services on real ARM hardware. The common thread is building things that actually run — not just demos.</p>
         <p>Currently based in <strong>Dieburg · near Darmstadt</strong>. Looking for internships where I can work on systems that matter — flexible across ML engineering, full-stack development, and DevOps/infrastructure.</p>
       </div>
@@ -3820,8 +3827,8 @@ html.light footer.roadmap-footer a { color: var(--w); }
 
   <!-- ═══════════ HERO ═══════════ -->
   <section class="hero" aria-labelledby="hero-title">
-    <div class="wlbl-row">cs fundamentals · 2025</div>
-    <h1 id="hero-title">CS Fundamentals<br>Roadmap 2025</h1>
+    <div class="wlbl-row">cs fundamentals</div>
+    <h1 id="hero-title">CS Fundamentals<br>Roadmap</h1>
     <p class="hero-sub">Your Complete Guide to Mastering Computer Science Fundamentals</p>
     <div class="hero-stats">
       <span class="stat-badge blue">📋 11 Core Topics</span>
