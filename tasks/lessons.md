@@ -5,6 +5,19 @@
 
 ---
 
+## L-021 — Wrapper selectors shouldn't get pop-out hover, only inner widgets
+
+**What failed:** The projects-page pop-out hover rollout added `:hover` to wrapper selectors `.proj-index`, `.pipeline`, `.platform-grid`, `.cs-section`. Result: hovering anywhere on a project's detail section (which spans the full content area) made the whole section lift as one giant block, instead of just the individual interactive widget. User feedback: "only following widget on projects should pop up and not whole block."
+
+**Root cause:** Treated the user's confirmed selector list (which included wrapper names) as a literal "add hover to all of these" instruction, without checking which are wrappers vs interactive widgets. The memory list was a "needs to be considered" list, not a "give them all hover" list. Wrapper-level hover makes the page feel like one big block per project, defeating the purpose of pop-out (which is to give the *current interactive element* a tactile response).
+
+**Prevention rule:**
+- Before adding hover to any selector, classify it: **interactive widget** (card, tile, stage, button) vs **wrapper** (container that holds multiple interactive widgets). Only interactive widgets get pop-out.
+- On the projects page, the wrappers are: `.proj-index` (the top 4-card row), `.pipeline` (the ML pipeline strip), `.platform-grid` (the 3 platform tiles container), `.cs-section` (each project's case-study section). Their INNER widgets are what gets hover: `.pi`, `.pcard`, `.pcard-*`, `.phase-card`, `.pipe-stage`, `.plat`.
+- General rule: when in doubt, hover the smallest interactive element inside the wrapper, not the wrapper itself.
+
+---
+
 ## L-001 — Duplicate `const` declarations crash the entire script
 
 **What failed:** `Uncaught SyntaxError: Identifier 'SVC_ICON' has already been declared` in `homelab-dashboard.html`. Both `const SVC_ICON` and `const TYPE_ICON` were declared twice in the same `<script>` block. The dashboard became completely non-functional at browser parse time.

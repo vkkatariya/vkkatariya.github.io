@@ -17,7 +17,8 @@
 ### Visual polish / interaction pass
 - [~] Pop-out hover effect on all widgets/blocks across all pages
   - [x] Page 1: homepage — finish `.about-section` + `.about-contact` (`.about-bio` and `.about-contact` independent, not parent)
-  - [x] Page 2: projects — `.pi, .proj-index, .pcard*, .pfoot-type, .phase-card, .pipeline, .pipe-stage, .platform-grid, .plat, .cs-section` (`.pcard` overflow:hidden → visible on detail cards)
+  - [x] Page 2: projects — `.pi, .pcard*, .pfoot-type, .pipe-stage, .plat` (LEARN: wrapper selectors `.proj-index`, `.pipeline`, `.platform-grid`, `.cs-section` should NOT have hover — only the inner interactive widgets)
+    - [x] Fix projects: remove hover from wrapper selectors `.proj-index`, `.pipeline`, `.platform-grid`, `.cs-section` — keep only inner widgets (`.pi`, `.pcard`, `.pcard-num`, `.pcard-title`, `.pcard-desc`, `.pcard-tags`, `.pcard-foot`, `.pfoot-type`, `.pipe-stage`, `.plat`, `.phase-card`)
   - [ ] Page 3: about — verify `.edu-card, .skill-group, .lang-card, .contact-card` get the global hover
   - [ ] Page 4: roadmap — `.tl-item, .topic-card, .career-card, .resource-card` (if present)
   - [ ] Page 5: me — TBD, audit `#pg-me` markup for widget containers

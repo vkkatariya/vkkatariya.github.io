@@ -2645,11 +2645,14 @@ html.light footer.roadmap-footer a { color: var(--w); }
 
 /* ══════════════════════════════════════════
    POP-OUT HOVER (Projects Page)
-   Independent hover per widget — not parent-child cascade.
+   Only inner interactive widgets — wrapper elements
+   (.proj-index, .pipeline, .platform-grid, .cs-section) are EXCLUDED
+   because hovering a whole wrapper makes the section feel like one
+   giant block. Each individual widget (a card, a tile, a stage) gets
+   its own pop-out independently.
    Reuses the same transform/shadow/transition as the global rule.
 ══════════════════════════════════════════ */
 #pg-projects .pi,
-#pg-projects .proj-index,
 #pg-projects .pcard,
 #pg-projects .pcard-num,
 #pg-projects .pcard-title,
@@ -2658,16 +2661,12 @@ html.light footer.roadmap-footer a { color: var(--w); }
 #pg-projects .pcard-foot,
 #pg-projects .pfoot-type,
 #pg-projects .phase-card,
-#pg-projects .pipeline,
 #pg-projects .pipe-stage,
-#pg-projects .platform-grid,
-#pg-projects .plat,
-#pg-projects .cs-section {
+#pg-projects .plat {
   transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
 }
 
 #pg-projects .pi:hover,
-#pg-projects .proj-index:hover,
 #pg-projects .pcard:hover,
 #pg-projects .pcard-num:hover,
 #pg-projects .pcard-title:hover,
@@ -2676,11 +2675,8 @@ html.light footer.roadmap-footer a { color: var(--w); }
 #pg-projects .pcard-foot:hover,
 #pg-projects .pfoot-type:hover,
 #pg-projects .phase-card:hover,
-#pg-projects .pipeline:hover,
 #pg-projects .pipe-stage:hover,
-#pg-projects .platform-grid:hover,
-#pg-projects .plat:hover,
-#pg-projects .cs-section:hover {
+#pg-projects .plat:hover {
   transform: translateY(-2px) scale(1.012);
   box-shadow: 8px 10px 24px var(--sd), -2px -2px 10px var(--sl);
   border-color: var(--w06);
