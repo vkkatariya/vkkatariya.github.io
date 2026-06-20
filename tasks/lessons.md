@@ -13,8 +13,9 @@
 
 **Prevention rule:**
 - Before adding hover to any selector, classify it: **interactive widget** (card, tile, stage, button) vs **wrapper** (container that holds multiple interactive widgets). Only interactive widgets get pop-out.
-- On the projects page, the wrappers are: `.proj-index` (the top 4-card row), `.pipeline` (the ML pipeline strip), `.platform-grid` (the 3 platform tiles container), `.cs-section` (each project's case-study section). Their INNER widgets are what gets hover: `.pi`, `.pcard`, `.pcard-*`, `.phase-card`, `.pipe-stage`, `.plat`.
+- On the projects page, the wrappers are: `.proj-index` (the top 4-card row), `.pipeline` (the ML pipeline strip), `.platform-grid` (the 3 platform tiles container), `.cs-section` (each project's case-study section), `.node-diagram` (athena+atlas diagram), `.vis-wrap` (chart/visualization wrapper). Their INNER widgets are what gets hover: `.pi`, `.pcard`, `.pcard-*`, `.phase-card`, `.pipe-stage`, `.plat`, `.nd-node` + `.nd-name` + `.nd-hw`, `.bar-row`.
 - General rule: when in doubt, hover the smallest interactive element inside the wrapper, not the wrapper itself.
+- **Audit pass is required.** When adding hover to a page, do a full visual review at the actual rendered page (not just grep'd selector lists) — JS-generated widgets and project-specific custom widgets are easy to miss. Two widgets were missed on the first projects pass and only surfaced after the user reviewed the live page: `.nd-node` (infrastructure cards) and `.bar-row` (spending breakdown rows).
 
 ---
 
