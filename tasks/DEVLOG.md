@@ -1,3 +1,32 @@
+---
+
+## [2026-06-20] agent(opencode) — feat/name-ndot-wordmark (REDO): full name in NDOT 55 Caps
+
+**Mode:** Execution (surgical markup + CSS cleanup, 22 lines)
+**Did:**
+- Reverted previous mixed-font attempt (`828e92b` + `9d7c219`) by replacing the `.wm-cap`/`.wm-body`/`.wm-gap` structure with pure `.wm-cap` single-class-per-word spans.
+- Updated `.wm-cap` CSS to use the vendored NDOT 55 Caps font (`Ndot55Caps-Regular.otf`, already mapped via `font-variant: all-small-caps`) plus `text-transform: uppercase` so markup stays natural (`Vishal`/`Katariya`) while rendering as `VISHAL`/`KATARIYA`.
+- Removed `.wm-body` and `.wm-gap` CSS rules entirely; they are now unused.
+- Updated all 5 live-text name occurrences in `prototypes/portfolio-combined.html`:
+  - Topbar `.nav-logo-name`: `\u003cspan class="wm-cap"\u003eVishal\u003c/span\u003e \u003cspan class="wm-cap"\u003eKatariya\u003c/span\u003e`
+  - Homepage hero identity widget (V line): `\u003cspan class="wm-cap"\u003eVishal\u003c/span\u003e`
+  - Homepage hero identity widget (K line): `\u003cspan class="wm-cap"\u003eKatariya\u003c/span\u003e`
+  - About-page bio first name: `\u003cspan class="wm-cap"\u003eVishal\u003c/span\u003e`
+  - Homepage About section full name: `\u003cspan class="wm-cap"\u003eVishal\u003c/span\u003e \u003cspan class="wm-cap"\u003eKatariya\u003c/span\u003e`
+- Used literal single-space word gaps (no `.wm-gap` div).
+- Did NOT touch `.ph-title .hn-script` (Cormorant Garamond italic for Projects/About page headings).
+
+**Verification:**
+- `rg -n 'wm-body|wm-gap' prototypes/portfolio-combined.html` returned zero matches.
+- `rg -n 'wm-cap' prototypes/portfolio-combined.html` returned 6 matches (1 CSS rule + 5 markup uses).
+- `rg -n '\.ph-title\s+\.hn-script' prototypes/portfolio-combined.html` unchanged at line 1210.
+- `git diff --stat`: 1 file changed, 9 insertions(+), 13 deletions(-).
+- Commit: `5afa4c6` — "agent(opencode): feat(name-ndot-wordmark): full name in NDOT Caps (redo of mixed-font attempt)".
+
+**Files changed:** 1 (`prototypes/portfolio-combined.html`)
+
+---
+
 ## [2026-06-20] agent(agy) — feat/name-ndot-wordmark: replace Cormorant name wordmark with NDOT + Space Grotesk across all 5 occurrences
 
 **Mode:** Execution (surgical markup + CSS, 26 lines)
