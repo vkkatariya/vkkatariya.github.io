@@ -213,11 +213,11 @@ html.light body::before {
 .nav-right {
   display: flex; align-items: center; gap: 2px;
   margin-left: auto;
-  background: linear-gradient(135deg, rgba(255,255,255,.10) 0%, rgba(255,255,255,.04) 100%);
-  backdrop-filter: blur(40px) saturate(180%); -webkit-backdrop-filter: blur(40px) saturate(180%);
-  border: 1px solid rgba(255,255,255,.16);
+  background: linear-gradient(135deg, rgba(255,255,255,.13) 0%, rgba(255,255,255,.06) 100%);
+  backdrop-filter: blur(56px) saturate(200%); -webkit-backdrop-filter: blur(56px) saturate(200%);
+  border: 1px solid rgba(255,255,255,.18);
   border-radius: 100px; padding: 5px 6px 5px 8px;
-  box-shadow: 0 4px 28px rgba(0,0,0,.55), 0 1px 0 rgba(255,255,255,.12) inset;
+  box-shadow: 0 4px 28px rgba(0,0,0,.55), 0 1px 0 rgba(255,255,255,.14) inset, 0 0 0 1px rgba(255,255,255,.04);
 }
 .nav-search {
   display: flex; align-items: center; gap: 7px;
@@ -269,10 +269,10 @@ html.light body::before {
 /* ── right pill controls ── */
 .nav-right {
   display: flex; align-items: center; gap: 4px;
-  background: rgba(8,8,8,.72);
-  backdrop-filter: blur(28px) saturate(180%); -webkit-backdrop-filter: blur(28px) saturate(180%);
-  border: 1px solid rgba(255,255,255,.12); border-radius: 14px; padding: 5px 8px;
-  box-shadow: 0 4px 24px rgba(0,0,0,.5), 0 1px 0 rgba(255,255,255,.09) inset;
+  background: linear-gradient(135deg, rgba(255,255,255,.13) 0%, rgba(255,255,255,.06) 100%);
+  backdrop-filter: blur(56px) saturate(200%); -webkit-backdrop-filter: blur(56px) saturate(200%);
+  border: 1px solid rgba(255,255,255,.18); border-radius: 100px; padding: 5px 8px;
+  box-shadow: 0 4px 28px rgba(0,0,0,.55), 0 1px 0 rgba(255,255,255,.14) inset, 0 0 0 1px rgba(255,255,255,.04);
 }
 .nav-theme {
   width: 32px; height: 32px; border-radius: 8px;
@@ -752,7 +752,7 @@ main {
   margin-bottom: 12px;
 }
 .pcard-title {
-  font-size: 16px; font-weight: 600;
+  font-family: var(--font-ndot); font-size: 16px; font-weight: 600;
   letter-spacing: -.3px; line-height: 1.25;
   margin-bottom: 8px;
 }
@@ -1248,7 +1248,7 @@ footer {
   color:var(--w30);margin-bottom:12px;
 }
 .cs-title{
-  font-family:'Syne',sans-serif;font-size:clamp(42px,6vw,80px);
+  font-family:var(--font-ndot);font-size:clamp(42px,6vw,80px);
   font-weight:800;letter-spacing:-2.5px;line-height:.9;
   margin-bottom:14px;
 }
@@ -2186,7 +2186,7 @@ html.light #pg-about .contact-card:nth-of-type(4) .cc-icon { color: var(--acc); 
 ══════════════════════════════════════════ */
 .filter-bar { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 24px; }
 .filter-btn {
-  font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1px;
+  font-family: var(--font-ndot); font-size: 11px; letter-spacing: 1px;
   padding: 7px 16px; border-radius: 100px; border: 1px solid var(--w12);
   background: transparent; color: var(--w30); cursor: pointer;
   transition: all .2s; text-transform: uppercase;
@@ -2208,7 +2208,8 @@ html.light #pg-about .contact-card:nth-of-type(4) .cc-icon { color: var(--acc); 
   font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 2px; color: var(--w30);
 }
 .topic-name {
-  font-family: 'Space Grotesk', sans-serif; font-size: 18px; font-weight: 700; line-height: 1.2;
+  font-family: var(--font-ndot);
+  font-size: 18px; font-weight: 700; line-height: 1.2;
 }
 .topic-desc {
   font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.4px; color: var(--w30); line-height: 1.6;
@@ -2397,7 +2398,8 @@ html.light #pg-about .contact-card:nth-of-type(4) .cc-icon { color: var(--acc); 
 }
 .career-card { display: flex; flex-direction: column; gap: 12px; }
 .career-title {
-  font-family: 'Space Grotesk', sans-serif; font-size: 20px; font-weight: 700; line-height: 1.1;
+  font-family: var(--font-ndot);
+  font-size: 20px; font-weight: 700; line-height: 1.1;
 }
 .career-tagline {
   font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.4px; color: var(--w30);
@@ -2562,6 +2564,13 @@ html.light #roadmap-internal-nav {
   background: linear-gradient(135deg, rgba(255,255,255,.78) 0%, rgba(245,245,245,.72) 100%);
   border-color: rgba(13,13,15,.12);
   box-shadow: 0 4px 24px rgba(0,0,0,.10), 0 1px 0 rgba(255,255,255,.95) inset;
+}
+html.light .nav-right {
+  border-radius: 100px;
+  background: linear-gradient(135deg, rgba(255,255,255,.85) 0%, rgba(245,245,245,.78) 100%);
+  backdrop-filter: blur(56px) saturate(200%); -webkit-backdrop-filter: blur(56px) saturate(200%);
+  border-color: rgba(13,13,15,.14);
+  box-shadow: 0 4px 28px rgba(0,0,0,.12), 0 1px 0 rgba(255,255,255,.95) inset, 0 0 0 1px rgba(255,255,255,.20);
 }
 html.light #roadmap-internal-nav .nav-logo,
 html.light #roadmap-internal-nav .nav-links {
