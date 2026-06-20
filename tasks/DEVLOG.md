@@ -1,3 +1,24 @@
+## [2026-06-20] agent(agy) — feat/name-ndot-wordmark: replace Cormorant name wordmark with NDOT + Space Grotesk across all 5 occurrences
+
+**Mode:** Execution (surgical markup + CSS, 26 lines)
+**Did:**
+- Added dedicated `.wm-cap` / `.wm-body` / `.wm-gap` CSS block near the topbar CSS using the already-vendored `Ndot` font for caps and `Space Grotesk` for body letters.
+- Replaced Cormorant-based `.hn-script`/`.hn-sans`/`.hn-gap` name wordmark in all 5 live-text locations:
+  - Topbar `.nav-logo-name`
+  - Homepage identity widget (two hero divs)
+  - About-page bio first name
+  - Homepage About section full name
+- Simplified browser `<title>` to `Vishal Katariya` (dropped `— Portfolio`).
+- Did NOT touch `.ph-title .hn-script` (Projects / About page headings) or any other `.hn-*` usage.
+
+**Verification:**
+- `rg 'hn-script|hn-sans|hn-gap'` in name wordmark contexts returns no matches; only `.ph-title .hn-script` and legacy base CSS remain.
+- `git diff --stat`: 1 file changed, 20 insertions(+), 6 deletions(-) (≤60 lines).
+
+**Files changed:** 1 (`prototypes/portfolio-combined.html`)
+
+---
+
 ## [2026-06-20] agent(human) — feat/roadmap-title-cormorant: strip 2025 from roadmap hero + change title to Cormorant Garamond italic
 
 **Mode:** Inline (surgical markup + CSS, 9 lines, after L-025 contamination cleanup)
