@@ -1,3 +1,55 @@
+## [2026-06-20] NDOT topbar rollout — all topbar text → NDOT + font-size bumps (Branch 4)
+
+**Mode:** Execution (surgical CSS edit — 9 topbar selectors)
+**Did:**
+- Applied `font-family: var(--font-ndot)` + bumped font-size on 9 topbar selectors:
+  - `.nav-logo-name` 16px → 20px (NDOT)
+  - `.nav-links a` 11px → 14px (NDOT) — home/projects/roadmap/about
+  - `.nav-avail-txt` 11px → 13px (NDOT) — "available" status text
+  - `.nav-search-input` 11px → 13px (NDOT) — search box
+  - `.nav-lang` 11px → 13px (NDOT) — EN/DE language toggle
+  - `.nav-profile` 12px → 16px (NDOT) — "VK" profile button (both definition blocks)
+  - `#roadmap-internal-nav .nav-logo` 13px → 16px (NDOT) — "CS ." brand
+  - `#roadmap-internal-nav .nav-links a` 11px → 13px (NDOT) — overview/topics/careers/resources
+- Removed a duplicate `.nav-lang` rule that was dead CSS (no markup used it because the topbar lang button matches the first `.nav-lang` rule which comes later in the stylesheet and wins the cascade). Removing it prevented the duplicate from overriding the new NDOT rule.
+- Preserved the existing 32px pill height, padding, colors, hover, and glass effect on all topbar elements. Only font-family and font-size changed.
+- Did NOT change `.nav-theme` (SVG icon button, no text).
+- Did NOT change `.pcard-title`, `.topic-name`, `.career-title`, or any non-topbar selector (that work is Branch 5, deferred).
+
+**Why:**
+- User feedback: "apply ndot fonts in middle top bar pill, make those fonts bigger, top bar fonts and replace it with ndot on all pages" — they want the topbar to feel like a proper NothingOS system bar.
+- Current topbar was JetBrains Mono / Space Grotesk at 11-12px — too small for NDOT's dotted character to be readable. Bumping to 13-16px makes the dotted character clear and gives the topbar visual presence.
+- Accent-font philosophy (established in Branch 3): NDOT for short typographic bursts (nav, labels, indices, status). Space Grotesk/Syne/Cormorant stays for body, headings, hero titles. The topbar is exactly the kind of place where NDOT adds NothingOS flavor without overwhelming the page.
+
+**Issues found and fixed during verification:**
+- The agent's initial diff included 3 out-of-scope changes (`.np-ghost`, `.career-pct-label`, plus a 4th duplicate definition). Reverted all 3 to keep the scope tight.
+- The agent's initial diff also accidentally deleted the closing `}` of `.stat-badge` (introducing a CSS syntax error). Restored the closing brace.
+- A duplicate `.nav-lang` CSS rule existed at line 295 (different declaration than the topbar one at line 236). Same specificity, but the later one in the stylesheet wins the cascade. The topbar lang button was being styled by the OLD JetBrains Mono rule, not the new NDOT rule. Removed the dead duplicate.
+- One mobile `@media` query overrides `#roadmap-internal-nav .nav-links a` to `font-size: 10px` for tablet widths. Left untouched — mobile needs smaller text to fit the pill; the base 13px applies only on desktop.
+
+**Verification:**
+- `git diff --stat` shows only edits to `prototypes/portfolio-combined.html` (+9/-9 in 1 file after cleanups)
+- `grep -c "var(--font-ndot)" prototypes/portfolio-combined.html` = 17 (1 :root + 8 prev accents + 8 topbar selectors)
+- All 8 shared-topbar + 2 roadmap-internal-nav base rules use `var(--font-ndot)`
+- Out-of-scope selectors (`.np-ghost`, `.career-pct-label`) reverted to JetBrains Mono
+- `.stat-badge` has its closing brace — CSS syntax check passed
+- Browser `getComputedStyle`:
+  - `.nav-logo-name` → `"Ndot", "DM Mono", monospace`, 20px ✓
+  - `.nav-links a` → `"Ndot", "DM Mono", monospace`, 14px ✓
+  - `.nav-avail-txt` → `"Ndot", "DM Mono", monospace`, 13px ✓
+  - `.nav-search-input` → `"Ndot", "DM Mono", monospace`, 13px ✓
+  - `.nav-lang` → `"Ndot", "DM Mono", monospace`, 13px ✓
+  - `.nav-profile` → `"Ndot", "DM Mono", monospace`, 16px ✓
+  - `#roadmap-internal-nav .nav-logo` → `"Ndot", "DM Mono", monospace`, 16px ✓
+  - `#roadmap-internal-nav .nav-links a` → `"Ndot", "DM Mono", monospace`, 13px ✓
+- Light + dark mode: both resolve NDOT (NDOT is theme-agnostic)
+- All 5 pages render correctly, no console errors, no layout regression
+
+**Files modified:**
+- `prototypes/portfolio-combined.html` (9 topbar selectors changed, 1 dead `.nav-lang` rule removed, 1 `.stat-badge` closing brace restored)
+
+---
+
 ## [2026-06-20] Apply NothingOS NDOT to 8 accent selectors — feat/ndot-display-accent complete
 
 **Mode:** Execution (surgical CSS edit — 8 selectors)

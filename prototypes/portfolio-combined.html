@@ -168,7 +168,7 @@ html.light body::before {
   transition: box-shadow .2s;
 }
 .nav-logo:hover { box-shadow: 0 6px 32px rgba(0,0,0,.65), 0 1px 0 rgba(255,255,255,.16) inset; }
-.nav-logo-name { font-size: 16px; line-height: 1; white-space: nowrap; letter-spacing: -.3px; }
+.nav-logo-name { font-family: var(--font-ndot); font-size: 20px; line-height: 1; white-space: nowrap; letter-spacing: -.3px; }
 
 /* CENTER — nav pill (home/projects/roadmap/about + available dot) */
 .nav-links {
@@ -182,7 +182,7 @@ html.light body::before {
 }
 .nav-links a {
   display: flex; align-items: center;
-  font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .8px;
+  font-family: var(--font-ndot); font-size: 14px; letter-spacing: .8px;
   color: rgba(241,240,246,.38); background: none;
   border: none; padding: 7px 16px; border-radius: 100px;
   text-decoration: none; transition: color .13s, background .13s; white-space: nowrap;
@@ -206,7 +206,7 @@ html.light body::before {
   50% { box-shadow: 0 0 2px var(--green); }
 }
 .nav-avail-txt {
-  font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .5px; color: var(--green);
+  font-family: var(--font-ndot); font-size: 13px; letter-spacing: .5px; color: var(--green);
 }
 
 /* RIGHT — controls pill (search + lang + theme + profile) */
@@ -227,14 +227,14 @@ html.light body::before {
 }
 .nav-search-input {
   background: none; border: none; outline: none;
-  font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.4px; color: var(--w);
+  font-family: var(--font-ndot); font-size: 13px; letter-spacing: 0.4px; color: var(--w);
   width: 90px; transition: width .25s ease;
   letter-spacing: .3px;
 }
 .nav-search-input:focus { width: 140px; }
 .nav-search-input::placeholder { color: rgba(241,240,246,.28); }
 .nav-lang {
-  font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.5px;
+  font-family: var(--font-ndot); font-size: 13px; letter-spacing: 1.5px;
   color: rgba(241,240,246,.45); background: none; border: none; cursor: pointer;
   padding: 6px 10px; border-radius: 100px; transition: all .13s; height: 32px;
 }
@@ -250,7 +250,7 @@ html.light body::before {
   width: 34px; height: 34px; border-radius: 50%;
   background: linear-gradient(135deg, var(--acc) 0%, var(--green) 100%);
   display: flex; align-items: center; justify-content: center;
-  font-family: 'Space Grotesk', sans-serif; font-size: 12px; font-weight: 800;
+  font-family: var(--font-ndot); font-size: 16px; font-weight: 800;
   color: #050505; border: none; cursor: pointer; margin-left: 2px;
   transition: transform .2s, box-shadow .2s; flex-shrink: 0;
 }
@@ -285,26 +285,13 @@ html.light body::before {
   width: 34px; height: 34px; border-radius: 50%;
   background: linear-gradient(135deg, var(--acc) 0%, var(--green) 100%);
   display: flex; align-items: center; justify-content: center;
-  font-family: 'Space Grotesk', sans-serif; font-size: 12px; font-weight: 800;
+  font-family: var(--font-ndot); font-size: 16px; font-weight: 800;
   color: #050505; border: none; cursor: pointer;
   transition: transform .2s, box-shadow .2s;
 }
 .nav-profile:hover { transform: scale(1.06); box-shadow: 0 0 0 3px rgba(0,212,170,.2); }
 
-/* ── lang toggle ── */
-.nav-lang {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
-  letter-spacing: 1.5px;
-  color: var(--w30);
-  cursor: pointer;
-  border: 1px solid var(--w12);
-  border-radius: 4px;
-  padding: 3px 7px;
-  background: none;
-  transition: all .2s;
-}
-.nav-lang:hover { color: var(--w); border-color: var(--w30); }
+/* Note: a second .nav-lang rule existed below (was dead — no markup used it because the topbar lang button matches the .nav-lang rule at line ~236 which comes later in the stylesheet and wins the cascade). Removed in feat/ndot-topbar-rollout to prevent the duplicate from overriding the NDOT topbar rule. */
 
 /* ── main no longer needs huge top padding — hero handles it ── */
 main {
@@ -1906,7 +1893,7 @@ html.light #pg-about .contact-card:nth-of-type(4) .cc-icon { color: var(--acc); 
 }
 
 #roadmap-internal-nav .nav-logo {
-  font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 500;
+  font-family: var(--font-ndot); font-size: 16px; font-weight: 500;
   letter-spacing: normal; color: var(--w); text-decoration: none;
   padding: 7px 16px; background: none; border: none; border-radius: 100px;
   box-shadow: none; backdrop-filter: none; -webkit-backdrop-filter: none;
@@ -1923,7 +1910,7 @@ html.light #pg-about .contact-card:nth-of-type(4) .cc-icon { color: var(--acc); 
   backdrop-filter: none; -webkit-backdrop-filter: none;
 }
 #roadmap-internal-nav .nav-links a {
-  display: flex; align-items: center; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: normal; color: rgba(241,240,246,.38); text-decoration: none;
+  display: flex; align-items: center; font-family: var(--font-ndot); font-size: 13px; letter-spacing: normal; color: rgba(241,240,246,.38); text-decoration: none;
   background: none; border: none; border-radius: 100px; padding: 7px 16px;
   transition: color .13s, background .13s;
 }

@@ -331,3 +331,17 @@ AGENT_BROWSER_ARGS=--no-sandbox
 - Never impose a short foreground timeout on a multi-step coding task.
 - Liveness check = `git diff --stat` over time + `ps -p <pid>`, not log file contents.
 - When the user says "I got this" or wants to take over, ask explicitly whether to **pause** or **kill** the agent — do not assume and terminate a running credit-consuming session.
+
+## L-024 — Duplicate CSS selectors with the same specificity: cascade order wins, later rule overrides the new one
+
+**What failed:** In `feat/ndot-topbar-rollout`, applied NDOT to `.nav-lang` at line 236 (topbar). Browser `getComputedStyle` still returned `JetBrains Mono`. Reason: a second `.nav-lang` rule existed at line 295 with the same specificity (0,1,0). Cascade order picked the later rule, which was the old JetBrains Mono one.
+
+**Root cause:** CSS cascade tie-breaker: when two rules have identical specificity, source-order wins (later rule overrides earlier). This is independent of which one is "newer" in git — only file position matters. The agent's `patch` call only updated the first `.nav-lang` occurrence; the duplicate definition at a later line silently won the cascade.
+
+**Detection method:** After any font-family/font change, run `getComputedStyle` on a real element and check the resolved value, not just grep for the change. If `fontFamily` doesn't match the expected value, there's a duplicate or higher-specificity rule overriding it.
+
+**Prevention rule:**
+- Before adding or modifying a font-family/font-size/transition on any selector, grep the file for **all** definitions of that selector and check the line numbers.
+- If duplicates exist, either: (a) merge them into one canonical rule, (b) update both, or (c) delete the dead one (if no markup uses it).
+- After applying the change, **always verify with `getComputedStyle`** in the browser, not just with grep.
+- Same rule applies to any CSS property change, not just fonts — color, transition, transform, anything that can be silently overridden by a later rule with equal specificity.
