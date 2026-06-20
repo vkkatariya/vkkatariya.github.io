@@ -1,3 +1,33 @@
+## [2026-06-20] agent(opencode) — feat/topbar-right-pill-rounded: make .nav-right fully rounded + stronger liquid-glass
+
+**Mode:** Execution (surgical CSS edit — 3 selectors)
+**Did:**
+- Updated `.nav-right` at line 213 (initial right-pill rule): bumped `border-radius` from `14px` to `100px`, strengthened glass (`blur(40px) saturate(180%)` → `blur(56px) saturate(200%)`), raised gradient alpha (`rgba(255,255,255,.10/.04)` → `.13/.06`), border alpha (`.16` → `.18`), inset highlight (`.12` → `.14`), and added a subtle `0 0 0 1px rgba(255,255,255,.04)` outer halo.
+- Updated `.nav-right` at line 270 (cascade-winning duplicate rule): same radius and glass-strengthening changes; replaced `rgba(8,8,8,.72)` solid background with the same brighter gradient as line 213 so the two rules no longer fight visually.
+- Added `html.light .nav-right` override at line 2566 to mirror the dark-mode changes: `border-radius: 100px`, stronger blur/saturate, slightly brighter gradient (`rgba(255,255,255,.85/.78)`), slightly darker border (`rgba(13,13,15,.14)`), and matching outer halo for light-mode parity.
+- Verified only `.nav-right` and `html.light .nav-right` were touched; did not modify `.nav`, `.nav-links` (middle pill), `.nav-logo` (left pill), `.nav-profile` circle, or `#roadmap-internal-nav`.
+
+**Why:**
+- User asked to make the top-right controls pill fully rounded and strengthen its liquid-glass effect. The right pill now matches the existing `border-radius: 100px` of `.nav`, `.nav-links`, and `.nav-logo`, giving the topbar a consistent pill family.
+- The second `.nav-right` rule at line 270 has higher cascade priority, so both rules had to be updated; changing only one would leave the rendered pill at `14px`.
+
+**Issues encountered:**
+- The `opencode` local CLI (`opencode --task` / `opencode run`) is non-interactive: `opencode --task` rejects `--task` as an unknown flag, and `opencode run` enters a long-running TUI loop that doesn't complete the prompt and started making out-of-scope NDOT widget-title edits. Killed that process and performed the scoped edits directly via the patch tool.
+- Confirmed branch state was clean before committing after resetting out-of-scope changes.
+
+**Verification:**
+- `grep -n "\.nav-right"` finds 4 lines: 213, 270, 2560, 2566.
+- Both base `.nav-right` rules now declare `border-radius: 100px`.
+- CSS brace-balance check passes (`final open count: 4`, no orphan closes).
+- `git diff --stat` shows only `prototypes/portfolio-combined.html` changed (+15/-8).
+- `git push -u origin feat/topbar-right-pill-rounded` succeeded.
+- Browser `getComputedStyle` verification skipped in this terminal-only session; visual check at 1440/820/390px not run.
+
+**Files modified:**
+- `prototypes/portfolio-combined.html`
+
+---
+
 ## [2026-06-20] NDOT topbar rollout — all topbar text → NDOT + font-size bumps (Branch 4)
 
 **Mode:** Execution (surgical CSS edit — 9 topbar selectors)
