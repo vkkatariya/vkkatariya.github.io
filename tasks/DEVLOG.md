@@ -1,5 +1,32 @@
 ---
 
+## [2026-06-21] agent(claude-code) — feat/cv-pdf: resume pill relocation + liquid glass restyle
+
+**Commits:** `7163ea1`
+**Did:**
+- Moved the Download Resume pill out of the space between the "About" heading and the intro block; relocated it into `.photo-block` (after `.photo-status`) so it sits naturally in the left column below the photo frame where whitespace already existed.
+- Restyled pill to match the topbar pill formula exactly: `backdrop-filter: blur(40px) saturate(180%)`, gradient glass background, `rgba(255,255,255,.16)` border, `0 4px 28px rgba(0,0,0,.55)` drop shadow + `0 1px 0 rgba(255,255,255,.12)` inset highlight, `border-radius: 100px`.
+- Hover: `translateY(-2px)` pop-out + deeper `0 6px 32px` shadow — consistent with widget hover pattern.
+- Removed the square icon container; acc-coloured inline SVG instead, keeping the pill compact.
+- Renamed all labels "Download CV" → "Download Resume"; download filename → `Vishal-Katariya-Resume.pdf`.
+- Removed `#pg-about .ph-title { margin-bottom: 24px }` override (restores the original 56px spacing now that the pill is no longer between the heading and intro).
+
+---
+
+## [2026-06-21] agent(claude-code) — feat/cv-pdf: redesign homepage contact widget + reposition About CV pill
+
+**Commits:** `1810225`
+**Did:**
+- **About page contact grid:** Removed the Download Resume card that spanned the full width of the contact grid (5th card, `grid-column: 1/-1`). Contact section is back to the clean 2×2 four-card layout.
+- **About page — new cv-dl pill:** Added a compact pill between the "About" heading and the photo/bio intro. (Later moved in the next commit.)
+- **Homepage contact widget redesign:** Replaced `.about-contact` plain `contact-row` link list with a proper widget-pattern layout:
+  - Updated CSS: `border-radius` 20px → 28px, shadow and border match `.w` neomorphic values.
+  - New `.cw-row` / `.cw-icon` / `.cw-label` / `.cw-val` classes for icon-label-value card rows (github, website).
+  - Download link moved from an accent-coloured text row to a `.np` NeoPOP button at the bottom of the widget — consistent with other widget CTAs in the grid.
+  - Removed the Download CV `contact-row` I added in the prior session.
+
+---
+
 ## [2026-06-20] agent(claude-code) — feat/cv-pdf: add printable resume HTML + generated PDF + download links
 
 **Mode:** Execution (new file + PDF generation + two download link insertions)
