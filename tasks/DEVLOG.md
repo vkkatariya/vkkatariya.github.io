@@ -1,5 +1,17 @@
 ---
 
+## [2026-06-21] fix(timeline): homepage timeline font size polish
+
+User flagged timeline text as slightly too big after the prior `feat/timeline-fonts-bigger` pass. Nudged all four selectors down by ~2px.
+
+**Changes** (`prototypes/portfolio-combined.html`):
+- `.tl-title`: `clamp(18px,1.5vw,22px)` → `clamp(16px,1.3vw,20px)`
+- `.tl-desc`: `15px` → `13px`
+- `.tl-year`: `14px` → `12px`
+- `.tl-badge`: `13px` → `11px`
+
+---
+
 ## [2026-06-21] agent(claude-code) — feat/cv-pdf: resume pill relocation + liquid glass restyle
 
 **Commits:** `7163ea1`
