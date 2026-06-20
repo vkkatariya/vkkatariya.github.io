@@ -1,5 +1,30 @@
 ---
 
+## [2026-06-20] agent(claude) — feat/roadmap-header: restructure roadmap hero into .ph wrapper + .hero stats/cta blocks
+
+**Mode:** Execution (surgical markup restructure, ≤10 lines)
+**Did:**
+- Split the single `#pg-roadmap` `<section class="hero">` into two sibling blocks:
+  - `<div class="ph">` containing `<div class="ph-label">vkkatariya · roadmap</div>`, `<h1 class="ph-title"><span class="hn-script">R</span>oadmap</h1>`, and `<p class="ph-sub">`.
+  - `<section class="hero" aria-label="Roadmap">` containing only `.hero-stats` + `.hero-cta`.
+- Converted `<p class="hero-sub">` → `<p class="ph-sub">` so the subtitle follows the Projects/About `.ph` pattern.
+- Updated comments to `<!-- ═══════════ PAGE HEADER ═══════════ -->` and `<!-- ═══════════ HERO STATS + CTA ═══════════ -->`.
+- Did NOT modify homepage, Projects, or About page headers.
+- Did NOT touch any `.ph-*` CSS rules.
+
+**Verification:**
+- `git status`: only `prototypes/portfolio-combined.html` modified (plus untracked kickoff files).
+- `git diff --stat`: 1 file changed, 7 insertions(+), 3 deletions(-) (≤30 lines).
+- `rg -n 'class="ph"' prototypes/portfolio-combined.html`: 2 matches (Projects line 3318, Roadmap line 3834). Note: About page uses `.ph-label`/`.ph-title` but is not wrapped in `<div class="ph">`.
+- `rg -n 'hero-title' prototypes/portfolio-combined.html`: 0 matches.
+- `rg -c 'wlbl-row' prototypes/portfolio-combined.html`: 14.
+- Commit: `850f8fc` — "agent(claude): feat(roadmap-header): restructure to .ph wrapper like Projects/About (fixes .hero h1 specificity override)".
+- Branch pushed: `origin/feat/roadmap-header-matches-aesthetic`.
+
+**Files changed:** 1 (`prototypes/portfolio-combined.html`)
+
+---
+
 ## [2026-06-20] agent(opencode) — feat/name-ndot-wordmark (REDO): full name in NDOT 55 Caps
 
 **Mode:** Execution (surgical markup + CSS cleanup, 22 lines)
@@ -1132,3 +1157,24 @@ Branch: feat/roadmap-morph-restore → merged to dev (fb7317e).
 - The `opencode` local CLI (`opencode run --dangerously-skip-permissions`) started and produced an initial plan but hung for >4 minutes with no further output or disk changes, so the edits were completed inline with the patch tool and Python validation instead.
 - After the first attempted markup rewrite, a stray conflict marker and partial `.tl-stat` divs appeared because the replacement regex matched across item boundaries; this was corrected by reverting and reapplying the patch cleanly.
 
+
+---
+
+## [2026-06-20] agent(opencode) — feat/roadmap-header-matches-aesthetic
+
+**Mode:** Execution (surgical markup + CSS cleanup)
+**Did:**
+- Updated roadmap hero header markup to match Projects/About page aesthetic.
+- Replaced `.wlbl-row` kicker with `.ph-label`: `<div class="ph-label">vkkatariya · roadmap</div>`.
+- Replaced `<h1 id="hero-title">CS Fundamentals<br>Roadmap</h1>` with `<h1 class="ph-title"><span class="hn-script">R</span>oadmap</h1>`.
+- Removed obsolete `#pg-roadmap #hero-title` / `#pg-roadmap .hero h1` CSS override so `.ph-title` (Syne 800) + `.hn-script` (Cormorant Garamond italic first letter) takes over.
+- Updated `<section>` accessibility from `aria-labelledby="hero-title"` to `aria-label="Roadmap"` since the H1 no longer carries an ID.
+
+**Verification:**
+- `rg -n '<div class="wlbl-row">' prototypes/portfolio-combined.html` count decreased from 15 to 14 (1 less, all other usages unchanged).
+- `rg -n 'hero-title' prototypes/portfolio-combined.html` returned 0 matches.
+- `.ph-label` / `.ph-title` / `.hn-script` CSS rules unchanged; usage count for each increased by 1 on roadmap hero.
+- `git diff --stat`: 1 file changed, 3 insertions(+), 10 deletions(-).
+- Commit: 005220f.
+
+**Files changed:** 1 (`prototypes/portfolio-combined.html`)
