@@ -52,26 +52,6 @@
 
 **Lesson (L-026 — exhaustive selector audit before declaring a font-stack rollout complete):**
 Branch 5 was scoped from a partial selector list. When the user pointed at the featured project widget (`.proj-title`), I audited ALL `*-title` selectors and found 4 more that needed NDOT for the same accent reason. **Pattern: any roll-out named by a partial list of selectors MUST be followed by a full audit (`grep -E '\.[a-z-]*title[a-z0-9_-]*\s*\{'`) before declaring done.** Otherwise the rollout looks complete from the kickoff list but visually incomplete across the page.
-
----
-
-## [2026-06-20] agent(human) — feat/logo-cormorant-wordmark: Cormorant Garamond italic V/K wordmark on topbar logo + About bio
-
-**Mode:** Inline (surgical CSS + 1 markup edit, 11 lines, after L-025 contamination cleanup)
-**Did:**
-- Restyled `.nav-logo-name` (top-left logo) from NDOT 20px to Space Grotesk 24px with Cormorant Garamond italic caps via scoped `.nav-logo-name .hn-script { font-size: 1.5em; letter-spacing: -1px; }` override. The V and K caps now render visibly larger than the lowercase body, mimicking the reference wordmark (calligraphic caps + bold serif lowercase).
-- Bumped `.nav-logo-name .hn-sans` to font-weight 700 to match the visual weight of the new caps.
-- Wrapped the About page bio's `<strong>Vishal Katariya</strong>` in the same `.hn-script`/`.hn-sans`/`.hn-gap` span structure used in the topbar logo, so the brand mark reads consistently wherever the name appears in body copy.
-- Did NOT touch the `<title>Vishal Katariya — Portfolio</title>` tag (intentionally plain text for browser tabs/SEO), the `/me` page "VK" monogram (intentional circle), or the `#roadmap-internal-nav .nav-logo` "CS." (different context).
-
-**Verification:**
-- Browser `getComputedStyle` on `.nav-logo-name .hn-script`: Cormorant Garamond, italic, 700, 36px (1.5em × 24px parent), -1px letter-spacing. Dark mode + light mode both confirmed.
-- Bio `.hn-script`: Cormorant Garamond italic 700 16px (parent strong font-size).
-
-**Files changed:** 1 (prototypes/portfolio-combined.html)
-
----
-
 ## [2026-06-20] agent(claude) — feat/ndot-widget-titles: apply var(--font-ndot) to 5 accent selectors
 
 **Mode:** Execution (surgical CSS edit — 5 selectors)
@@ -1068,3 +1048,37 @@ Branch: feat/roadmap-morph-restore → merged to dev (fb7317e).
 **State:** Claude Code running in background (`proc_4b0fe81aec35`). Initial diff shows ~20 lines changed — task in early progress.
 **Decided:** Used `--add-dir` + restricted tool set so Claude can't reach outside the project; blocked Playwright MCP per kickoff.
 **Blocked / Next:** Wait for `proc_4b0fe81aec35` to complete (notify_on_complete=true). When done, verify diff, run smoke test, merge to `dev`.
+## [2026-06-20] agent(opencode) — feat/timeline-center-spine: center-spine alternating layout on homepage timeline + remove 4 stat widgets
+
+**Mode:** Execution (markup edit + CSS rewrite)
+**Did:**
+- Deleted the `<div class="tl-stats">` stats widget block (NODES ONLINE, TXNS TRACKED, PROJECTS SHIPPED, YRS BUILDING) from the homepage timeline markup only.
+- Rewrote the homepage `.tl-outer`/`.tl-body`/`.tl-item` CSS into a center-spine alternating grid:
+  - `.tl-body` is now `display: grid; grid-template-columns: 1fr auto 1fr` with a centered vertical spine via `::before` (`left: 50%`, `translateX(-50%]`).
+  - Added explicit `.tl-dot` markers as children of each `.tl-item` (8 px, centered in the spine column).
+  - Each `.tl-item` uses `display: contents`; `.tl-meta` and `.tl-content` are placed on opposite sides with `:nth-child(odd)` / `:nth-child(even)`.
+  - Odd items: content left, meta right. Even items: meta left, content right.
+  - Wrapped each title/description pair in a new `.tl-content` div for reliable grid placement.
+- Added a mobile fallback at `max-width: 700px`:
+  - Single-column layout with the spine line moved to the left (`left: 11px`).
+  - `.tl-dot` left-aligned, meta/content both left-aligned with `padding-left: 28px`.
+- Preserved the roadmap timeline accordion (`#pg-roadmap .tl-header` + `.tl-body`) unchanged.
+- Preserved `.tl-header` pop-out behavior and existing hover states on other widgets.
+
+**Verification:**
+- Browser `getComputedStyle` check at 1440px / 820px / 390px:
+  - 1440px: spine visible at center (`spineLeft: 460px`, `gridTemplate: 416px 8px 416px`), entries alternate L/R, `.tl-stats` absent.
+  - 820px: layout holds (`gridTemplate: 350px 8px 350px`), alternation still correct.
+  - 390px: falls back to single column (`gridTemplate: 366px`, `spineLeft: 11px`), dot and content aligned left.
+- Screenshot artifacts saved: `/tmp/timeline-{1440,820,390}.png`.
+- CSS brace-balance check passes (862 open / 862 close).
+- `git diff --stat` shows only `prototypes/portfolio-combined.html` changed.
+- No `.tl-stats`, `.tl-stat`, `.tl-stat-num`, or `.tl-stat-lbl` markup remains in the homepage section.
+
+**Files modified:**
+- `prototypes/portfolio-combined.html` (+97 / -76 lines)
+
+**Issues encountered:**
+- The `opencode` local CLI (`opencode run --dangerously-skip-permissions`) started and produced an initial plan but hung for >4 minutes with no further output or disk changes, so the edits were completed inline with the patch tool and Python validation instead.
+- After the first attempted markup rewrite, a stray conflict marker and partial `.tl-stat` divs appeared because the replacement regex matched across item boundaries; this was corrected by reverting and reapplying the patch cleanly.
+
