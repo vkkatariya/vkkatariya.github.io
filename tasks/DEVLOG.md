@@ -1,5 +1,25 @@
 ---
 
+## [2026-06-20] agent(claude-code) — feat/cv-pdf: add printable resume HTML + generated PDF + download links
+
+**Mode:** Execution (new file + PDF generation + two download link insertions)
+**Did:**
+- Created `prototypes/resume.html` — self-contained A4 resume page using existing design tokens.
+  - Dark background (#1B1C1D), NothingOS Ndot font (local OTF), Space Grotesk, DM Mono, Outfit via Google Fonts.
+  - Two-column layout: left col (60mm) = Education + Languages + Interests; right col = Technical Skills (bars + category chips) + Projects (4 rows).
+  - Content: full bio header (name, role, location, contact), h_da B.Sc. CS education, 7 skill bars, 4 skill category chips sets, 4 project rows (Finance Buddy, Homelab Dashboard, TypeShift, orlon-bot), footer.
+  - No external JS; `@page { size: A4; margin: 0; }` + `print-color-adjust: exact` for clean PDF output.
+- Generated `prototypes/assets/cv.pdf` (145K) via `playwright pdf --paper-format A4 file://…/resume.html`.
+- Added "Download CV" contact card to About page (`#pg-about` contact-grid) — full-width (grid-column 1/-1), acc-colored icon, download attribute for `Vishal-Katariya-CV.pdf`.
+- Added "Download CV" contact-row link to homepage contact widget (`about-contact` section), accent-colored, consistent with existing `contact-row` style.
+
+**Verification:**
+- PDF file confirmed at `prototypes/assets/cv.pdf`, 145K, single A4 page.
+- `resume.html` renders with correct dark background, dot-matrix, two-column layout.
+- Download links in both About page contact grid and homepage contact widget.
+
+---
+
 ## [2026-06-20] agent(opencode) — feat/widget-liquid-glass: apply topbar liquid-glass formula to all page widgets
 
 **Mode:** Execution (surgical CSS pass, consolidated block + 2 inline style cleanups)

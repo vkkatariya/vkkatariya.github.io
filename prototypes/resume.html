@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vishal Katariya — CV</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Space+Grotesk:wght@400;500;600;700;800&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+@page { size: A4; margin: 0; }
+
+@font-face {
+  font-family: 'Ndot';
+  src: url('assets/fonts/Ndot55-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --bg:  #1B1C1D;
+  --bg2: #1F2021;
+  --bg3: #252527;
+  --w:   #F1F0F6;
+  --w80: rgba(241,240,246,.8);
+  --w60: rgba(241,240,246,.6);
+  --w30: rgba(241,240,246,.3);
+  --w12: rgba(241,240,246,.12);
+  --w06: rgba(241,240,246,.06);
+  --green:  #34C77B;
+  --amber:  #F5B55F;
+  --blue:   #5B9CF6;
+  --acc:    #00D4AA;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  width: 210mm;
+  height: 297mm;
+  background: var(--bg);
+  color: var(--w);
+  font-family: 'Outfit', sans-serif;
+  font-size: 10.5px;
+  line-height: 1.5;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+/* subtle dot-matrix bg (NothingOS) */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: radial-gradient(circle, rgba(241,240,246,.04) 1px, transparent 1px);
+  background-size: 18px 18px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.resume {
+  position: relative; z-index: 1;
+  padding: 11mm 14mm 10mm;
+  height: 297mm;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* ── HEADER ── */
+.hdr {
+  border-bottom: 1px solid var(--w12);
+  padding-bottom: 6mm;
+  margin-bottom: 6mm;
+  flex-shrink: 0;
+}
+.hdr-top {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 6mm;
+  margin-bottom: 4mm;
+}
+.hdr-name {
+  font-family: 'Ndot', 'Space Grotesk', sans-serif;
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  line-height: 1;
+  color: var(--w);
+}
+.hdr-role {
+  font-family: 'DM Mono', monospace;
+  font-size: 8.5px;
+  letter-spacing: 2.5px;
+  color: var(--acc);
+  text-transform: uppercase;
+  margin-top: 4px;
+}
+.hdr-contacts {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+}
+.hdr-contact {
+  font-family: 'DM Mono', monospace;
+  font-size: 8px;
+  color: var(--w60);
+  letter-spacing: 0.3px;
+}
+.hdr-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.meta-chip {
+  font-family: 'DM Mono', monospace;
+  font-size: 7.5px;
+  color: var(--w30);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  border: 1px solid var(--w12);
+  border-radius: 100px;
+  padding: 2.5px 8px;
+}
+.meta-chip.avail {
+  color: var(--green);
+  border-color: rgba(52,199,123,.28);
+}
+
+/* ── BODY ── */
+.body {
+  display: grid;
+  grid-template-columns: 60mm 1fr;
+  gap: 7mm;
+  flex: 1;
+  min-height: 0;
+}
+
+/* ── SECTION LABEL ── */
+.s-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 7px;
+  letter-spacing: 3px;
+  color: var(--w30);
+  text-transform: uppercase;
+  margin-bottom: 4mm;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.s-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--w06);
+}
+
+/* ── LEFT COLUMN ── */
+.col-left {
+  display: flex;
+  flex-direction: column;
+  gap: 5.5mm;
+  border-right: 1px solid var(--w06);
+  padding-right: 7mm;
+}
+
+/* education */
+.edu-inst {
+  font-family: 'DM Mono', monospace;
+  font-size: 7px;
+  letter-spacing: 1.5px;
+  color: var(--w30);
+  text-transform: uppercase;
+  margin-bottom: 2px;
+}
+.edu-degree {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--w);
+  margin-bottom: 2px;
+}
+.edu-period {
+  font-family: 'DM Mono', monospace;
+  font-size: 8px;
+  color: var(--green);
+  letter-spacing: 0.3px;
+  margin-bottom: 5px;
+}
+.edu-mods {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+}
+.edu-mod {
+  font-family: 'DM Mono', monospace;
+  font-size: 6.5px;
+  color: var(--w30);
+  border: 1px solid var(--w06);
+  border-radius: 3px;
+  padding: 1.5px 4px;
+  letter-spacing: 0.2px;
+}
+
+/* languages */
+.lang-rows { display: flex; flex-direction: column; gap: 4px; }
+.lang-row {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  align-items: center;
+  gap: 6px;
+}
+.lang-name {
+  font-family: 'Outfit', sans-serif;
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--w80);
+}
+.lang-lvl {
+  font-family: 'DM Mono', monospace;
+  font-size: 6.5px;
+  color: var(--w30);
+  letter-spacing: 0.3px;
+}
+.lang-dots { display: flex; gap: 2.5px; }
+.ld {
+  width: 5px; height: 5px; border-radius: 50%;
+  background: var(--w06); border: 1px solid var(--w12);
+}
+.ld.on { background: var(--blue); border-color: var(--blue); }
+.ld.hi { background: var(--green); border-color: var(--green); }
+
+/* interests */
+.int-chips { display: flex; flex-wrap: wrap; gap: 3px; }
+.int-chip {
+  font-family: 'DM Mono', monospace;
+  font-size: 7px;
+  color: var(--w60);
+  border: 1px solid var(--w12);
+  border-radius: 100px;
+  padding: 2px 7px;
+}
+
+/* ── RIGHT COLUMN ── */
+.col-right {
+  display: flex;
+  flex-direction: column;
+  gap: 5.5mm;
+  min-width: 0;
+}
+
+/* skill bars */
+.skill-bars { display: flex; flex-direction: column; gap: 3px; margin-bottom: 3.5mm; }
+.skb-row { display: flex; align-items: center; gap: 6px; }
+.skb-n {
+  font-family: 'DM Mono', monospace;
+  font-size: 7.5px;
+  color: var(--w60);
+  width: 58px;
+  flex-shrink: 0;
+}
+.skb-track {
+  flex: 1; height: 3px;
+  background: var(--w06); border-radius: 2px; overflow: hidden;
+}
+.skb-fill { height: 100%; border-radius: 2px; }
+.skb-fill.g { background: var(--green); }
+.skb-fill.b { background: var(--amber); }
+.skb-v {
+  font-family: 'DM Mono', monospace;
+  font-size: 7px; color: var(--w30);
+  width: 18px; text-align: right; flex-shrink: 0;
+}
+
+/* skill categories */
+.skills-cats { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 6mm; }
+.sk-cat { }
+.sk-cat-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 6.5px; color: var(--w30);
+  letter-spacing: 1.5px; text-transform: uppercase;
+  margin-bottom: 3px;
+}
+.sk-chips { display: flex; flex-wrap: wrap; gap: 2px; }
+.sk {
+  font-family: 'DM Mono', monospace;
+  font-size: 6.5px; padding: 1.5px 5px;
+  border-radius: 3px; border: 1px solid var(--w12); color: var(--w30);
+}
+.sk.hi { color: var(--green); border-color: rgba(52,199,123,.28); }
+.sk.mid { color: var(--blue); border-color: rgba(91,156,246,.25); }
+.sk.lo { color: var(--amber); border-color: rgba(245,181,95,.25); }
+
+/* projects */
+.proj-list { display: flex; flex-direction: column; gap: 2.5mm; }
+.proj-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 6px;
+  align-items: start;
+  padding: 5px 8px;
+  background: var(--bg2);
+  border: 1px solid var(--w06);
+  border-radius: 7px;
+}
+.proj-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 10.5px; font-weight: 600; color: var(--w);
+  margin-bottom: 1px;
+}
+.proj-desc {
+  font-family: 'Outfit', sans-serif;
+  font-size: 8px; color: var(--w60); line-height: 1.4;
+  margin-bottom: 3px;
+}
+.proj-tags { display: flex; flex-wrap: wrap; gap: 2px; }
+.proj-tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 6px; color: var(--w30);
+  border: 1px solid var(--w06); border-radius: 3px; padding: 1px 4px;
+}
+.proj-status {
+  font-family: 'DM Mono', monospace;
+  font-size: 7px;
+  display: flex; align-items: center; gap: 3px;
+  white-space: nowrap; padding-top: 2px;
+}
+.proj-status::before { content: ''; width: 4px; height: 4px; border-radius: 50%; flex-shrink: 0; }
+.s-done { color: var(--green); }
+.s-done::before { background: var(--green); }
+.s-wip  { color: var(--amber); }
+.s-wip::before  { background: var(--amber); }
+
+/* ── FOOTER ── */
+.resume-footer {
+  margin-top: auto;
+  padding-top: 5mm;
+  border-top: 1px solid var(--w06);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+}
+.rf-left {
+  font-family: 'DM Mono', monospace;
+  font-size: 7px; color: var(--w30); letter-spacing: 1px;
+}
+.rf-right {
+  font-family: 'DM Mono', monospace;
+  font-size: 7px; color: var(--w30); letter-spacing: 1px;
+}
+</style>
+</head>
+<body>
+<div class="resume">
+
+  <!-- HEADER -->
+  <div class="hdr">
+    <div class="hdr-top">
+      <div>
+        <div class="hdr-name">VISHAL KATARIYA</div>
+        <div class="hdr-role">AI · ML · SWE / CS Student at h_da</div>
+      </div>
+      <div class="hdr-contacts">
+        <span class="hdr-contact">vishalkatariya404@gmail.com</span>
+        <span class="hdr-contact">github.com/vkkatariya</span>
+        <span class="hdr-contact">linkedin.com/in/vkkatariya</span>
+        <span class="hdr-contact">vishalkatariya.dev</span>
+      </div>
+    </div>
+    <div class="hdr-meta">
+      <span class="meta-chip">Dieburg · Germany</span>
+      <span class="meta-chip avail">Available for internships</span>
+      <span class="meta-chip">ML Engineering · Full-Stack · Infrastructure</span>
+    </div>
+  </div>
+
+  <!-- BODY -->
+  <div class="body">
+
+    <!-- LEFT COLUMN -->
+    <div class="col-left">
+
+      <!-- EDUCATION -->
+      <div>
+        <div class="s-label">Education</div>
+        <div class="edu-inst">Hochschule Darmstadt · Germany</div>
+        <div class="edu-degree">B.Sc. Computer Science</div>
+        <div class="edu-period">Oct 2024 – Expected 2028</div>
+        <div class="edu-mods">
+          <span class="edu-mod">Algorithms & DS</span>
+          <span class="edu-mod">OOP</span>
+          <span class="edu-mod">Math for CS</span>
+          <span class="edu-mod">Architecture</span>
+          <span class="edu-mod">Database Systems</span>
+          <span class="edu-mod">Operating Systems</span>
+          <span class="edu-mod">Software Engineering</span>
+          <span class="edu-mod">Networks</span>
+        </div>
+      </div>
+
+      <!-- LANGUAGES -->
+      <div>
+        <div class="s-label">Languages</div>
+        <div class="lang-rows">
+          <div class="lang-row">
+            <span class="lang-name">Deutsch</span>
+            <span class="lang-lvl">B2–C1</span>
+            <div class="lang-dots"><span class="ld on"></span><span class="ld on"></span><span class="ld on"></span><span class="ld on"></span><span class="ld"></span></div>
+          </div>
+          <div class="lang-row">
+            <span class="lang-name">English</span>
+            <span class="lang-lvl">C1–C2</span>
+            <div class="lang-dots"><span class="ld on"></span><span class="ld on"></span><span class="ld on"></span><span class="ld on"></span><span class="ld on"></span></div>
+          </div>
+          <div class="lang-row">
+            <span class="lang-name">Hindi</span>
+            <span class="lang-lvl">Native</span>
+            <div class="lang-dots"><span class="ld hi"></span><span class="ld hi"></span><span class="ld hi"></span><span class="ld hi"></span><span class="ld hi"></span></div>
+          </div>
+          <div class="lang-row">
+            <span class="lang-name">Gujarati</span>
+            <span class="lang-lvl">Native</span>
+            <div class="lang-dots"><span class="ld hi"></span><span class="ld hi"></span><span class="ld hi"></span><span class="ld hi"></span><span class="ld hi"></span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- INTERESTS -->
+      <div>
+        <div class="s-label">Interests</div>
+        <div class="int-chips">
+          <span class="int-chip">Programming</span>
+          <span class="int-chip">Artificial Intelligence</span>
+          <span class="int-chip">Cricket</span>
+          <span class="int-chip">Entrepreneurship</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- RIGHT COLUMN -->
+    <div class="col-right">
+
+      <!-- SKILLS -->
+      <div>
+        <div class="s-label">Technical Skills</div>
+        <div class="skill-bars">
+          <div class="skb-row"><span class="skb-n">Python</span><div class="skb-track"><div class="skb-fill g" style="width:86%"></div></div><span class="skb-v">86</span></div>
+          <div class="skb-row"><span class="skb-n">Docker · Linux</span><div class="skb-track"><div class="skb-fill g" style="width:82%"></div></div><span class="skb-v">82</span></div>
+          <div class="skb-row"><span class="skb-n">ML / AI</span><div class="skb-track"><div class="skb-fill g" style="width:72%"></div></div><span class="skb-v">72</span></div>
+          <div class="skb-row"><span class="skb-n">TypeScript</span><div class="skb-track"><div class="skb-fill b" style="width:68%"></div></div><span class="skb-v">68</span></div>
+          <div class="skb-row"><span class="skb-n">Proxmox · ARM</span><div class="skb-track"><div class="skb-fill b" style="width:64%"></div></div><span class="skb-v">64</span></div>
+          <div class="skb-row"><span class="skb-n">SvelteKit</span><div class="skb-track"><div class="skb-fill b" style="width:60%"></div></div><span class="skb-v">60</span></div>
+          <div class="skb-row"><span class="skb-n">C++</span><div class="skb-track"><div class="skb-fill b" style="width:52%"></div></div><span class="skb-v">52</span></div>
+        </div>
+        <div class="skills-cats">
+          <div class="sk-cat">
+            <div class="sk-cat-label">Backend &amp; Infra</div>
+            <div class="sk-chips">
+              <span class="sk hi">Fastify</span><span class="sk hi">WebSocket</span><span class="sk hi">REST API</span>
+              <span class="sk hi">PostgreSQL</span><span class="sk hi">Drizzle ORM</span><span class="sk hi">Docker</span>
+              <span class="sk hi">Caddy</span><span class="sk hi">Tailscale</span>
+              <span class="sk mid">Proxmox VE</span><span class="sk mid">KVM</span><span class="sk mid">ARM64</span>
+            </div>
+          </div>
+          <div class="sk-cat">
+            <div class="sk-cat-label">AI &amp; ML</div>
+            <div class="sk-chips">
+              <span class="sk hi">QLoRA fine-tuning</span><span class="sk hi">Unsloth</span>
+              <span class="sk hi">Ollama</span><span class="sk hi">LLM inference</span>
+              <span class="sk mid">Hugging Face</span><span class="sk mid">rkllama (NPU)</span>
+              <span class="sk lo">PyTorch</span><span class="sk lo">GGUF</span>
+            </div>
+          </div>
+          <div class="sk-cat">
+            <div class="sk-cat-label">Frontend</div>
+            <div class="sk-chips">
+              <span class="sk hi">SvelteKit</span><span class="sk hi">TypeScript</span>
+              <span class="sk hi">Chart.js</span><span class="sk hi">Vanilla CSS</span>
+              <span class="sk mid">Responsive</span><span class="sk mid">Motion One</span>
+            </div>
+          </div>
+          <div class="sk-cat">
+            <div class="sk-cat-label">Soft Skills</div>
+            <div class="sk-chips">
+              <span class="sk hi">Problem-solving</span><span class="sk hi">Research</span>
+              <span class="sk hi">Documentation</span><span class="sk hi">Teamwork</span>
+              <span class="sk mid">Technical writing</span><span class="sk mid">Systems thinking</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PROJECTS -->
+      <div>
+        <div class="s-label">Projects</div>
+        <div class="proj-list">
+          <div class="proj-row">
+            <div>
+              <div class="proj-title">Finance Buddy</div>
+              <div class="proj-desc">Personal finance tracker built on 993 real transactions. Tailscale-only — never touches the public internet.</div>
+              <div class="proj-tags">
+                <span class="proj-tag">SvelteKit</span><span class="proj-tag">Fastify</span>
+                <span class="proj-tag">PostgreSQL</span><span class="proj-tag">Drizzle</span><span class="proj-tag">Chart.js</span>
+              </div>
+            </div>
+            <div class="proj-status s-done">complete</div>
+          </div>
+          <div class="proj-row">
+            <div>
+              <div class="proj-title">Homelab Dashboard</div>
+              <div class="proj-desc">Realtime ops dashboard for a 2-node Proxmox cluster. Live CPU/RAM/network via WebSocket.</div>
+              <div class="proj-tags">
+                <span class="proj-tag">Fastify</span><span class="proj-tag">WebSocket</span>
+                <span class="proj-tag">Docker</span><span class="proj-tag">Tailscale</span>
+              </div>
+            </div>
+            <div class="proj-status s-done">complete</div>
+          </div>
+          <div class="proj-row">
+            <div>
+              <div class="proj-title">TypeShift</div>
+              <div class="proj-desc">Cross-platform AI writing assistant with collaborative editing across macOS, Windows, and Android.</div>
+              <div class="proj-tags">
+                <span class="proj-tag">Kotlin</span><span class="proj-tag">Swift</span>
+                <span class="proj-tag">C#</span><span class="proj-tag">AI</span>
+              </div>
+            </div>
+            <div class="proj-status s-wip">in progress</div>
+          </div>
+          <div class="proj-row">
+            <div>
+              <div class="proj-title">orlon-bot</div>
+              <div class="proj-desc">Telegram bot with QLoRA fine-tuned LLM. Trained on Kaggle T4 GPU, deployed to ARM NPU (rkllama).</div>
+              <div class="proj-tags">
+                <span class="proj-tag">Python</span><span class="proj-tag">Unsloth</span>
+                <span class="proj-tag">QLoRA</span><span class="proj-tag">Telegram</span>
+              </div>
+            </div>
+            <div class="proj-status s-wip">in progress</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="resume-footer">
+    <span class="rf-left">VISHAL KATARIYA · CV · 2026</span>
+    <span class="rf-right">vishalkatariya.dev</span>
+  </div>
+
+</div>
+</body>
+</html>
