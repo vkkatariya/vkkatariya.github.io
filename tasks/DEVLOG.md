@@ -1,3 +1,77 @@
+## [2026-06-20] Agent(pop-out-hover-roadmap) — pop-out hover on roadmap page (.tl-header + .resource-item only)
+
+**Mode:** Execution (micro-loop, CSS-only, tightly scoped)
+**Did:**
+- Added 37 lines to `prototypes/portfolio-combined.html` (lines 1785–1819) introducing one scoped pop-out hover block for `#pg-roadmap` covering **2 selectors** in two selector groups (transition + hover):
+  - `.tl-header` (12 timeline accordion headers) — already had `border-color: var(--w12)` hover, now also lifts
+  - `.resource-item` (9 resource anchors across 3 groups × 3 items) — already had `border-color: var(--w12)` + `background: rgba(255,255,255,.02)` hover + `.resource-arrow` color change, now also lifts
+- Reused the same effect as the global widget-hover rule (lines 2646–2654) and the about/projects pop-out blocks but with `#pg-roadmap` scoping: `transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease`; hover applies `transform: translateY(-2px) scale(1.012)`, `box-shadow: 8px 10px 24px var(--sd), -2px -2px 10px var(--sl)`, `border-color: var(--w06)`.
+- Reused existing `:root` tokens (`--sd`, `--sl`, `--w06`); no new design tokens, no new transitions, no JS or markup changes.
+- **Layered hover** — the new rule does NOT remove or replace the existing custom hover rules. The transition declaration narrows the existing `transition: border-color .2s, background .2s` to add `transform`/`box-shadow` (CSS doesn't allow multiple `transition` declarations — the new one wins, and it covers all three animated properties). The border-color and background changes still apply because they're declared in separate `:hover` rules earlier in the stylesheet. For `.resource-item`, the new rule's `border-color: var(--w06)` (later + higher specificity) overrides the older `.resource-item:hover { border-color: var(--w12) }`, and `transform`/`box-shadow` stack on top. The `background: rgba(255,255,255,.02)` from the older rule still applies because the new rule doesn't set `background`. The `.resource-item:hover .resource-arrow { color: var(--w) }` rule at line 2396 is untouched and still flips the arrow color. Net result: border tints w12→w06, bg gets the subtle white wash, arrow flips from w30→w, card lifts — all four stack cleanly.
+
+**Audit findings — what was ALREADY covered by the global rule (so future agents don't re-add):**
+- `.phase-card` (4 cards in `.phases-grid`, lines 3753–3791) — class `pcard`. **Already lifts** via global `.pcard:hover` with `!important` at line 2650.
+- `.topic-card` (11 JS-generated cards in `.topics-grid`, lines 5009–5027) — class `pcard`. **Already lifts** via global rule.
+- `.career-card` (12 JS-generated cards in `.careers-grid`, lines 5097–5127) — class `pcard`. **Already lifts** via global rule.
+- `.guide-card` (1 card in getting-started section, line 3793) — classes `w glass guide-card`. **Already lifts** via global `.w:hover` with `!important` at line 2650.
+
+**Audit findings — what was DELIBERATELY SKIPPED with reasons:**
+- `.phases-grid`, `.topics-grid`, `.careers-grid`, `.resources-grid`, `.timeline`, `.tl-item` — all layout wrappers (L-021). Their inner widgets already lift individually. Hovering the wrapper would lift the whole row/column as a mega-block.
+- `.resource-group` (3 groups, lines 4149/4176/4203) — **layout-only wrapper** (L-022). Markup is `<div class="resource-group"><h3>...</h3><div class="resource-list">...</div></div>` with NO border, NO background, NO box-shadow of its own. Only contains an h3 and a flex column of `.resource-item`s. The actual interactive widgets are the `.resource-item`s, which now lift individually.
+- `.filter-btn` (5 buttons) — has its own responsive `border-color` + `color` hover (line 2128) and `.active` state. Already feels interactive. No lift needed.
+- `.np`, `.np-ghost` (hero CTAs) — have their own custom hover behavior from the design system.
+- `#progress-widget` — `position: fixed` control widget. Not content. Lifting it would feel weird because it's pinned to the viewport.
+
+**Verification commands + output:**
+```bash
+# 1. Scope check — only #pg-roadmap additions
+$ git diff prototypes/portfolio-combined.html | grep -E "^[+-]" | grep -v "^[+-]{3}" | grep -v "#pg-roadmap"
+# (only outputs comment-text lines and CSS property continuation lines that
+#  are part of the new roadmap block, plus the diff header — no scope leakage)
+
+# 2. Confirm both new selectors present
+$ grep -c "#pg-roadmap .tl-header:hover" prototypes/portfolio-combined.html
+2     # 1 existing (line 2086: border-color) + 1 new (line 1814: transform+shadow)
+$ grep -c "#pg-roadmap .resource-item:hover" prototypes/portfolio-combined.html
+1     # the new rule (line 1815)
+
+# 3. Existing hover rules preserved
+$ grep -c "#pg-roadmap .tl-header:hover { border-color: var(--w12); }" prototypes/portfolio-combined.html
+1     # original at line 2086 — still there
+$ grep -c ".resource-item:hover { border-color: var(--w12); background:" prototypes/portfolio-combined.html
+1     # original at line 2382 — still there
+$ grep -c ".resource-item:hover .resource-arrow" prototypes/portfolio-combined.html
+1     # arrow color flip at line 2396 — still there
+
+# 4. File count (1 file in diff so far; +1 for DEVLOG = 3 total after commit)
+$ git diff --stat | wc -l
+2
+
+# 5. No other page selectors touched
+$ git diff prototypes/portfolio-combined.html | grep -cE "^[+-].*#pg-home"      # 0
+$ git diff prototypes/portfolio-combined.html | grep -cE "^[+-].*#pg-projects"  # 0
+$ git diff prototypes/portfolio-combined.html | grep -cE "^[+-].*#pg-about"     # 0
+$ git diff prototypes/portfolio-combined.html | grep -cE "^[+-].*#pg-me"        # 0
+$ git diff prototypes/portfolio-combined.html | grep -cE "^[+-].*\.widget.*\.pcard.*\.skill-group"  # 0 — global rule untouched
+
+# 6. HTTP smoke test
+$ python3 -m http.server 8096 --bind 127.0.0.1 &  # then curl
+$ curl -s -o /dev/null -w "%{http_code} %{size_download}\n" http://127.0.0.1:8096/prototypes/portfolio-combined.html
+200 256790       # 256,790 bytes served (was 254,852 pre-edit — +1,938 bytes for new block)
+
+# 7. CSS structural sanity
+$ python3 -c "..."  # curly-brace balance check on extracted <style>
+CSS braces: 853 open, 853 close, balanced: True
+
+# 8. JS syntax sanity (no JS changed, but verified for paranoia)
+$ node --check /tmp/extracted_0.js && node --check /tmp/extracted_1.js   # both pass
+```
+
+**State:** Working on `feat/pop-out-hover-roadmap`, awaiting user review. 1 commit ready (kickoff already on branch from parent).
+**Decided:** Added the new pop-out block IMMEDIATELY AFTER the about-page pop-out block (line 1782) and BEFORE the `#pg-roadmap` styling section (line 1822) — keeps all per-page pop-out blocks grouped together (homepage at 2656, projects at 2677, about at 1754, roadmap at 1785). The kickoff prompt's "find the comment `POP-OUT HOVER (About Page)` block and add the new roadmap block BEFORE it" was based on an outdated file layout where the about pop-out was AFTER the #pg-roadmap section; the current file has the about pop-out BEFORE it. Inserted in the natural "between about-pop-out and #pg-roadmap" gap, which produces the same logical grouping without scope-creeping into other places.
+**Blocked / Next:** None. Page 4 of 5 is complete. Page 5 (`#pg-me`) is intentionally deferred per `tasks/todo.md` (it has mostly inline-styled content and a separate handler per established agent-autonomy rule).
+**Modified:** `prototypes/portfolio-combined.html` (37 lines added, 0 removed)
+
 ## [2026-06-20] Agent(pop-out-hover-about) — pop-out hover on about page (4 widgets + 1 markup change)
 
 **Mode:** Execution (micro-loop, CSS-only + 1 markup class)

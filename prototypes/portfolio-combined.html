@@ -1782,6 +1782,43 @@ html.light #pg-about .contact-card:nth-of-type(4) .cc-icon { color: var(--acc); 
 }
 
 
+/* ══════════════════════════════════════════
+   POP-OUT HOVER (Roadmap Page)
+   The 4 widget families that already lift via the GLOBAL widget-hover rule
+   (line 2646, !important on .pcard/.w/.card) need NO extra work:
+     .phase-card, .topic-card, .career-card (all .pcard)  → 12 + 11 cards
+     .guide-card (class .w)                                 → 1 card
+   Only TWO roadmap widgets have their own custom hover but no lift:
+     .tl-header  (12 timeline accordion headers) — has border-color change
+     .resource-item  (9 resource anchors) — has border-color + bg + arrow color
+   We LAYER the pop-out transform/box-shadow on top of those existing rules
+   (different properties — no conflict). The transition declaration
+   replaces the narrower existing transitions for the properties it
+   animates; the border-color and background changes still apply
+   because they're declared in separate :hover rules earlier in the
+   stylesheet, and the new transform/shadow stacks.
+
+   WRAPPERS EXCLUDED (per L-021 + L-022):
+     .phases-grid, .topics-grid, .careers-grid, .resources-grid, .timeline,
+     .tl-item, .resource-group (layout-only — no border/bg of its own).
+   ALSO EXCLUDED:
+     .filter-btn (its own responsive hover, already feels interactive),
+     .np / .np-ghost (CTAs, their own behavior),
+     #progress-widget (fixed-position control widget).
+══════════════════════════════════════════ */
+#pg-roadmap .tl-header,
+#pg-roadmap .resource-item {
+  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+}
+
+#pg-roadmap .tl-header:hover,
+#pg-roadmap .resource-item:hover {
+  transform: translateY(-2px) scale(1.012);
+  box-shadow: 8px 10px 24px var(--sd), -2px -2px 10px var(--sl);
+  border-color: var(--w06);
+}
+
+
 /* === cs-roadmap page (scoped to #pg-roadmap) === */
 
 #pg-roadmap { font-family: 'Space Grotesk', sans-serif; }
