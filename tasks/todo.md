@@ -15,7 +15,13 @@
 ## Phase 0 — HTML Prototypes (in progress)
 
 ### Visual polish / interaction pass
-- [x] Pop-out hover effect on all widgets/blocks across all pages
+- [~] Pop-out hover effect on all widgets/blocks across all pages
+  - [ ] Page 1: homepage — finish `.about-section` + `.about-contact` (`.about-bio` and `.about-contact` independent, not parent)
+  - [ ] Page 2: projects — `.pi, .proj-index, .pcard*, .pfoot-type, .phase-card, .pipeline, .pipe-stage, .platform-grid, .plat, .cs-section` (`.pcard` overflow:hidden → visible on detail cards)
+  - [ ] Page 3: about — verify `.edu-card, .skill-group, .lang-card, .contact-card` get the global hover
+  - [ ] Page 4: roadmap — `.tl-item, .topic-card, .career-card, .resource-card` (if present)
+  - [ ] Page 5: me — TBD, audit `#pg-me` markup for widget containers
+  - Strategy: one page at a time, one branch per page, dispatch coding agent per page
 - [ ] Font stack update: add Nothing NDOT font where it suits (complement or replace Space Grotesk)
 - [ ] Redesign top-right nav pill: fully rounded + liquid glass effect
 - [ ] Redesign top-left logo
