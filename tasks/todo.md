@@ -48,6 +48,10 @@
 - [x] Finalize portfolio-combined.html roadmap page — match cs-roadmap.html content + style with clean topbar morph
 - [~] Generate CV/resume PDF from About + Projects content using Playwright + Chromium. Branch `feat/cv-pdf`.
 - [~] Gate `/me` behind Tailscale on athena, document in CONTEXT.md/README.md/todo.md. Branch `feat/me-tailscale-gate`.
+  - Decision 2026-06-20: network-layer enforcement only (no page-level password or client-side auth).
+  - Reference config: `homelab-configs/me-tailscale-caddy.conf`.
+  - `portfolio-combined.html` `/me` page updated to: "Private section — available on Tailnet only."
+  - Public Vercel deployment must not include `/me` content.
 
 ### Roadmap page (#pg-roadmap) — mobile/JS bugfix pass — 2026-06-19
 - [x] Fix JS crash from modal-overlay/modal-close referenced before existing in DOM
@@ -70,7 +74,7 @@
 - [ ] CV/resume PDF download link
 - [ ] Real GitHub contribution grid via API
 - [ ] DE translation strings for full bilingual support
-- [ ] Decide `/me` auth mechanism
+- [x] Decide `/me` auth mechanism — Tailscale network-layer gate on athena (Caddy `remote_ip` or bind to Tailscale IP). No page-level/client-side auth.
 
 ---
 
@@ -118,9 +122,28 @@
 ## Phase 3 — `/me` Private Section
 
 - [ ] **Host `/me/*` on athena behind Tailscale** (no public exposure; Caddy allowlist or bind to Tailscale IP only)
+- [x] **Choose `/me` gating mechanism:** Tailscale network-layer enforcement only. No page-level password, no client-side auth. Reference: `homelab-configs/me-tailscale-caddy.conf`.
 - [ ] `/me/vault` — identity vault (port from existing artifact)
 - [ ] `/me/docs` — integrate artifacts from `notion-artifacts` project
 - [ ] `/me/notes` — future Notion workspace mirror (backlog)
+
+### Tailscale gate reference
+
+Recommended Caddy rule:
+```caddy
+me.auxois-wyrm.ts.net {
+    @not_tailscale {
+        not remote_ip 100.64.0.0/10
+    }
+    respond @not_tailscale "Access denied — Tailscale required" 403
+    reverse_proxy localhost:8900
+}
+```
+
+Alternative: bind the upstream to the Tailscale IP only:
+```bash
+python3 -m http.server 8900 --bind "$(tailscale ip -4)"
+```
 
 ---
 

@@ -53,6 +53,25 @@ A personal portfolio web app at `vishalkatariya.dev`.
 - **athena (`auxois-wyrm.ts.net`)** serves anything private or backend-heavy via Tailscale. No public exposure.
 - This is a hybrid architecture: public edge CDN for speed + reliability; homelab for private control and self-hosted data.
 
+### Tailscale gating for `/me`
+
+`/me/*` is private and never deployed to the public Vercel site. Access is enforced at the homelab edge, not inside the page:
+
+1. **Preferred: Caddy `remote_ip` matcher** (see `homelab-configs/me-tailscale-caddy.conf`):
+   - Match the Tailscale IPv4 CGNAT range `100.64.0.0/10`.
+   - Return `403` to any non-Tailnet client before the request reaches the upstream.
+   - Upstream is the static server/container bound to `127.0.0.1:8900` on athena.
+
+2. **Alternative: bind the static server to the Tailscale IP only** so the service has no public listening socket:
+   ```bash
+   python3 -m http.server 8900 --bind "$(tailscale ip -4)"
+   ```
+   With this approach no Caddy `remote_ip` rule is required, but the Caddy reverse-proxy + certificate path is still the recommended production pattern.
+
+3. **Explicitly not allowed:** page-level passwords, client-side auth checks, or exposing `/me` content on `vishalkatariya.dev`.
+
+The `/me` page in `portfolio-combined.html` is only an informational placeholder used inside the prototype; the real gate lives at the reverse proxy / network layer on athena.
+
 ---
 
 ## Stack
@@ -64,7 +83,7 @@ A personal portfolio web app at `vishalkatariya.dev`.
 | Fonts | Cormorant Garamond + Space Grotesk + Outfit + DM Mono | Google Fonts CDN |
 | Backend | None for portfolio itself | Vercel serverless functions for contact form + GitHub contribution grid proxy; private `/me` backend on athena |
 | DB | None planned | Project metadata hardcoded or fetched at build time; private data stays on athena |
-| Auth (for `/me`) | Tailscale-gated access on athena | Tailscale IP allowlist or Caddy `remote_ip` matcher; no public auth surface |
+| Auth (for `/me`) | Tailscale-gated access on athena | Tailscale IP allowlist or Caddy `remote_ip` matcher; no public auth surface. The `/me` page in `portfolio-combined.html` is just a static info card — real enforcement is at the reverse proxy / network layer. |
 
 ---
 

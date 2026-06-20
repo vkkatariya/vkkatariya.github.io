@@ -1,5 +1,38 @@
 ---
 
+## [2026-06-20] agent(agy) — feat/me-tailscale-gate: document and wire /me behind Tailscale
+
+**Mode:** Execution
+**Did:**
+- Branched `feat/me-tailscale-gate` from `dev` @ 5a8edd6.
+- Updated `/me` page (`#pg-me`) in `prototypes/portfolio-combined.html`:
+  - Removed old "Decision pending: GitHub OAuth, Tailscale-gated URL, or simple JWT." text.
+  - Added visible message: "Private section — /me is only available on the Tailnet. Connect to Tailscale and open the private site."
+  - Added placeholder private hostname: `me.auxois-wyrm.ts.net`.
+  - Kept the card minimal and preserved the existing `.me-auth-card` glass styling + pop-out hover.
+- Documented the Tailscale gating pattern in `CONTEXT.md`, `README.md`, and `tasks/todo.md`.
+  - Access control is at the reverse-proxy / network layer only (Caddy `remote_ip` or bind to Tailscale IP).
+  - Explicitly forbid page-level passwords, client-side auth, or exposing `/me` content on the public Vercel deployment.
+- Created reference Caddy config at `homelab-configs/me-tailscale-caddy.conf`.
+  - Primary rule: `not remote_ip 100.64.0.0/10` → `403` before reverse-proxying to `localhost:8900`.
+  - Alternative: bind upstream to Tailscale IP only.
+- Updated `tasks/todo.md`: marked "Decide `/me` auth mechanism" done and added Tailscale gate reference under Phase 3.
+
+**Verification:**
+- Confirmed current branch is `feat/me-tailscale-gate`.
+- Served file from `prototypes/` and confirmed `/me` section renders new message (`/me is only available on the Tailnet`, `me.auxois-wyrm.ts.net`, `Private section`).
+- `git status` clean except for intended modifications.
+- Committed with `agent(agy):` prefix and pushed to origin.
+
+**Files changed:** 5
+- `prototypes/portfolio-combined.html`
+- `CONTEXT.md`
+- `README.md`
+- `tasks/todo.md`
+- `homelab-configs/me-tailscale-caddy.conf`
+
+---
+
 ## [2026-06-20] agent(opencode) — feat/widget-liquid-glass: apply topbar liquid-glass formula to all page widgets
 
 **Mode:** Execution (surgical CSS pass, consolidated block + 2 inline style cleanups)

@@ -47,7 +47,15 @@ Standalone projects:
 - `studio.auxois-wyrm.ts.net` — homelab dashboard
 - `buddy.auxois-wyrm.ts.net` — finance buddy
 
-**Hybrid hosting:** public routes live on Vercel (`vishalkatariya.dev`) for CDN + reliability; private `/me/*` and any backend services live on athena behind Tailscale. Repo and domain are already connected to Vercel.
+### Tailscale gating for `/me`
+
+`/me/*` is served only from athena and is never part of the public Vercel deployment. Access control is enforced at the reverse proxy / network layer, not in the page:
+
+- **Recommended pattern:** Caddy `remote_ip` matcher that rejects any client outside the Tailscale CGNAT range `100.64.0.0/10` with `403`. See `homelab-configs/me-tailscale-caddy.conf`.
+- **Alternative pattern:** bind the static server to the Tailscale IP only, e.g. `python3 -m http.server 8900 --bind "$(tailscale ip -4)"`, so the service has no public listening socket.
+- **Not allowed:** page-level passwords, client-side auth checks, or exposing `/me` content on `vishalkatariya.dev`.
+
+The `/me` section shown in `portfolio-combined.html` is just a static information card; the real gate lives on athena.
 
 ---
 
