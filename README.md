@@ -35,17 +35,19 @@ See `tasks/todo.md` for the full phased task list.
 
 ## Architecture v2
 
-| Route | Public/Private |
-|---|---|
-| `/` | public — homepage |
-| `/projects` | public — project links |
-| `/roadmap` | public — CS roadmap |
-| `/about` | public — about + contact |
-| `/me/*` | private — vault, docs, notes |
+| Route | Public/Private | Host |
+|---|---|---|
+| `/` | public — homepage | Vercel |
+| `/projects` | public — project links | Vercel |
+| `/roadmap` | public — CS roadmap | Vercel |
+| `/about` | public — about + contact | Vercel |
+| `/me/*` | private — vault, docs, notes | athena (Tailscale) |
 
 Standalone projects:
 - `studio.auxois-wyrm.ts.net` — homelab dashboard
 - `buddy.auxois-wyrm.ts.net` — finance buddy
+
+**Hybrid hosting:** public routes live on Vercel (`vishalkatariya.dev`) for CDN + reliability; private `/me/*` and any backend services live on athena behind Tailscale. Repo and domain are already connected to Vercel.
 
 ---
 
@@ -56,8 +58,9 @@ Standalone projects:
 | Frontend | Self-contained HTML | SvelteKit + TypeScript |
 | Styling | Vanilla CSS | Shared `tokens.css` |
 | Fonts | Google Fonts CDN | Same CDN |
-| Backend | none | none — external subdomains handle their own backends |
-| DB | none | none |
+| Backend | none | Vercel serverless functions (contact form, GitHub API proxy) |
+| DB | none | none; private data stays on athena |
+| Auth | none | Tailscale-gated access for `/me` on athena |
 
 ---
 

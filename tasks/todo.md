@@ -115,7 +115,7 @@
 
 ## Phase 3 — `/me` Private Section
 
-- [ ] Decide auth: GitHub OAuth, Tailscale-gated URL, or simple JWT
+- [ ] **Host `/me/*` on athena behind Tailscale** (no public exposure; Caddy allowlist or bind to Tailscale IP only)
 - [ ] `/me/vault` — identity vault (port from existing artifact)
 - [ ] `/me/docs` — integrate artifacts from `notion-artifacts` project
 - [ ] `/me/notes` — future Notion workspace mirror (backlog)
@@ -124,10 +124,13 @@
 
 ## Phase 4 — Deploy
 
-- [ ] Vercel project connected to `vkkatariya/vkkatariya.github.io`
+- [ ] Vercel project connected to `vkkatariya/vkkatariya.github.io` — public routes only
 - [ ] Custom domain: `vishalkatariya.dev`
-- [ ] GitHub Pages mirror configured
+- [ ] Private `/me/*` served from athena via Tailscale MagicDNS (`auxois-wyrm.ts.net`)
+- [ ] GitHub Pages mirror configured (optional)
 - [ ] Smoke test all public routes
+
+**Hybrid architecture decision (2026-06-20):** Public site on Vercel for speed/reliability; private backend and `/me` stay on athena behind Tailscale. Domain + Vercel already wired up.
 
 ---
 

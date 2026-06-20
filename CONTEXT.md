@@ -33,20 +33,25 @@ A personal portfolio web app at `vishalkatariya.dev`.
 
 ## Architecture v2
 
-| Route | Public/Private | What it is |
-|---|---|---|
-| `/` | public | Homepage — widget grid + career timeline + "now" status |
-| `/projects` | public | Cards linking to standalone project sites, not embedded apps |
-| `/roadmap` | public | Port of `cs-roadmap.html` |
-| `/about` | public | Bio, h_da education, skills, 4 languages, contact |
-| `/me/vault` | private | Identity vault — aliases tracker |
-| `/me/docs` | private | Notion artifacts rendered as HTML |
-| `/me/notes` | private | Future Notion workspace mirror (backlog) |
+| Route | Public/Private | What it is | Host |
+|---|---|---|---|
+| `/` | public | Homepage — widget grid + career timeline + "now" status | Vercel |
+| `/projects` | public | Cards linking to standalone project sites | Vercel |
+| `/roadmap` | public | Port of `cs-roadmap.html` | Vercel |
+| `/about` | public | Bio, h_da education, skills, 4 languages, contact | Vercel |
+| `/me/vault` | private | Identity vault — aliases tracker | athena (Tailscale) |
+| `/me/docs` | private | Notion artifacts rendered as HTML | athena (Tailscale) |
+| `/me/notes` | private | Future Notion workspace mirror (backlog) | athena (Tailscale) |
 
 | Standalone app | Subdomain | Why it's separate |
 |---|---|---|
 | Homelab dashboard | `studio.auxois-wyrm.ts.net` | Private metrics + service control panel |
 | Finance buddy | `buddy.auxois-wyrm.ts.net` | Private transaction dashboard |
+
+**Hosting split:**
+- **Vercel (`vishalkatariya.dev`)** serves all public routes. Repo already connected; domain already configured.
+- **athena (`auxois-wyrm.ts.net`)** serves anything private or backend-heavy via Tailscale. No public exposure.
+- This is a hybrid architecture: public edge CDN for speed + reliability; homelab for private control and self-hosted data.
 
 ---
 
@@ -57,9 +62,9 @@ A personal portfolio web app at `vishalkatariya.dev`.
 | Frontend | SvelteKit + TypeScript | Vercel deploy, `vishalkatariya.dev` |
 | Styling | Vanilla CSS with shared tokens | NothingOS + Liquid Glass + Neomorphism + NeoPOP |
 | Fonts | Cormorant Garamond + Space Grotesk + Outfit + DM Mono | Google Fonts CDN |
-| Backend | None for portfolio itself | External subdomains handle their own backends |
-| DB | None planned | Project metadata hardcoded or fetched at build time |
-| Auth (for `/me`) | TBD | GitHub OAuth, Tailscale-gated URL, or simple JWT |
+| Backend | None for portfolio itself | Vercel serverless functions for contact form + GitHub contribution grid proxy; private `/me` backend on athena |
+| DB | None planned | Project metadata hardcoded or fetched at build time; private data stays on athena |
+| Auth (for `/me`) | Tailscale-gated access on athena | Tailscale IP allowlist or Caddy `remote_ip` matcher; no public auth surface |
 
 ---
 
