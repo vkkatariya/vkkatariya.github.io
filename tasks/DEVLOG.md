@@ -1,5 +1,30 @@
 ---
 
+## [2026-06-20] agent(claude) — feat/roadmap-header: restructure roadmap hero into .ph wrapper + .hero stats/cta blocks
+
+**Mode:** Execution (surgical markup restructure, ≤10 lines)
+**Did:**
+- Split the single `#pg-roadmap` `<section class="hero">` into two sibling blocks:
+  - `<div class="ph">` containing `<div class="ph-label">vkkatariya · roadmap</div>`, `<h1 class="ph-title"><span class="hn-script">R</span>oadmap</h1>`, and `<p class="ph-sub">`.
+  - `<section class="hero" aria-label="Roadmap">` containing only `.hero-stats` + `.hero-cta`.
+- Converted `<p class="hero-sub">` → `<p class="ph-sub">` so the subtitle follows the Projects/About `.ph` pattern.
+- Updated comments to `<!-- ═══════════ PAGE HEADER ═══════════ -->` and `<!-- ═══════════ HERO STATS + CTA ═══════════ -->`.
+- Did NOT modify homepage, Projects, or About page headers.
+- Did NOT touch any `.ph-*` CSS rules.
+
+**Verification:**
+- `git status`: only `prototypes/portfolio-combined.html` modified (plus untracked kickoff files).
+- `git diff --stat`: 1 file changed, 7 insertions(+), 3 deletions(-) (≤30 lines).
+- `rg -n 'class="ph"' prototypes/portfolio-combined.html`: 2 matches (Projects line 3318, Roadmap line 3834). Note: About page uses `.ph-label`/`.ph-title` but is not wrapped in `<div class="ph">`.
+- `rg -n 'hero-title' prototypes/portfolio-combined.html`: 0 matches.
+- `rg -c 'wlbl-row' prototypes/portfolio-combined.html`: 14.
+- Commit: `850f8fc` — "agent(claude): feat(roadmap-header): restructure to .ph wrapper like Projects/About (fixes .hero h1 specificity override)".
+- Branch pushed: `origin/feat/roadmap-header-matches-aesthetic`.
+
+**Files changed:** 1 (`prototypes/portfolio-combined.html`)
+
+---
+
 ## [2026-06-20] agent(opencode) — feat/name-ndot-wordmark (REDO): full name in NDOT 55 Caps
 
 **Mode:** Execution (surgical markup + CSS cleanup, 22 lines)
