@@ -1,6 +1,24 @@
-## [2026-06-19] OpenCode — pop-out hover effect on all widgets/blocks
+## [2026-06-20] Hermes Agent — apply roadmap color profile to about page
 
-**Mode:** Execution (micro-loop)
+**Mode:** Execution (micro-loop, scoped CSS-only)
+**Did:**
+- Added 86 lines of `#pg-about`-scoped CSS rules in `prototypes/portfolio-combined.html` (lines 1668–1753) mirroring the home/projects `pct-high` (green) / `pct-mid` (blue) / `pct-low` (amber) color profile onto about-page elements.
+- Skill bars (`.skb-row`/`.skb-fill`): mapped by `:nth-of-type` to green/blue/amber based on the documented row widths (Python 86% & Docker·Linux 82% → green/high; ML/AI 72% → blue/mid; TypeScript/SvelteKit/Proxmox·ARM/C++ → amber/low). Mirrors home's `.skill-row.pct-*` pattern without adding markup classes.
+- Skill chips (`.sk.hi`/`.mid`/`.lo`): reassigned from grey scale (`var(--w)`/`var(--w60)`/`var(--w30)`) to green/blue/amber to match the pct color story.
+- Education card: added subtle green border accent (`rgba(52,199,123,.18)`).
+- Languages card: native cards now use green border + background tint and green `.lang-name`; Deutsch gets amber border, English gets blue border, mirroring pct-style accent variety. Added styling for the unstyled `.lvl-green` class used in markup.
+- Contact cards: tinted the `.cc-icon` per type — email/linkedin=blue, github=neutral (kept), website=acc — mirroring home's `.pfoot-type` pattern.
+- `#pg-me`: added hover lift to `.cta-btn` to match the global widget-hover family (no other changes — `#pg-me` is mostly inline-styled).
+- Light-mode overrides added with `!important` to beat the existing global `html.light .skb-fill { background: var(--w30) !important }` rule.
+- All selectors scoped under `#pg-about` or `#pg-me`. Zero bare element selectors, zero new colors, zero new tokens — only existing `:root` variables (`--green`, `--blue`, `--amber`, `--acc`, `--purple`).
+- No markup changes, no JS changes, no layout (size/padding/margin/position) changes.
+- Verified HTTP 200 via `python3 -m http.server 8087` + `curl`.
+- `tasks/todo.md` updated: about/me color profile item flipped from `[~]` to `[x]`.
+
+**State:** Working on `feat/about-color-profile`, awaiting user review. Diff is scoped to `#pg-about` and `#pg-me` only — verified `git diff dev..HEAD --stat` shows only the kickoff commit, and the brief's check `git diff dev..HEAD -- prototypes/portfolio-combined.html | grep -E '^[-+].*pg-(home|projects|roadmap)'` returns empty.
+**Modified:** `prototypes/portfolio-combined.html`, `tasks/todo.md`
+
+## [2026-06-19] OpenCode — pop-out hover effect on all widgets/blocks
 **Did:**
 - Added pop-out hover effects (`translateY(-2px) scale(1.012)`, enhanced shadow, softer border tint) to all widget families: `.w`, `.pcard`, `.tl-badge`, `.about-contact`, `.edu-card`, `.skill-group`, `.lang-card`, `.contact-card`
 - Updated `.pcard` hover on projects page (line 743) with scale + shadow + border transition

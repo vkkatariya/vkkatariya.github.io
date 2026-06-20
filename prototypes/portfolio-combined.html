@@ -1665,6 +1665,92 @@ footer {
 }
 
 
+/* ── roadmap color profile (mirrors home/projects pct-high/mid/low treatment) ── */
+/* All selectors scoped under #pg-about (or #pg-me). Uses existing :root tokens
+   (--green / --blue / --amber / --acc / --purple). No new colors. CSS-only —
+   no markup, no JS, no layout changes. */
+
+/* Skill-bar rows (.skb-row): about uses local classes, not .skill-row.pct-*,
+   so we map pct colors by :nth-of-type to match the home page's pct-high(≥80),
+   pct-mid(70-79), pct-low(<70) split. Source widths in the markup:
+   1:Python 86% (high), 2:Docker·Linux 82% (high), 3:TypeScript 68% (low),
+   4:ML/AI 72% (mid), 5:SvelteKit 60% (low), 6:Proxmox·ARM 64% (low), 7:C++ 52% (low). */
+#pg-about .skb-row:nth-of-type(1) .skb-fill,
+#pg-about .skb-row:nth-of-type(2) .skb-fill { background: var(--green); box-shadow: 0 0 4px rgba(52,199,123,.5); }
+#pg-about .skb-row:nth-of-type(3) .skb-fill,
+#pg-about .skb-row:nth-of-type(5) .skb-fill,
+#pg-about .skb-row:nth-of-type(6) .skb-fill,
+#pg-about .skb-row:nth-of-type(7) .skb-fill { background: var(--amber); }
+#pg-about .skb-row:nth-of-type(4) .skb-fill { background: var(--blue); box-shadow: 0 0 4px rgba(91,156,246,.5); }
+#pg-about .skb-row:nth-of-type(1) .skb-v,
+#pg-about .skb-row:nth-of-type(2) .skb-v { color: var(--green); }
+#pg-about .skb-row:nth-of-type(3) .skb-v,
+#pg-about .skb-row:nth-of-type(5) .skb-v,
+#pg-about .skb-row:nth-of-type(6) .skb-v,
+#pg-about .skb-row:nth-of-type(7) .skb-v { color: var(--amber); }
+#pg-about .skb-row:nth-of-type(4) .skb-v { color: var(--blue); }
+
+/* Skill chips: hi=green, mid=blue, lo=amber (mirror .skill-row.pct-* treatment) */
+#pg-about .sk.hi { color: var(--green); border-color: rgba(52,199,123,.28); }
+#pg-about .sk.mid { color: var(--blue); border-color: rgba(91,156,246,.25); }
+#pg-about .sk.lo { color: var(--amber); border-color: rgba(245,181,95,.25); }
+
+/* Education card: accent border using green (matches home .edu-badge accent) */
+#pg-about .edu-card { border-color: rgba(52,199,123,.18); }
+
+/* Languages: native cards use green tint (matches .lang-card.native hint),
+   non-native use blue/amber tinted borders to add the pct-style accent variety. */
+#pg-about .lang-card.native { border-color: rgba(52,199,123,.28); background: rgba(52,199,123,.03); }
+#pg-about .lang-card.native .lang-name { color: var(--green); }
+#pg-about .lang-card:nth-of-type(1) { border-color: rgba(245,181,95,.25); } /* Deutsch - amber */
+#pg-about .lang-card:nth-of-type(2) { border-color: rgba(91,156,246,.25); } /* English - blue */
+#pg-about .lvl-green { color: var(--green); } /* unstyled class used in markup */
+
+/* Contact cards: mirror home's tinted-icon pattern (.pfoot-type.app=blue,
+   .pfoot-type.collab=purple, .pfoot-type.ai=green). About has 4 cards:
+   email/linkedin=blue, github=neutral, website=acc. */
+#pg-about .contact-card { transition: border-color .2s, background .2s; }
+#pg-about .contact-card:hover { border-color: rgba(91,156,246,.35); }
+#pg-about .contact-card:nth-of-type(1) .cc-icon,
+#pg-about .contact-card:nth-of-type(3) .cc-icon { color: var(--blue); border-color: rgba(91,156,246,.3); background: rgba(91,156,246,.06); }
+#pg-about .contact-card:nth-of-type(4) .cc-icon { color: var(--acc); border-color: rgba(0,212,170,.3); background: rgba(0,212,170,.06); }
+
+/* #pg-me: VK avatar already uses green→blue gradient (inline). Reinforce with
+   the same :root tokens used elsewhere — no new colors. */
+#pg-me .cta-btn { transition: transform .18s ease, box-shadow .18s ease; }
+#pg-me .cta-btn:hover { transform: translateY(-2px); box-shadow: 4px 8px 20px rgba(0,0,0,.35); }
+
+/* Light-mode overrides (mirror home/projects html.light rules at lines 2465+).
+   !important needed to beat the global `html.light .skb-fill { background: var(--w30) !important }` at line 2479. */
+html.light #pg-about .skb-row:nth-of-type(1) .skb-fill,
+html.light #pg-about .skb-row:nth-of-type(2) .skb-fill { background: var(--green) !important; box-shadow: 0 0 4px rgba(52,199,123,.4); }
+html.light #pg-about .skb-row:nth-of-type(3) .skb-fill,
+html.light #pg-about .skb-row:nth-of-type(5) .skb-fill,
+html.light #pg-about .skb-row:nth-of-type(6) .skb-fill,
+html.light #pg-about .skb-row:nth-of-type(7) .skb-fill { background: var(--amber) !important; }
+html.light #pg-about .skb-row:nth-of-type(4) .skb-fill { background: var(--blue) !important; box-shadow: 0 0 4px rgba(91,156,246,.4); }
+html.light #pg-about .skb-row:nth-of-type(1) .skb-v,
+html.light #pg-about .skb-row:nth-of-type(2) .skb-v { color: var(--green); }
+html.light #pg-about .skb-row:nth-of-type(3) .skb-v,
+html.light #pg-about .skb-row:nth-of-type(5) .skb-v,
+html.light #pg-about .skb-row:nth-of-type(6) .skb-v,
+html.light #pg-about .skb-row:nth-of-type(7) .skb-v { color: var(--amber); }
+html.light #pg-about .skb-row:nth-of-type(4) .skb-v { color: var(--blue); }
+html.light #pg-about .sk.hi { color: var(--green); border-color: rgba(52,199,123,.35); }
+html.light #pg-about .sk.mid { color: var(--blue); border-color: rgba(91,156,246,.35); }
+html.light #pg-about .sk.lo { color: var(--amber); border-color: rgba(245,181,95,.35); }
+html.light #pg-about .edu-card { border-color: rgba(52,199,123,.28); }
+html.light #pg-about .lang-card.native { border-color: rgba(52,199,123,.4); background: rgba(52,199,123,.04); }
+html.light #pg-about .lang-card.native .lang-name { color: var(--green); }
+html.light #pg-about .lang-card:nth-of-type(1) { border-color: rgba(245,181,95,.35); }
+html.light #pg-about .lang-card:nth-of-type(2) { border-color: rgba(91,156,246,.35); }
+html.light #pg-about .lvl-green { color: var(--green); }
+html.light #pg-about .contact-card:hover { border-color: rgba(91,156,246,.5); }
+html.light #pg-about .contact-card:nth-of-type(1) .cc-icon,
+html.light #pg-about .contact-card:nth-of-type(3) .cc-icon { color: var(--blue); border-color: rgba(91,156,246,.4); background: rgba(91,156,246,.08); }
+html.light #pg-about .contact-card:nth-of-type(4) .cc-icon { color: var(--acc); border-color: rgba(0,212,170,.4); background: rgba(0,212,170,.08); }
+
+
 /* === cs-roadmap page (scoped to #pg-roadmap) === */
 
 #pg-roadmap { font-family: 'Space Grotesk', sans-serif; }
