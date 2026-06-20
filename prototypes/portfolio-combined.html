@@ -2621,6 +2621,27 @@ html.light footer.roadmap-footer a { color: var(--w); }
   box-shadow: 8px 10px 24px var(--sd), -2px -2px 10px var(--sl) !important;
   border-color: var(--w06) !important;
 }
+
+/* Pop-out hover on the homepage bottom block (.about-section) */
+#pg-home .about-section {
+  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+}
+#pg-home .about-section:hover {
+  transform: translateY(-2px) scale(1.012);
+  box-shadow: 8px 10px 24px var(--sd), -2px -2px 10px var(--sl);
+  border-color: var(--w06);
+}
+
+/* Pop-out hover on the small contact widget inside .about-section.
+   INDEPENDENT hover — not the parent .about-section's hover. */
+#pg-home .about-contact {
+  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+}
+#pg-home .about-contact:hover {
+  transform: translateY(-2px) scale(1.012);
+  box-shadow: 8px 10px 24px var(--sd), -2px -2px 10px var(--sl);
+  border-color: var(--w06);
+}
 </style>
 </head>
 <body>
