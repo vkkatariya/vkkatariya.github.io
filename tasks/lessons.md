@@ -45,6 +45,31 @@
 
 ---
 
+## L-023 — CSS specificity tie + cascade order can silently kill a transition declaration
+
+**What failed:** The roadmap-page pop-out hover rollout added a `#pg-roadmap .tl-header { transition: transform .18s ease, ... }` rule (specificity 0,1,1,0). The page ALREADY had an existing `#pg-roadmap .tl-header { transition: border-color .2s, background .2s; ... }` rule at a later line in the stylesheet with the SAME specificity. The existing transition won via cascade order. Result: `.tl-header` lifted on hover (because the `:hover` rule was a combined selector and won on specificity), but the `transform` property had NO transition → instant snap on hover, visually jarring.
+
+**Root cause:** CSS specificity tie. When two rules have identical specificity and both declare `transition`, the LATER rule wins (cascade order). This is independent of which rule is "newer" in git terms — only source file position matters.
+
+**Why the agent missed it:**
+- `#pg-roadmap .tl-header` (new) specificity = `#pg-roadmap .tl-header` (existing) specificity → tie
+- Same specificity tie also existed for `.resource-item`, but only the `.resource-item` was scoped (`#pg-roadmap .resource-item` vs `.resource-item`) — different specificity → no tie → new rule wins. This asymmetry masked the bug from a single-sample visual check.
+- The new `:hover` rule used a combined selector `#pg-roadmap .tl-header:hover, #pg-roadmap .resource-item:hover`. The `:hover` part has same specificity on both, so the lift worked. But the `transition` declaration (no `:hover`) was independent and lost on `.tl-header`.
+
+**Detection method:** Open DevTools, inspect the hovered element, check the **computed** `transition` value. If it doesn't include `transform` for a widget that has `transform: translateY(...)` on hover, the transition declaration is being overridden.
+
+**Prevention rule:**
+- **Before adding a `transition` declaration for an existing selector, grep for the same selector in the stylesheet.** If multiple definitions exist at the same specificity, the new one will likely be overridden.
+- **Use `getComputedStyle(el).transitionProperty`** in browser DevTools to confirm `transform` is included AFTER your edit. If only `border-color` shows up, your rule is being silently overridden.
+- **Better than adding a separate rule: MERGE the new transition properties into the existing declaration.** For `.tl-header`, the right fix is to edit the existing line 2119 declaration to `transition: transform .18s ease, box-shadow .18s ease, border-color .2s, background .2s;` — appending the new properties to the existing rule instead of declaring a parallel rule.
+- **Alternative: bump specificity with a more specific selector** (e.g., `#pg-roadmap .tl-item .tl-header`). But this fragments the stylesheet — the merge approach is cleaner.
+
+**Specific to portfolio-website:** The `#pg-roadmap .tl-header` rule at line 2115 has its own `transition` declaration. Any future pop-out/transition addition for `.tl-header` must either (a) merge into that existing declaration, or (b) use a more specific selector. Same applies to any other page-scope selector that has both a base rule and a custom transition.
+
+**General lesson:** When adding ANY new CSS property to an existing selector, check whether the selector is already declared elsewhere in the stylesheet. If yes, decide: merge into existing declaration, or use a more specific selector.
+
+---
+
 ## L-001 — Duplicate `const` declarations crash the entire script
 
 **What failed:** `Uncaught SyntaxError: Identifier 'SVC_ICON' has already been declared` in `homelab-dashboard.html`. Both `const SVC_ICON` and `const TYPE_ICON` were declared twice in the same `<script>` block. The dashboard became completely non-functional at browser parse time.
