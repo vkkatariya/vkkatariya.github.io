@@ -388,8 +388,7 @@ main {
 
 /* ── Nothing-OS label ── */
 .lbl {
-  font-family: 'DM Mono', monospace;
-  /* DM Mono kept — feat/ndot-display-accent will swap to var(--font-ndot) */
+  font-family: var(--font-ndot);
   font-size: 11px;
   letter-spacing: 3px;
   color: var(--w30);
@@ -406,8 +405,7 @@ main {
 }
 
 .lbl-inv {
-  font-family: 'DM Mono', monospace;
-  /* DM Mono kept — feat/ndot-display-accent will swap to var(--font-ndot) */
+  font-family: var(--font-ndot);
   font-size: 11px;
   letter-spacing: 3px;
   color: rgba(8,8,8,.3);
@@ -494,15 +492,13 @@ main {
   display: flex; align-items: baseline; gap: 2px;
 }
 .clock-h {
-  font-family: 'DM Mono', monospace;
-  /* DM Mono kept — feat/ndot-display-accent will swap to var(--font-ndot) */
+  font-family: var(--font-ndot);
   font-size: 72px; font-weight: 400;
   line-height: 1; letter-spacing: -4px;
   color: var(--w);
 }
 .clock-colon {
-  font-family: 'DM Mono', monospace;
-  /* DM Mono kept — feat/ndot-display-accent will swap to var(--font-ndot) */
+  font-family: var(--font-ndot);
   font-size: 44px; font-weight: 300;
   color: var(--w30); line-height: 1;
   margin: 0 3px;
@@ -510,8 +506,7 @@ main {
 }
 @keyframes colon-blink { 50% { opacity: 0 } }
 .clock-m {
-  font-family: 'DM Mono', monospace;
-  /* DM Mono kept — feat/ndot-display-accent will swap to var(--font-ndot) */
+  font-family: var(--font-ndot);
   font-size: 72px; font-weight: 300;
   line-height: 1; letter-spacing: -4px;
   color: var(--w30);
@@ -532,8 +527,7 @@ main {
   margin-bottom: 9px;
 }
 .skill-n {
-  font-family: 'DM Mono', monospace;
-  /* DM Mono kept — feat/ndot-display-accent will swap to var(--font-ndot) */
+  font-family: var(--font-ndot);
   font-size: 11px; letter-spacing: 0.4px; color: var(--w30);
   width: 58px; flex-shrink: 0;
   letter-spacing: .3px;
@@ -766,8 +760,7 @@ main {
   border-color: var(--w12);
 }
 .pcard-num {
-  font-family: 'DM Mono', monospace;
-  /* DM Mono kept — feat/ndot-display-accent will swap to var(--font-ndot) */
+  font-family: var(--font-ndot);
   font-size: 11px; letter-spacing: 2px; color: var(--w30);
   margin-bottom: 12px;
 }
@@ -1263,8 +1256,8 @@ footer {
 }
 @media(max-width:700px){.cs-hero{grid-template-columns:1fr}}
 .cs-number{
-  font-family:'DM Mono',monospace;
-  /* DM Mono kept — feat/ndot-display-accent will swap to var(--font-ndot) */font-size: 11px;letter-spacing:3px;
+  font-family:var(--font-ndot);
+  font-size: 11px;letter-spacing:3px;
   color:var(--w30);margin-bottom:12px;
 }
 .cs-title{
