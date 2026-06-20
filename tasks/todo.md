@@ -28,7 +28,7 @@
   - Strategy: sequential — vendor must complete first, then DM Mono + NDOT display can run parallel. Confirmed with user 2026-06-20.
   - NOTE: Branches 1+2 were done inline (not via coding agent) because delegate_task subagent dispatch failed 3× with 'nemotron model 404' on the prior session. Branch 3 was dispatched to opencode after gateway restart; the agent completed file edits but ran out of tool budget before commit/push, so I finished the commit + browser verification + DEVLOG entry inline. Future agent dispatches are working.
 - [x] Redesign top-right nav pill: fully rounded + liquid glass effect — done as part of Branch 5/6 (right pill is fully rounded 100px, blur 56px, saturate 200%, light-mode override)
-- [ ] Redesign top-left logo
+- [x] Redesign top-left logo — NDOT Caps wordmark across all 5 occurrences (topbar, homepage hero V/K, about bio, homepage About). Branch `feat/name-ndot-wordmark` → dev @ 1ae6b84. 2026-06-20. First attempt (agy) mixed NDOT caps with Space Grotesk body — rejected by user. Redo (opencode) writes "VISHAL KATARIYA" in pure NDOT Caps via .wm-cap class with text-transform: uppercase.
 
 ### Core prototype tasks
 - [x] Design system defined: NothingOS + Liquid Glass + Neomorphism + NeoPOP
