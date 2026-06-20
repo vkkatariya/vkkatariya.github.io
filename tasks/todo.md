@@ -15,21 +15,12 @@
 ## Phase 0 — HTML Prototypes (in progress)
 
 ### Visual polish / interaction pass
-- [x] Pop-out hover effect on all widgets/blocks across all pages
-  - [x] Page 1: homepage — finish `.about-section` + `.about-contact` (`.about-bio` and `.about-contact` independent, not parent)
-  - [x] Page 2: projects — `.pi, .pcard*, .pfoot-type, .pipe-stage, .plat` (LEARN: wrapper selectors `.proj-index`, `.pipeline`, `.platform-grid`, `.cs-section` should NOT have hover — only the inner interactive widgets)
-    - [x] Fix projects: remove hover from wrapper selectors `.proj-index`, `.pipeline`, `.platform-grid`, `.cs-section` — keep only inner widgets (`.pi`, `.pcard`, `.pcard-num`, `.pcard-title`, `.pcard-desc`, `.pcard-tags`, `.pcard-foot`, `.pfoot-type`, `.pipe-stage`, `.plat`, `.phase-card`)
-    - [x] Add missing widgets: `.nd-node`, `.nd-name`, `.nd-hw` (infrastructure node cards) and `.bar-row` (spending breakdown rows)
-    - [x] Fix: spending breakdown should lift as ONE whole block (not individual lines). Use `.vis-wrap:has(> .bar-chart)` to target only the chart card wrapper. Remove `.bar-row` hover.
-  - [~] Page 3: about — verify `.edu-card, .skill-group, .lang-card, .contact-card` get the global hover
-    - [x] Add hover to: photo widget, core technical skills widget, interests widget, contact widgets (4 specific widgets to fix)
-  - [x] Page 4: roadmap — `.tl-header` (12 timeline accordion headers) and `.resource-item` (9 resource links). Other widgets (.phase-card, .topic-card, .career-card, .guide-card) already lift via the global .pcard/.w rule. Wrappers (.phases-grid, .topics-grid, .careers-grid, .timeline, .resource-group) deliberately excluded per L-021/L-022.
-    - [x] Add hover to .tl-header and .resource-item (layered on top of existing border-color hovers)
-    - [x] Fix: .tl-header transition specificity tie — append transform/box-shadow to existing transition declaration (L-023)
-    - [x] Fix: `#pg-roadmap.active` reset rule had `transform: none !important` killing pop-out on every .pcard/.guide-card on the page. Removed the transform line; opacity + animation reset remain (fix delivered by agent(agy), DEVLOG added post-hoc)
-  - [x] Page 5: me — single auth-gate placeholder card. Added `class="me-auth-card"` to the outer wrapper div (line 4639) and a `#pg-me .me-auth-card` pop-out block (lines 1723–1741). Whole card lifts as one cohesive unit per L-021. Dead `.cta-btn:hover` CSS deliberately left alone (out of scope).
-  - Strategy: one page at a time, one branch per page, dispatch coding agent per page
-- [ ] Font stack update: add Nothing NDOT font where it suits (complement or replace Space Grotesk)
+- [x] Pop-out hover effect on all widgets/blocks across all pages (5-page rollout complete)
+- [~] Font stack update — vendor NDOT + fix DM Mono readability (3-branch rollout)
+  - [ ] Branch 1 `feat/vendor-ndot-font`: pull NDOT .woff2 from GitHub mirror, declare @font-face, add assets/fonts/README.md with source attribution
+  - [ ] Branch 2 `fix/dm-mono-readability`: bump font-size ≥11px, add letter-spacing 0.5px, swap UI labels to JetBrains Mono, restrict DM Mono to true monospace contexts
+  - [ ] Branch 3 `feat/ndot-display-accent` (depends on #1): use NDOT in 5 NothingOS-accent spots (.pcard-num, .cs-number, .lbl/.lbl-inv, .skill-n, .clock-h/m). Keep Space Grotesk for body/titles/buttons. Syne stays for hero titles.
+  - Strategy: sequential — vendor must complete first, then DM Mono + NDOT display can run parallel. Confirmed with user 2026-06-20.
 - [ ] Redesign top-right nav pill: fully rounded + liquid glass effect
 - [ ] Redesign top-left logo
 
