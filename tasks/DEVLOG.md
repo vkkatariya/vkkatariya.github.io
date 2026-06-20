@@ -1,3 +1,29 @@
+## [2026-06-20] agent(claude) — feat/ndot-widget-titles: apply var(--font-ndot) to 5 accent selectors
+
+**Mode:** Execution (surgical CSS edit — 5 selectors)
+**Did:**
+- Swapped `font-family` to `var(--font-ndot)` on exactly 5 accent selectors, preserving `font-size` and `letter-spacing`:
+  - `.pcard-title` (project cards on `#pg-projects`)
+  - `.topic-name` (roadmap topic cards)
+  - `.career-title` (career cards on `#pg-roadmap`)
+  - `.cs-title` (case-study hero title)
+  - `.filter-btn` (roadmap topic filter buttons)
+- Did not touch body text, hero titles, topbar (Branch 4), existing NDOT accent selectors (Branch 3), or any other `font-family` declaration.
+- Verified each target selector had exactly one base rule to change; no duplicate cascade conflicts were introduced.
+
+**Verification:**
+- `grep -c 'var(--font-ndot)' prototypes/portfolio-combined.html` = 22 (1 :root + 8 Branch 3 + 8 Branch 4 topbar + 5 this branch).
+- `grep` for the 5 selectors confirms `font-family: var(--font-ndot)` in each rule body.
+- CSS brace-balance check passes (`open: 1132`, `close: 1132`).
+- `git diff` shows only `font-family` swaps for the 5 selectors; no out-of-scope changes.
+- `git status` shows only `prototypes/portfolio-combined.html` modified.
+- Browser `getComputedStyle` verification skipped in this terminal-only session; visual check not run.
+
+**Files modified:**
+- `prototypes/portfolio-combined.html` (5 selectors changed: +7/-5)
+
+---
+
 ## [2026-06-20] agent(opencode) — feat/topbar-right-pill-rounded: make .nav-right fully rounded + stronger liquid-glass
 
 **Mode:** Execution (surgical CSS edit — 3 selectors)
