@@ -46,6 +46,8 @@
 - [x] Fix portfolio-combined.html roadmap page: slide-over topbar + render invisible topic/career cards
 - [x] Project dev setup: AGENTS.md, CONTEXT.md, README.md, DEVLOG.md, todo.md, lessons.md
 - [x] Finalize portfolio-combined.html roadmap page — match cs-roadmap.html content + style with clean topbar morph
+- [~] Generate CV/resume PDF from About + Projects content using Playwright + Chromium. Branch `feat/cv-pdf`.
+- [~] Gate `/me` behind Tailscale on athena, document in CONTEXT.md/README.md/todo.md. Branch `feat/me-tailscale-gate`.
 
 ### Roadmap page (#pg-roadmap) — mobile/JS bugfix pass — 2026-06-19
 - [x] Fix JS crash from modal-overlay/modal-close referenced before existing in DOM
