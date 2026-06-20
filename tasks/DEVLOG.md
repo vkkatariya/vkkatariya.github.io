@@ -1,3 +1,22 @@
+## [2026-06-20] Agent(pop-out-hover-projects) — pop-out hover on projects page (15 selectors + 3 markup fixes)
+
+**Mode:** Execution (micro-loop, CSS-only)
+**Did:**
+- Added 42 lines to `prototypes/portfolio-combined.html` (lines 2645–2686) introducing one scoped pop-out hover block for `#pg-projects` covering 15 selectors in two selector groups (transition + hover):
+  - `.pi, .proj-index, .pcard, .pcard-num, .pcard-title, .pcard-desc, .pcard-tags, .pcard-foot, .pfoot-type, .phase-card, .pipeline, .pipe-stage, .platform-grid, .plat, .cs-section`
+- Reused the same effect as the global widget hover rule (lines 2615–2623) and the homepage block (lines 2624–2644) but with `#pg-projects` scoping: `transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease`; hover applies `transform: translateY(-2px) scale(1.012)`, `box-shadow: 8px 10px 24px var(--sd), -2px -2px 10px var(--sl)`, `border-color: var(--w06)`.
+- Reused existing tokens (`--sd`, `--sl`, `--w06`); no new design tokens, no new transitions, no JS changes.
+- Did NOT modify the global rule at lines 2612–2623 (verified byte-identical to HEAD) or any other page section.
+- All 15 hovers are independent selectors — hovering `.pcard-num` (a child) lifts the badge without affecting the surrounding `.pcard`, and vice versa.
+- `.pcard` and `.phase-card` are already covered by the global rule with `!important`; the new scoped rules give them an EXPLICIT non-`!important` rule for per-page debuggability (global `!important` still wins, harmless).
+- Markup fix: changed 3 `.pcard` project-detail inline styles from `overflow:hidden` to `overflow:visible` so the pop-out shadow isn't clipped (lines 3030, 3049, 3067 — delays .65s/.70s/.75s). No other markup touched.
+- Existing `.pi:hover{background:var(--bg2)}` at line 1179 and `.pi:hover .pi-arrow` at line 1216 preserved (verified) — the new transform/shadow stacks on top of the background change and arrow slide.
+- Light mode works automatically: `--sd`, `--sl`, `--w06` are defined in both `:root` and `html.light` (lines 41/42/33 and 59/60/57 respectively); no light-mode override needed.
+- Verified: `git diff dev --stat` shows only the HTML + kickoff tasks file; scope-leakage grep against other pages returns 0; 3 `overflow:hidden` removals, 3 `overflow:visible` additions; HTTP 200 from `python3 -m http.server 8089` (252730 bytes served, 17ms).
+
+**State:** Working on feat/pop-out-hover-projects, awaiting user review
+**Modified:** prototypes/portfolio-combined.html
+
 ## [2026-06-20] Agent(pop-out-hover) — homepage pop-out hover on .about-section + .about-contact
 
 **Mode:** Execution (micro-loop, CSS-only)
