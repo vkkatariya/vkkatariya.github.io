@@ -1184,3 +1184,12 @@ Branch: feat/roadmap-morph-restore → merged to dev (fb7317e).
 
 
 
+
+## [2026-06-20] agent(hermes) — feat/timeline-fonts-bigger (REDO v3): scale down .tl-title
+
+User reviewed v2 (NDOT 800 clamp(42-80px) titles) — rejected as way too big for one-line timeline entries. Reference was .cs-title for multi-word hero titles, but timeline entries are short single-line labels.
+
+Changes:
+- `.tl-title`: clamp(42px, 6vw, 80px) NDOT 800 → clamp(18px, 1.5vw, 22px) NDOT 700, letter-spacing -2.5px → -.8px, line-height .9 → 1.15, margin-bottom 8px → 4px
+
+Kept NDOT family and the small-but-readable size band. This is essentially the v1 attempt (agy) size with the NDOT font swap that the user wanted from v2.
