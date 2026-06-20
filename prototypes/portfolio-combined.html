@@ -10,7 +10,7 @@
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Vishal Katariya — Portfolio</title>
+<title>Vishal Katariya</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,600;1,700&family=DM+Mono:wght@300;400;500&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -178,6 +178,20 @@ html.light body::before {
   vertical-align: baseline;
 }
 .nav-logo-name .hn-sans { font-weight: 700; }
+
+/* ── NAME WORDMARK (NDOT caps + Space Grotesk body) ── */
+.wm-cap {
+  font-family: 'Ndot', 'DM Mono', monospace;
+  font-weight: 400;
+  color: var(--w60);
+  letter-spacing: 0.12em;
+}
+.wm-body {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  color: var(--w);
+}
+.wm-gap { display: inline-block; width: 0.3em; }
 
 /* CENTER — nav pill (home/projects/roadmap/about + available dot) */
 .nav-links {
@@ -2854,7 +2868,7 @@ html.light footer.roadmap-footer a { color: var(--w); }
 <nav id="shared-nav">
   <a href="#home" class="nav-logo" onclick="showPage('home')">
     <div class="nav-logo-name">
-      <span class="hn-script">V</span><span class="hn-sans">ishal</span><span class="hn-gap"></span><span class="hn-script">K</span><span class="hn-sans">atariya</span>
+      <span class="wm-cap">V</span><span class="wm-body">ishal</span><span class="wm-gap"></span><span class="wm-cap">K</span><span class="wm-body">atariya</span>
     </div>
   </a>
 
@@ -2950,8 +2964,8 @@ html.light footer.roadmap-footer a { color: var(--w); }
       </div>
       <div style="display:flex;align-items:flex-end;justify-content:space-between">
         <div style="line-height:1;letter-spacing:-.5px;">
-          <div style="font-size:clamp(28px,3.5vw,36px)"><span class="hn-script" style="font-size:1.2em">V</span><span class="hn-sans">ishal</span></div>
-          <div style="font-size:clamp(28px,3.5vw,36px)"><span class="hn-script" style="font-size:1.2em">K</span><span class="hn-sans">atariya</span></div>
+          <div style="font-size:clamp(28px,3.5vw,36px)"><span class="wm-cap" style="font-size:1.2em">V</span><span class="wm-body" style="font-size:.55em">ishal</span></div>
+          <div style="font-size:clamp(28px,3.5vw,36px)"><span class="wm-cap" style="font-size:1.2em">K</span><span class="wm-body" style="font-size:.55em">atariya</span></div>
         </div>
         <!-- 3D person icon -->
         <div class="ico ico-float" style="opacity:.18;margin-bottom:4px">
@@ -3288,7 +3302,7 @@ html.light footer.roadmap-footer a { color: var(--w); }
     <div class="sec-head"><h2>about</h2></div>
     <div class="about-grid">
       <div class="about-bio">
-        <p>I'm <strong><span class="hn-script">V</span><span class="hn-sans">ishal</span></strong> — a CS student at Hochschule Darmstadt, building production systems while studying.</p>
+        <p>I'm <strong><span class="wm-cap">V</span><span class="wm-body">ishal</span></strong> — a CS student at Hochschule Darmstadt, building production systems while studying.</p>
         <p>I work across the full stack: fine-tuning language models, building REST and WebSocket backends, designing interfaces, and managing self-hosted services on real ARM hardware. The common thread is building things that actually run — not just demos.</p>
         <p>Currently based in <strong>Dieburg · near Darmstadt</strong>. Looking for internships where I can work on systems that matter — flexible across ML engineering, full-stack development, and DevOps/infrastructure.</p>
       </div>
@@ -4391,7 +4405,7 @@ html.light footer.roadmap-footer a { color: var(--w); }
     <!-- Bio -->
     <div class="bio">
       <p class="bio-p">
-        I'm <strong><span class="hn-script">V</span><span class="hn-sans">ishal</span><span class="hn-gap"></span><span class="hn-script">K</span><span class="hn-sans">atariya</span></strong> — a CS student at Hochschule Darmstadt, based in Dieburg near Frankfurt. I build across the full stack: fine-tuning language models, wiring REST and WebSocket APIs, and managing self-hosted infrastructure on real hardware.
+        I'm <strong><span class="wm-cap">V</span><span class="wm-body">ishal</span><span class="wm-gap"></span><span class="wm-cap">K</span><span class="wm-body">atariya</span></strong> — a CS student at Hochschule Darmstadt, based in Dieburg near Frankfurt. I build across the full stack: fine-tuning language models, wiring REST and WebSocket APIs, and managing self-hosted infrastructure on real hardware.
       </p>
       <p class="bio-p">
         My projects run in production — not just on localhost. From a personal finance tracker built on 993 real transactions, to a 2-node Proxmox cluster running 6+ services, to a Telegram bot trained with QLoRA on a free Kaggle GPU and deployed to an ARM NPU.
