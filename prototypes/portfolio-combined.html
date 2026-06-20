@@ -86,6 +86,19 @@ html.light {
   --font-ndot: 'Ndot', 'DM Mono', monospace;
 }
 
+:root {
+  --glass-bg: linear-gradient(135deg, rgba(255,255,255,.10) 0%, rgba(255,255,255,.04) 100%);
+  --glass-border: rgba(255,255,255,.16);
+  --glass-shadow: 0 4px 28px rgba(0,0,0,.55), 0 1px 0 rgba(255,255,255,.12) inset;
+  --glass-hover-shadow: 8px 10px 24px rgba(0,0,0,.55), 0 1px 0 rgba(255,255,255,.12) inset;
+}
+html.light {
+  --glass-bg: linear-gradient(135deg, rgba(255,255,255,.72) 0%, rgba(255,255,255,.60) 100%);
+  --glass-border: rgba(13,13,15,.12);
+  --glass-shadow: 0 4px 28px rgba(0,0,0,.10), 0 1px 0 rgba(255,255,255,.8) inset;
+  --glass-hover-shadow: 8px 10px 24px rgba(0,0,0,.10), 0 1px 0 rgba(255,255,255,.8) inset;
+}
+
 html { scroll-behavior: smooth }
 
 body {
@@ -2864,6 +2877,260 @@ html.light footer.roadmap-footer a { color: var(--w); }
   box-shadow: 8px 10px 24px var(--sd), -2px -2px 10px var(--sl);
   border-color: var(--w06);
 }
+
+/* ══════════════════════════════════════════
+   WIDGET LIQUID GLASS PASS
+   Apply the left/center topbar liquid-glass formula
+   (blur 40px saturate 180%, border rgba(255,255,255,.16))
+   to all widget containers on every page.
+   - Containers only: no chips, badges, inner text.
+   - Replaces existing background/border/shadow, does not stack.
+   - Preserves readability with subtle fallback inner surfaces where needed.
+   - Timeline accordion items and topbar intentionally untouched.
+══════════════════════════════════════════ */
+
+/* --- Global helpers: keep hover transforms from earlier rules --- */
+#pg-home .w,
+#pg-home .pcard,
+#pg-home .timeline,
+#pg-projects .pi,
+#pg-projects .vis-wrap,
+#pg-projects .chart-wrap,
+#pg-projects .nd-node,
+#pg-projects .plat,
+#pg-roadmap .phase-card,
+#pg-roadmap .guide-card,
+#pg-roadmap .topic-card,
+#pg-roadmap .career-card,
+#pg-roadmap .resource-item,
+#pg-roadmap .stat-badge,
+#pg-about .photo-frame,
+#pg-about .core-tech-card,
+#pg-about .edu-card,
+#pg-about .skill-group,
+#pg-about .lang-card,
+#pg-about .int-card,
+#pg-about .contact-card,
+#pg-about .avail-block,
+#pg-me .me-auth-card {
+  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+}
+
+/* --- Homepage widgets --- */
+#pg-home .w,
+#pg-home .pcard,
+#pg-home .timeline {
+  background: var(--glass-bg);
+  backdrop-filter: blur(40px) saturate(180%);
+  -webkit-backdrop-filter: blur(40px) saturate(180%);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+}
+
+/* Inverted contact widget needs dark text + keep its inner surface readable */
+#pg-home .w.inv {
+  background: linear-gradient(135deg, rgba(255,255,255,.95) 0%, rgba(245,245,245,.92) 100%);
+  color: #080808;
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+}
+#pg-home .w.inv:hover { background: linear-gradient(135deg, rgba(255,255,255,.98) 0%, rgba(250,250,250,.95) 100%); }
+
+/* Homepage widgets already using .glass get the same formula; remove stronger .glass stack */
+#pg-home .w.glass {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+}
+
+/* Homepage all-projects cards hover */
+#pg-home .pcard:hover,
+#pg-home .w:hover,
+#pg-home .timeline:hover {
+  transform: translateY(-2px) scale(1.012);
+  box-shadow: var(--glass-hover-shadow);
+  border-color: var(--glass-border);
+}
+
+/* --- Projects page widgets --- */
+#pg-projects .pi,
+#pg-projects .vis-wrap,
+#pg-projects .chart-wrap,
+#pg-projects .nd-node,
+#pg-projects .plat {
+  background: var(--glass-bg);
+  backdrop-filter: blur(40px) saturate(180%);
+  -webkit-backdrop-filter: blur(40px) saturate(180%);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+}
+
+#pg-projects .pi:hover,
+#pg-projects .vis-wrap:hover,
+#pg-projects .chart-wrap:hover,
+#pg-projects .nd-node:hover,
+#pg-projects .plat:hover {
+  transform: translateY(-2px) scale(1.012);
+  box-shadow: var(--glass-hover-shadow);
+  border-color: var(--glass-border);
+}
+
+/* Project index tiles have rounded corners on some children; keep corners intact */
+#pg-projects .pi:nth-child(1) { border-radius: 16px 0 0 0; }
+#pg-projects .pi:nth-child(2) { border-radius: 0 16px 0 0; }
+#pg-projects .pi:nth-child(3) { border-radius: 0 0 0 16px; }
+#pg-projects .pi:nth-child(4) { border-radius: 0 0 16px 0; }
+
+/* --- Roadmap page widgets (timeline items explicitly excluded) --- */
+#pg-roadmap .phase-card,
+#pg-roadmap .guide-card,
+#pg-roadmap .topic-card,
+#pg-roadmap .career-card,
+#pg-roadmap .resource-item,
+#pg-roadmap .stat-badge {
+  background: var(--glass-bg);
+  backdrop-filter: blur(40px) saturate(180%);
+  -webkit-backdrop-filter: blur(40px) saturate(180%);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+}
+
+#pg-roadmap .phase-card:hover,
+#pg-roadmap .guide-card:hover,
+#pg-roadmap .topic-card:hover,
+#pg-roadmap .career-card:hover,
+#pg-roadmap .resource-item:hover,
+#pg-roadmap .stat-badge:hover {
+  transform: translateY(-2px) scale(1.012);
+  box-shadow: var(--glass-hover-shadow);
+  border-color: var(--glass-border);
+}
+
+/* Make sure completed topic border stays visible over glass */
+#pg-roadmap .topic-card.completed { border-color: rgba(61,220,132,.35); }
+
+/* Resource items are anchors; ensure they still show as interactive */
+#pg-roadmap .resource-item { text-decoration: none; }
+
+/* --- About page widgets --- */
+#pg-about .photo-frame,
+#pg-about .core-tech-card,
+#pg-about .edu-card,
+#pg-about .skill-group,
+#pg-about .lang-card,
+#pg-about .int-card,
+#pg-about .contact-card,
+#pg-about .avail-block {
+  background: var(--glass-bg);
+  backdrop-filter: blur(40px) saturate(180%);
+  -webkit-backdrop-filter: blur(40px) saturate(180%);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+}
+
+#pg-about .photo-frame:hover,
+#pg-about .core-tech-card:hover,
+#pg-about .edu-card:hover,
+#pg-about .skill-group:hover,
+#pg-about .lang-card:hover,
+#pg-about .int-card:hover,
+#pg-about .contact-card:hover,
+#pg-about .avail-block:hover {
+  transform: translateY(-2px) scale(1.012);
+  box-shadow: var(--glass-hover-shadow);
+  border-color: var(--glass-border);
+}
+
+/* Preserve the green-tinted accent borders on about widgets */
+#pg-about .edu-card { border-color: rgba(52,199,123,.25); }
+#pg-about .lang-card.native { border-color: rgba(52,199,123,.35); }
+#pg-about .avail-block { border-color: rgba(61,220,132,.25); }
+
+/* --- /me page widget --- */
+#pg-me .me-auth-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(40px) saturate(180%);
+  -webkit-backdrop-filter: blur(40px) saturate(180%);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+}
+
+#pg-me .me-auth-card:hover {
+  transform: translateY(-2px) scale(1.012);
+  box-shadow: var(--glass-hover-shadow);
+  border-color: var(--glass-border);
+}
+
+/* --- Light mode overrides for glass readability --- */
+html.light #pg-home .w,
+html.light #pg-home .pcard,
+html.light #pg-home .timeline,
+html.light #pg-projects .pi,
+html.light #pg-projects .vis-wrap,
+html.light #pg-projects .chart-wrap,
+html.light #pg-projects .nd-node,
+html.light #pg-projects .plat,
+html.light #pg-roadmap .phase-card,
+html.light #pg-roadmap .guide-card,
+html.light #pg-roadmap .topic-card,
+html.light #pg-roadmap .career-card,
+html.light #pg-roadmap .resource-item,
+html.light #pg-roadmap .stat-badge,
+html.light #pg-about .photo-frame,
+html.light #pg-about .core-tech-card,
+html.light #pg-about .edu-card,
+html.light #pg-about .skill-group,
+html.light #pg-about .lang-card,
+html.light #pg-about .int-card,
+html.light #pg-about .contact-card,
+html.light #pg-about .avail-block,
+html.light #pg-me .me-auth-card {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+  color: var(--w);
+}
+
+html.light #pg-home .w.inv {
+  background: linear-gradient(135deg, rgba(255,255,255,.95) 0%, rgba(245,245,245,.92) 100%);
+  color: #080808;
+}
+
+/* Make sure chips/badges/text inside glass widgets stay opaque and readable */
+#pg-home .chip, #pg-home .chip-inv, #pg-home .sbadge,
+#pg-projects .pi-tag,
+#pg-roadmap .chip, #pg-roadmap .badge,
+#pg-about .sk, #pg-about .bchip, #pg-about .edu-tag, #pg-about .edu-badge,
+#pg-about .cc-icon, #pg-about .cc-label, #pg-about .cc-val,
+#pg-about .lang-level, #pg-about .lang-note,
+#pg-about .int-icon, #pg-about .int-title, #pg-about .int-desc,
+#pg-about .sg-label,
+#pg-me .me-auth-card h2, #pg-me .me-auth-card p, #pg-me .me-auth-card button {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  background: transparent;
+}
+
+/* Keep inner data surfaces opaque for readability on glass */
+#pg-about .cc-icon,
+#pg-about .int-icon,
+#pg-about .skill-bars .skb-track,
+#pg-roadmap .career-bar-track,
+#pg-projects .bar-track,
+#pg-projects .pipe-stage,
+#pg-projects .donut-wrap .donut-legend .dl-dot {
+  background: rgba(0,0,0,.22);
+}
+html.light #pg-about .cc-icon,
+html.light #pg-about .int-icon,
+html.light #pg-about .skill-bars .skb-track,
+html.light #pg-roadmap .career-bar-track,
+html.light #pg-projects .bar-track,
+html.light #pg-projects .pipe-stage,
+html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
+  background: rgba(0,0,0,.08);
+}
+
 </style>
 </head>
 <body>
@@ -4484,7 +4751,7 @@ html.light footer.roadmap-footer a { color: var(--w); }
     </div>
 
     <!-- Key skill bars -->
-    <div class="core-tech-card" style="padding:24px 28px;border-radius:20px;background:var(--bg2);border:1px solid var(--w06);box-shadow:4px 4px 14px var(--sd),-1px -1px 5px var(--sl);margin-bottom:14px">
+    <div class="core-tech-card" style="padding:24px 28px;border-radius:20px;margin-bottom:14px">
       <div style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:3px;color:var(--w30);text-transform:uppercase;margin-bottom:18px;display:flex;align-items:center;gap:7px"><span style="width:3px;height:3px;border-radius:50%;background:currentColor;flex-shrink:0;display:inline-block"></span>core technical</div>
       <div class="skill-bars">
         <div class="skb-row"><span class="skb-n">Python</span><div class="skb-track"><div class="skb-fill" style="width:86%;animation-delay:.1s"></div></div><span class="skb-v">86</span></div>
@@ -4743,7 +5010,7 @@ html.light footer.roadmap-footer a { color: var(--w); }
 </div>
 <div class="page" id="pg-me">
 <div class="page-wrap" style="max-width:480px;padding-top:100px;margin:0 auto">
-  <div class="me-auth-card" style="text-align:center;padding:60px 40px;border-radius:24px;background:var(--bg2);border:1px solid var(--w06);box-shadow:4px 4px 20px var(--sd)">
+  <div class="me-auth-card" style="text-align:center;padding:60px 40px;border-radius:24px">
     <div style="width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,var(--green),var(--blue));display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:18px;font-weight:500;color:#050505;margin:0 auto 20px">VK</div>
     <h2 style="font-family:'Space Grotesk',sans-serif;font-size:24px;font-weight:700;margin:0 0 10px">Private section</h2>
     <p style="color:var(--w60);font-size:14px;line-height:1.6;margin:0 0 28px">/me is behind auth.<br>Decision pending: GitHub OAuth, Tailscale-gated URL, or simple JWT.</p>

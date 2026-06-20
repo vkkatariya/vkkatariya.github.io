@@ -1,5 +1,41 @@
 ---
 
+## [2026-06-20] agent(opencode) — feat/widget-liquid-glass: apply topbar liquid-glass formula to all page widgets
+
+**Mode:** Execution (surgical CSS pass, consolidated block + 2 inline style cleanups)
+**Did:**
+- Confirmed branch `feat/widget-liquid-glass` from `dev` with a clean working tree.
+- Removed inline `background`/`border`/`box-shadow` from `.core-tech-card` (About) and `.me-auth-card` (/me) so the consolidated CSS owns the surface.
+- Added reusable CSS custom properties in `:root` / `html.light`:
+  - `--glass-bg`, `--glass-border`, `--glass-shadow`, `--glass-hover-shadow`.
+- Added a single `/* WIDGET LIQUID GLASS PASS */` block at the end of `<style>` (after existing widget CSS) applying the left/center topbar formula (`backdrop-filter: blur(40px) saturate(180%)`, `border: 1px solid rgba(255,255,255,.16)`, matching gradient + shadow) to every identified widget container across all 5 pages.
+- Targets per page:
+  - **Homepage:** `.w` (11 widgets), `.pcard` (3 all-project cards), `.timeline` (1 block) = 15/16 widgets. The `.w.inv` contact widget keeps an off-white inner surface so dark text remains readable.
+  - **Projects:** `.pi` (4 index cards), `.vis-wrap` (4 wrappers), `.nd-node` (2 nodes), `.plat` (3 platform cards) = 11 widgets. `.chart-wrap` included in the selector set even though none exist statically.
+  - **Roadmap:** `.phase-card` (4), `.guide-card` (1), `.topic-card` (11 rendered by JS), `.career-card` (10 rendered by JS), `.resource-item` (9), `.stat-badge` (3) = 38 target containers. Month-by-month `.tl-item`/`.tl-header` timeline explicitly excluded.
+  - **About:** `.photo-frame`, `.core-tech-card`, `.edu-card`, 4× `.skill-group`, 4× `.lang-card`, 4× `.int-card`, 4× `.contact-card`, `.avail-block` = 19 widgets. `.photo-status` left flat.
+  - **/me:** `.me-auth-card` = 1 widget.
+- Added light-mode overrides via `html.light` so glass stays readable on the light background.
+- Added inner-surface helpers for dark text/charts/icons (`.cc-icon`, `.int-icon`, skill bars, career bar track, project bar tracks, pipeline stages) without applying glass to chips/badges/text.
+- Did NOT touch the topbar (`.nav-logo`, `.nav-links`, `.nav-right`).
+- Did NOT style roadmap timeline accordion items (`#pg-roadmap .tl-item`, `.tl-header`).
+
+**Verification:**
+- Local server on `127.0.0.1:8900`; served file returns 200 OK.
+- Static class counts in served HTML verified:
+  - Home: `.w` 12, `.pcard` 7 (3 under all-projects + 4 roadmap phase-card are also `.pcard` counted once each; 7 total static `.pcard` occurrences), `.timeline` 1.
+  - Projects: `.pi` 4, `.vis-wrap` 4, `.nd-node` 2, `.plat` 3.
+  - Roadmap: `.phase-card` 4, `.guide-card` 1, `.stat-badge` 3, `.resource-item` 9; `.topic-card`/`.career-card` rendered at runtime by `TOPICS` (11) and `CAREERS` (10) arrays.
+  - About: `.photo-frame` 1, `.core-tech-card` 1, `.edu-card` 1, `.skill-group` 4, `.lang-card` 4, `.int-card` 4, `.contact-card` 4, `.avail-block` 1.
+  - /me: `.me-auth-card` 1.
+- `git diff --stat`: `prototypes/portfolio-combined.html | 271 ++++++++++++++++++++--` (269 insertions, 2 deletions).
+- Commit: `agent(opencode): feat(widget-liquid-glass): apply topbar liquid-glass effect to all page widgets`
+- Branch pushed: `origin/feat/widget-liquid-glass`.
+
+**Files changed:** 1 (`prototypes/portfolio-combined.html`)
+
+---
+
 ## [2026-06-20] agent(claude) — feat/roadmap-header: restructure roadmap hero into .ph wrapper + .hero stats/cta blocks
 
 **Mode:** Execution (surgical markup restructure, ≤10 lines)
