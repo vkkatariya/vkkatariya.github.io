@@ -233,7 +233,6 @@
 
 **Files modified:**
 - `prototypes/portfolio-combined.html` (−1 line, −1 transform declaration; comment unchanged)
-- `tasks/kickoff-roadmap-transform-reset.md` (agent prompt — created pre-dispatch)
 
 **Commit:** (this entry was added post-hoc after the agent timed out; the underlying CSS change was already on the branch from the agent's partial run)
 
