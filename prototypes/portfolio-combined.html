@@ -1547,14 +1547,20 @@ footer {
 
 #pg-about { font-family: "Syne", sans-serif; }
 
-/* ── CV download pill (About page top) ── */
-#pg-about .cv-dl{display:inline-flex;align-items:center;gap:14px;padding:11px 18px;background:var(--bg2);border:1px solid var(--w06);border-radius:14px;box-shadow:3px 3px 10px var(--sd),-1px -1px 4px var(--sl);text-decoration:none;color:inherit;margin-bottom:36px;transition:border-color .18s,transform .18s}
-#pg-about .cv-dl:hover{border-color:rgba(0,212,170,.35);transform:translateY(-1px)}
-#pg-about .cv-dl-icon{width:34px;height:34px;border-radius:9px;background:rgba(0,212,170,.08);border:1px solid rgba(0,212,170,.2);display:flex;align-items:center;justify-content:center;color:var(--acc);flex-shrink:0}
-#pg-about .cv-dl-label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--w80)}
-#pg-about .cv-dl-sub{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1px;color:var(--w30);margin-top:2px}
-#pg-about .cv-dl-arrow{font-family:'JetBrains Mono',monospace;font-size:16px;color:var(--acc);margin-left:auto;flex-shrink:0}
-#pg-about .ph-title{margin-bottom:24px}
+/* ── CV download pill (About page — below photo block) ── */
+#pg-about .cv-dl{
+  display:inline-flex;align-items:center;gap:10px;padding:9px 16px;
+  background:linear-gradient(135deg,rgba(255,255,255,.10) 0%,rgba(255,255,255,.04) 100%);
+  backdrop-filter:blur(40px) saturate(180%);-webkit-backdrop-filter:blur(40px) saturate(180%);
+  border:1px solid rgba(255,255,255,.16);border-radius:100px;
+  box-shadow:0 4px 28px rgba(0,0,0,.55),0 1px 0 rgba(255,255,255,.12) inset;
+  text-decoration:none;color:inherit;
+  transition:box-shadow .2s,transform .2s;
+}
+#pg-about .cv-dl:hover{box-shadow:0 6px 32px rgba(0,0,0,.65),0 1px 0 rgba(255,255,255,.16) inset;transform:translateY(-2px)}
+#pg-about .cv-dl-label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--w80)}
+#pg-about .cv-dl-sub{font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:.8px;color:var(--w30);margin-top:1px}
+#pg-about .cv-dl-arrow{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--acc);flex-shrink:0}
 
 /* ── NAV ── */
 /* ── LAYOUT ── */
@@ -3643,7 +3649,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
         <div style="display:flex;flex-direction:column;gap:8px;margin-top:auto">
           <div class="loc-label">📍 Dieburg · near Darmstadt</div>
           <div class="avail-badge">available for internships</div>
-          <a href="assets/cv.pdf" download="Vishal-Katariya-CV.pdf" class="np" style="text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:6px;font-size:10px;padding:8px 14px;margin-top:2px">↓ download cv</a>
+          <a href="assets/cv.pdf" download="Vishal-Katariya-Resume.pdf" class="np" style="text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:6px;font-size:10px;padding:8px 14px;margin-top:2px">↓ download resume</a>
         </div>
       </div>
     </div>
@@ -4722,18 +4728,6 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
   <div class="ph-label">vkkatariya · personal</div>
   <h1 class="ph-title"><span class="hn-script">A</span>bout</h1>
 
-  <!-- ── CV DOWNLOAD PILL ── -->
-  <a class="cv-dl" href="assets/cv.pdf" download="Vishal-Katariya-CV.pdf">
-    <div class="cv-dl-icon">
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/><path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/></svg>
-    </div>
-    <div>
-      <div class="cv-dl-label">Download CV</div>
-      <div class="cv-dl-sub">PDF · A4 · dark theme · 2026</div>
-    </div>
-    <span class="cv-dl-arrow">↓</span>
-  </a>
-
   <!-- ── INTRO ── -->
   <div class="intro">
     <!-- Photo placeholder -->
@@ -4743,6 +4737,15 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
         <div class="photo-placeholder">add photo</div>
       </div>
       <div class="photo-status">open to internships</div>
+      <!-- ── RESUME DOWNLOAD PILL ── -->
+      <a class="cv-dl" href="assets/cv.pdf" download="Vishal-Katariya-Resume.pdf">
+        <svg width="13" height="13" viewBox="0 0 16 16" fill="currentColor" style="color:var(--acc);flex-shrink:0"><path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/><path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/></svg>
+        <div>
+          <div class="cv-dl-label">Download Resume</div>
+          <div class="cv-dl-sub">PDF · A4 · 2026</div>
+        </div>
+        <span class="cv-dl-arrow">↓</span>
+      </a>
     </div>
 
     <!-- Bio -->
