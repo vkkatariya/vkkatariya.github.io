@@ -1217,3 +1217,21 @@ Changes:
 - `.tl-title`: clamp(42px, 6vw, 80px) NDOT 800 → clamp(18px, 1.5vw, 22px) NDOT 700, letter-spacing -2.5px → -.8px, line-height .9 → 1.15, margin-bottom 8px → 4px
 
 Kept NDOT family and the small-but-readable size band. This is essentially the v1 attempt (agy) size with the NDOT font swap that the user wanted from v2.
+
+## [2026-06-20] agent(hermes) — fix(roadmap): compact subtitle-to-badges gap
+
+User reported "space between subtitle and rest of the content" after `.ph` restructure.
+
+Root cause:
+- `.ph` had `padding-bottom: 60px` + `.hero` had `padding-top: 80px` → 140px combined gap between `.ph-sub` subtitle and `.hero-stats` badges
+- `.ph-sub` font was 12px (inherited from global rule), user saw subtitle shrunken
+
+Fix (scoped to `#pg-roadmap`, no other pages touched):
+- `#pg-roadmap .ph-title { margin-bottom: 24px }` (was 56px)
+- `#pg-roadmap .ph-sub { font-size: 15px; color: var(--w60) }` (was 12px / var(--w30))
+- `#pg-roadmap .ph { padding-bottom: 0 }` (was 60px)
+- `#pg-roadmap .hero { padding-top: 20px }` (was 80px)
+
+Result: gap compacted from ~140px → ~20px, subtitle back to readable 15px.
+User confirmed "its fixed now".
+Commit: `18281f7` → `a98b4a9` (docs(todo)).
