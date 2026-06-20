@@ -1530,7 +1530,14 @@ footer {
 .ph-label{font-family:'JetBrains Mono',monospace;font-size: 11px;letter-spacing:4px;color:var(--w30);text-transform:uppercase;margin-bottom:16px;display:flex;align-items:center;gap:10px}
 .ph-label::after{content:'';flex:1;height:1px;background:var(--w12)}
 .ph-title{font-family:'Syne',sans-serif;font-size:clamp(48px,8vw,96px);font-weight:800;letter-spacing:-3px;line-height:.9;margin-bottom:56px}
-.hn-script{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:700}
+/* roadmap page override — subtitle sits closer to title, larger text */
+#pg-roadmap .ph-title {
+  margin-bottom: 24px;
+}
+#pg-roadmap .ph-sub {
+  font-size: 15px;
+  color: var(--w60);
+}
 
 /* ── INTRO BLOCK ── */
 .intro{display:grid;grid-template-columns:200px 1fr;gap:48px;align-items:start;margin-bottom:80px}
