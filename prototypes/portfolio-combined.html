@@ -168,7 +168,16 @@ html.light body::before {
   transition: box-shadow .2s;
 }
 .nav-logo:hover { box-shadow: 0 6px 32px rgba(0,0,0,.65), 0 1px 0 rgba(255,255,255,.16) inset; }
-.nav-logo-name { font-family: var(--font-ndot); font-size: 20px; line-height: 1; white-space: nowrap; letter-spacing: -.3px; }
+.nav-logo-name {
+  font-family: 'Space Grotesk', sans-serif; font-size: 24px; line-height: 1; white-space: nowrap; letter-spacing: -.3px;
+}
+.nav-logo-name .hn-script {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic; font-weight: 700;
+  font-size: 1.5em; letter-spacing: -1px;
+  vertical-align: baseline;
+}
+.nav-logo-name .hn-sans { font-weight: 700; }
 
 /* CENTER — nav pill (home/projects/roadmap/about + available dot) */
 .nav-links {
@@ -4354,7 +4363,7 @@ html.light footer.roadmap-footer a { color: var(--w); }
     <!-- Bio -->
     <div class="bio">
       <p class="bio-p">
-        I'm <strong>Vishal Katariya</strong> — a CS student at Hochschule Darmstadt, based in Dieburg near Frankfurt. I build across the full stack: fine-tuning language models, wiring REST and WebSocket APIs, and managing self-hosted infrastructure on real hardware.
+        I'm <strong><span class="hn-script">V</span><span class="hn-sans">ishal</span><span class="hn-gap"></span><span class="hn-script">K</span><span class="hn-sans">atariya</span></strong> — a CS student at Hochschule Darmstadt, based in Dieburg near Frankfurt. I build across the full stack: fine-tuning language models, wiring REST and WebSocket APIs, and managing self-hosted infrastructure on real hardware.
       </p>
       <p class="bio-p">
         My projects run in production — not just on localhost. From a personal finance tracker built on 993 real transactions, to a 2-node Proxmox cluster running 6+ services, to a Telegram bot trained with QLoRA on a free Kaggle GPU and deployed to an ARM NPU.

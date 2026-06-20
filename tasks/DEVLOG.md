@@ -22,6 +22,23 @@ Branch 5 was scoped from a partial selector list. When the user pointed at the f
 
 ---
 
+## [2026-06-20] agent(human) — feat/logo-cormorant-wordmark: Cormorant Garamond italic V/K wordmark on topbar logo + About bio
+
+**Mode:** Inline (surgical CSS + 1 markup edit, 11 lines, after L-025 contamination cleanup)
+**Did:**
+- Restyled `.nav-logo-name` (top-left logo) from NDOT 20px to Space Grotesk 24px with Cormorant Garamond italic caps via scoped `.nav-logo-name .hn-script { font-size: 1.5em; letter-spacing: -1px; }` override. The V and K caps now render visibly larger than the lowercase body, mimicking the reference wordmark (calligraphic caps + bold serif lowercase).
+- Bumped `.nav-logo-name .hn-sans` to font-weight 700 to match the visual weight of the new caps.
+- Wrapped the About page bio's `<strong>Vishal Katariya</strong>` in the same `.hn-script`/`.hn-sans`/`.hn-gap` span structure used in the topbar logo, so the brand mark reads consistently wherever the name appears in body copy.
+- Did NOT touch the `<title>Vishal Katariya — Portfolio</title>` tag (intentionally plain text for browser tabs/SEO), the `/me` page "VK" monogram (intentional circle), or the `#roadmap-internal-nav .nav-logo` "CS." (different context).
+
+**Verification:**
+- Browser `getComputedStyle` on `.nav-logo-name .hn-script`: Cormorant Garamond, italic, 700, 36px (1.5em × 24px parent), -1px letter-spacing. Dark mode + light mode both confirmed.
+- Bio `.hn-script`: Cormorant Garamond italic 700 16px (parent strong font-size).
+
+**Files changed:** 1 (prototypes/portfolio-combined.html)
+
+---
+
 ## [2026-06-20] agent(claude) — feat/ndot-widget-titles: apply var(--font-ndot) to 5 accent selectors
 
 **Mode:** Execution (surgical CSS edit — 5 selectors)
