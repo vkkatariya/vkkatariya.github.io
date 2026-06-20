@@ -1,3 +1,46 @@
+## [2026-06-20] Apply NothingOS NDOT to 8 accent selectors — feat/ndot-display-accent complete
+
+**Mode:** Execution (surgical CSS edit — 8 selectors)
+**Did:**
+- Changed `font-family: 'DM Mono', monospace` → `font-family: var(--font-ndot)` on exactly 8 selectors:
+  - `.lbl` — NothingOS status label (e.g. "EDUCATION", "SKILLS", "01" prefix)
+  - `.lbl-inv` — inverted variant
+  - `.pcard-num` — widget index number (e.g. "01 / 04")
+  - `.cs-number` — case study section number
+  - `.skill-n` — skill label (e.g. "Python", "TypeScript")
+  - `.clock-h`, `.clock-m`, `.clock-colon` — large clock display
+- Removed the 8 placeholder comments (`/* DM Mono kept — feat/ndot-display-accent will swap to var(--font-ndot) */`) that the previous fix branch had added to mark these selectors for this work.
+- Preserved `font-size` and `letter-spacing` on all 8 selectors (those were set in the DM Mono readability fix and should remain).
+- Used `var(--font-ndot)` (the CSS variable, not the literal `'Ndot'`) so future font swaps remain one-line changes.
+
+**Why:**
+- Completes the 3-branch font stack update: vendor NDOT (Branch 1) + fix DM Mono readability (Branch 2) + apply NDOT to accent selectors (Branch 3).
+- NDOT is the geometric dotted display font Nothing uses throughout its OS. It gives the portfolio a distinctive NothingOS industrial feel on the small text moments (widget indices, status labels, clock display).
+- These 8 selectors were deliberately chosen for NDOT because they're small typographic moments where the dotted/geometric character adds NothingOS flavor without overwhelming the page. Larger body text, hero titles, and widget titles stay on Space Grotesk / Syne / JetBrains Mono per the established design.
+
+**Audit findings — what was deliberately NOT changed in this branch:**
+- Did NOT add NDOT to any other selector — only the 8 confirmed targets.
+- Did NOT change `font-size` or `letter-spacing` on the 8 selectors (preserved from previous fix).
+- Did NOT touch the `@font-face` declarations or the `:root` `--font-ndot` variable definition.
+- Did NOT change Space Grotesk (body/titles), Syne (hero titles), JetBrains Mono (UI labels from previous fix), DM Mono on `.tl-year` (true monospace dates), or Cormorant Garamond.
+- Did NOT touch the 13 inline `style="font-family:'DM Mono'..."` declarations (large display numbers, code/URL contexts — out of scope).
+
+**Verification:**
+- `git diff --stat` shows only edits to `prototypes/portfolio-combined.html` (+9 / -16, 1 file)
+- `grep -c "DM Mono kept — feat/ndot-display-accent" prototypes/portfolio-combined.html` = 0 (placeholder comments removed)
+- `grep -c "var(--font-ndot)" prototypes/portfolio-combined.html` = 8 (one per selector)
+- `grep -c "font-family: 'DM Mono'" prototypes/portfolio-combined.html` = 14 (1 .tl-year + 13 inline styles, as expected)
+- `grep -A 3` for each of the 8 selectors confirms `font-family: var(--font-ndot);` is in the rule body, with no remaining DM Mono or placeholder comment
+- Browser `getComputedStyle` on `.clock-h`, `.clock-m`, `.clock-colon`, `.pcard-num`, `.skill-n`, `.cs-number` all return `"Ndot", "DM Mono", monospace` ✓
+- Browser `new FontFace('Ndot', 'url(assets/fonts/Ndot55-Regular.otf)').load()` returns `{"status": "loaded", "family": "Ndot"}` ✓
+- Both light + dark mode: same `font-family` resolved (NDOT is theme-agnostic — no `html.light` override needed)
+- All 5 pages render correctly, no console errors
+
+**Files modified:**
+- `prototypes/portfolio-combined.html` (8 selectors changed: 16 lines removed, 9 added)
+
+---
+
 ## [2026-06-20] Vendor NothingOS NDOT font — make available for feat/ndot-display-accent
 
 **Mode:** Execution (asset acquisition + 5-line CSS addition + README; no UI change)
