@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Vishal Katariya — Resume</title>
+<style>
+  @page { size: A4; margin: 0; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    color: #111;
+    background: #fff;
+    padding: 48px 56px;
+    line-height: 1.55;
+    font-size: 11pt;
+  }
+  header { margin-bottom: 32px; }
+  h1 {
+    font-size: 26pt;
+    font-weight: 800;
+    letter-spacing: -0.6px;
+    line-height: 1.05;
+  }
+  .subtitle {
+    font-size: 12pt;
+    color: #555;
+    margin-top: 6px;
+    font-weight: 400;
+  }
+  .meta {
+    display: flex;
+    gap: 16px;
+    margin-top: 14px;
+    font-size: 9.5pt;
+    color: #666;
+    flex-wrap: wrap;
+  }
+  .meta span { display: inline-flex; align-items: center; gap: 5px; }
+  section { margin-bottom: 28px; }
+  h2 {
+    font-size: 10pt;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: 700;
+    border-bottom: 1.5px solid #111;
+    padding-bottom: 5px;
+    margin-bottom: 12px;
+  }
+  .entry { margin-bottom: 14px; }
+  .entry-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+  }
+  .entry-title { font-weight: 700; font-size: 11pt; }
+  .entry-org { font-weight: 600; }
+  .entry-date {
+    font-size: 9.5pt;
+    color: #666;
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+  }
+  .entry-desc { margin-top: 4px; color: #333; font-size: 10.5pt; }
+  .tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px; }
+  .tag {
+    font-size: 8.5pt;
+    padding: 2px 7px;
+    border-radius: 4px;
+    background: #f0f0f0;
+    color: #333;
+    border: 1px solid #e0e0e0;
+  }
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+  a { color: #111; text-decoration: none; }
+</style>
+</head>
+<body>
+  <header>
+    <h1>Vishal Katariya</h1>
+    <div class="subtitle">CS Student · Full-Stack &amp; ML Engineer</div>
+    <div class="meta">
+      <span>Dieburg, DE</span>
+      <span>vkkatariya@proton.me</span>
+      <span>github.com/vkkatariya</span>
+      <span>vishalkatariya.dev</span>
+    </div>
+  </header>
+
+  <section>
+    <h2>Profile</h2>
+    <p>
+      CS student at Hochschule Darmstadt building production systems across full-stack development,
+      ML engineering, and self-hosted infrastructure. Focus on real hardware (ARM/x86), clean
+      architecture, and shipping usable tools.
+    </p>
+  </section>
+
+  <div class="two-col">
+    <section>
+      <h2>Education</h2>
+      <div class="entry">
+        <div class="entry-head">
+          <div>
+            <div class="entry-title">B.Sc. Computer Science</div>
+            <div class="entry-org">Hochschule Darmstadt</div>
+          </div>
+          <div class="entry-date">2024 – 2028</div>
+        </div>
+        <div class="entry-desc">Expected graduation 2028. GPA pending.</div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Languages</h2>
+      <div class="entry">
+        <div class="entry-head">
+          <div class="entry-title">English</div>
+          <div class="entry-date">C2 · fluent</div>
+        </div>
+      </div>
+      <div class="entry">
+        <div class="entry-head">
+          <div class="entry-title">German</div>
+          <div class="entry-date">B1 · professional</div>
+        </div>
+      </div>
+      <div class="entry">
+        <div class="entry-head">
+          <div class="entry-title">Hindi</div>
+          <div class="entry-date">Native</div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <section>
+    <h2>Selected Projects</h2>
+    <div class="entry">
+      <div class="entry-head">
+        <div>
+          <div class="entry-title">Finance Buddy</div>
+          <div class="entry-org">Personal Finance Tracker</div>
+        </div>
+        <div class="entry-date">2025 – 2026</div>
+      </div>
+      <div class="entry-desc">
+        7-tab dashboard built from 993 real transactions across 44 months.
+        SvelteKit · Fastify · PostgreSQL · Drizzle · Chart.js.
+      </div>
+    </div>
+    <div class="entry">
+      <div class="entry-head">
+        <div>
+          <div class="entry-title">Homelab Dashboard</div>
+          <div class="entry-org">Realtime Ops Dashboard</div>
+        </div>
+        <div class="entry-date">2025</div>
+      </div>
+      <div class="entry-desc">
+        Live CPU/RAM/network metrics, service registry, Notion docs viewer.
+        Fastify · WebSocket · Docker · Tailscale.
+      </div>
+    </div>
+    <div class="entry">
+      <div class="entry-head">
+        <div>
+          <div class="entry-title">orlon-bot</div>
+          <div class="entry-org">QLoRA Fine-tuned Telegram Bot</div>
+        </div>
+        <div class="entry-date">2026</div>
+      </div>
+      <div class="entry-desc">
+        Custom LLM fine-tuned on Kaggle T4s via Unsloth. Inference on Rock 5T NPU.
+        Python · Unsloth · Telegram API.
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Core Skills</h2>
+    <div class="tags">
+      <span class="tag">Python</span>
+      <span class="tag">TypeScript</span>
+      <span class="tag">SvelteKit</span>
+      <span class="tag">Fastify</span>
+      <span class="tag">Docker</span>
+      <span class="tag">Tailscale</span>
+      <span class="tag">Linux</span>
+      <span class="tag">PostgreSQL</span>
+      <span class="tag">Machine Learning</span>
+      <span class="tag">LLM Fine-tuning</span>
+      <span class="tag">WebSocket</span>
+      <span class="tag">Proxmox</span>
+    </div>
+  </section>
+</body>
+</html>
