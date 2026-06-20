@@ -24,6 +24,27 @@
 
 ---
 
+## L-022 — Invisible flex wrappers vs visible cards: a different wrapper-vs-widget failure mode
+
+**What failed:** The about-page pop-out hover rollout added `:hover` to `.photo-block` (the outer wrapper). Result: hovering the photo widget showed **two stacked shadows** — the invisible `.photo-block` wrapper lifted AND the visible `.photo-frame` card inside it ALSO lifted from the global rule. User feedback: "it has two layers of pop out."
+
+**Root cause — different from L-021:**
+- L-021 was about **visible wrappers** containing many inner widgets (e.g. `.pipeline` with 6 cells) — fix was "hover inner, not wrapper."
+- L-022 was about an **invisible flex wrapper** that had no visual styling of its own (`display:flex; gap:14px; align-items:center`) but contained a separate visually-styled inner element. The wrapper itself was NOT a widget — it was just a layout container. The actual widget was the inner `.photo-frame`. Adding hover to the wrapper made the empty layout space lift, which visually manifested as a "second shadow" because the inner card was also lifting.
+
+**Prevention rule:**
+- **Inspect the actual CSS of a candidate wrapper before adding hover.** Open the file, find the selector, read its full rule block. If the rule only contains layout properties (`display`, `flex-direction`, `gap`, `align-items`, `justify-content`) and no visual properties (`background`, `border`, `border-radius`, `box-shadow`), it is NOT a widget — it is a layout wrapper. Don't add hover to it.
+- **In the markup, look for nesting patterns like `outer (layout) > inner (visual)`.** The visual inner element is the widget. The layout outer is invisible space.
+- **When in doubt, use the browser devtools to hover the element and observe the visual change.** If the element doesn't visibly change (no border, no background, no shadow of its own), it shouldn't be in the hover list — even if its child elements do change.
+- **Distinguish from L-021:** L-021's wrappers DID have visual styling (background, border, padding) but contained multiple distinct widgets. L-022's wrapper had NO visual styling of its own — it was layout-only. The decision tree:
+  - Wrapper has visual styling AND contains one cohesive visual element → hover wrapper (L-021 second case)
+  - Wrapper has visual styling AND contains multiple distinct widgets → hover inner widgets (L-021 first case)
+  - Wrapper has NO visual styling (layout-only) → NEVER hover it, regardless of contents (L-022)
+
+**Specific to portfolio-website:** `.photo-block` is layout-only (`display:flex; flex-direction:column; align-items:center; gap:14px`). The actual widget is `.photo-frame` (has `width:170px; height:200px; border-radius:20px; background:var(--bg2); border:1px solid var(--w06)`). Always hover `.photo-frame`, never `.photo-block`.
+
+---
+
 ## L-001 — Duplicate `const` declarations crash the entire script
 
 **What failed:** `Uncaught SyntaxError: Identifier 'SVC_ICON' has already been declared` in `homelab-dashboard.html`. Both `const SVC_ICON` and `const TYPE_ICON` were declared twice in the same `<script>` block. The dashboard became completely non-functional at browser parse time.

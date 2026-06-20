@@ -1754,19 +1754,25 @@ html.light #pg-about .contact-card:nth-of-type(4) .cc-icon { color: var(--acc); 
 /* ══════════════════════════════════════════
    POP-OUT HOVER (About Page)
    Per-widget hover for the 4 widgets the user identified as missing it.
-   .photo-block and .core-tech-card lift as whole widgets (per L-021's
-   "one cohesive visual" rule). .int-card and .contact-card lift
-   individually (they are distinct interactive widgets, not data rows).
+   .photo-frame and .core-tech-card lift as whole widgets (per L-021's
+   "one cohesive visual" rule — they ARE the visual card). .int-card and
+   .contact-card lift individually (they are distinct interactive widgets,
+   not data rows).
    Reuses the same transform/shadow/transition as the global rule.
+
+   NOTE: .photo-block is just a flex wrapper containing .photo-frame +
+   .photo-status. It has no border/background of its own, so lifting it
+   creates a "double pop-out" — the invisible wrapper shifts AND the
+   visible card lifts from the global rule. Target .photo-frame directly.
 ══════════════════════════════════════════ */
-#pg-about .photo-block,
+#pg-about .photo-frame,
 #pg-about .core-tech-card,
 #pg-about .int-card,
 #pg-about .contact-card {
   transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
 }
 
-#pg-about .photo-block:hover,
+#pg-about .photo-frame:hover,
 #pg-about .core-tech-card:hover,
 #pg-about .int-card:hover,
 #pg-about .contact-card:hover {
