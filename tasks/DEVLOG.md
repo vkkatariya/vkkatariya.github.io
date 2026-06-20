@@ -1,3 +1,49 @@
+## [2026-06-20] Vendor NothingOS NDOT font — make available for feat/ndot-display-accent
+
+**Mode:** Execution (asset acquisition + 5-line CSS addition + README; no UI change)
+**Did:**
+- Pulled `Ndot55-Regular.otf` (77 KB) and `Ndot55Caps-Regular.otf` (220 KB) from `https://github.com/xeji01/nothingfont` (community mirror, commit `9d8b51d`).
+- Placed both files at `prototypes/assets/fonts/`.
+- Wrote `prototypes/assets/fonts/README.md` (3.6 KB) with: source URL, license note, vendored date, variant info, how to use / update / replace. License note explicitly documents that NDOT is **not** officially OFL-licensed and what is and isn't OK to do with these files.
+- Added a CSS block to `prototypes/portfolio-combined.html` (after the `html.light` rule, before `html { scroll-behavior: smooth }`) with:
+  - Two `@font-face` declarations for `Ndot55-Regular.otf` (regular) and `Ndot55Caps-Regular.otf` (small-caps)
+  - A new `:root` block declaring `--font-ndot: 'Ndot', 'DM Mono', monospace`
+  - A comment block explaining provenance and the licensing situation
+
+**Why:**
+- User explicitly requested NothingOS NDOT font specifically (not Syne, not a substitute) — for use in `feat/ndot-display-accent` (Branch 3) on NothingOS-style accents (widget index numbers, status labels, clock display, topbar logo).
+- NDOT is the geometric dotted display font Nothing uses throughout its OS — every `01` `02` `03` label on a Nothing phone is set in NDOT.
+- This branch does NOT apply NDOT anywhere yet — it only makes the font available. Branch 3 (`feat/ndot-display-accent`) will set `font-family: var(--font-ndot)` on the 6 confirmed target selectors (`.pcard-num`, `.cs-number`, `.lbl`, `.lbl-inv`, `.skill-n`, `.clock-h/m/colon`).
+
+**Trade-off (license risk acknowledged):**
+- NDOT is a NothingOS proprietary typeface. The community mirror on `xeji01/nothingfont` extracted the font from NothingOS system files — this is **not an authorized redistribution**.
+- Usage here: personal portfolio at `vishalkatariya.dev`, single-developer, non-commercial, no redistribution. Defensible fair-use zone.
+- README documents what is and isn't OK; if Nothing ever sends a takedown request, comply and switch to an OFL alternative (Departure Mono, Geist Mono).
+
+**Audit findings — what was deliberately NOT done in this branch:**
+- Did NOT apply NDOT anywhere in the UI — that's Branch 3.
+- Did NOT touch any existing `font-family` declarations.
+- Did NOT modify the Google Fonts `<link>` at line 16 — NDOT is self-hosted.
+- Did NOT vendor the larger variants (Ndot57, NType82, Ndot77JPExtended, Lettera Mono LL) — keep the bundle small; can add later if needed.
+
+**Verification:**
+- `git status` shows clean staging of 2 OTF files + 1 README + 24-line CSS edit
+- `ls -la prototypes/assets/fonts/` shows both OTF files at expected sizes (77256 + 224708 bytes)
+- `grep -n "font-ndot" prototypes/portfolio-combined.html` → declares `--font-ndot: 'Ndot', 'DM Mono', monospace`
+- `grep -n "@font-face" prototypes/portfolio-combined.html` → 2 declarations (regular + caps)
+- Browser test: `--font-ndot` CSS variable resolves correctly via `getComputedStyle`
+- Browser test: `fetch('assets/fonts/Ndot55-Regular.otf')` returns `200 font/otf 77256`
+- Browser test: `new FontFace('Ndot', ...).load()` returns `OK: Ndot status=loaded`
+- Visual: no visible change to rendered page (because nothing uses `--font-ndot` yet — Branch 3)
+
+**Files modified:**
+- `prototypes/assets/fonts/Ndot55-Regular.otf` (new, 77 KB)
+- `prototypes/assets/fonts/Ndot55Caps-Regular.otf` (new, 220 KB)
+- `prototypes/assets/fonts/README.md` (new, 3.6 KB)
+- `prototypes/portfolio-combined.html` (+24 lines CSS + comments)
+
+---
+
 ## [2026-06-20] /me page pop-out hover — complete the 5-page rollout
 
 **Mode:** Execution (micro-loop, ~20 lines CSS + 1 class)
