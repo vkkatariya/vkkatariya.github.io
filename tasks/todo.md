@@ -17,16 +17,17 @@
 ### Visual polish / interaction pass
 - [x] Pop-out hover effect on all widgets/blocks across all pages (5-page rollout complete)
 - [x] Font stack update — vendor NDOT + fix DM Mono readability (3-branch rollout)
-- [x] Expand NDOT accent font usage (Branch 4)
+- [x] Expand NDOT accent font usage
   - [x] Branch 4 `feat/ndot-topbar-rollout`: apply var(--font-ndot) to all topbar text (nav links, logo, search, lang, theme, profile) + bump topbar font-size. Keep Space Grotesk for body/headings. Accent-only scope. Confirmed 2026-06-20.
-  - Note: After Branch 4, evaluate if a Branch 5 should add NDOT to widget titles (.pcard-title, .topic-name, .career-title) and button text (.btn). Defer to user decision after seeing topbar result.
-  - Branch 4 result: NDOT applied to 9 topbar selectors. Sizes bumped 11-12px → 13-16px. Lesson L-024 added (duplicate CSS selectors with same specificity — cascade order wins). Agent went slightly out of scope during dispatch; cleanup reverted 2 selectors and restored 1 .stat-badge closing brace.
+  - [x] Branch 5 `feat/ndot-widget-titles` + merged into `feat/ndot-titles-and-right-pill`: NDOT to 5 accent selectors (.pcard-title, .topic-name, .career-title, .cs-title, .filter-btn) + Branch 6 right pill fully rounded + stronger liquid glass (blur 56px, saturate 200%, light-mode override). 2026-06-20.
+  - [x] Branch 7 `feat/ndot-proj-title`: post-Branch-5 audit caught 4 more accent title selectors using old font (.proj-title on homepage featured project, .feat-title on case-study modal sections, .int-title on about page interests, .pi-title on /projects index cards). All swapped to var(--font-ndot). Lesson L-026 added: always full selector audit before declaring a pattern rollout complete. 2026-06-20.
+  - [ ] Branch 8 (deferred): NDOT to .tl-title? Mixed semantic context (22 occurrences across timeline entries + roadmap topic titles) — needs separate decision.
   - [x] Branch 1 `feat/vendor-ndot-font`: pull NDOT .woff2 from GitHub mirror, declare @font-face, add assets/fonts/README.md with source attribution
   - [x] Branch 2 `fix/dm-mono-readability`: bump font-size ≥11px, add letter-spacing 0.5px, swap UI labels to JetBrains Mono, restrict DM Mono to true monospace contexts
   - [x] Branch 3 `feat/ndot-display-accent` (depends on #1): use NDOT in 5 NothingOS-accent spots (.pcard-num, .cs-number, .lbl/.lbl-inv, .skill-n, .clock-h/m). Keep Space Grotesk for body/titles/buttons. Syne stays for hero titles.
   - Strategy: sequential — vendor must complete first, then DM Mono + NDOT display can run parallel. Confirmed with user 2026-06-20.
   - NOTE: Branches 1+2 were done inline (not via coding agent) because delegate_task subagent dispatch failed 3× with 'nemotron model 404' on the prior session. Branch 3 was dispatched to opencode after gateway restart; the agent completed file edits but ran out of tool budget before commit/push, so I finished the commit + browser verification + DEVLOG entry inline. Future agent dispatches are working.
-- [ ] Redesign top-right nav pill: fully rounded + liquid glass effect
+- [x] Redesign top-right nav pill: fully rounded + liquid glass effect — done as part of Branch 5/6 (right pill is fully rounded 100px, blur 56px, saturate 200%, light-mode override)
 - [ ] Redesign top-left logo
 
 ### Core prototype tasks

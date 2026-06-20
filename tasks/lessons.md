@@ -345,3 +345,42 @@ AGENT_BROWSER_ARGS=--no-sandbox
 - If duplicates exist, either: (a) merge them into one canonical rule, (b) update both, or (c) delete the dead one (if no markup uses it).
 - After applying the change, **always verify with `getComputedStyle`** in the browser, not just with grep.
 - Same rule applies to any CSS property change, not just fonts — color, transition, transform, anything that can be silently overridden by a later rule with equal specificity.
+
+## L-025 — Parallel-dispatch branch contamination via failed `git checkout`
+
+**Symptom:** Two coding agents dispatched in parallel via `delegate_task(tasks=[...])`. Agent A was told to work on `feat/X` and Agent B on `feat/Y`. Both completed, both reported success, both committed. But Agent B's commits landed on `feat/X` instead of `feat/Y`, and `feat/Y` stayed empty.
+
+**Root cause:** Agent B's first shell command was `git checkout feat/Y` per the kickoff contract. That checkout failed silently — likely because the parent Hermes session (after dispatching both agents in parallel) was still on `feat/X` and the agent's session inherited that working directory state. When `git checkout` failed, the agent fell through to the current branch and committed there without noticing.
+
+**Prevention rule:**
+- The kickoff's first step must include a branch **assertion**, not just a checkout. Pattern:
+  ```bash
+  git checkout <branch> || exit 1
+  current=$(git rev-parse --abbrev-ref HEAD)
+  [ "$current" = "<branch>" ] || { echo "BRANCH MISMATCH: expected <branch>, got $current"; exit 1; }
+  ```
+  This makes branch mismatch fatal rather than silent.
+- After every parallel-dispatch batch, always run `git branch --contains <sha>` on the agent's reported commit SHA — not just `git log --oneline`. The latter shows the commit exists, the former shows which branch it's actually on.
+- If contamination is detected: rename the receiving branch to reflect actual content (e.g. `feat/X` → `feat/X-and-Y`), delete the empty source branch, then merge. Don't discard correctly-completed work just because it landed on the wrong branch.
+
+**Related rule:** "Committed and pushed" is NOT "work is visible". After merging, the user's local dev server (`python3 -m http.server`) serves from the working tree, which is typically on `dev`. If the agents only push to a feature branch but you don't merge to `dev`, the rendered page still shows the pre-change state. The user reads this as "your changes are gone". **Always `git checkout dev && git merge --no-ff feat/X && git push origin dev` after a successful dispatch, then verify live.**
+
+## L-026 — Exhaustive selector audit before declaring a font-stack (or any pattern) rollout complete
+
+**Symptom:** A CSS/font rollout branch swapped `font-family` on a partial list of selectors (e.g. `.pcard-title`, `.topic-name`, `.career-title`, `.cs-title`, `.filter-btn`). Branch merged to dev, agent reported success, file diff was clean. But after merge, the user pointed at a widget that visually still used the old font — the featured project widget on the homepage.
+
+**Root cause:** The kickoff's selector list was incomplete. The featured project widget uses `.proj-title`, not `.pcard-title` (different class name, same intent). The kickoff author did a partial audit and missed it. The agent faithfully executed the partial list, branch merged clean, but the rollout was visually incomplete across the page.
+
+**Prevention rule:**
+- **Always run a full selector audit before AND after any pattern rollout** (font-family, color tokens, hover effects, etc.). Pattern:
+  ```bash
+  # Find every selector whose name suggests the same semantic role
+  grep -oE '\.[a-z][-a-z0-9_]*title[a-z0-9_-]*\s*\{' file.html | sort -u
+  # For each, check current state vs target state
+  for sel in $(grep -oE '\.[a-z][-a-z0-9_]*title[a-z0-9_-]*' file.html | sort -u); do
+    # get computed font-family on a sample element
+  done
+  ```
+- **If the user points at a widget using the OLD style after a rollout, that widget IS in scope** — expand the branch (or follow up with another commit) before declaring done. Don't dismiss the user's report as a one-off.
+- **Use `getComputedStyle` on the rendered page**, not grep alone, to verify visual state. The agent's diff is one signal; the rendered output is the source of truth.
+- This rule is the same pattern as L-021 (widget vs wrapper audit before adding hover) and L-024 (duplicate selector audit before font changes) — same shape, different selector dimension. Bundle these as "pre-rollout audit checklist": (1) widget vs wrapper, (2) duplicate definitions, (3) sibling selectors with same intent.
