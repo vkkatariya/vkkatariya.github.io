@@ -1866,6 +1866,37 @@ html.light #pg-about .contact-card:nth-of-type(4) .cc-icon { color: var(--acc); 
 
 
 /* ══════════════════════════════════════════
+   POP-OUT HOVER (About Page)
+   Per-widget hover for the 4 widgets the user identified as missing it.
+   .photo-frame and .core-tech-card lift as whole widgets (per L-021's
+   "one cohesive visual" rule — they ARE the visual card). .int-card and
+   .contact-card lift individually (they are distinct interactive widgets,
+   not data rows).
+   Reuses the same transform/shadow/transition as the global rule.
+
+   NOTE: .photo-block is just a flex wrapper containing .photo-frame +
+   .photo-status. It has no border/background of its own, so lifting it
+   creates a "double pop-out" — the invisible wrapper shifts AND the
+   visible card lifts from the global rule. Target .photo-frame directly.
+══════════════════════════════════════════ */
+#pg-about .photo-frame,
+#pg-about .core-tech-card,
+#pg-about .int-card,
+#pg-about .contact-card {
+  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+}
+
+#pg-about .photo-frame:hover,
+#pg-about .core-tech-card:hover,
+#pg-about .int-card:hover,
+#pg-about .contact-card:hover {
+  transform: translateY(-2px) scale(1.012);
+  box-shadow: 8px 10px 24px var(--sd), -2px -2px 10px var(--sl);
+  border-color: var(--w06);
+}
+
+
+/* ══════════════════════════════════════════
    POP-OUT HOVER (Roadmap Page)
    The 4 widget families that already lift via the GLOBAL widget-hover rule
    (line 2646, !important on .pcard/.w/.card) need NO extra work:
@@ -3012,7 +3043,6 @@ html.light footer.roadmap-footer a { color: var(--w); }
   -webkit-backdrop-filter: blur(40px) saturate(180%);
   border: 1px solid var(--glass-border);
   box-shadow: var(--glass-shadow);
-  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
 }
 
 #pg-about .photo-frame:hover,
@@ -3116,165 +3146,6 @@ html.light #pg-projects .bar-track,
 html.light #pg-projects .pipe-stage,
 html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
   background: rgba(0,0,0,.08);
-}
-
-/* ── CV / RESUME WIDGET inside About (glass + ndot) ─ */
-#pg-about .cv-widget {
-  margin-top: 14px;
-  padding: 22px 24px;
-  border-radius: 20px;
-  background: var(--glass-bg);
-  backdrop-filter: blur(40px) saturate(180%);
-  -webkit-backdrop-filter: blur(40px) saturate(180%);
-  border: 1px solid var(--glass-border);
-  box-shadow: var(--glass-shadow);
-  transition: transform .25s cubic-bezier(.34,1.46,.64,1), box-shadow .25s ease;
-}
-#pg-about .cv-widget:hover {
-  transform: translateY(-2px) scale(1.012);
-  box-shadow: var(--glass-hover-shadow);
-  border-color: var(--glass-border);
-}
-.cv-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 18px;
-}
-.cv-title {
-  font-family: var(--font-ndot);
-  font-size: 18px;
-  font-weight: 700;
-  letter-spacing: -.3px;
-  color: var(--w);
-}
-.cv-sub {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
-  color: var(--w30);
-  letter-spacing: .4px;
-  margin-top: 4px;
-}
-.cv-badges {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-.cv-dl {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
-  letter-spacing: .5px;
-  color: var(--acc);
-  text-decoration: none;
-  padding: 4px 10px;
-  border-radius: 6px;
-  border: 1px solid rgba(0,212,170,.25);
-  background: rgba(0,212,170,.08);
-  transition: all .15s;
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-}
-.cv-dl:hover {
-  background: rgba(0,212,170,.14);
-  border-color: rgba(0,212,170,.4);
-}
-.cv-body {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 24px;
-}
-.cv-h {
-  font-family: var(--font-ndot);
-  font-size: 10px;
-  letter-spacing: 2.5px;
-  color: var(--w30);
-  text-transform: uppercase;
-  margin-bottom: 10px;
-}
-.cv-entry {
-  margin-bottom: 12px;
-}
-.cv-row {
-  display: flex;
-  align-items: baseline;
-  gap: 8px;
-}
-.cv-name {
-  font-weight: 700;
-  font-size: 11.5px;
-  color: var(--w);
-  letter-spacing: -.2px;
-}
-.cv-dot {
-  color: var(--w12);
-  font-size: 10px;
-}
-.cv-date {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  color: var(--w30);
-  margin-left: auto;
-  white-space: nowrap;
-}
-.cv-org {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10.5px;
-  color: var(--w30);
-  margin-top: 2px;
-  letter-spacing: .3px;
-}
-.cv-skills {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-}
-.cv-skill {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  padding: 3px 8px;
-  border-radius: 5px;
-  background: rgba(0,0,0,.22);
-  border: 1px solid var(--w06);
-  color: var(--w60);
-  letter-spacing: .3px;
-}
-.cv-langs {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-.cv-lang {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10.5px;
-  color: var(--w60);
-}
-.cv-lang span:last-child {
-  color: var(--w30);
-}
-@media (max-width: 640px) {
-  .cv-body {
-    grid-template-columns: 1fr;
-  }
-  .cv-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 8px;
-  }
-}
-html.light #pg-about .cv-skill {
-  background: rgba(0,0,0,.06);
-  color: var(--w60);
-  border-color: rgba(0,0,0,.1);
-}
-html.light #pg-about .cv-dl {
-  background: rgba(0,180,140,.1);
-  border-color: rgba(0,180,140,.3);
-  color: #0d4a38;
 }
 
 </style>
@@ -3744,86 +3615,6 @@ html.light #pg-about .cv-dl {
         </a>
         <div class="loc-label" style="margin-top:4px">📍 Dieburg · near Darmstadt</div>
         <div class="avail-badge" style="margin-top:4px">available for internships</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ══════════════════════════════════════════
-       CV / RESUME WIDGET
-  ══════════════════════════════════════════ -->
-  <section class="about-section">
-    <div class="sec-head"><h2>resume</h2></div>
-    <div class="cv-widget">
-      <div class="cv-header">
-        <div>
-          <div class="cv-title">Vishal Katariya</div>
-          <div class="cv-sub">CS Student · Full-Stack &amp; ML · Open to internships</div>
-        </div>
-        <div class="cv-badges">
-          <span class="sbadge">PDF · A4</span>
-          <a class="cv-dl" href="assets/cv.pdf" download>download ↗</a>
-        </div>
-      </div>
-      <div class="cv-body">
-        <div class="cv-col">
-          <div class="cv-h">education</div>
-          <div class="cv-entry">
-            <div class="cv-row">
-              <span class="cv-name">B.Sc. Computer Science</span>
-              <span class="cv-dot">•</span>
-              <span class="cv-date">2024 – 2028</span>
-            </div>
-            <div class="cv-org">Hochschule Darmstadt (h_da)</div>
-          </div>
-
-          <div class="cv-h" style="margin-top:14px">selected projects</div>
-          <div class="cv-entry">
-            <div class="cv-row">
-              <span class="cv-name">Finance Buddy</span>
-              <span class="cv-dot">•</span>
-              <span class="cv-date">2025 – 2026</span>
-            </div>
-            <div class="cv-org">993 transactions · 44 months · SvelteKit + Fastify + Postgres</div>
-          </div>
-          <div class="cv-entry">
-            <div class="cv-row">
-              <span class="cv-name">Homelab Dashboard</span>
-              <span class="cv-dot">•</span>
-              <span class="cv-date">2025</span>
-            </div>
-            <div class="cv-org">Realtime ops · 2-node · Tailscale · WebSocket</div>
-          </div>
-          <div class="cv-entry">
-            <div class="cv-row">
-              <span class="cv-name">orlon-bot</span>
-              <span class="cv-dot">•</span>
-              <span class="cv-date">2026</span>
-            </div>
-            <div class="cv-org">QLoRA fine-tune · Telegram · NPU inference</div>
-          </div>
-        </div>
-        <div class="cv-col">
-          <div class="cv-h">skills</div>
-          <div class="cv-skills">
-            <span class="cv-skill">Python</span>
-            <span class="cv-skill">TypeScript</span>
-            <span class="cv-skill">SvelteKit</span>
-            <span class="cv-skill">Fastify</span>
-            <span class="cv-skill">Docker</span>
-            <span class="cv-skill">Tailscale</span>
-            <span class="cv-skill">Linux</span>
-            <span class="cv-skill">PostgreSQL</span>
-            <span class="cv-skill">ML / AI</span>
-            <span class="cv-skill">LLM Fine-tuning</span>
-            <span class="cv-skill">WebSocket</span>
-          </div>
-          <div class="cv-h" style="margin-top:14px">languages</div>
-          <div class="cv-langs">
-            <div class="cv-lang"><span>English</span><span>C2 · fluent</span></div>
-            <div class="cv-lang"><span>German</span><span>B1 · professional</span></div>
-            <div class="cv-lang"><span>Hindi</span><span>Native</span></div>
-          </div>
-        </div>
       </div>
     </div>
   </section>
