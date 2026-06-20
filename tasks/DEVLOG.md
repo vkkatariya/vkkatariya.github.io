@@ -1,3 +1,27 @@
+## [2026-06-20] agent(human) — feat/ndot-proj-title: NDOT to 4 missed accent title selectors
+
+**Mode:** Inline (one-shot, post-Branch-5 audit, 4 selectors, ~5 minutes)
+**Did:**
+- Audited all `*-title` selectors in `prototypes/portfolio-combined.html` for NDOT coverage after Branch 5 landed. Found 4 accent title selectors that Branch 5 missed (different class names than the 5 swapped selectors — Branch 5 picked `.pcard-title` but the featured project widget uses `.proj-title`):
+  - `.proj-title` — homepage featured project widget ("Finance Buddy") — 22px
+  - `.feat-title` — case-study modal section labels ("Overview", "Trends", "Budget", etc.) — 13px, used 10x
+  - `.int-title` — About page interest cards ("Programming", "AI", "Cricket", "Entrepreneurship") — 13px, used 4x
+  - `.pi-title` — `/projects` page project index cards ("Finance Buddy", "Homelab Dashboard", "TypeShift", "orlon-bot") — 28px, used 4x
+- Swapped `font-family` to `var(--font-ndot)` on all 4 selectors. Kept each rule's existing font-size, font-weight, letter-spacing, line-height, color, and margin.
+- Bumped font-weight 700→600 on `.proj-title` and 800→700 on `.pi-title` so the NDOT caps (designed for medium weight) don't look chunky in the larger sizes.
+- Did not touch `.tl-title` (22 occurrences, mixed semantic context — timeline entries vs roadmap topic titles — needs separate decision), `.modal-title` (Space Grotesk is fine for dialog headings), `.phase-title` (already Space Grotesk, looks right), `.vis-title` (JetBrains Mono is correct for chart titles), or `.ph-title` (Syne hero stays).
+
+**Verification:**
+- Browser `getComputedStyle` for all 4 selectors returned `Ndot, "DM Mono", monospace` at correct sizes (22px / 13px / 13px / 28px).
+- Visual screenshot of homepage FEATURED PROJECT widget confirmed "Finance Buddy" renders in NDOT.
+- Diff: +4/-4 lines, 1 file.
+- No cascade conflicts — each selector had only one CSS rule.
+
+**Lesson (L-026 — exhaustive selector audit before declaring a font-stack rollout complete):**
+Branch 5 was scoped from a partial selector list. When the user pointed at the featured project widget (`.proj-title`), I audited ALL `*-title` selectors and found 4 more that needed NDOT for the same accent reason. **Pattern: any roll-out named by a partial list of selectors MUST be followed by a full audit (`grep -E '\.[a-z-]*title[a-z0-9_-]*\s*\{'`) before declaring done.** Otherwise the rollout looks complete from the kickoff list but visually incomplete across the page.
+
+---
+
 ## [2026-06-20] agent(claude) — feat/ndot-widget-titles: apply var(--font-ndot) to 5 accent selectors
 
 **Mode:** Execution (surgical CSS edit — 5 selectors)
