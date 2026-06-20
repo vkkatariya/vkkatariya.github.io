@@ -23,7 +23,9 @@
     - [x] Fix: spending breakdown should lift as ONE whole block (not individual lines). Use `.vis-wrap:has(> .bar-chart)` to target only the chart card wrapper. Remove `.bar-row` hover.
   - [~] Page 3: about — verify `.edu-card, .skill-group, .lang-card, .contact-card` get the global hover
     - [x] Add hover to: photo widget, core technical skills widget, interests widget, contact widgets (4 specific widgets to fix)
-  - [ ] Page 4: roadmap — `.tl-item, .topic-card, .career-card, .resource-card` (if present)
+  - [x] Page 4: roadmap — `.tl-header` (12 timeline accordion headers) and `.resource-item` (9 resource links). Other widgets (.phase-card, .topic-card, .career-card, .guide-card) already lift via the global .pcard/.w rule. Wrappers (.phases-grid, .topics-grid, .careers-grid, .timeline, .resource-group) deliberately excluded per L-021/L-022.
+    - [x] Add hover to .tl-header and .resource-item (layered on top of existing border-color hovers)
+    - [x] Fix: .tl-header transition specificity tie — append transform/box-shadow to existing transition declaration (L-023)
   - [ ] Page 5: me — TBD, audit `#pg-me` markup for widget containers
   - Strategy: one page at a time, one branch per page, dispatch coding agent per page
 - [ ] Font stack update: add Nothing NDOT font where it suits (complement or replace Space Grotesk)
