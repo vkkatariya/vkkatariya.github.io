@@ -1,3 +1,27 @@
+## [2026-06-20] Agent(pop-out-hover-about) — pop-out hover on about page (4 widgets + 1 markup change)
+
+**Mode:** Execution (micro-loop, CSS-only + 1 markup class)
+**Did:**
+- Added 23 lines to `prototypes/portfolio-combined.html` (lines 1754–1776) introducing one scoped pop-out hover block for `#pg-about` covering 4 selectors in two selector groups (transition + hover):
+  - `.photo-block` (the photo + status widget — lifts as one cohesive block per L-021)
+  - `.core-tech-card` (the core technical skills wrapper — lifts as one cohesive block per L-021)
+  - `.int-card` (4 individual interest cards — Programming, AI, Cricket, Entrepreneurship; each lifts independently)
+  - `.contact-card` (4 individual contact cards — Email, GitHub, LinkedIn, Website; each lifts independently)
+- Reused the same effect as the global widget hover rule (lines 2640–2648) but with `#pg-about` scoping: `transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease`; hover applies `transform: translateY(-2px) scale(1.012)`, `box-shadow: 8px 10px 24px var(--sd), -2px -2px 10px var(--sl)`, `border-color: var(--w06)`.
+- Markup change: added `class="core-tech-card"` to the inline-styled `<div>` wrapper at line 4338 (the "core technical skills" section just before the `.skill-bars` div). One line changed, one class added. The class name is new and not referenced anywhere else in the codebase — the new CSS rule is what makes it functional.
+- Reused existing tokens (`--sd`, `--sl`, `--w06`); no new design tokens, no new transitions, no JS changes.
+- Did NOT modify the global rule at lines 2640–2648 (verified byte-identical to HEAD).
+- Did NOT touch any `#pg-home`, `#pg-projects`, `#pg-roadmap`, or `#pg-me` selectors — verified empty by `git diff -- prototypes/portfolio-combined.html | grep -E '^[-+].*#pg-(home|projects|roadmap|me)'`.
+- Preserved the existing `.int-card:hover{border-color:var(--w12)}` (line 1623) and `.contact-card:hover{border-color:var(--w12);background:var(--bg3)}` (line 1643) — these are defined earlier in the stylesheet and apply alongside the new pop-out. The new rule's `border-color: var(--w06)` is defined later and wins (overrides to `var(--w06)` on hover), but the `.contact-card`'s `background:var(--bg3)` is still set by the earlier rule (only `border-color` and `transform`/`box-shadow` are overridden, since the new rule doesn't set `background`). Net result on `.contact-card:hover`: bg changes to `var(--bg3)`, border tints to `var(--w06)`, and card lifts — all three stack cleanly.
+- Preserved the about-color-profile `#pg-about .contact-card` rules at lines 1712–1716 and 1748–1751 (the `transition: border-color .2s, background .2s` at 1712 and the light-mode overrides) — verified by grep.
+- Light mode works automatically: `--sd`, `--sl`, `--w06` are defined in both `:root` (dark, lines 41/42/33) and `html.light` (light, lines 59/60/57); the same rules work in both color modes without needing light-mode overrides.
+- Verified: `git diff dev..HEAD --stat` shows only `prototypes/portfolio-combined.html` + the kickoff tasks file; scope-leakage grep against other pages returns 0; exactly 1 `class="core-tech-card"` addition; HTTP 200 from `python3 -m http.server 8095` (254,531 bytes, 17ms).
+- `tasks/todo.md` updated: the "Page 3: about" sub-item ("Add hover to: photo widget, core technical skills widget, interests widget, contact widgets") flipped from `[ ]` to `[x]`.
+
+**State:** Working on `feat/pop-out-hover-about`, awaiting user review. Branch is 1 commit ahead of `origin/feat/pop-out-hover-about` (kickoff) plus this work = 2 commits total.
+
+**Modified:** `prototypes/portfolio-combined.html`, `tasks/todo.md`, `tasks/DEVLOG.md`
+
 ## [2026-06-20] Agent(pop-out-hover-projects) — pop-out hover on projects page (15 selectors + 3 markup fixes)
 
 **Mode:** Execution (micro-loop, CSS-only)
