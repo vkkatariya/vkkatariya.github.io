@@ -1,3 +1,36 @@
+## [2026-06-20] /me page pop-out hover — complete the 5-page rollout
+
+**Mode:** Execution (micro-loop, ~20 lines CSS + 1 class)
+**Did:**
+- Added `class="me-auth-card"` to the outer wrapper div of the `#pg-me` placeholder card (line 4639). The div already had inline styles for `padding`, `border-radius`, `background`, `border`, and `box-shadow` — adding a class was the minimum markup change.
+- Added a `#pg-me .me-auth-card` pop-out block (lines 1723–1741) matching the established pattern from other pages: `transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease`; hover applies `transform: translateY(-2px) scale(1.012)`, `box-shadow: 8px 10px 24px var(--sd), -2px -2px 10px var(--sl)`, `border-color: var(--w06)`.
+
+**Why:**
+- The `#pg-me` page is a tiny placeholder (lines 4637–4646, ~10 lines of markup) with a single auth-gate card containing: VK avatar, heading, description, "Back home" button.
+- Per L-021's "one cohesive visual" rule, the whole card lifts as one unit. Hovering the avatar or button independently would feel fragmented.
+- Did NOT touch the dead `#pg-me .cta-btn:hover` rule at line 1721 (CSS targets a class that no markup uses). Pre-existing dead CSS, out of scope for this pop-out task.
+- Did NOT add hover to the "Back home" button — it's part of the cohesive card, not a separate widget.
+
+**Audit findings — what was already covered by the global rule:**
+- None. The `.me-auth-card` div had no class at all (used inline styles only), so it bypassed the global `.pcard`/`.w`/`.card` rules entirely.
+
+**Audit findings — what was deliberately skipped with reasons:**
+- `.cta-btn` (button inside the card) — pre-existing dead CSS, not in markup. Out of scope.
+- The "Back home" button — it's part of the cohesive card. Doesn't lift independently.
+- The VK avatar circle, heading, description — they're inside the card. Don't lift independently.
+
+**Verified:**
+- `getComputedStyle(.me-auth-card).transitionProperty` = `"transform, box-shadow, border-color"` ✓
+- `getComputedStyle(.me-auth-card).transitionDuration` = `"0.18s, 0.18s, 0.18s"` ✓
+- `getComputedStyle(.me-auth-card).opacity` = `"1"` ✓
+- Visual hover test: WHOLE card lifts with stronger shadow on hover; avatar + heading + text + button all move together as one cohesive unit ✓
+
+**Files modified:**
+- `prototypes/portfolio-combined.html` (+1 class, +20 lines CSS, +1 comment block, −1 line of unnecessary scope)
+- `tasks/todo.md` (Page 5 marked complete)
+
+---
+
 ## [2026-06-20] Agent(agy) — roadmap pop-out: remove `transform: none !important` from #pg-roadmap.active reset
 
 **Mode:** Execution (micro-loop, 1-line CSS fix)

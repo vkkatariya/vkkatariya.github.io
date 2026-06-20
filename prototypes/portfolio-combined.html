@@ -1720,6 +1720,26 @@ footer {
 #pg-me .cta-btn { transition: transform .18s ease, box-shadow .18s ease; }
 #pg-me .cta-btn:hover { transform: translateY(-2px); box-shadow: 4px 8px 20px rgba(0,0,0,.35); }
 
+/* ══════════════════════════════════════════
+   POP-OUT HOVER (/me Page)
+   The /me page is a placeholder with a single auth-gate card. Per L-021's
+   "one cohesive visual" rule, the whole .me-auth-card lifts as one unit
+   (avatar + heading + description + back-home button). The button inside
+   does NOT lift independently — it's part of the cohesive card.
+
+   Spec matches the other pages: translateY(-2px) scale(1.012),
+   8px/10px/24px shadow stack, --w06 border tint, .18s ease transition.
+══════════════════════════════════════════ */
+#pg-me .me-auth-card {
+  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+}
+
+#pg-me .me-auth-card:hover {
+  transform: translateY(-2px) scale(1.012);
+  box-shadow: 8px 10px 24px var(--sd), -2px -2px 10px var(--sl);
+  border-color: var(--w06);
+}
+
 /* Light-mode overrides (mirror home/projects html.light rules at lines 2465+).
    !important needed to beat the global `html.light .skb-fill { background: var(--w30) !important }` at line 2479. */
 html.light #pg-about .skb-row:nth-of-type(1) .skb-fill,
@@ -4636,7 +4656,7 @@ html.light footer.roadmap-footer a { color: var(--w); }
 </div>
 <div class="page" id="pg-me">
 <div class="page-wrap" style="max-width:480px;padding-top:100px;margin:0 auto">
-  <div style="text-align:center;padding:60px 40px;border-radius:24px;background:var(--bg2);border:1px solid var(--w06);box-shadow:4px 4px 20px var(--sd)">
+  <div class="me-auth-card" style="text-align:center;padding:60px 40px;border-radius:24px;background:var(--bg2);border:1px solid var(--w06);box-shadow:4px 4px 20px var(--sd)">
     <div style="width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,var(--green),var(--blue));display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:18px;font-weight:500;color:#050505;margin:0 auto 20px">VK</div>
     <h2 style="font-family:'Space Grotesk',sans-serif;font-size:24px;font-weight:700;margin:0 0 10px">Private section</h2>
     <p style="color:var(--w60);font-size:14px;line-height:1.6;margin:0 0 28px">/me is behind auth.<br>Decision pending: GitHub OAuth, Tailscale-gated URL, or simple JWT.</p>

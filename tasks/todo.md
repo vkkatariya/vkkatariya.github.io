@@ -15,7 +15,7 @@
 ## Phase 0 — HTML Prototypes (in progress)
 
 ### Visual polish / interaction pass
-- [~] Pop-out hover effect on all widgets/blocks across all pages
+- [x] Pop-out hover effect on all widgets/blocks across all pages
   - [x] Page 1: homepage — finish `.about-section` + `.about-contact` (`.about-bio` and `.about-contact` independent, not parent)
   - [x] Page 2: projects — `.pi, .pcard*, .pfoot-type, .pipe-stage, .plat` (LEARN: wrapper selectors `.proj-index`, `.pipeline`, `.platform-grid`, `.cs-section` should NOT have hover — only the inner interactive widgets)
     - [x] Fix projects: remove hover from wrapper selectors `.proj-index`, `.pipeline`, `.platform-grid`, `.cs-section` — keep only inner widgets (`.pi`, `.pcard`, `.pcard-num`, `.pcard-title`, `.pcard-desc`, `.pcard-tags`, `.pcard-foot`, `.pfoot-type`, `.pipe-stage`, `.plat`, `.phase-card`)
@@ -27,7 +27,7 @@
     - [x] Add hover to .tl-header and .resource-item (layered on top of existing border-color hovers)
     - [x] Fix: .tl-header transition specificity tie — append transform/box-shadow to existing transition declaration (L-023)
     - [x] Fix: `#pg-roadmap.active` reset rule had `transform: none !important` killing pop-out on every .pcard/.guide-card on the page. Removed the transform line; opacity + animation reset remain (fix delivered by agent(agy), DEVLOG added post-hoc)
-  - [ ] Page 5: me — TBD, audit `#pg-me` markup for widget containers
+  - [x] Page 5: me — single auth-gate placeholder card. Added `class="me-auth-card"` to the outer wrapper div (line 4639) and a `#pg-me .me-auth-card` pop-out block (lines 1723–1741). Whole card lifts as one cohesive unit per L-021. Dead `.cta-btn:hover` CSS deliberately left alone (out of scope).
   - Strategy: one page at a time, one branch per page, dispatch coding agent per page
 - [ ] Font stack update: add Nothing NDOT font where it suits (complement or replace Space Grotesk)
 - [ ] Redesign top-right nav pill: fully rounded + liquid glass effect
