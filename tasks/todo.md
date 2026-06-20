@@ -16,7 +16,7 @@
 
 ### Visual polish / interaction pass
 - [~] Pop-out hover effect on all widgets/blocks across all pages
-  - [ ] Page 1: homepage — finish `.about-section` + `.about-contact` (`.about-bio` and `.about-contact` independent, not parent)
+  - [x] Page 1: homepage — finish `.about-section` + `.about-contact` (`.about-bio` and `.about-contact` independent, not parent)
   - [ ] Page 2: projects — `.pi, .proj-index, .pcard*, .pfoot-type, .phase-card, .pipeline, .pipe-stage, .platform-grid, .plat, .cs-section` (`.pcard` overflow:hidden → visible on detail cards)
   - [ ] Page 3: about — verify `.edu-card, .skill-group, .lang-card, .contact-card` get the global hover
   - [ ] Page 4: roadmap — `.tl-item, .topic-card, .career-card, .resource-card` (if present)

@@ -1,3 +1,21 @@
+## [2026-06-20] Agent(pop-out-hover) — homepage pop-out hover on .about-section + .about-contact
+
+**Mode:** Execution (micro-loop, CSS-only)
+**Did:**
+- Added 21 lines to `prototypes/portfolio-combined.html` (lines 2624–2644) introducing two INDEPENDENT pop-out hover rules scoped to `#pg-home`:
+  - `#pg-home .about-section` + `#pg-home .about-section:hover` (large about+contact block at bottom of homepage)
+  - `#pg-home .about-contact` + `#pg-home .about-contact:hover` (smaller contact widget inside .about-section)
+- Both use the same effect as the global widget hover rule (lines 2615–2623) but with `#pg-home` scoping: `transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease`; hover applies `transform: translateY(-2px) scale(1.012)`, `box-shadow: 8px 10px 24px var(--sd), -2px -2px 10px var(--sl)`, `border-color: var(--w06)`.
+- The two hovers are independent selectors — `.about-contact` does NOT inherit its hover from the parent `.about-section` (per user-confirmed memory: ".about-bio and .about-contact need independent hover, NOT parent .about-section").
+- Reused existing tokens (`--sd`, `--sl`, `--w06`); no new design tokens, no new transitions, no markup or JS changes.
+- Both tokens are defined in `:root` (dark) and `html.light` (light), so the same rules work in both color modes without needing light-mode overrides. Confirmed by `awk` extraction of both token blocks.
+- Did NOT touch the global rule at lines 2615–2623. Did NOT touch any `#pg-projects` / `#pg-about` / `#pg-roadmap` / `#pg-me` selectors — verified empty by `git diff dev..HEAD -- prototypes/portfolio-combined.html | grep -E '^[-+].*#pg-(projects|about|roadmap|me)'`.
+- Verified HTTP 200 from `python3 -m http.server` (size 251,245 bytes, was 250,482 pre-edit).
+- `tasks/todo.md` updated: "Page 1: homepage" sub-item flipped from `[ ]` to `[x]`.
+
+**State:** Working on `feat/pop-out-hover-homepage`, awaiting user review. Branch is 2 commits ahead of `origin/feat/pop-out-hover-homepage` (kickoff + this work).
+**Modified:** `prototypes/portfolio-combined.html`, `tasks/todo.md`, `tasks/DEVLOG.md`
+
 ## [2026-06-20] Hermes Agent — apply roadmap color profile to about page
 
 **Mode:** Execution (micro-loop, scoped CSS-only)
