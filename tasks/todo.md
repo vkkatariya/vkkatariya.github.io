@@ -17,9 +17,10 @@
 ### Visual polish / interaction pass
 - [x] Pop-out hover effect on all widgets/blocks across all pages (5-page rollout complete)
 - [x] Font stack update — vendor NDOT + fix DM Mono readability (3-branch rollout)
-- [~] Expand NDOT accent font usage (Branch 4)
-  - [ ] Branch 4 `feat/ndot-topbar-rollout`: apply var(--font-ndot) to all topbar text (nav links, logo, search, lang, theme, profile) + bump topbar font-size. Keep Space Grotesk for body/headings. Accent-only scope. Confirmed 2026-06-20.
+- [x] Expand NDOT accent font usage (Branch 4)
+  - [x] Branch 4 `feat/ndot-topbar-rollout`: apply var(--font-ndot) to all topbar text (nav links, logo, search, lang, theme, profile) + bump topbar font-size. Keep Space Grotesk for body/headings. Accent-only scope. Confirmed 2026-06-20.
   - Note: After Branch 4, evaluate if a Branch 5 should add NDOT to widget titles (.pcard-title, .topic-name, .career-title) and button text (.btn). Defer to user decision after seeing topbar result.
+  - Branch 4 result: NDOT applied to 9 topbar selectors. Sizes bumped 11-12px → 13-16px. Lesson L-024 added (duplicate CSS selectors with same specificity — cascade order wins). Agent went slightly out of scope during dispatch; cleanup reverted 2 selectors and restored 1 .stat-badge closing brace.
   - [x] Branch 1 `feat/vendor-ndot-font`: pull NDOT .woff2 from GitHub mirror, declare @font-face, add assets/fonts/README.md with source attribution
   - [x] Branch 2 `fix/dm-mono-readability`: bump font-size ≥11px, add letter-spacing 0.5px, swap UI labels to JetBrains Mono, restrict DM Mono to true monospace contexts
   - [x] Branch 3 `feat/ndot-display-accent` (depends on #1): use NDOT in 5 NothingOS-accent spots (.pcard-num, .cs-number, .lbl/.lbl-inv, .skill-n, .clock-h/m). Keep Space Grotesk for body/titles/buttons. Syne stays for hero titles.
