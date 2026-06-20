@@ -25,6 +25,36 @@
 
 ---
 
+## [2026-06-20] agent(codex) — feat/timeline-fonts-bigger (REDO): match .cs-title NDOT reference
+
+**Mode:** Execution (surgical CSS redo, 21 lines)
+**Did:**
+- Replaced previous rejected attempt (`2740ce1` + `d4e4b78`) by adding a 3rd fix commit on top of `feat/timeline-fonts-bigger`.
+- Switched `.tl-title` from default/Space Grotesk to `var(--font-ndot)` and matched `.cs-title` reference style:
+  - `font-size: clamp(42px, 6vw, 80px)`
+  - `font-weight: 800`
+  - `letter-spacing: -2.5px`
+  - `line-height: .9`
+  - `margin-bottom: 8px`
+- Bumped `.tl-desc` from 13px to 15px (kept JetBrains Mono) and added `max-width: 480px` for readability in 1fr columns.
+- Bumped `.tl-year` from 13px to 14px (DM Mono unchanged).
+- Bumped `.tl-badge` from 12px to 13px (JetBrains Mono unchanged), padding from `1px 6px` to `2px 8px`.
+- Did NOT touch timeline layout/grid (center spine + L/R alternation locked).
+- Did NOT touch `#pg-roadmap .tl-*` accordion rules.
+- Did NOT touch pop-out hover effects.
+
+**Verification:**
+- `git status`: only `prototypes/portfolio-combined.html` modified (plus untracked kickoff/homelab-config files).
+- `git diff --stat`: 1 file changed, 12 insertions(+), 9 deletions(-) (≤20 lines).
+- `rg -n '\.tl-title\s*\{' prototypes/portfolio-combined.html`: line 1086 references `font-family: var(--font-ndot)`.
+- `rg -n '#pg-roadmap \.tl-title' prototypes/portfolio-combined.html`: untouched at line 2198.
+- Commit: `446b68f` — "agent(codex): feat(timeline-fonts): match .cs-title reference — NDOT 800 clamp(42-80px) titles, bumped desc/year/badge for hierarchy".
+- Branch pushed: `origin/feat/timeline-fonts-bigger`.
+
+**Files changed:** 1 (`prototypes/portfolio-combined.html`)
+
+---
+
 ## [2026-06-20] agent(opencode) — feat/name-ndot-wordmark (REDO): full name in NDOT 55 Caps
 
 **Mode:** Execution (surgical markup + CSS cleanup, 22 lines)
@@ -1156,8 +1186,6 @@ Branch: feat/roadmap-morph-restore → merged to dev (fb7317e).
 **Issues encountered:**
 - The `opencode` local CLI (`opencode run --dangerously-skip-permissions`) started and produced an initial plan but hung for >4 minutes with no further output or disk changes, so the edits were completed inline with the patch tool and Python validation instead.
 - After the first attempted markup rewrite, a stray conflict marker and partial `.tl-stat` divs appeared because the replacement regex matched across item boundaries; this was corrected by reverting and reapplying the patch cleanly.
-
-
 ---
 
 ## [2026-06-20] agent(opencode) — feat/roadmap-header-matches-aesthetic
@@ -1178,3 +1206,14 @@ Branch: feat/roadmap-morph-restore → merged to dev (fb7317e).
 - Commit: 005220f.
 
 **Files changed:** 1 (`prototypes/portfolio-combined.html`)
+
+---
+
+## [2026-06-20] agent(hermes) — feat/timeline-fonts-bigger (REDO v3): scale down .tl-title
+
+User reviewed v2 (NDOT 800 clamp(42-80px) titles) — rejected as way too big for one-line timeline entries. Reference was .cs-title for multi-word hero titles, but timeline entries are short single-line labels.
+
+Changes:
+- `.tl-title`: clamp(42px, 6vw, 80px) NDOT 800 → clamp(18px, 1.5vw, 22px) NDOT 700, letter-spacing -2.5px → -.8px, line-height .9 → 1.15, margin-bottom 8px → 4px
+
+Kept NDOT family and the small-but-readable size band. This is essentially the v1 attempt (agy) size with the NDOT font swap that the user wanted from v2.
