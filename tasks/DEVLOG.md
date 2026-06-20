@@ -1,3 +1,30 @@
+## [2026-06-20] Agent(agy) — roadmap pop-out: remove `transform: none !important` from #pg-roadmap.active reset
+
+**Mode:** Execution (micro-loop, 1-line CSS fix)
+**Did:**
+- Removed line 2021 (`transform: none !important;`) from the `#pg-roadmap.active [data-anim], #pg-roadmap.active .pcard` reset rule in `prototypes/portfolio-combined.html`. The rule now only sets `opacity: 1 !important` and `animation: none !important`. The pre-existing comment block above the rule is preserved as-is.
+
+**Why:**
+- A user feedback round reported that `.phase-card` ×4 (Learning Path Overview), `.guide-card` ×1 (Getting Started), `.topic-card` ×11 (11 Core Topics), and `.career-card` ×10–12 (Career Paths) all failed to lift on hover despite the global `.pcard:hover` rule covering `.pcard` with `!important`.
+- Investigation: the `#pg-roadmap.active` rule's `transform: none !important` had higher specificity (0,1,2,0) than the global `.pcard:hover` (0,0,2,0). Both used `!important`, so cascade source order + specificity = the reset rule wins → the pop-out hover transform was silently killed for every `.pcard` on the roadmap page.
+- Same selector combo targeted `[data-anim]` too, so `.guide-card` (which has `data-anim` attribute, line 3806) was caught the same way.
+- Removing only the `transform` line is safe because: (a) `opacity: 1 !important` still keeps cards visible; (b) `animation: none !important` still cancels the entrance animation; (c) the entrance keyframe's `to` state is `translateY(0) scale(1)` (effectively no transform), so cards settle at their natural resting position once the animation is cancelled.
+
+**Verified:**
+- `getComputedStyle(.phase-card).transform` = `matrix(1, 0, 0, 1, 0, 0)` (no offset, no scale, cards at rest) ✓
+- `getComputedStyle(.phase-card).opacity` = `1` ✓
+- Visual hover test: Foundation card (01) clearly lifts with shadow vs. the other 3 cards in resting state ✓
+- Visual hover test: first topic card (01 Programming Fundamentals) clearly lifts in the 3-column grid ✓
+- `.tl-header` and `.resource-item` pop-outs (added in previous fix) unaffected — confirmed still lifting.
+
+**Files modified:**
+- `prototypes/portfolio-combined.html` (−1 line, −1 transform declaration; comment unchanged)
+- `tasks/kickoff-roadmap-transform-reset.md` (agent prompt — created pre-dispatch)
+
+**Commit:** (this entry was added post-hoc after the agent timed out; the underlying CSS change was already on the branch from the agent's partial run)
+
+---
+
 ## [2026-06-20] Agent(pop-out-hover-roadmap) — pop-out hover on roadmap page (.tl-header + .resource-item only)
 
 **Mode:** Execution (micro-loop, CSS-only, tightly scoped)
