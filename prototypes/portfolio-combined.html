@@ -168,7 +168,14 @@ html.light body::before {
   transition: box-shadow .2s;
 }
 .nav-logo:hover { box-shadow: 0 6px 32px rgba(0,0,0,.65), 0 1px 0 rgba(255,255,255,.16) inset; }
-.nav-logo-name { font-family: var(--font-ndot); font-size: 20px; line-height: 1; white-space: nowrap; letter-spacing: -.3px; }
+.nav-logo-name { font-family: 'Space Grotesk', sans-serif; font-size: 24px; line-height: 1; white-space: nowrap; letter-spacing: -.3px; }
+.nav-logo-name .hn-script {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic; font-weight: 700;
+  font-size: 1.5em; letter-spacing: -1px;
+  vertical-align: baseline;
+}
+.nav-logo-name .hn-sans { font-weight: 700; }
 
 /* CENTER — nav pill (home/projects/roadmap/about + available dot) */
 .nav-links {
@@ -986,47 +993,74 @@ footer {
 .soc:hover svg{transform:scale(1.2)}
 
 /* ══════════════════════════════════════════
-   TIMELINE
+   TIMELINE — homepage center-spine alternating layout
 ══════════════════════════════════════════ */
 .tl-outer{
   display:grid;
-  grid-template-columns:1.1fr 1fr;
-  gap:40px;
-  align-items:start;
+  grid-template-columns:1fr;
   margin-top:16px;
 }
 .tl-body{
   position:relative;
-  padding-left:28px;
+  display:grid;
+  grid-template-columns:1fr auto 1fr;
+  gap:0 40px;
 }
 .tl-body::before{
   content:'';
   position:absolute;
-  left:7px;top:8px;bottom:4px;
+  left:50%;top:8px;bottom:4px;
   width:1px;
   background:linear-gradient(to bottom,var(--w12),var(--w06) 85%,transparent);
+  transform:translateX(-50%);
+  z-index:0;
 }
 .tl-item{
-  position:relative;
-  padding-bottom:22px;
+  display:contents;
 }
-.tl-item:last-child{padding-bottom:0}
-.tl-item::before{
-  content:'';
-  position:absolute;
-  left:-24px;top:5px;
+.tl-dot{
   width:8px;height:8px;
   border-radius:50%;
   background:var(--w);
   box-shadow:0 0 0 3px var(--bg),0 0 0 4.5px var(--w12);
+  grid-column:2;
+  justify-self:center;
+  align-self:start;
+  margin-top:5px;
 }
-.tl-item.future{opacity:.3}
-.tl-item.future::before{
+.tl-item.future .tl-dot{
   background:transparent;
   border:1px solid var(--w30);
   box-shadow:none;
 }
-.tl-meta{display:flex;align-items:center;gap:8px;margin-bottom:3px}
+.tl-meta{
+  display:flex;align-items:flex-start;gap:8px;
+  padding-bottom:22px;
+}
+.tl-content{
+  display:flex;flex-direction:column;gap:3px;
+  padding-bottom:22px;
+}
+.tl-item:nth-child(odd) .tl-meta{
+  grid-column:3;
+  justify-content:flex-start;
+}
+.tl-item:nth-child(odd) .tl-content{
+  grid-column:1;
+  align-items:flex-end;
+  text-align:right;
+}
+.tl-item:nth-child(even) .tl-meta{
+  grid-column:1;
+  justify-content:flex-end;
+}
+.tl-item:nth-child(even) .tl-content{
+  grid-column:3;
+  align-items:flex-start;
+  text-align:left;
+}
+.tl-item:last-child .tl-content,
+.tl-item:last-child .tl-meta{padding-bottom:0}
 .tl-year{
   font-family:'DM Mono',monospace;
   font-size: 11px;color:var(--w30);
@@ -1040,37 +1074,12 @@ footer {
 .tl-title{
   font-size:14px;font-weight:600;
   color:var(--w);letter-spacing:-.3px;
-  line-height:1.25;margin-bottom:3px;
+  line-height:1.25;
 }
 .tl-desc{
   font-family:'JetBrains Mono',monospace;
   font-size: 11px; letter-spacing: 0.4px;color:var(--w30);
   letter-spacing:.3px;line-height:1.65;
-}
-
-/* stats grid (right column of timeline) */
-.tl-stats{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px;
-  position:sticky;top:108px;
-}
-.tl-stat{
-  padding:16px 18px;border-radius:16px;
-  background:var(--bg2);
-  border:1px solid var(--w06);
-  box-shadow:4px 4px 12px var(--sd),-1px -1px 5px var(--sl),inset 0 1px 0 var(--sl);
-}
-.tl-stat-num{
-  font-family:'JetBrains Mono',monospace;
-  font-size:32px;font-weight:400;
-  letter-spacing:-2px;line-height:1;
-  color:var(--w);margin-bottom:4px;
-}
-.tl-stat-lbl{
-  font-family:'JetBrains Mono',monospace;
-  font-size: 11px;color:var(--w30);
-  letter-spacing:2px;text-transform:uppercase;
 }
 
 /* ══════════════════════════════════════════
@@ -1137,8 +1146,24 @@ footer {
 
 /* responsive additions */
 @media(max-width:700px){
-  .tl-outer{grid-template-columns:1fr}
-  .tl-stats{position:static}
+  .tl-body{grid-template-columns:1fr;gap:0}
+  .tl-body::before{left:11px;transform:none}
+  .tl-dot{grid-column:1;justify-self:start;margin-left:7px;margin-top:6px}
+  .tl-item:nth-child(odd) .tl-meta,
+  .tl-item:nth-child(even) .tl-meta{
+    grid-column:1;
+    justify-content:flex-start;
+    padding-left:28px;
+    padding-bottom:3px;
+  }
+  .tl-item:nth-child(odd) .tl-content,
+  .tl-item:nth-child(even) .tl-content{
+    grid-column:1;
+    align-items:flex-start;
+    text-align:left;
+    padding-left:28px;
+    padding-bottom:22px;
+  }
   .about-grid{grid-template-columns:1fr}
   .about-contact{width:auto}
 }
@@ -2062,13 +2087,6 @@ html.light #pg-about .contact-card:nth-of-type(4) .cc-icon { color: var(--acc); 
   font-family: 'Space Grotesk', sans-serif; font-weight: 700;
   font-size: clamp(38px, 6vw, 72px); letter-spacing: -2px;
   line-height: 1.05;
-}
-#pg-roadmap #hero-title,
-#pg-roadmap .hero h1 {
-  font-family: 'Cormorant Garamond', serif;
-  font-style: italic;
-  font-weight: 700;
-  letter-spacing: -1px;
 }
 .hero-sub {
   font-family: 'Space Grotesk', sans-serif; font-weight: 400; font-size: 18px;
@@ -3135,56 +3153,59 @@ html.light footer.roadmap-footer a { color: var(--w); }
     <div class="tl-body">
       <div class="tl-item">
         <div class="tl-meta"><span class="tl-year">Oct 2024</span><span class="tl-badge edu">education</span></div>
-        <div class="tl-title">Started CS at h_da</div>
-        <div class="tl-desc">Hochschule Darmstadt · CS · since Oct 2024</div>
+        <div class="tl-dot"></div>
+        <div class="tl-content">
+          <div class="tl-title">Started CS at h_da</div>
+          <div class="tl-desc">Hochschule Darmstadt · CS · since Oct 2024</div>
+        </div>
       </div>
       <div class="tl-item">
         <div class="tl-meta"><span class="tl-year">2024</span><span class="tl-badge lab">homelab</span></div>
-        <div class="tl-title">First homelab — Rock 5T</div>
-        <div class="tl-desc">Radxa Rock 5T · RK3588J ARM64 · 16 GB LPDDR5<br>Docker · Tailscale · self-hosted from scratch</div>
+        <div class="tl-dot"></div>
+        <div class="tl-content">
+          <div class="tl-title">First homelab — Rock 5T</div>
+          <div class="tl-desc">Radxa Rock 5T · RK3588J ARM64 · 16 GB LPDDR5<br>Docker · Tailscale · self-hosted from scratch</div>
+        </div>
       </div>
       <div class="tl-item">
         <div class="tl-meta"><span class="tl-year">2025</span><span class="tl-badge proj">project</span></div>
-        <div class="tl-title">Finance Buddy</div>
-        <div class="tl-desc">993 real transactions · 44 months · Oct 2022–May 2026<br>SvelteKit + Fastify + Postgres + Drizzle + Chart.js</div>
+        <div class="tl-dot"></div>
+        <div class="tl-content">
+          <div class="tl-title">Finance Buddy</div>
+          <div class="tl-desc">993 real transactions · 44 months · Oct 2022–May 2026<br>SvelteKit + Fastify + Postgres + Drizzle + Chart.js</div>
+        </div>
       </div>
       <div class="tl-item">
         <div class="tl-meta"><span class="tl-year">2025</span><span class="tl-badge lab">homelab</span></div>
-        <div class="tl-title">Homelab v2 — Proxmox cluster</div>
-        <div class="tl-desc">+ Dell OptiPlex 7060 · Proxmox VE · 2-node cluster<br>KVM / libvirt · LXC containers · 48 GB total RAM</div>
+        <div class="tl-dot"></div>
+        <div class="tl-content">
+          <div class="tl-title">Homelab v2 — Proxmox cluster</div>
+          <div class="tl-desc">+ Dell OptiPlex 7060 · Proxmox VE · 2-node cluster<br>KVM / libvirt · LXC containers · 48 GB total RAM</div>
+        </div>
       </div>
       <div class="tl-item">
         <div class="tl-meta"><span class="tl-year">2026</span><span class="tl-badge collab">collab</span></div>
-        <div class="tl-title">TypeShift</div>
-        <div class="tl-desc">Cross-platform AI writing assistant · with nayalambaliya<br>Android (Kotlin) · macOS (Swift) · Windows (C#)</div>
+        <div class="tl-dot"></div>
+        <div class="tl-content">
+          <div class="tl-title">TypeShift</div>
+          <div class="tl-desc">Cross-platform AI writing assistant · with nayalambaliya<br>Android (Kotlin) · macOS (Swift) · Windows (C#)</div>
+        </div>
       </div>
       <div class="tl-item">
         <div class="tl-meta"><span class="tl-year">2026</span><span class="tl-badge ai">AI · ML</span></div>
-        <div class="tl-title">orlon-bot — in progress</div>
-        <div class="tl-desc">Telegram bot · QLoRA fine-tune on Kaggle T4 GPUs<br>Unsloth · inference on Rock 5T NPU (6 TOPs)</div>
+        <div class="tl-dot"></div>
+        <div class="tl-content">
+          <div class="tl-title">orlon-bot — in progress</div>
+          <div class="tl-desc">Telegram bot · QLoRA fine-tune on Kaggle T4 GPUs<br>Unsloth · inference on Rock 5T NPU (6 TOPs)</div>
+        </div>
       </div>
       <div class="tl-item future">
         <div class="tl-meta"><span class="tl-year">2028</span><span class="tl-badge goal">goal</span></div>
-        <div class="tl-title">B.Sc. Computer Science</div>
-        <div class="tl-desc">Hochschule Darmstadt · expected graduation</div>
-      </div>
-    </div>
-    <div class="tl-stats">
-      <div class="tl-stat">
-        <div class="tl-stat-num">2</div>
-        <div class="tl-stat-lbl">nodes online</div>
-      </div>
-      <div class="tl-stat">
-        <div class="tl-stat-num">993</div>
-        <div class="tl-stat-lbl">txns tracked</div>
-      </div>
-      <div class="tl-stat">
-        <div class="tl-stat-num">4</div>
-        <div class="tl-stat-lbl">projects shipped</div>
-      </div>
-      <div class="tl-stat">
-        <div class="tl-stat-num">2</div>
-        <div class="tl-stat-lbl">yrs building</div>
+        <div class="tl-dot"></div>
+        <div class="tl-content">
+          <div class="tl-title">B.Sc. Computer Science</div>
+          <div class="tl-desc">Hochschule Darmstadt · expected graduation</div>
+        </div>
       </div>
     </div>
   </div>
@@ -3799,8 +3820,8 @@ html.light footer.roadmap-footer a { color: var(--w); }
 
   <!-- ═══════════ HERO ═══════════ -->
   <section class="hero" aria-labelledby="hero-title">
-    <div class="wlbl-row">cs fundamentals</div>
-    <h1 id="hero-title">CS Fundamentals<br>Roadmap</h1>
+    <div class="wlbl-row">cs fundamentals · 2025</div>
+    <h1 id="hero-title">CS Fundamentals<br>Roadmap 2025</h1>
     <p class="hero-sub">Your Complete Guide to Mastering Computer Science Fundamentals</p>
     <div class="hero-stats">
       <span class="stat-badge blue">📋 11 Core Topics</span>
@@ -4361,7 +4382,7 @@ html.light footer.roadmap-footer a { color: var(--w); }
     <!-- Bio -->
     <div class="bio">
       <p class="bio-p">
-        I'm <strong>Vishal Katariya</strong> — a CS student at Hochschule Darmstadt, based in Dieburg near Frankfurt. I build across the full stack: fine-tuning language models, wiring REST and WebSocket APIs, and managing self-hosted infrastructure on real hardware.
+        I'm <strong><span class="hn-script">V</span><span class="hn-sans">ishal</span><span class="hn-gap"></span><span class="hn-script">K</span><span class="hn-sans">atariya</span></strong> — a CS student at Hochschule Darmstadt, based in Dieburg near Frankfurt. I build across the full stack: fine-tuning language models, wiring REST and WebSocket APIs, and managing self-hosted infrastructure on real hardware.
       </p>
       <p class="bio-p">
         My projects run in production — not just on localhost. From a personal finance tracker built on 993 real transactions, to a 2-node Proxmox cluster running 6+ services, to a Telegram bot trained with QLoRA on a free Kaggle GPU and deployed to an ARM NPU.
