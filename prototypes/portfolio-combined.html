@@ -1245,19 +1245,23 @@ footer {
 .proj-index{
   position:relative;z-index:1;max-width:1100px;margin:0 auto;
   padding:0 20px 40px;
-  display:grid;grid-template-columns:1fr 1fr;gap:2px;
+  display:grid;grid-template-columns:1fr 1fr;gap:9px;
 }
 @media(max-width:700px){.proj-index{grid-template-columns:1fr}}
 .pi{
   padding:36px 40px;cursor:pointer;
-  border:1px solid var(--w06);border-radius:0;
-  transition:background .2s;position:relative;overflow:hidden;
+  border:1px solid var(--w06);border-radius:14px;
+  background:linear-gradient(135deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+  backdrop-filter:blur(40px) saturate(180%);
+  -webkit-backdrop-filter:blur(40px) saturate(180%);
+  box-shadow:0 4px 20px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.10);
+  transition:background .2s, box-shadow .2s, transform .2s;position:relative;overflow:hidden;
 }
-.pi:hover{background:var(--bg2)}
-.pi:nth-child(1){border-radius:16px 0 0 0}
-.pi:nth-child(2){border-radius:0 16px 0 0}
-.pi:nth-child(3){border-radius:0 0 0 16px}
-.pi:nth-child(4){border-radius:0 0 16px 0}
+.pi:hover{
+  background:linear-gradient(135deg, rgba(255,255,255,.12), rgba(255,255,255,.05));
+  box-shadow:0 6px 28px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.14);
+  transform:translateY(-2px);
+}
 .pi-num{
   font-family:'JetBrains Mono',monospace;font-size: 11px;letter-spacing:2px;
   color:var(--w30);margin-bottom:16px;
@@ -3070,11 +3074,7 @@ html.light footer.roadmap-footer a { color: var(--w); }
   border-color: var(--glass-border);
 }
 
-/* Project index tiles have rounded corners on some children; keep corners intact */
-#pg-projects .pi:nth-child(1) { border-radius: 16px 0 0 0; }
-#pg-projects .pi:nth-child(2) { border-radius: 0 16px 0 0; }
-#pg-projects .pi:nth-child(3) { border-radius: 0 0 0 16px; }
-#pg-projects .pi:nth-child(4) { border-radius: 0 0 16px 0; }
+/* All .pi cards use uniform border-radius from .pi rule (14px) */
 
 /* --- Roadmap page widgets (timeline items explicitly excluded) --- */
 #pg-roadmap .phase-card,
