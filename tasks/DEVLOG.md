@@ -1,3 +1,18 @@
+## [2026-06-25] claude-code — feat/homepage-about-contact-merge: stretch ABOUT+CONTACT to fill grid row
+
+**Mode:** Micro-loop (single class change + inner reflow)
+**Did:**
+- Changed widget #11 CONTACT from `s12` (1×2) to `s22` (2×2) so both ABOUT+CONTACT widgets fill all 4 grid columns (was 3/4 occupied, ~25% empty gap on right).
+- Switched github/web cards inner container from `flex-direction:column` to `grid-template-columns:1fr 1fr` so they display side-by-side in the wider slot.
+
+**State:** Complete — committed `8aed76d`, pushed to `origin/feat/homepage-about-contact-merge`.
+
+**Decided:** No further CSS adjustments needed; 2-column inner grid fills the wider widget naturally.
+
+**Modified:** `prototypes/portfolio-combined.html`
+
+---
+
 ## [2026-06-25] claude-code — feat/homepage-about-contact-merge: redistribute about+contact into widget grid
 
 **Mode:** Execution (single-file SPA refactor, dispatched by Hermes)
