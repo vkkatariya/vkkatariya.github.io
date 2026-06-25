@@ -1,3 +1,109 @@
+## [2026-06-25] hermes — feat/homepage-about-contact-merge: shrink CONTACT widget to natural size
+
+**Mode:** Micro-loop (single-line inline style adjustment)
+**Did:**
+- Changed widget #11 CONTACT inline styles: `max-width:340px → 280px`, added `overflow:visible;align-self:start`.
+- The `overflow:visible` override breaks the `.w { overflow:hidden }` constraint so the widget can grow to its natural content height instead of being clipped to the 168px grid row height.
+- `align-self:start` anchors the widget to the top of its 2-row grid cell instead of stretching it vertically.
+- Result: CONTACT widget now matches the original `.about-section#contact` dark neomorphic card visual — narrow (280px max), natural content height, dark surface preserved.
+
+**State:** Committed `ef1d81d`, pushed to `origin/feat/homepage-about-contact-merge`. Branch ready to PR/merge.
+
+**Decided:** Direct edit by orchestrator rather than re-dispatching agent. Previous agent dispatches (v3 + v4) added the class and reduced gaps but didn't override the `.w { overflow:hidden }` clip. The orchestrator should have caught this earlier — agent dispatch cycles for "simple" fixes accumulate overhead.
+
+**Lessons (for tonight's orchestrator log):**
+- When a widget class chain like `.w.s12.about-contact` produces conflicting constraints (one wants clipping, another wants natural height), the fix is an inline `overflow:visible` override, NOT removing the `.w` class.
+- "Contact widget size is still same" from the user likely meant the visual footprint on screen, which is driven by the grid cell height + overflow clip, not the max-width alone.
+- Lesson: when dispatching agents for "fix the X", check what CSS rules are constraining X (here: `.w { overflow:hidden }` + `.grid { grid-auto-rows:168px }`) before writing the kickoff.
+
+**Modified:** `prototypes/portfolio-combined.html`
+
+---
+
+## [2026-06-25] claude-code — feat/homepage-about-contact-merge: tighten widget content spacing to match original bottom-section
+
+**Mode:** Micro-loop (3 inline style changes + 1 removal)
+**Did:**
+- Removed `style="font-size:12.5px;line-height:1.7"` from `.about-bio` — original CSS class (15px / 1.85) now applies, text is visibly larger.
+- Added `gap:10px;padding:16px` inline override on widget #11 wrapper to reduce `.about-contact` outer gap (14→10px) and padding (20→16px).
+- Bumped internal cw-row section gap from 6px → 8px (github/web cards breathe more).
+- Bumped lower section gap from 7px → 8px (loc/badge/resume section).
+
+**State:** Complete — committed `2c38cd7`, pushed to `origin/feat/homepage-about-contact-merge`.
+
+**Modified:** `prototypes/portfolio-combined.html`
+
+---
+
+## [2026-06-25] claude-code — feat/homepage-about-contact-merge: restore dark neomorphic surface on CONTACT widget
+
+**Mode:** Micro-loop (add one class + one max-width)
+**Did:**
+- Added `about-contact` class back to widget #11 CONTACT wrapper.
+- Replaced redundant inline `display:flex;flex-direction:column;justify-content:space-between` with `max-width:340px;justify-self:start` — the class already provides flex/column/gap via the existing CSS rule.
+- Dark neomorphic surface (`var(--bg2)` bg, 28px border-radius, inset+outer box-shadow) restored via the class.
+- Verified dark mode and light mode with Playwright full-page screenshots; both render correctly.
+
+**State:** Complete — committed `8ddab05`, pushed to `origin/feat/homepage-about-contact-merge`.
+
+**Modified:** `prototypes/portfolio-combined.html`
+
+---
+
+## [2026-06-25] claude-code — feat/homepage-about-contact-merge: restore ABOUT wide + CONTACT narrow proportions
+
+**Mode:** Micro-loop (3 inline attribute changes)
+**Did:**
+- Added `grid-column:span 3` to widget #9 ABOUT so it spans 3 of 4 grid columns (~75% width).
+- Reverted widget #11 CONTACT from `s22` back to `s12` (1 col × 2 rows), restoring the narrow dark-glass contact card.
+- Reverted CONTACT inner card container from 2-col CSS grid back to `flex-direction:column` to match the narrow footprint.
+
+**State:** Complete — committed `b3c3e7e`, pushed to `origin/feat/homepage-about-contact-merge`.
+
+**Decided:** No other changes needed; grid-column override on the ABOUT widget is the cleanest way to span 3 cols without touching the CSS class definitions.
+
+**Modified:** `prototypes/portfolio-combined.html`
+
+---
+
+## [2026-06-25] claude-code — feat/homepage-about-contact-merge: stretch ABOUT+CONTACT to fill grid row
+
+**Mode:** Micro-loop (single class change + inner reflow)
+**Did:**
+- Changed widget #11 CONTACT from `s12` (1×2) to `s22` (2×2) so both ABOUT+CONTACT widgets fill all 4 grid columns (was 3/4 occupied, ~25% empty gap on right).
+- Switched github/web cards inner container from `flex-direction:column` to `grid-template-columns:1fr 1fr` so they display side-by-side in the wider slot.
+
+**State:** Complete — committed `8aed76d`, pushed to `origin/feat/homepage-about-contact-merge`.
+
+**Decided:** No further CSS adjustments needed; 2-column inner grid fills the wider widget naturally.
+
+**Modified:** `prototypes/portfolio-combined.html`
+
+---
+
+## [2026-06-25] claude-code — feat/homepage-about-contact-merge: redistribute about+contact into widget grid
+
+**Mode:** Execution (single-file SPA refactor, dispatched by Hermes)
+**Did:**
+- Replaced widget #9 ABOUT (was `s21` + short bio + chips) with full 3-paragraph bio from the bottom about-section; resized to `s22` to accommodate content.
+- Replaced widget #11 CONTACT (was `inv s11` + envelope icon) with github/web cards, location line, available badge, and ↓ download resume button; resized to `s12`, removed `inv` for visual consistency.
+- Moved widget #10 PROJECTS STAT before widget #9 ABOUT in the grid HTML, filling the empty slot in that row.
+- Deleted entire `<section class="about-section" id="contact">` bottom block.
+- Verified via Playwright screenshot: layout correct, all content visible, no bottom section.
+
+**State:** Complete — committed `c44ae59`, pushed to `origin/feat/homepage-about-contact-merge`.
+
+**Decided:**
+- Changed `s21` → `s22` on widget #9: three full paragraphs cannot fit in 148px; spec requires verbatim copy.
+- Changed `inv s11` → `s12` on widget #11: contact content (6 items) needs more than 148px height.
+- Removed `inv` from widget #11: contact card CSS uses dark-background colors, inv wrapper incompatible.
+
+**Blocked/Next:** Branch ready for PR / merge into main.
+
+**Modified:** `prototypes/portfolio-combined.html`
+
+---
+
 ## [2026-06-23] hermes — feat/cv-pdf merge: resolve DEVLOG conflict, complete merge
 
 **Mode:** Execution
