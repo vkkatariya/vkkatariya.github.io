@@ -496,3 +496,51 @@ After the audit pass, all 6 gaps were fixed. The kickoff is now 17.8 KB and disp
 
 **Related rules:** L-037 (run `git branch --show-current` before every commit), L-028 (never `git reset --hard` without checking `git log origin/<branch>` first).
 
+---
+
+## L-043 — When user provides a pre-cropped image, apply it directly. Don't re-crop.
+
+**Date:** 2026-06-25
+**Incident:** User asked me to add a photo to the about-page photo widget and crop `assets/image.png`. I cropped it 3 times (square 768×768, then portrait 720×864 with two different y_offsets) trying to position the head at the top of the frame. All 3 crops looked bad — too much whitespace above the head, or head positioned wrong. After 3 wasted commits, user said "im gonna delete both pics now and added new cropped pic, just apply it" — they had pre-cropped the image themselves.
+
+**Lesson:**
+- If the user explicitly says "apply it" or "just apply", they mean apply directly, no preprocessing.
+- Vision_analyze has a known athena quirk where it returns empty text for some images — don't rely on it as the sole verification step. Use PIL + numpy + ASCII rendering for actual pixel-level analysis.
+- When the cropping math is off, the user can do it faster than you. Don't burn commits re-trying.
+
+**Fix applied:** Used `<img src="assets/image.png">` directly in HTML (no crop step). Removed `image-cropped.jpg` from git tracking. CSS unchanged (`object-position: top center` still anchors the head to the top of the frame).
+
+**Related rules:** L-026 (verify all changes before committing), L-031 (don't trust vision_analyze in athena).
+
+---
+
+## L-044 — Distinguish user-visible widgets from backing text. Both may need updating.
+
+**Date:** 2026-06-25
+**Incident:** When the user asked "inside contact widget, replace open for internships with open for werkstudent jobs", I changed `<div class="photo-status">open to internships</div>` — the small text near the photo. The user then showed me a screenshot saying "the contact widget still says available for internships" — turns out the homepage contact widget has TWO status indicators: `.photo-status` (which I changed) and `.avail-badge` (the green prominent badge). The `.avail-badge` is the one users actually see in the widget.
+
+**Lesson:**
+- When the user names a widget by its visual position ("inside contact widget"), look at the rendered DOM and identify ALL the text indicators in that widget — not just the one matching the user's words.
+- For the contact widget specifically, there are two parallel status lines: `.photo-status` (text above the CV download pill) and `.avail-badge` (green text in the right column). Both need updating for consistency.
+- Verify by reading the rendered widget in the browser, not by grep — the same words can appear in multiple places.
+
+**Fix applied:** Changed `<div class="avail-badge">available for internships</div>` → `open to werkstudent jobs`. Both status indicators now consistent.
+
+**Related rules:** L-026 (verify in browser, not just grep), L-040 (show what's currently there before applying changes).
+
+---
+
+## L-045 — CSS `object-position` only changes what's visible, not the image content.
+
+**Date:** 2026-06-25
+**Incident:** When the cropped photo had whitespace above the head, I changed `object-position: center` to `object-position: top center` thinking it would "push the head to the top". It did change what was visible inside the frame, but it didn't fix the underlying issue — the image itself still had whitespace baked into the cropped region.
+
+**Lesson:**
+- `object-fit: cover` + `object-position` are display-layer tools. They control cropping/positioning inside the frame, but they can't change the actual pixel content of the image.
+- If the image has whitespace in the source pixels, no CSS will remove it — you need to recrop with a different y_start (or have the user provide a better-cropped source image).
+- The diagnosis order should be: (1) analyze the cropped image's actual pixel content (PIL/numpy), (2) determine if the issue is in the source image or in the CSS, (3) fix whichever is the actual cause.
+
+**Fix applied:** User provided a properly-cropped image (no whitespace above the head). Applied directly via `<img src="assets/image.png">`. CSS `object-position: top center` still useful to anchor the head to the top of the frame for safety against future cropping adjustments.
+
+**Related rules:** L-043 (don't re-crop what user already cropped), L-031 (verify visually, not just with assertions).
+
