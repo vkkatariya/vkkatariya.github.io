@@ -115,6 +115,11 @@ la-Cormorant Bold Italic wordmark redo (all 5 occurrences) and Roadmap title res
     - (c) Full coverage — all user-facing strings in 6600-line HTML file. ~6-8 hours, may need its own session
   - **Mechanism:** data object with EN/DE pairs, lookup function, language switcher in topbar, persist preference to localStorage
   - **Initial DE translations:** most portfolio copy is technical English (project names, framework names) and won't change. Bio paragraphs + nav + section headings + CTAs are the meaningful translation surface.
+- [ ] Fix visibility of SVG icons on all pages in light mode
+  - **Scope:** All `.ico` SVG icons + decorative SVG icons (wlbl-row icons, cs-title icons, pcard-title icons, dot-matrix bg patterns, etc.) on all 5 pages (/, /projects, /roadmap, /about, /me)
+  - **Issue:** In light mode, icons drawn with `rgba(255,255,255,.5)` strokes become invisible on light backgrounds (white-on-white). Need light-mode overrides.
+  - **Approach:** Use `html.light` selector to override icon colors per-context (e.g. `--w12` or `--blue` for body text, `--acc` for accents, etc.)
+  - **Out of scope:** The contact card SVGs (mail, github, linkedin, etc. with `fill="currentColor"`) inherit from the card's color and should already work in light mode.
 - [x] Decide `/me` auth mechanism — Tailscale network-layer gate on athena (Caddy `remote_ip` or bind to Tailscale IP). No page-level/client-side auth.
 
 ---
