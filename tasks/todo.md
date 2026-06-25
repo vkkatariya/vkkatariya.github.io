@@ -68,7 +68,7 @@ la-Cormorant Bold Italic wordmark redo (all 5 occurrences) and Roadmap title res
 ### Content + structure cleanup (new — 2026-06-23)
 - [ ] Content cleanup and more polished content on all pages (homepage, projects, about, roadmap)
 - [ ] Add new projects to the projects page AND as homepage widgets (cards)
-- [x] Fix redirecting links across all pages ✅ sub-task 1 merged (NOW, HOMELAB, IDENTITY widgets clickable + .pi-arrow indicator)
+- [x] Fix redirecting links across all pages ✅ both sub-tasks merged to dev (NOW/HOMELAB/IDENTITY widgets + FEATURED PROJECT buttons + 3 /projects pcard index cards)
 - [x] Fix duplication on homepage about + contact widgets ✅ merged to dev at 9be316b (11 commits, branch preserved at 69939dd)
 
 ### Theme + color
