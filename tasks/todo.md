@@ -80,6 +80,7 @@ la-Cormorant Bold Italic wordmark redo (all 5 occurrences) and Roadmap title res
 - [ ] Add new projects to the projects page AND as homepage widgets (cards)
 - [x] Fix redirecting links across all pages ✅ both sub-tasks merged to dev (NOW/HOMELAB/IDENTITY widgets + FEATURED PROJECT buttons + 3 /projects pcard index cards)
 - [x] Fix duplication on homepage about + contact widgets ✅ merged to dev at 9be316b (11 commits, branch preserved at 69939dd)
+- [ ] **Add SVG icons to widgets that are missing them across all pages** — kickoff TBD; previous attempt at .pi cards put icons above the title with a duplicate label (reverted in 79914d2). New approach: icon goes inline before the project text on the widget, not above it as a separate row. Audit + identify all widgets across all pages that lack SVG icons (homepage widgets already have them, except 3 project widgets at the bottom — need full audit on /, /projects, /roadmap, /about, /me pages). See kickoff in `tasks/kickoff-widget-svg-icons.md` once written.
 
 ### Theme + color
 - [x] Dark/light mode toggle with `localStorage` persistence (standalone pages: `html.light` + `vk-theme`)
