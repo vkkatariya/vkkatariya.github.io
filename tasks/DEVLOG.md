@@ -1,3 +1,31 @@
+## [2026-06-25] claude-code — feat/stack-bars-widget-size: cs-skills widget header + neomorphism (fix 2/2)
+
+**Mode:** Micro-loop (CSS + HTML, single file)
+**Did:**
+- Added `.wlbl-row` header as first child inside all 8 `.cs-skills` divs: layers SVG icon + "stack" label, matching the homepage `.w` widget pattern exactly (same icon used on homepage stack widget).
+- Removed the external `<div class="cs-h">stack</div>` elements — label now lives inside the widget.
+- Updated `.cs-skills` CSS: replaced flat `border: 1px solid var(--w06)` with full neomorphic dual shadow (`5px 5px 16px var(--sd), -2px -2px 7px var(--sl)` + inset highlights) + hover `translateY(-3px) scale(1.015)` — matching `.w` widget exactly.
+- Commit `65d33cc`.
+
+## [2026-06-25] claude-code — feat/stack-bars-widget-size: cs-skills pcard visual treatment (fix 1/2)
+
+**Mode:** Micro-loop (CSS only)
+**Did:**
+- Added `background:var(--bg2)`, `border:1px solid var(--w06)`, `border-radius:20px`, `padding:22px` to `.cs-skills` — Step 3 from kickoff that was initially skipped. Makes each stack widget a contained card matching `.pcard` proportions.
+- Commit `c9b23cf`.
+
+## [2026-06-25] claude-code — feat/stack-bars-widget-size: replace cs-stack chips with scored skill bars (widget-sized)
+
+**Mode:** Micro-loop (CSS + HTML, single file)
+**Did:**
+- Added `.cs-skills*` CSS block (`max-width:480px`, fixed `grid-template-columns:160px 200px 32px`) after `.cs-tech` rule (~line 1388).
+- Replaced all 8 `.cs-stack` HTML blocks across cs-sections with `.cs-skills` scored bar widgets using exact scores+names from kickoff source-of-truth tables.
+- Score bands: 80-100 → `s-high` (green), 65-79 → `s-mid` (acc), 50-64 → `s-low` (amber). No bars below 50.
+- Counts: 0 `.cs-stack`, 8 `.cs-skills`, 38 `.cs-skills-row`, 26 `s-high` fills, 12 `s-mid` fills, 0 `s-low` fills.
+- Widget sizing: `max-width:480px` on container + `160px 200px 32px` fixed columns (no `1fr`) — sits in ~half of cs-section width.
+- Commit `361cd41`, branch `feat/stack-bars-widget-size` pushed.
+**Deviations:** None. Task #4 (add bars) and task #5 (size to widget) were combined in a single pass since task #4 had never been implemented.
+
 ## [2026-06-25] agy — feat/add-4-projects: add 4 new projects to /projects page + resize top 4 cards
 
 **Mode:** Execution
