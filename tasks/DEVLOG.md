@@ -1,5 +1,66 @@
 ---
 
+
+## [2026-06-21] fix(timeline): homepage timeline font size polish
+
+User flagged timeline text as slightly too big after the prior `feat/timeline-fonts-bigger` pass. Nudged all four selectors down by ~2px.
+
+**Changes** (`prototypes/portfolio-combined.html`):
+- `.tl-title`: `clamp(18px,1.5vw,22px)` → `clamp(16px,1.3vw,20px)`
+- `.tl-desc`: `15px` → `13px`
+- `.tl-year`: `14px` → `12px`
+- `.tl-badge`: `13px` → `11px`
+
+---
+
+## [2026-06-21] agent(claude-code) — feat/cv-pdf: resume pill relocation + liquid glass restyle
+
+**Commits:** `7163ea1`
+**Did:**
+- Moved the Download Resume pill out of the space between the "About" heading and the intro block; relocated it into `.photo-block` (after `.photo-status`) so it sits naturally in the left column below the photo frame where whitespace already existed.
+- Restyled pill to match the topbar pill formula exactly: `backdrop-filter: blur(40px) saturate(180%)`, gradient glass background, `rgba(255,255,255,.16)` border, `0 4px 28px rgba(0,0,0,.55)` drop shadow + `0 1px 0 rgba(255,255,255,.12)` inset highlight, `border-radius: 100px`.
+- Hover: `translateY(-2px)` pop-out + deeper `0 6px 32px` shadow — consistent with widget hover pattern.
+- Removed the square icon container; acc-coloured inline SVG instead, keeping the pill compact.
+- Renamed all labels "Download CV" → "Download Resume"; download filename → `Vishal-Katariya-Resume.pdf`.
+- Removed `#pg-about .ph-title { margin-bottom: 24px }` override (restores the original 56px spacing now that the pill is no longer between the heading and intro).
+
+---
+
+## [2026-06-21] agent(claude-code) — feat/cv-pdf: redesign homepage contact widget + reposition About CV pill
+
+**Commits:** `1810225`
+**Did:**
+- **About page contact grid:** Removed the Download Resume card that spanned the full width of the contact grid (5th card, `grid-column: 1/-1`). Contact section is back to the clean 2×2 four-card layout.
+- **About page — new cv-dl pill:** Added a compact pill between the "About" heading and the photo/bio intro. (Later moved in the next commit.)
+- **Homepage contact widget redesign:** Replaced `.about-contact` plain `contact-row` link list with a proper widget-pattern layout:
+  - Updated CSS: `border-radius` 20px → 28px, shadow and border match `.w` neomorphic values.
+  - New `.cw-row` / `.cw-icon` / `.cw-label` / `.cw-val` classes for icon-label-value card rows (github, website).
+  - Download link moved from an accent-coloured text row to a `.np` NeoPOP button at the bottom of the widget — consistent with other widget CTAs in the grid.
+  - Removed the Download CV `contact-row` I added in the prior session.
+
+---
+
+## [2026-06-20] agent(claude-code) — feat/cv-pdf: add printable resume HTML + generated PDF + download links
+
+**Mode:** Execution (new file + PDF generation + two download link insertions)
+**Did:**
+- Created `prototypes/resume.html` — self-contained A4 resume page using existing design tokens.
+  - Dark background (#1B1C1D), NothingOS Ndot font (local OTF), Space Grotesk, DM Mono, Outfit via Google Fonts.
+  - Two-column layout: left col (60mm) = Education + Languages + Interests; right col = Technical Skills (bars + category chips) + Projects (4 rows).
+  - Content: full bio header (name, role, location, contact), h_da B.Sc. CS education, 7 skill bars, 4 skill category chips sets, 4 project rows (Finance Buddy, Homelab Dashboard, TypeShift, orlon-bot), footer.
+  - No external JS; `@page { size: A4; margin: 0; }` + `print-color-adjust: exact` for clean PDF output.
+- Generated `prototypes/assets/cv.pdf` (145K) via `playwright pdf --paper-format A4 file://…/resume.html`.
+- Added "Download CV" contact card to About page (`#pg-about` contact-grid) — full-width (grid-column 1/-1), acc-colored icon, download attribute for `Vishal-Katariya-CV.pdf`.
+- Added "Download CV" contact-row link to homepage contact widget (`about-contact` section), accent-colored, consistent with existing `contact-row` style.
+
+**Verification:**
+- PDF file confirmed at `prototypes/assets/cv.pdf`, 145K, single A4 page.
+- `resume.html` renders with correct dark background, dot-matrix, two-column layout.
+- Download links in both About page contact grid and homepage contact widget.
+>>>>>>> feat/cv-pdf
+
+---
+
 ## [2026-06-20] agent(agy) — feat/me-tailscale-gate: document and wire /me behind Tailscale
 
 **Mode:** Execution
@@ -30,6 +91,7 @@
 - `README.md`
 - `tasks/todo.md`
 - `homelab-configs/me-tailscale-caddy.conf`
+
 
 ---
 

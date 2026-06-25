@@ -1088,24 +1088,24 @@ footer {
 .tl-item:last-child .tl-meta{padding-bottom:0}
 .tl-year{
   font-family:'DM Mono',monospace;
-  font-size:14px;color:var(--w30);
+  font-size:12px;color:var(--w30);
   letter-spacing:2px;text-transform:uppercase;
 }
 .tl-badge{
-  font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:.8px;
+  font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.8px;
   padding:2px 8px;border-radius:3px;
   border:1px solid var(--w06);color:var(--w30);
 }
 .tl-title{
   font-family:var(--font-ndot);
-  font-size:clamp(18px,1.5vw,22px);font-weight:700;
+  font-size:clamp(16px,1.3vw,20px);font-weight:700;
   color:var(--w);letter-spacing:-.8px;
   line-height:1.15;
   margin-bottom:4px;
 }
 .tl-desc{
   font-family:'JetBrains Mono',monospace;
-  font-size:15px;letter-spacing:.4px;color:var(--w60);
+  font-size:13px;letter-spacing:.4px;color:var(--w60);
   line-height:1.65;
   max-width:480px;
 }
@@ -1146,12 +1146,17 @@ footer {
 .about-bio p:last-child{margin-bottom:0}
 .about-bio strong{color:var(--w);font-weight:500}
 .about-contact{
-  padding:20px;border-radius:20px;
+  padding:20px;border-radius:28px;
   background:var(--bg2);
-  border:1px solid var(--w06);
-  box-shadow:4px 4px 12px var(--sd),-1px -1px 5px var(--sl),inset 0 1px 0 var(--sl);
+  border:1px solid rgba(255,255,255,.055);
+  box-shadow:5px 5px 16px var(--sd),-2px -2px 7px var(--sl),inset 0 1px 0 rgba(255,255,255,.035),inset 0 -1px 0 rgba(0,0,0,.4);
   display:flex;flex-direction:column;gap:14px;
 }
+.cw-row{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid var(--w06);text-decoration:none;color:inherit;transition:background .15s,border-color .15s}
+.cw-row:hover{background:rgba(255,255,255,.07);border-color:var(--w12)}
+.cw-icon{width:30px;height:30px;border-radius:8px;background:rgba(255,255,255,.06);border:1px solid var(--w06);display:flex;align-items:center;justify-content:center;color:var(--w30);flex-shrink:0}
+.cw-label{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--w30);text-transform:uppercase;margin-bottom:1px}
+.cw-val{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--w60)}
 .contact-row{
   display:flex;align-items:center;gap:10px;
   font-family:'JetBrains Mono',monospace;
@@ -1542,7 +1547,20 @@ footer {
 
 #pg-about { font-family: "Syne", sans-serif; }
 
-
+/* ── CV download pill (About page — below photo block) ── */
+#pg-about .cv-dl{
+  display:inline-flex;align-items:center;gap:10px;padding:9px 16px;
+  background:linear-gradient(135deg,rgba(255,255,255,.10) 0%,rgba(255,255,255,.04) 100%);
+  backdrop-filter:blur(40px) saturate(180%);-webkit-backdrop-filter:blur(40px) saturate(180%);
+  border:1px solid rgba(255,255,255,.16);border-radius:100px;
+  box-shadow:0 4px 28px rgba(0,0,0,.55),0 1px 0 rgba(255,255,255,.12) inset;
+  text-decoration:none;color:inherit;
+  transition:box-shadow .2s,transform .2s;
+}
+#pg-about .cv-dl:hover{box-shadow:0 6px 32px rgba(0,0,0,.65),0 1px 0 rgba(255,255,255,.16) inset;transform:translateY(-2px)}
+#pg-about .cv-dl-label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--w80)}
+#pg-about .cv-dl-sub{font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:.8px;color:var(--w30);margin-top:1px}
+#pg-about .cv-dl-arrow{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--acc);flex-shrink:0}
 
 /* ── NAV ── */
 /* ── LAYOUT ── */
@@ -3604,17 +3622,35 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
         <p>Currently based in <strong>Dieburg · near Darmstadt</strong>. Looking for internships where I can work on systems that matter — flexible across ML engineering, full-stack development, and DevOps/infrastructure.</p>
       </div>
       <div class="about-contact">
-        <div class="wlbl-row" style="margin-bottom:8px">contact</div>
-        <a class="contact-row" href="https://github.com/vkkatariya" target="_blank">
-          <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
-          github.com/vkkatariya
-        </a>
-        <a class="contact-row" href="https://vishalkatariya.dev" target="_blank">
-          <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm7.5-6.923c-.67.204-1.335.82-1.887 1.855A7.97 7.97 0 0 0 5.145 4H7.5V1.077zM4.09 4a9.267 9.267 0 0 1 .64-1.539 6.7 6.7 0 0 1 .597-.933A7.025 7.025 0 0 0 2.255 4H4.09zm-.582 3.5c.03-.877.138-1.718.312-2.5H1.674a6.958 6.958 0 0 0-.656 2.5h2.49zM4.847 5a12.5 12.5 0 0 0-.338 2.5H7.5V5H4.847zM8.5 5v2.5h2.99a12.495 12.495 0 0 0-.337-2.5H8.5zM4.51 8.5a12.5 12.5 0 0 0 .337 2.5H7.5V8.5H4.51zm3.99 0V11h2.653c.187-.765.306-1.608.338-2.5H8.5zM5.145 12c.138.386.295.744.468 1.068.552 1.035 1.218 1.65 1.887 1.855V12H5.145zm.182 2.472a6.696 6.696 0 0 1-.597-.933A9.268 9.268 0 0 1 4.09 12H2.255a7.024 7.024 0 0 0 3.072 2.472zM3.82 11a13.652 13.652 0 0 1-.312-2.5h-2.49c.062.89.291 1.733.656 2.5H3.82zm6.853 3.472A7.024 7.024 0 0 0 13.745 12H11.91a9.27 9.27 0 0 1-.64 1.539 6.688 6.688 0 0 1-.597.933zM8.5 12v2.923c.67-.204 1.335-.82 1.887-1.855.173-.324.33-.682.468-1.068H8.5zm3.68-1h2.146c.365-.767.594-1.61.656-2.5h-2.49a13.65 13.65 0 0 1-.312 2.5zm2.802-3.5a6.959 6.959 0 0 0-.656-2.5H12.18c.174.782.282 1.623.312 2.5h2.49zM11.27 2.461c.247.464.462.98.64 1.539h1.835a7.024 7.024 0 0 0-3.072-2.472c.218.284.418.598.597.933zM10.855 4a7.966 7.966 0 0 0-.468-1.068C9.835 1.897 9.17 1.282 8.5 1.077V4h2.355z"/></svg>
-          vishalkatariya.dev
-        </a>
-        <div class="loc-label" style="margin-top:4px">📍 Dieburg · near Darmstadt</div>
-        <div class="avail-badge" style="margin-top:4px">available for internships</div>
+        <div class="wlbl-row">
+          <svg class="ico" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V4z" stroke="rgba(255,255,255,.4)" stroke-width="1" fill="rgba(255,255,255,.04)"/><polyline points="1,4 7,8.5 13,4" stroke="rgba(255,255,255,.35)" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+          contact
+        </div>
+        <div style="display:flex;flex-direction:column;gap:7px">
+          <a class="cw-row" href="https://github.com/vkkatariya" target="_blank">
+            <div class="cw-icon">
+              <svg width="13" height="13" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+            </div>
+            <div>
+              <div class="cw-label">github</div>
+              <div class="cw-val">vkkatariya</div>
+            </div>
+          </a>
+          <a class="cw-row" href="https://vishalkatariya.dev" target="_blank">
+            <div class="cw-icon">
+              <svg width="13" height="13" viewBox="0 0 16 16" fill="currentColor"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm7.5-6.923c-.67.204-1.335.82-1.887 1.855A7.97 7.97 0 0 0 5.145 4H7.5V1.077zM4.09 4a9.267 9.267 0 0 1 .64-1.539 6.7 6.7 0 0 1 .597-.933A7.025 7.025 0 0 0 2.255 4H4.09zm-.582 3.5c.03-.877.138-1.718.312-2.5H1.674a6.958 6.958 0 0 0-.656 2.5h2.49zM4.847 5a12.5 12.5 0 0 0-.338 2.5H7.5V5H4.847zM8.5 5v2.5h2.99a12.495 12.495 0 0 0-.337-2.5H8.5zM4.51 8.5a12.5 12.5 0 0 0 .337 2.5H7.5V8.5H4.51zm3.99 0V11h2.653c.187-.765.306-1.608.338-2.5H8.5zM5.145 12c.138.386.295.744.468 1.068.552 1.035 1.218 1.65 1.887 1.855V12H5.145zm.182 2.472a6.696 6.696 0 0 1-.597-.933A9.268 9.268 0 0 1 4.09 12H2.255a7.024 7.024 0 0 0 3.072 2.472zM3.82 11a13.652 13.652 0 0 1-.312-2.5h-2.49c.062.89.291 1.733.656 2.5H3.82zm6.853 3.472A7.024 7.024 0 0 0 13.745 12H11.91a9.27 9.27 0 0 1-.64 1.539 6.688 6.688 0 0 1-.597.933zM8.5 12v2.923c.67-.204 1.335-.82 1.887-1.855.173-.324.33-.682.468-1.068H8.5zm3.68-1h2.146c.365-.767.594-1.61.656-2.5h-2.49a13.65 13.65 0 0 1-.312 2.5zm2.802-3.5a6.959 6.959 0 0 0-.656-2.5H12.18c.174.782.282 1.623.312 2.5h2.49zM11.27 2.461c.247.464.462.98.64 1.539h1.835a7.024 7.024 0 0 0-3.072-2.472c.218.284.418.598.597.933zM10.855 4a7.966 7.966 0 0 0-.468-1.068C9.835 1.897 9.17 1.282 8.5 1.077V4h2.355z"/></svg>
+            </div>
+            <div>
+              <div class="cw-label">web</div>
+              <div class="cw-val">vishalkatariya.dev</div>
+            </div>
+          </a>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px;margin-top:auto">
+          <div class="loc-label">📍 Dieburg · near Darmstadt</div>
+          <div class="avail-badge">available for internships</div>
+          <a href="assets/cv.pdf" download="Vishal-Katariya-Resume.pdf" class="np" style="text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:6px;font-size:10px;padding:8px 14px;margin-top:2px">↓ download resume</a>
+        </div>
       </div>
     </div>
   </section>
@@ -4701,6 +4737,15 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
         <div class="photo-placeholder">add photo</div>
       </div>
       <div class="photo-status">open to internships</div>
+      <!-- ── RESUME DOWNLOAD PILL ── -->
+      <a class="cv-dl" href="assets/cv.pdf" download="Vishal-Katariya-Resume.pdf">
+        <svg width="13" height="13" viewBox="0 0 16 16" fill="currentColor" style="color:var(--acc);flex-shrink:0"><path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/><path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/></svg>
+        <div>
+          <div class="cv-dl-label">Download Resume</div>
+          <div class="cv-dl-sub">PDF · A4 · 2026</div>
+        </div>
+        <span class="cv-dl-arrow">↓</span>
+      </a>
     </div>
 
     <!-- Bio -->
@@ -5013,6 +5058,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
           <div class="cc-val">vishalkatariya.dev</div>
         </div>
       </a>
+
     </div>
 
     <div class="avail-block">
