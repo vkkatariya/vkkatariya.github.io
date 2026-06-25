@@ -449,3 +449,16 @@ After the audit pass, all 6 gaps were fixed. The kickoff is now 17.8 KB and disp
 
 **Related rules:** L-027 (inspect CSS rules before kickoff for CSS/HTML fixes), L-022 (layout-only wrappers never get hover), L-026 (exhaustive audit before declaring done).
 
+## L-029 — When resolving merge conflicts in HTML, classify CSS vs HTML blocks separately — agent-added structure inside CSS blocks (like .wlbl-row inside .cs-skills) can be silently lost if you take the "older" side for the whole block.
+
+**Date:** 2026-06-25
+**Incident:** During merge of feat/polish-task3 → dev, took feat/polish-task3's HTML for cs-skills conflicts because it had "newer" content (renamed titles, removed per-section proj-navs). But claude-code had ALSO added a `<div class="wlbl-row">` header INSIDE every .cs-skills block on feat/stack-bars-widget-size, and feat/polish-task3 (the older branch at the time) didn't have it. Result: all 8 cs-skills lost their wlbl-row header.
+
+**Lesson:** When merging HTML conflicts:
+1. Classify each conflict block (CSS vs HTML) and resolve separately
+2. Within HTML blocks, look at the ACTUAL conflict scope — was the change global (rename, remove) or local (add header inside)?
+3. For "add header inside X" type changes, the agent's branch (whichever one added it) is correct, even if the OTHER branch is "newer" by commit date
+4. Always run a post-merge diff against the original branch to verify no agent work was silently dropped
+
+**Fix applied:** Restored 8 wlbl-row headers via Python script that inserts the SVG+label markup INSIDE every .cs-skills block. Verified post-merge with grep that wlbl-row count = 19 (8 cs-skills + 11 elsewhere = matches original).
+
