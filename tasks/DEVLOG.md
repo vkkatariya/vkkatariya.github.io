@@ -1,17 +1,3 @@
-## [2026-06-25] agy — fix(projects): apply liquid-glass to .pi cards + add wlbl-row icon row
-
-**Mode:** Execution
-**Did:**
-- Changed `.proj-index` gap from 2px to 9px.
-- Applied canonical liquid-glass styling to `.pi` cards.
-- Inserted `.wlbl-row` icons and labels into all 8 project cards.
-- Verified SVG dimensions, HTML structures, and CSS correctness.
-
-**State:** Working as expected, style matched.
-**Decided:** Kept SVG geometry simple and monochromatic to match homepage aesthetics.
-**Blocked / Next:** Ready for merge.
-**Modified:** `prototypes/portfolio-combined.html`
-
 ## [2026-06-25] agy — feat/polish-task3: rich vis-wrap visualizations for new cs-sections
 
 **Mode:** Execution
