@@ -34,9 +34,11 @@ User-verified content (from project READMEs + CONTEXT.md files). Use these direc
 ### Project 05 — portfolio-website (this project itself)
 - **Anchor id:** `portfolio-website`
 - **Tagline (`.pi-sub`):** "This site · Vercel + Tailscale"
-- **Status:** "Live" (`.pi-status s-done`)
-- **Tech tags (3-4):** SvelteKit (future), Vercel, Tailscale, Liquid Glass
+- **Status (`.pi-status`):** "Live" (`.s-done`)
+- **GitHub:** `https://github.com/vkkatariya/vkkatariya.github.io` (this repo)
+- **Tech tags (4):** SvelteKit, Vercel, Tailscale, Liquid Glass
 - **cs-section title:** "Portfolio Website"
+- **cs-section status badges:** `cb-green: Live` · `cb-blue: Hybrid · Vercel + Tailscale` · `cb-acc: 2026`
 - **cs-section description (2-3 paragraphs):**
   - "Personal portfolio at vishalkatariya.dev — built as a self-contained SvelteKit SPA, hybrid-hosted with public routes on Vercel and private `/me/*` behind a Tailscale + Caddy IP allowlist on athena."
   - "Design system uses three layered surfaces: liquid glass (nav/frames), neomorphism (widgets), and NeoPOP (CTAs). Typography stacks Cormorant Garamond italic (initials) with Space Grotesk (display), Outfit (body), DM Mono (labels), and NDOT (accent)."
@@ -45,9 +47,11 @@ User-verified content (from project READMEs + CONTEXT.md files). Use these direc
 ### Project 06 — hermes-desktop-oauth
 - **Anchor id:** `hermes-desktop-oauth`
 - **Tagline:** "Hermes One · OAuth for gated dashboards"
-- **Status:** "13 PRs merged · Phase 4" (`.pi-status s-done` — phase 3 complete; can use a custom label or reuse `s-done`)
-- **Tech tags:** Electron, TypeScript, React 18, Vite, Tailwind, better-sqlite3
+- **Status (`.pi-status`):** "13 PRs merged" (`.s-done`)
+- **GitHub:** `https://github.com/vkkatariya/hermes-desktop-oauth` (fork — verify exists before linking)
+- **Tech tags (6):** Electron, TypeScript, React 18, Vite, Tailwind, better-sqlite3
 - **cs-section title:** "Hermes Desktop (OAuth fork)"
+- **cs-section status badges:** `cb-green: 13 PRs merged` · `cb-blue: Open source · fork` · `cb-purple: Phase 4 pending` · `cb-acc: 2026`
 - **cs-section description (2-3 paragraphs):**
   - "A patch project on top of `fathah/hermes-desktop` — the community Electron desktop client for Hermes Agent — that adds the Nous Portal OAuth login flow plus single-use WebSocket ticket minting so the app can connect to a Hermes dashboard bound to 0.0.0.0 in gated mode."
   - "Without this patch, the community client's `?token=` URL-based auth can't reach a Nous Portal-gated dashboard: the dashboard returns 302 to the login page because the spawned backend is a separate Node process without the app's main-process OAuth cookies. The fix is in `src/main/oauth.ts` and `src/main/dashboard.ts` — provider discovery via `/api/status` + ticket-based WS auth that doesn't burn the single-use ticket before the renderer can use it."
@@ -56,20 +60,24 @@ User-verified content (from project READMEs + CONTEXT.md files). Use these direc
 ### Project 07 — openclaw-dashboard
 - **Anchor id:** `openclaw-dashboard`
 - **Tagline:** "Control UI for OpenClaw gateway"
-- **Status:** "Active dev" (`.pi-status s-wip`)
-- **Tech tags:** React, TypeScript, Vite, WebSocket, Zustand, Neopop
+- **Status (`.pi-status`):** "Active dev" (`.s-wip`)
+- **GitHub:** `https://github.com/vkkatariya/openclaw-dashboard` (verify exists before linking)
+- **Tech tags (4):** React, TypeScript, WebSocket, Neopop
 - **cs-section title:** "OpenClaw Dashboard"
+- **cs-section status badges:** `cb-amber: Active dev` · `cb-blue: Private · homelab` · `cb-acc: 2026`
 - **cs-section description (2-3 paragraphs):**
-  - "React + TypeScript control UI for the OpenClaw gateway running on athena — the local-first agent orchestration layer that hosts Claude Code, Codex, Gemini CLI, agy, abacus, opencode, and gh-copilot as supervised coding-agent subprocesses."
-  - "Connects to the OpenClaw gateway over WebSocket RPC with Ed25519 device identity stored in localStorage. AppShell layout with Sidebar + Topbar; routes for `/dashboard` (channels/instances/sessions metrics), `/chat` (with slash commands like `/network` and `/agent`), and `/theme-test`."
+  - "React + TypeScript control UI for the OpenClaw gateway — the local-first agent orchestration layer running on athena. Connects to the gateway over WebSocket RPC with Ed25519 device identity stored in localStorage."
+  - "AppShell layout with Sidebar + Topbar; routes for `/dashboard` (channels, instances, sessions metrics), `/chat` (with slash commands like `/network` and `/agent`), and `/theme-test`."
   - "Hybrid NeoPOP + Neumorphism design system with two themes (`hybrid-dark` primary, `hybrid-light`). Theme tokens in `src/theme/tokens.ts`. Command palette (`src/components/commands/`) for keyboard-first navigation across the registered agents."
 
 ### Project 08 — unilox-fitness-ai (UNILOX)
 - **Anchor id:** `unilox-fitness-ai`
 - **Tagline:** "AI Gym & Fitness Assistant · 7 modules"
-- **Status:** "Phase 0 spec" (`.pi-status s-wip` — in design/spec phase)
-- **Tech tags:** Next.js 14, FastAPI, MediaPipe, HuggingFace, PostgreSQL, MQTT, MLflow
+- **Status (`.pi-status`):** "Phase 0 spec" (`.s-wip`)
+- **GitHub:** `https://github.com/vkkatariya/unilox-fitness-ai` (verify exists before linking)
+- **Tech tags (6):** Next.js 14, FastAPI, MediaPipe, HuggingFace, PostgreSQL, MQTT
 - **cs-section title:** "UNILOX — AI Gym & Fitness Assistant"
+- **cs-section status badges:** `cb-amber: Phase 0 spec` · `cb-blue: Private · commercial` · `cb-purple: AI · ML` · `cb-acc: 2026`
 - **cs-section description (2-3 paragraphs):**
   - "Unified AI-powered fitness ecosystem by Revolux Learning Private Limited. Seven core modules: AI Gym Trainer (CV pose estimation + rep counting + form correction), AI Dietician (NLP diet recommendations + meal planning), Smart Gym Assistant (IoT equipment integration via MQTT + Node-RED), AI Habit Tracker (behavioral ML predicting skipped workouts), Virtual Gym Buddy (conversational AI + sentiment analysis), Pose-to-Performance Analyzer (motion efficiency + biomechanical reports), and Gym Recommender."
   - "Stack spans Next.js 14 web dashboard + React Native (Expo) mobile + FastAPI backend, with Hugging Face transformers + MediaPipe for ML, MQTT (Mosquitto) for IoT edge devices (Jetson Nano / RPi 5 / ESP32-CAM), MLflow for experiment tracking, and Caddy reverse proxy in production."
@@ -122,12 +130,18 @@ Status classes available: `.s-done` (green), `.s-wip` (amber), `.s-future` (gray
 
 **New cards (in order — same as listed above):**
 
-| # | pi-num | Title (`.pi-title`) | Tagline | Tags | Status |
-|---|---|---|---|---|---|
-| 5 | `05 / 08` | Portfolio<br>Website | "This site · Vercel + Tailscale" | SvelteKit, Vercel, Tailscale | Live (s-done) |
-| 6 | `06 / 08` | Hermes One<br>(OAuth fork) | "Hermes One · OAuth for gated dashboards" | Electron, TypeScript, React, Vite | 13 PRs merged (s-done) |
-| 7 | `07 / 08` | OpenClaw<br>Dashboard | "Control UI for OpenClaw gateway" | React, TypeScript, WebSocket, Neopop | Active dev (s-wip) |
-| 8 | `08 / 08` | UNILOX | "AI Gym & Fitness Assistant · 7 modules" | Next.js, FastAPI, MediaPipe, MLflow | Phase 0 spec (s-wip) |
+| # | pi-num | Title (`.pi-title`) | Tagline | Tags | Status (.pi-status) | GitHub URL |
+|---|---|---|---|---|---|---|
+| 5 | `05 / 08` | Portfolio<br>Website | "This site · Vercel + Tailscale" | SvelteKit, Vercel, Tailscale, Liquid Glass | Live (s-done) | `vkkatariya/vkkatariya.github.io` (verify) |
+| 6 | `06 / 08` | Hermes One<br>(OAuth fork) | "Hermes One · OAuth for gated dashboards" | Electron, TypeScript, React 18, Vite, Tailwind, better-sqlite3 | 13 PRs merged (s-done) | `vkkatariya/hermes-desktop-oauth` (verify) |
+| 7 | `07 / 08` | OpenClaw<br>Dashboard | "Control UI for OpenClaw gateway" | React, TypeScript, WebSocket, Neopop | Active dev (s-wip) | `vkkatariya/openclaw-dashboard` (verify) |
+| 8 | `08 / 08` | UNILOX | "AI Gym & Fitness Assistant · 7 modules" | Next.js 14, FastAPI, MediaPipe, HuggingFace, PostgreSQL, MQTT | Phase 0 spec (s-wip) | `vkkatariya/unilox-fitness-ai` (verify) |
+
+**GitHub URL handling (CRITICAL):**
+Before using any GitHub URL in the cs-section, run `curl -I -L -o /dev/null -w '%{http_code}' --max-time 8 "$url"` to verify it returns 200.
+- 200 → safe to use as `<a href="https://github.com/vkkatariya/<repo>" target="_blank">view on GitHub →</a>` inside the cs-section body
+- 404 → STOP and report; do NOT invent a URL
+- The cs-section does NOT need a github link if the URL is broken — just omit it from the body content
 
 ---
 
@@ -177,7 +191,7 @@ The existing 4 cs-sections end at line ~4145 with `<div class="proj-nav">...</di
     <!-- 5-7 tags -->
   </div>
   
-  <!-- Bottom nav -->
+  <!-- Bottom nav (matches existing cs-section style: home + back-to-top only) -->
   <div class="proj-nav">
     <a href="#home" class="pnav-btn" onclick="showPage('home'); return false;">← home</a>
     <a href="#<id>" class="pnav-btn">↑ back to top</a>
@@ -198,9 +212,19 @@ The existing 4 cs-sections end at line ~4145 with `<div class="proj-nav">...</di
 
 ---
 
-## Step 4 — Add IDs to existing cs-section proj-nav buttons (optional but recommended)
+## Step 4 — proj-nav for new cs-sections (keep consistent with existing)
 
-The existing cs-sections have `<a href="#finance-buddy" class="pnav-btn">↑ back to top</a>` for back-to-top. If you want consistency with new sections that get prev links, leave existing ones as-is (they only have back-to-top).
+The existing cs-sections have only "back to top" buttons (no prev links). To keep consistent, the 4 new cs-sections should ALSO have only "back to top" buttons, no prev links.
+
+```html
+<!-- Bottom nav -->
+<div class="proj-nav">
+  <a href="#home" class="pnav-btn" onclick="showPage('home'); return false;">← home</a>
+  <a href="#<id>" class="pnav-btn">↑ back to top</a>
+</div>
+```
+
+DO NOT add prev/next navigation. The user can scroll freely through the page.
 
 ---
 
