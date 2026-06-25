@@ -93,9 +93,28 @@ la-Cormorant Bold Italic wordmark redo (all 5 occurrences) and Roadmap title res
 - [x] Extend roadmap color profile to home/projects in `portfolio-combined.html`
 - [x] Extend roadmap color profile to about/me in `portfolio-combined.html`
 - [ ] Contact form with email endpoint (Resend or Nodemailer)
-- [x] CV/resume PDF download link ✅ done (claude-code, ~2026-06-21) — cv.pdf generated, download links in About page contact grid + homepage contact widget
+- [ ] Contact form with email endpoint (Resend or Nodemailer)
+  - **Scope:** Decide backend approach first
+    - (a) mailto: link with prefilled subject/body — no backend, ~15 min
+    - (b) Hosted form service (Formspree / Web3Forms) — no deploy needed, ~30 min, requires signing up for the service
+    - (c) Self-hosted serverless (Resend + Vercel/Cloudflare Function) — full control, requires deploy
+  - **UI requirements:** name field, email field, message textarea, submit button. Success/error states. Rate limiting on backend.
+  - **Where to place:** Replace or extend the existing `/about` contact section (currently 2 `.contact-card`s: email + github). Or add as a 3rd block below.
+  - **Spam protection:** honeypot field + minimal client-side validation
 - [ ] Real GitHub contribution grid via API
+  - **Scope:** Fetch `https://api.github.com/users/vkkatariya/repos?per_page=100`, render stats replacing the placeholder `contributions · 2026` text in the homepage GITHUB ACTIVITY widget (line 3377 of `prototypes/portfolio-combined.html`)
+  - **API:** GitHub REST v3, public, no auth needed (60 req/hr unauthenticated rate limit)
+  - **Display:** star count + fork count + primary language breakdown as a small grid/chart
+  - **Fallback:** graceful degradation if API fails (show last cached value or "—")
+  - **Caching:** localStorage cache with 24h TTL to avoid rate limits
+  - **Time estimate:** ~30-45 min
 - [ ] DE translation strings for full bilingual support
+  - **Scope decision:** choose a tier
+    - (a) Minimal — 5-10 key UI strings (nav links, section headings, primary CTAs). ~30 min
+    - (b) Partial — major sections (homepage + about hero text + section headings). ~2-3 hours
+    - (c) Full coverage — all user-facing strings in 6600-line HTML file. ~6-8 hours, may need its own session
+  - **Mechanism:** data object with EN/DE pairs, lookup function, language switcher in topbar, persist preference to localStorage
+  - **Initial DE translations:** most portfolio copy is technical English (project names, framework names) and won't change. Bio paragraphs + nav + section headings + CTAs are the meaningful translation surface.
 - [x] Decide `/me` auth mechanism — Tailscale network-layer gate on athena (Caddy `remote_ip` or bind to Tailscale IP). No page-level/client-side auth.
 
 ---
