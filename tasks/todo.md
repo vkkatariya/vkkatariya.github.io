@@ -65,8 +65,18 @@ la-Cormorant Bold Italic wordmark redo (all 5 occurrences) and Roadmap title res
 - [x] Fix #pg-about missing closing </div>, unblocking /me page
 - [ ] Shared-nav mobile layout still cramped at ≤400px (3 pills overlap) — separate, pre-existing, not roadmap-specific
 
+### Polish task #3 follow-up — project skill bars
+- [ ] Add scored skill bars to each `.cs-section` on /projects page (replace `.cs-stack` chip row)
+  - Source-of-truth: extract current stack from each cs-section, validate against project CONTEXT.md / README.md, score 0-100 by usage depth
+  - Auto color bands: green 80-100, blue 65-79, amber 50-64, omit <50
+  - Top 5 skills per project, sorted by score descending
+  - 8 projects × 5 skills = 40 bars total
+  - Visual: name (left) + colored bar (middle, gradient fill) + score (right-aligned)
+  - `.cs-stack` chip row replaced entirely (no redundant chips + bars)
+  - Fallback to chips if a project has <3 scored skills
+
 ### Content + structure cleanup (new — 2026-06-23)
-- [ ] Content cleanup and more polished content on all pages (homepage, projects, about, roadmap)
+- [~] Content cleanup and more polished content on all pages — kicked off with 3 small fixes (photo placeholder, date consistency, roadmap stat) in branch feat/content-cleanup
 - [ ] Add new projects to the projects page AND as homepage widgets (cards)
 - [x] Fix redirecting links across all pages ✅ both sub-tasks merged to dev (NOW/HOMELAB/IDENTITY widgets + FEATURED PROJECT buttons + 3 /projects pcard index cards)
 - [x] Fix duplication on homepage about + contact widgets ✅ merged to dev at 9be316b (11 commits, branch preserved at 69939dd)
@@ -77,7 +87,7 @@ la-Cormorant Bold Italic wordmark redo (all 5 occurrences) and Roadmap title res
 - [x] Extend roadmap color profile to home/projects in `portfolio-combined.html`
 - [x] Extend roadmap color profile to about/me in `portfolio-combined.html`
 - [ ] Contact form with email endpoint (Resend or Nodemailer)
-- [ ] CV/resume PDF download link
+- [x] CV/resume PDF download link ✅ done (claude-code, ~2026-06-21) — cv.pdf generated, download links in About page contact grid + homepage contact widget
 - [ ] Real GitHub contribution grid via API
 - [ ] DE translation strings for full bilingual support
 - [x] Decide `/me` auth mechanism — Tailscale network-layer gate on athena (Caddy `remote_ip` or bind to Tailscale IP). No page-level/client-side auth.
