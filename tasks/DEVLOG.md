@@ -1,3 +1,20 @@
+## [2026-06-25] antigravity — feat/fix-redirect-links-subtask1: add redirect links to NOW, HOMELAB, IDENTITY widgets
+
+**Mode:** Execution
+**Did:**
+- Wrapped widget #2 IDENTITY (`<div class="w s21">` → `<a class="w s21" href="#about" onclick="showPage('about');return false;">`) — links to /about page via SPA navigation.
+- Wrapped widget #5 NOW (`<div class="w s11">` → `<a class="w s11" href="#projects" onclick="showPage('projects');setTimeout(...)">`) — navigates to /projects then scrolls to `#orlon-bot` section after 500ms delay.
+- Wrapped widget #6 HOMELAB (same pattern as NOW) — navigates to /projects then scrolls to `#homelab` section.
+- All 3 anchors include `text-decoration:none;color:inherit` to preserve original widget styling.
+- No CSS classes modified, no widget content changed, no other widgets touched.
+
+**State:** Complete — committed `7fd65a9`, pushed to `origin/feat/fix-redirect-links-subtask1`. Branch ready to merge to dev.
+**Decided:** Used `onclick` + `showPage()` + `setTimeout(scrollIntoView, 500)` for NOW/HOMELAB instead of plain `href="projects#orlon-bot"` — the SPA `hashchange` listener only handles page-level hashes (home/projects/roadmap/about/me), not section anchors. The 500ms delay allows the page transition animation to complete before scrolling.
+**Blocked / Next:** Sub-task 2 (FEATURED PROJECT buttons + 3 /projects index cards) is a separate dispatch — not started here.
+**Modified:** `prototypes/portfolio-combined.html`
+
+---
+
 ## [2026-06-25] hermes — feat/homepage-about-contact-merge: shrink CONTACT widget to natural size
 
 **Mode:** Micro-loop (single-line inline style adjustment)
