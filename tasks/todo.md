@@ -66,7 +66,7 @@ la-Cormorant Bold Italic wordmark redo (all 5 occurrences) and Roadmap title res
 - [ ] Shared-nav mobile layout still cramped at ≤400px (3 pills overlap) — separate, pre-existing, not roadmap-specific
 
 ### Polish task #3 follow-up — project skill bars
-- [ ] Add scored skill bars to each `.cs-section` on /projects page (replace `.cs-stack` chip row)
+- [x] Add scored skill bars to each `.cs-section` on /projects page (replace `.cs-stack` chip row) — completed in `feat/cs-skills-bars` (8 cs-sections, 38 bars total, color bands: `s-high` ≥70, `s-mid` ≥50, `s-low` <50)
   - Source-of-truth: extract current stack from each cs-section, validate against project CONTEXT.md / README.md, score 0-100 by usage depth
   - Auto color bands: green 80-100, blue 65-79, amber 50-64, omit <50
   - Top 5 skills per project, sorted by score descending
@@ -77,7 +77,8 @@ la-Cormorant Bold Italic wordmark redo (all 5 occurrences) and Roadmap title res
 
 ### Content + structure cleanup (new — 2026-06-23)
 - [x] Content cleanup and more polished content on all pages — completed across 8+ commits on `feat/content-cleanup` (all merged to dev). Sub-items: photo placeholder removed (`df1ec12`), year badges standardized to 2026 (`df1ec12`), roadmap stat `👥 50K+ Developers` → `🤖 ML · Infra · Full-stack` (`df1ec12`), homepage v2 cleanup (`609beb4` → `fddb1c1`), contact widget cleanup (`a1f6a3c`), projects stat 12→8 (`d4b1307`), photo widget swap (`4097080`). All merged. New cleanup sub-tasks can be added as `[ ]` items below.
-- [ ] Add new projects to the projects page AND as homepage widgets (cards)
+- [x] Add new projects to the projects page — completed in `feat/add-4-projects` (4 new cs-sections: portfolio-website, hermes-desktop-oauth, openclaw-dashboard, unilox-fitness-ai)
+- [ ] Add the 4 new projects as homepage widgets (.pcard entries) — bottom section of homepage still shows the original 3 projects
 - [x] Fix redirecting links across all pages ✅ both sub-tasks merged to dev (NOW/HOMELAB/IDENTITY widgets + FEATURED PROJECT buttons + 3 /projects pcard index cards)
 - [x] Fix duplication on homepage about + contact widgets ✅ merged to dev at 9be316b (11 commits, branch preserved at 69939dd)
 - [x] **Add SVG icons to widgets that are missing them across all pages** — completed and merged to dev as `c8e0cf4` (with cs-title follow-up `6a09a65`). Includes inline `.ico` SVGs on ~122 widgets across 5 pages (homepage `.pcard-title` + `.tl-title`, /projects `.pi-title` + `.nd-name` + `.plat-name` + `.pipe-name` + cs-titles, /roadmap phase/topic/career/timeline/resource cards, /about sections/edu/languages/interests, /me heading). Per-context icon sizes (12-28px) chosen by agy for visual harmony.
