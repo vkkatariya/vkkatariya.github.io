@@ -1,3 +1,40 @@
+## [2026-06-25] hermes — feat/homepage-about-contact-merge: shrink CONTACT widget to natural size
+
+**Mode:** Micro-loop (single-line inline style adjustment)
+**Did:**
+- Changed widget #11 CONTACT inline styles: `max-width:340px → 280px`, added `overflow:visible;align-self:start`.
+- The `overflow:visible` override breaks the `.w { overflow:hidden }` constraint so the widget can grow to its natural content height instead of being clipped to the 168px grid row height.
+- `align-self:start` anchors the widget to the top of its 2-row grid cell instead of stretching it vertically.
+- Result: CONTACT widget now matches the original `.about-section#contact` dark neomorphic card visual — narrow (280px max), natural content height, dark surface preserved.
+
+**State:** Committed `ef1d81d`, pushed to `origin/feat/homepage-about-contact-merge`. Branch ready to PR/merge.
+
+**Decided:** Direct edit by orchestrator rather than re-dispatching agent. Previous agent dispatches (v3 + v4) added the class and reduced gaps but didn't override the `.w { overflow:hidden }` clip. The orchestrator should have caught this earlier — agent dispatch cycles for "simple" fixes accumulate overhead.
+
+**Lessons (for tonight's orchestrator log):**
+- When a widget class chain like `.w.s12.about-contact` produces conflicting constraints (one wants clipping, another wants natural height), the fix is an inline `overflow:visible` override, NOT removing the `.w` class.
+- "Contact widget size is still same" from the user likely meant the visual footprint on screen, which is driven by the grid cell height + overflow clip, not the max-width alone.
+- Lesson: when dispatching agents for "fix the X", check what CSS rules are constraining X (here: `.w { overflow:hidden }` + `.grid { grid-auto-rows:168px }`) before writing the kickoff.
+
+**Modified:** `prototypes/portfolio-combined.html`
+
+---
+
+## [2026-06-25] claude-code — feat/homepage-about-contact-merge: tighten widget content spacing to match original bottom-section
+
+**Mode:** Micro-loop (3 inline style changes + 1 removal)
+**Did:**
+- Removed `style="font-size:12.5px;line-height:1.7"` from `.about-bio` — original CSS class (15px / 1.85) now applies, text is visibly larger.
+- Added `gap:10px;padding:16px` inline override on widget #11 wrapper to reduce `.about-contact` outer gap (14→10px) and padding (20→16px).
+- Bumped internal cw-row section gap from 6px → 8px (github/web cards breathe more).
+- Bumped lower section gap from 7px → 8px (loc/badge/resume section).
+
+**State:** Complete — committed `2c38cd7`, pushed to `origin/feat/homepage-about-contact-merge`.
+
+**Modified:** `prototypes/portfolio-combined.html`
+
+---
+
 ## [2026-06-25] claude-code — feat/homepage-about-contact-merge: restore dark neomorphic surface on CONTACT widget
 
 **Mode:** Micro-loop (add one class + one max-width)
