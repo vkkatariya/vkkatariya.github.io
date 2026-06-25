@@ -462,3 +462,37 @@ After the audit pass, all 6 gaps were fixed. The kickoff is now 17.8 KB and disp
 
 **Fix applied:** Restored 8 wlbl-row headers via Python script that inserts the SVG+label markup INSIDE every .cs-skills block. Verified post-merge with grep that wlbl-row count = 19 (8 cs-skills + 11 elsewhere = matches original).
 
+---
+
+## L-041 — When user gives scoped in-place edits in chat, edit directly. Don't write a kickoff unless scope spans multiple files / requires research.
+
+**Date:** 2026-06-25
+**Incident:** User asked for 6 small homepage edits (add DevOps to chip, change Dieburg → Darmstadt x6, move STACK widget, etc.). The existing `feat/content-cleanup` branch was already in flight with a kickoff for 3 different fixes. The natural instinct was to either (a) wait and write a new kickoff, or (b) reuse the existing kickoff. Both are wrong — these are scoped in-place edits that need ~10 minutes of `patch` calls, not a multi-fix kickoff.
+
+**Lesson:**
+- If user gives a clear scoped change in chat ("change this text", "move this widget", "remove this block"), edit directly with `patch` calls on the active branch.
+- Don't write a kickoff unless: (a) scope spans multiple files, (b) requires research/audit to scope, (c) user explicitly asks for a kickoff, or (d) agent is already in flight and you need to interrupt with new instructions.
+- The kickoff from earlier sessions can stay on disk as documentation; just don't dispatch it for new scoped edits.
+- Time spent on kickoff for 5-line edits = wasted user time. The 4-dispatch cycle for "1-line fix" is a known trust-destroying pattern (L-031).
+
+**Fix applied:** Did all 6 edits with 6 `patch` calls on `feat/content-cleanup`. Verified with browser + grep. Committed as `609beb4`. Total time: ~8 minutes including browser verification.
+
+**Related rules:** L-031 (inspect CSS before kickoff for visual fixes), L-032 (write kickoff, don't auto-dispatch), L-035 (never kill agents user dispatched).
+
+---
+
+## L-042 — Always re-read the actual branch state before committing — Hermes once committed to the wrong branch (where an agent was actively working), causing a recovery dance.
+
+**Date:** 2026-06-25
+**Incident:** While doing the homepage content cleanup v2 (6 edits), the parent shell was sitting on `feat/widget-svg-icons-all-pages` (where agy was still dispatching SVG icons). Without re-checking `git branch --show-current`, Hermes committed `609beb4` to the SVG branch instead of `feat/content-cleanup`. The branch was then force-pushed incorrectly (creating a remote `feat/content-cleanup` from the SVG branch tip). User saw the wrong commit and asked what happened; recovery took ~6 git operations.
+
+**Lesson:**
+- Before every `git commit`, run `git branch --show-current` and confirm it matches the target branch.
+- If wrong branch: (1) reset wrong branch to its previous tip (`git reset --hard <previous-sha>`), (2) checkout target branch, (3) cherry-pick or replay the commit there, (4) force-push target branch with `--force-with-lease`, (5) confirm remote state with `git ls-remote`.
+- `--force-with-lease` not `--force` — the former checks that the remote hasn't moved since you last fetched, so you don't accidentally clobber someone else's push.
+- Memory pattern: L-037 (run `git branch --show-current` before every commit) was already documented but wasn't being applied because the parent shell's branch was set by the previous `git checkout` (set to `feat/widget-svg-icons-all-pages` from earlier branch creation). The session's expected branch was `feat/content-cleanup` (per kickoff title) but the parent shell state didn't match.
+
+**Fix applied:** Used `git reset --hard caff7bc` to undo the wrong commit on the SVG branch (agy was finished by then, confirmed by `ps -ef`). Cherry-picked `609beb4` onto `feat/content-cleanup`. Force-pushed with `--force-with-lease`. Verified remote state with `git ls-remote origin feat/content-cleanup`. Confirmed three branches in correct state (dev=cfd098a, feat/content-cleanup=609beb4, feat/widget-svg-icons-all-pages=caff7bc).
+
+**Related rules:** L-037 (run `git branch --show-current` before every commit), L-028 (never `git reset --hard` without checking `git log origin/<branch>` first).
+
