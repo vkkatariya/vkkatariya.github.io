@@ -1,3 +1,20 @@
+## [2026-06-25] agy — feat/polish-task3: polish task #3 (resize 8 cards, single-line titles, rename UNILOX, remove decorative svgs)
+
+**Mode:** Execution
+**Did:**
+- Applied `padding:22px 24px` to all 8 `.pi` cards (reduced from `28px 32px`).
+- Removed `<br>` tags from 4 multi-line titles (`Homelab Dashboard`, `Portfolio Website`, `Hermes One (OAuth fork)`, `OpenClaw Dashboard`) to match the single-line style of others.
+- Renamed `UNILOX` to `UNILOX Fitness AI` in both the `.pi-title` and `.cs-title`.
+- Removed the 4 decorative `svg` icons from the heroes of the 4 new case study sections (`portfolio-website`, `hermes-desktop-oauth`, `openclaw-dashboard`, `unilox-fitness-ai`).
+- Verified all fixes via `grep` as per the kickoff instructions.
+
+**State:** Complete — committed and pushed to `origin/feat/polish-task3`.
+**Decided:** Kept changes strictly limited to the 4 fixes requested in a single HTML file. Used grep tests instead of Playwright to save context budget and handle the unavailable testing dependencies cleanly.
+**Blocked / Next:** Ready for PR or merge.
+**Modified:** `prototypes/portfolio-combined.html`
+
+---
+
 ## [2026-06-25] agy — feat/add-4-projects: add 4 new projects to /projects page + resize top 4 cards
 
 **Mode:** Execution
