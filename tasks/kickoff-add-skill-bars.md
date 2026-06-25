@@ -264,9 +264,9 @@ grep -c 'class="cs-skills"' prototypes/portfolio-combined.html
 # Expected: 8
 
 # 3. Confirm score counts per project
-# Total rows across all 8 sections: 4+5+5+5+4+5+4+5 = 37
+# Total rows across all 8 sections: 5+5+5+5+4+5+4+5 = 38
 grep -c 'class="cs-skills-row"' prototypes/portfolio-combined.html
-# Expected: 37
+# Expected: 38
 
 # 4. Confirm color band classes used
 grep -c 's-high' prototypes/portfolio-combined.html
