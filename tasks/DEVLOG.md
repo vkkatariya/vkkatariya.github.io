@@ -1,3 +1,18 @@
+## [2026-06-25] agy — fix(homepage): match hermes oauth title to finance buddy size; compact widget for contact alignment
+
+**Mode:** Execution
+**Did:**
+- Applied **Fix 1**: Changed font-size of the Hermes OAuth title from `clamp(28px,3.5vw,42px)` to `clamp(36px,4.2vw,48px)` and adjusted letter-spacing to `-1.8px` to better match the adjacent Finance Buddy project title size.
+- Applied **Fix 2 (Option A)**: Added `max-height:180px` to the Hermes OAuth widget container. This slight vertical compression prevents the row from forcing CONTACT down to a new row, successfully restoring alignment between CONTACT and ABOUT on the right side.
+- Verified DOM changes strictly match criteria and grep checks. No other widget structures, metrics, or classes were altered.
+
+**State:** Modified `prototypes/portfolio-combined.html`, all changes committed (`c2eeb7d`) and pushed to remote branch `feat/homepage-oauth-spotlight-widget`.
+**Decided:** Chose Option A (`max-height:180px`) as it is sufficient to solve the row constraint while preserving the 1x2 class content layout completely intact.
+**Blocked / Next:** Visual balance and layout geometry is now corrected.
+**Modified:** `prototypes/portfolio-combined.html`, `tasks/DEVLOG.md`
+
+---
+
 ## [2026-06-25] agy — feat/homepage-oauth-spotlight-widget: add hermes oauth spotlight widget between stack and contact; move contact to align with about
 
 **Mode:** Execution
