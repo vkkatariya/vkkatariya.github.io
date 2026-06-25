@@ -2187,6 +2187,9 @@ html.light #pg-about .contact-card:nth-of-type(4) .cc-icon { color: var(--acc); 
   background: linear-gradient(to right, var(--w06), transparent);
 }
 
+/* Homepage sec-head headings (TIMELINE, ALL PROJECTS) — bit bigger than the rest */
+#pg-home .sec-head h2 { font-size: 14px; }
+
 /* ── nd separator ── */
 .nd { display: flex; align-items: center; gap: 4px; margin: 10px 0; }
 .nd i { width: 3px; height: 3px; border-radius: 50%; background: var(--w12); flex-shrink: 0; }
@@ -3327,7 +3330,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
       </div>
       <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
         <span class="sbadge">open to work</span>
-        <span class="chip">AI · ML · SWE</span>
+        <span class="chip">AI · ML · SWE · DevOps</span>
       </div>
     </div>
 
@@ -3351,7 +3354,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
         </div>
       </div>
       <div style="display:flex;gap:6px;flex-wrap:wrap;">
-        <span class="chip">Dieburg · DE</span>
+        <span class="chip">Darmstadt · DE</span>
         <span class="chip">h_da · CS</span>
         <span class="chip">intern-ready</span>
       </div>
@@ -3437,6 +3440,23 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
       <div class="pi-arrow" style="top:14px;right:14px;font-size:18px;color:var(--w60)">↗</div>
     </a>
 
+    <!-- 8 · TECH STACK · 1×2 -->
+    <div class="w s12">
+      <div class="wlbl-row">
+        <svg class="ico" width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M6.5 1 L12 3.8 L6.5 6.5 L1 3.8Z" stroke="rgba(255,255,255,.5)" stroke-width="1" stroke-linejoin="round" fill="rgba(255,255,255,.07)"/><path d="M1 7 L6.5 9.7 L12 7" stroke="rgba(255,255,255,.3)" stroke-width="1" stroke-linecap="round" fill="none"/><path d="M1 10 L6.5 12.7 L12 10" stroke="rgba(255,255,255,.18)" stroke-width="1" stroke-linecap="round" fill="none"/></svg>
+        stack
+      </div>
+      <div style="margin-top:6px;">
+        <div class="si"><span class="si-dot"></span><span class="si-name">SvelteKit</span><span class="si-tag">FE</span></div>
+        <div class="si"><span class="si-dot"></span><span class="si-name">Fastify</span><span class="si-tag">API</span></div>
+        <div class="si"><span class="si-dot"></span><span class="si-name">Python</span><span class="si-tag">ML</span></div>
+        <div class="si"><span class="si-dot"></span><span class="si-name">Docker</span><span class="si-tag">OPS</span></div>
+        <div class="si"><span class="si-dot"></span><span class="si-name">Tailscale</span><span class="si-tag">NET</span></div>
+        <div class="si"><span class="si-dot"></span><span class="si-name">Radxa 5T</span><span class="si-tag">HW</span></div>
+        <div class="si"><span class="si-dot"></span><span class="si-name">SQLite</span><span class="si-tag">DB</span></div>
+      </div>
+    </div>
+
     <!-- 7 · FEATURED PROJECT — Finance Buddy NeoPOP · 2×2 -->
     <div class="w s22" style="display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden">
       <!-- Animated bar chart decoration -->
@@ -3482,23 +3502,6 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
       </div>
     </div>
 
-    <!-- 8 · TECH STACK · 1×2 -->
-    <div class="w s12">
-      <div class="wlbl-row">
-        <svg class="ico" width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M6.5 1 L12 3.8 L6.5 6.5 L1 3.8Z" stroke="rgba(255,255,255,.5)" stroke-width="1" stroke-linejoin="round" fill="rgba(255,255,255,.07)"/><path d="M1 7 L6.5 9.7 L12 7" stroke="rgba(255,255,255,.3)" stroke-width="1" stroke-linecap="round" fill="none"/><path d="M1 10 L6.5 12.7 L12 10" stroke="rgba(255,255,255,.18)" stroke-width="1" stroke-linecap="round" fill="none"/></svg>
-        stack
-      </div>
-      <div style="margin-top:6px;">
-        <div class="si"><span class="si-dot"></span><span class="si-name">SvelteKit</span><span class="si-tag">FE</span></div>
-        <div class="si"><span class="si-dot"></span><span class="si-name">Fastify</span><span class="si-tag">API</span></div>
-        <div class="si"><span class="si-dot"></span><span class="si-name">Python</span><span class="si-tag">ML</span></div>
-        <div class="si"><span class="si-dot"></span><span class="si-name">Docker</span><span class="si-tag">OPS</span></div>
-        <div class="si"><span class="si-dot"></span><span class="si-name">Tailscale</span><span class="si-tag">NET</span></div>
-        <div class="si"><span class="si-dot"></span><span class="si-name">Radxa 5T</span><span class="si-tag">HW</span></div>
-        <div class="si"><span class="si-dot"></span><span class="si-name">SQLite</span><span class="si-tag">DB</span></div>
-      </div>
-    </div>
-
     <!-- 10 · PROJECTS STAT · 1×1 -->
     <div class="w s11" style="display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden">
       <div class="wlbl-row">
@@ -3518,7 +3521,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
       <div class="about-bio">
         <p>I'm <strong><span class="wm-cap">Vishal</span></strong> — a CS student at Hochschule Darmstadt, building production systems while studying.</p>
         <p>I work across the full stack: fine-tuning language models, building REST and WebSocket backends, designing interfaces, and managing self-hosted services on real ARM hardware. The common thread is building things that actually run — not just demos.</p>
-        <p>Currently based in <strong>Dieburg · near Darmstadt</strong>. Looking for internships where I can work on systems that matter — flexible across ML engineering, full-stack development, and DevOps/infrastructure.</p>
+        <p>Currently based in <strong>Darmstadt</strong>. Looking for internships where I can work on systems that matter — flexible across ML engineering, full-stack development, and DevOps/infrastructure.</p>
       </div>
     </div>
 
@@ -3549,7 +3552,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
         </a>
       </div>
       <div style="display:flex;flex-direction:column;gap:8px">
-        <div class="loc-label">📍 Dieburg · near Darmstadt</div>
+        <div class="loc-label">📍 Darmstadt</div>
         <div class="avail-badge">available for internships</div>
         <a href="assets/cv.pdf" download="Vishal-Katariya-Resume.pdf" class="np" style="text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:6px;font-size:10px;padding:8px 14px;margin-top:2px">↓ download resume</a>
       </div>
@@ -3627,7 +3630,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
   ══════════════════════════════════════════ -->
   <div class="sec-head">
     <h2>all projects</h2>
-    <a class="np-ghost" href="javascript:void(0)" onclick="showPage('projects');return false;" style="text-decoration:none;font-size:9px;padding:4px 10px;letter-spacing:2px">view all →</a>
+    <a class="np-ghost" href="javascript:void(0)" onclick="showPage('projects');return false;" style="text-decoration:none;font-size:13px;padding:6px 14px;letter-spacing:2px">view all →</a>
   </div>
 
   <div class="proj-row">
@@ -5431,7 +5434,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
     <!-- Bio -->
     <div class="bio">
       <p class="bio-p">
-        I'm <strong><span class="wm-cap">Vishal</span> <span class="wm-cap">Katariya</span></strong> — a CS student at Hochschule Darmstadt, based in Dieburg near Frankfurt. I build across the full stack: fine-tuning language models, wiring REST and WebSocket APIs, and managing self-hosted infrastructure on real hardware.
+        I'm <strong><span class="wm-cap">Vishal</span> <span class="wm-cap">Katariya</span></strong> — a CS student at Hochschule Darmstadt, based in Darmstadt. I build across the full stack: fine-tuning language models, wiring REST and WebSocket APIs, and managing self-hosted infrastructure on real hardware.
       </p>
       <p class="bio-p">
         My projects run in production — not just on localhost. From a personal finance tracker built on 993 real transactions, to a 2-node Proxmox cluster running 6+ services, to a Telegram bot trained with QLoRA on a free Kaggle GPU and deployed to an ARM NPU.
@@ -5440,7 +5443,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
         The common thread: I care more about <strong>how systems actually work</strong> than what they look like on the surface. Open to internships in Germany across ML engineering, full-stack development, and infrastructure roles.
       </p>
       <div class="bio-chips">
-        <span class="bchip">Dieburg · Germany</span>
+        <span class="bchip">Darmstadt · Germany</span>
         <span class="bchip">h_da · CS</span>
         <span class="bchip">German · English · Hindi · Gujarati</span>
       </div>
@@ -5745,7 +5748,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
       <div class="ab-dot"></div>
       <div>
         <div class="ab-text">Available for internships</div>
-        <div class="ab-sub">Based in Dieburg · near Darmstadt</div>
+        <div class="ab-sub">Based in Darmstadt</div>
       </div>
     </div>
   </div>
