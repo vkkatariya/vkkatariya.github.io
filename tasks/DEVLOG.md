@@ -1,3 +1,18 @@
+## [2026-06-25] claude-code — feat/homepage-about-contact-merge: restore dark neomorphic surface on CONTACT widget
+
+**Mode:** Micro-loop (add one class + one max-width)
+**Did:**
+- Added `about-contact` class back to widget #11 CONTACT wrapper.
+- Replaced redundant inline `display:flex;flex-direction:column;justify-content:space-between` with `max-width:340px;justify-self:start` — the class already provides flex/column/gap via the existing CSS rule.
+- Dark neomorphic surface (`var(--bg2)` bg, 28px border-radius, inset+outer box-shadow) restored via the class.
+- Verified dark mode and light mode with Playwright full-page screenshots; both render correctly.
+
+**State:** Complete — committed `8ddab05`, pushed to `origin/feat/homepage-about-contact-merge`.
+
+**Modified:** `prototypes/portfolio-combined.html`
+
+---
+
 ## [2026-06-25] claude-code — feat/homepage-about-contact-merge: restore ABOUT wide + CONTACT narrow proportions
 
 **Mode:** Micro-loop (3 inline attribute changes)
