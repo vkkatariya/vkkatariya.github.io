@@ -1,3 +1,17 @@
+## [2026-06-25] agy — feat/polish-task3: rich vis-wrap visualizations for new cs-sections
+
+**Mode:** Execution
+**Did:**
+- Replaced basic span-based vis-wrap blocks with rich SVGs in the 4 new cs-sections (`portfolio-website`, `hermes-desktop-oauth`, `openclaw-dashboard`, `unilox-fitness-ai`).
+- Added corresponding CSS classes (`.routing-flow`, `.phase-timeline`, `.route-flow`, `.module-pipeline`) for the new SVG visualizations.
+- Verified exactly 8 `vis-wrap` and `vis-title` blocks exist across the prototype.
+- Removed tracking of `replace_viswraps.py` scratch file.
+
+**State:** Prototype complete, all 8 projects now have high-quality visualizations matching the core design system.
+**Decided:** Used targeted python replacement scripts over AST parsing for large HTML blobs to guarantee correct alignment and indentation.
+**Blocked / Next:** Task complete.
+**Modified:** `prototypes/portfolio-combined.html`
+
 ## [2026-06-25] agy — feat/polish-task3: rich content in new cs-sections + single-line cs-titles + bottom-only proj-nav (v3 polish)
 
 **Mode:** Execution
