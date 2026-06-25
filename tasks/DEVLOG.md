@@ -12,8 +12,8 @@
 - Used a Python replacement script for surgical exact-string replacements. For JS-generated topic/career cards, injected `TOPIC_ICONS` and `CAREER_ICONS` lookup maps into the render functions.
 - All icons placed as **first child of existing title element** — no `.wlbl-row` headers added. Existing 18 `.wlbl-row` headers untouched.
 
-**State:** Complete — committed `b0c360e` and pushed to `origin/feat/widget-svg-icons-all-pages`. Ready for Vishal's review.
-**Decided:** Used `:not(.wlbl-row)>.ico{margin-right:6px}` scoped CSS to handle icon spacing for inline-placed icons without affecting the existing `.wlbl-row` icons that already have `gap:7px`. Skipped `.edu-mod` chips (8 tiny chips too small for icons) and `.cw-row` contact rows (already have detailed 18×18 SVG icons inside `.cc-icon`). Used JS lookup maps for the 21 JS-generated topic/career cards since those can't be edited as static HTML.
+**State:** Complete — originally committed `b0c360e`, followed by `85d0b74` (dynamic icon resizing) and pushed to `origin/feat/widget-svg-icons-all-pages`. Ready for Vishal's review.
+**Decided:** Used `:not(.wlbl-row)>.ico{margin-right:6px}` scoped CSS to handle icon spacing for inline-placed icons. Used JS lookup maps for the 21 JS-generated topic/career cards. Resized all newly added inline SVG icons (originally 13x13) to proportionally match the `font-size` of their adjacent text (ranging from 12x12 up to 28x28 for `.pi-title`), ensuring visual harmony.
 **Blocked / Next:** Vishal reviews the branch visually, then merges manually. No push to dev.
 **Modified:** `prototypes/portfolio-combined.html`
 
