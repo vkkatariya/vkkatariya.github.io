@@ -1,3 +1,19 @@
+## [2026-06-25] claude-code — feat/homepage-about-contact-merge: restore ABOUT wide + CONTACT narrow proportions
+
+**Mode:** Micro-loop (3 inline attribute changes)
+**Did:**
+- Added `grid-column:span 3` to widget #9 ABOUT so it spans 3 of 4 grid columns (~75% width).
+- Reverted widget #11 CONTACT from `s22` back to `s12` (1 col × 2 rows), restoring the narrow dark-glass contact card.
+- Reverted CONTACT inner card container from 2-col CSS grid back to `flex-direction:column` to match the narrow footprint.
+
+**State:** Complete — committed `b3c3e7e`, pushed to `origin/feat/homepage-about-contact-merge`.
+
+**Decided:** No other changes needed; grid-column override on the ABOUT widget is the cleanest way to span 3 cols without touching the CSS class definitions.
+
+**Modified:** `prototypes/portfolio-combined.html`
+
+---
+
 ## [2026-06-25] claude-code — feat/homepage-about-contact-merge: stretch ABOUT+CONTACT to fill grid row
 
 **Mode:** Micro-loop (single class change + inner reflow)
