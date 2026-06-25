@@ -416,3 +416,36 @@ AGENT_BROWSER_ARGS=--no-sandbox
 
 **Related rules:** L-024 (selector audit before rollout), L-026 (exhaustive audit before declaring done), L-021 (widget vs wrapper audit).
 
+
+## L-028 — Before dispatching an agent for a "fix X" task, audit your own kickoff prompt against the actual source files for completeness
+
+**Symptom:** Wrote `tasks/kickoff-add-4-projects.md` (16 KB, 266 lines) to add 4 projects to the /projects page. Felt confident — it had source-of-truth content for all 4 projects pulled from project READMEs and CONTEXT.md files. But when I self-audited the kickoff against the actual files, I found 6 gaps that would have made the agent guess or invent:
+
+1. **Missing GitHub URLs** for the 4 new projects — agent would have to invent or skip
+2. **Missing cs-section status badges** — agent would have to invent status text
+3. **No URL verification protocol** — agent could paste a 404 link
+4. **No guidance on proj-nav style** — agent would have to decide between existing (back-to-top only) vs new (prev/next)
+5. **Speculative content from prior knowledge** — I had described OpenClaw as hosting "Claude Code, Codex, Gemini CLI, agy, abacus, opencode, and gh-copilot" from my own memory of athena, NOT from CLAUDE.md. Agent might have preserved my hallucination OR used the strict source-of-truth text, with no way to know which I meant.
+6. **Step 4 ambiguous** — said "(optional but recommended)" which is dispatch-bait; agents skip optional steps.
+
+**Root cause:** I trusted that "I read the source files and wrote the kickoff" was enough. But "reading source files" is not the same as "checking the kickoff prompt against them." Writing a kickoff is an act of distillation — content gets compressed, formatted, and structurally rearranged in ways that introduce gaps.
+
+**Prevention rule:**
+- **Always self-audit a kickoff before declaring it "ready to dispatch."** Checklist:
+  1. For each fact/claim in the kickoff, can you point to the line in the source file? If not, mark it as "editorial" or remove it.
+  2. Are there fields that the agent will need but aren't specified? (URLs, status text, badge colors, navigation style, anchor IDs, tag counts)
+  3. Does the kickoff say anything "optional"? If yes, either make it required or remove it.
+  4. Run through the agent's likely questions: "What github URL do I use?", "What status text?", "What color is the badge?", "Should I add prev/next links?" — does the kickoff answer each one?
+- **Audit duration scales with kickoff size.** A 5 KB kickoff needs 5 min audit. A 17 KB kickoff (like tonight's) needs 15 min audit.
+- **Don't dispatch after a single read-through.** Read it once to write it, read it once to audit it. Different mental modes.
+
+**Counter-example from tonight:** First version of `tasks/kickoff-add-4-projects.md` had:
+- OpenClaw description with "hosts Claude Code, Codex, Gemini CLI, agy, abacus, opencode, and gh-copilot" (my prior knowledge, not CLAUDE.md)
+- No GitHub URLs anywhere
+- No cs-section status badge text (agent would have to invent)
+- Step 4 said "Add IDs to existing cs-section proj-nav buttons (optional but recommended)" — vague, optional, and might have been ignored
+
+After the audit pass, all 6 gaps were fixed. The kickoff is now 17.8 KB and dispatch-ready.
+
+**Related rules:** L-027 (inspect CSS rules before kickoff for CSS/HTML fixes), L-022 (layout-only wrappers never get hover), L-026 (exhaustive audit before declaring done).
+

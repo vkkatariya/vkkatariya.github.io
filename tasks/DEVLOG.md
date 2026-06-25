@@ -1,3 +1,33 @@
+## [2026-06-25] hermes — feat/add-4-projects: self-audit kickoff prompt against source files
+
+**Mode:** Audit (no code changes — only kickoff polish)
+**Did:**
+- Self-audited `tasks/kickoff-add-4-projects.md` (266 lines, 16 KB) against the 4 source project files (CONTEXT.md, READMEs, CLAUDE.md).
+- Found 6 gaps that would have made the agent guess or invent content:
+  - Missing GitHub URLs for all 4 new projects
+  - Missing cs-section status badge text (would have been invented)
+  - No URL verification protocol (could have pasted 404 links)
+  - OpenClaw description included a speculative agent roster from my prior knowledge, not from CLAUDE.md
+  - Step 4 ambiguous ("optional but recommended") — agents skip optional steps
+  - No guidance on proj-nav style (prev/next vs back-to-top only)
+- Patched all 6 gaps. Final kickoff is 290 lines, 17.8 KB.
+- Added lesson L-028 to `tasks/lessons.md`: "Before dispatching an agent, audit your own kickoff against source files."
+
+**State:** Kickoff ready for dispatch. Branch `feat/add-4-projects` to be created from `dev` when agent starts.
+
+**Decided:**
+- Self-audit step is mandatory for any kickoff > 10 KB. Reading source files and writing a kickoff are two different cognitive acts; both need to happen separately.
+- Optional steps in kickoffs are dispatch-bait. Either make them required or remove them.
+- Speculative content from "prior knowledge" should be flagged as such or removed. Agents have no way to distinguish "from source file" vs "from my memory" when reading the kickoff.
+
+**Lessons (for tonight's orchestrator log):**
+- A 5 KB kickoff needs 5 min audit; a 17 KB kickoff needs 15 min. Audit duration scales with size.
+- Don't dispatch after a single read-through. Read it once to write, read it once to audit — different mental modes.
+
+**Modified:** `tasks/kickoff-add-4-projects.md` (audited + polished); `tasks/lessons.md` (added L-028).
+
+---
+
 ## [2026-06-25] antigravity — feat/fix-redirect-links-subtask2: add redirect links to FEATURED PROJECT + 3 homepage pcard index cards
 
 **Mode:** Execution
