@@ -1245,15 +1245,23 @@ footer {
 .proj-index{
   position:relative;z-index:1;max-width:1100px;margin:0 auto;
   padding:0 20px 40px;
-  display:grid;grid-template-columns:1fr 1fr;gap:2px;
+  display:grid;grid-template-columns:1fr 1fr;gap:9px;
 }
 @media(max-width:700px){.proj-index{grid-template-columns:1fr}}
 .pi{
   padding:36px 40px;cursor:pointer;
-  border:1px solid var(--w06);border-radius:0;
-  transition:background .2s;position:relative;overflow:hidden;
+  border:1px solid var(--w06);border-radius:14px;
+  background:linear-gradient(135deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+  backdrop-filter:blur(40px) saturate(180%);
+  -webkit-backdrop-filter:blur(40px) saturate(180%);
+  box-shadow:0 4px 20px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.10);
+  transition:background .2s, box-shadow .2s, transform .2s;position:relative;overflow:hidden;
 }
-.pi:hover{background:var(--bg2)}
+.pi:hover{
+  background:linear-gradient(135deg, rgba(255,255,255,.12), rgba(255,255,255,.05));
+  box-shadow:0 6px 28px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.14);
+  transform:translateY(-2px);
+}
 .pi:nth-child(1){border-radius:16px 0 0 0}
 .pi:nth-child(2){border-radius:0 16px 0 0}
 .pi:nth-child(3){border-radius:0 0 0 16px}
@@ -3711,6 +3719,14 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
 <section style="position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:0 20px 80px">
   <div class="proj-index">
     <a href="javascript:void(0)" class="pi" style="text-decoration:none;color:inherit;padding:22px 24px" onclick="scrollToAnchor('finance-buddy')">
+      <div class="wlbl-row">
+        <svg class="ico" width="13" height="13" viewBox="0 0 13 13" fill="none">
+          <rect x="1" y="8" width="2.5" height="4" fill="rgba(255,255,255,.5)"/>
+          <rect x="5.25" y="5" width="2.5" height="7" fill="rgba(255,255,255,.5)"/>
+          <rect x="9.5" y="2" width="2.5" height="10" fill="rgba(255,255,255,.5)"/>
+        </svg>
+        finance · tracker
+      </div>
       <div class="pi-num">01 / 08</div>
       <div class="pi-title">Finance Buddy</div>
       <div class="pi-sub">Personal finance tracker</div>
@@ -3723,6 +3739,17 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
       <div class="pi-arrow">↗</div>
     </a>
     <a href="javascript:void(0)" class="pi" style="text-decoration:none;color:inherit;padding:22px 24px" onclick="scrollToAnchor('homelab')">
+      <div class="wlbl-row">
+        <svg class="ico" width="13" height="13" viewBox="0 0 13 13" fill="none">
+          <rect x="2" y="2" width="9" height="2.5" stroke="rgba(255,255,255,.5)" stroke-width="1"/>
+          <circle cx="4" cy="3.25" r="0.5" fill="rgba(255,255,255,.5)"/>
+          <rect x="2" y="5.5" width="9" height="2.5" stroke="rgba(255,255,255,.5)" stroke-width="1"/>
+          <circle cx="4" cy="6.75" r="0.5" fill="rgba(255,255,255,.5)"/>
+          <rect x="2" y="9" width="9" height="2.5" stroke="rgba(255,255,255,.5)" stroke-width="1"/>
+          <circle cx="4" cy="10.25" r="0.5" fill="rgba(255,255,255,.5)"/>
+        </svg>
+        homelab · observability
+      </div>
       <div class="pi-num">02 / 08</div>
       <div class="pi-title">Homelab Dashboard</div>
       <div class="pi-sub">Realtime ops · 2-node cluster</div>
@@ -3735,6 +3762,14 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
       <div class="pi-arrow">↗</div>
     </a>
     <a href="javascript:void(0)" class="pi" style="text-decoration:none;color:inherit;padding:22px 24px" onclick="scrollToAnchor('typeshift')">
+      <div class="wlbl-row">
+        <svg class="ico" width="13" height="13" viewBox="0 0 13 13" fill="none">
+          <rect x="1.5" y="4" width="3" height="3" stroke="rgba(255,255,255,.5)" stroke-width="1"/>
+          <rect x="5.5" y="4" width="3" height="3" stroke="rgba(255,255,255,.5)" stroke-width="1"/>
+          <rect x="3.5" y="8" width="6" height="3" stroke="rgba(255,255,255,.5)" stroke-width="1"/>
+        </svg>
+        typeshift · typing
+      </div>
       <div class="pi-num">03 / 08</div>
       <div class="pi-title">TypeShift</div>
       <div class="pi-sub">Cross-platform AI · collab</div>
@@ -3747,6 +3782,12 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
       <div class="pi-arrow">↗</div>
     </a>
     <a href="javascript:void(0)" class="pi" style="text-decoration:none;color:inherit;padding:22px 24px" onclick="scrollToAnchor('orlon-bot')">
+      <div class="wlbl-row">
+        <svg class="ico" width="13" height="13" viewBox="0 0 13 13" fill="none">
+          <path d="M2 3.5C2 2.67 2.67 2 3.5 2H9.5C10.33 2 11 2.67 11 3.5V7.5C11 8.33 10.33 9 9.5 9H4.5L2 11V3.5Z" stroke="rgba(255,255,255,.5)" stroke-width="1"/>
+        </svg>
+        orlon · discord bot
+      </div>
       <div class="pi-num">04 / 08</div>
       <div class="pi-title">orlon-bot</div>
       <div class="pi-sub">QLoRA fine-tune · Telegram</div>
@@ -3759,6 +3800,14 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
       <div class="pi-arrow">↗</div>
     </a>
     <a href="javascript:void(0)" class="pi" style="text-decoration:none;color:inherit;padding:22px 24px" onclick="scrollToAnchor('portfolio-website')">
+      <div class="wlbl-row">
+        <svg class="ico" width="13" height="13" viewBox="0 0 13 13" fill="none">
+          <rect x="1.5" y="2.5" width="10" height="8" stroke="rgba(255,255,255,.5)" stroke-width="1"/>
+          <line x1="1.5" y1="4.5" x2="11.5" y2="4.5" stroke="rgba(255,255,255,.5)" stroke-width="1"/>
+          <circle cx="3.5" cy="3.5" r="0.5" fill="rgba(255,255,255,.5)"/>
+        </svg>
+        portfolio · meta
+      </div>
       <div class="pi-num">05 / 08</div>
       <div class="pi-title">Portfolio Website</div>
       <div class="pi-sub">This site · Vercel + Tailscale</div>
@@ -3772,6 +3821,13 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
       <div class="pi-arrow">↗</div>
     </a>
     <a href="javascript:void(0)" class="pi" style="text-decoration:none;color:inherit;padding:22px 24px" onclick="scrollToAnchor('hermes-desktop-oauth')">
+      <div class="wlbl-row">
+        <svg class="ico" width="13" height="13" viewBox="0 0 13 13" fill="none">
+          <rect x="3.5" y="6" width="6" height="5" stroke="rgba(255,255,255,.5)" stroke-width="1"/>
+          <path d="M4.5 6V4C4.5 2.895 5.395 2 6.5 2C7.605 2 8.5 2.895 8.5 4V6" stroke="rgba(255,255,255,.5)" stroke-width="1"/>
+        </svg>
+        hermes · oauth
+      </div>
       <div class="pi-num">06 / 08</div>
       <div class="pi-title">Hermes One (OAuth fork)</div>
       <div class="pi-sub">Hermes One · OAuth for gated dashboards</div>
@@ -3787,6 +3843,15 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
       <div class="pi-arrow">↗</div>
     </a>
     <a href="javascript:void(0)" class="pi" style="text-decoration:none;color:inherit;padding:22px 24px" onclick="scrollToAnchor('openclaw-dashboard')">
+      <div class="wlbl-row">
+        <svg class="ico" width="13" height="13" viewBox="0 0 13 13" fill="none">
+          <rect x="2.5" y="2.5" width="3.5" height="3.5" stroke="rgba(255,255,255,.5)" stroke-width="1"/>
+          <rect x="7" y="2.5" width="3.5" height="3.5" stroke="rgba(255,255,255,.5)" stroke-width="1"/>
+          <rect x="2.5" y="7" width="3.5" height="3.5" stroke="rgba(255,255,255,.5)" stroke-width="1"/>
+          <rect x="7" y="7" width="3.5" height="3.5" stroke="rgba(255,255,255,.5)" stroke-width="1"/>
+        </svg>
+        openclaw · dashboard
+      </div>
       <div class="pi-num">07 / 08</div>
       <div class="pi-title">OpenClaw Dashboard</div>
       <div class="pi-sub">Control UI for OpenClaw gateway</div>
@@ -3800,6 +3865,12 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
       <div class="pi-arrow">↗</div>
     </a>
     <a href="javascript:void(0)" class="pi" style="text-decoration:none;color:inherit;padding:22px 24px" onclick="scrollToAnchor('unilox-fitness-ai')">
+      <div class="wlbl-row">
+        <svg class="ico" width="13" height="13" viewBox="0 0 13 13" fill="none">
+          <polyline points="1.5,6.5 4,6.5 5.5,3 7.5,10 9,6.5 11.5,6.5" stroke="rgba(255,255,255,.5)" stroke-width="1" stroke-linejoin="round"/>
+        </svg>
+        unilox · fitness ai
+      </div>
       <div class="pi-num">08 / 08</div>
       <div class="pi-title">UNILOX Fitness AI</div>
       <div class="pi-sub">AI Gym & Fitness Assistant · 7 modules</div>
