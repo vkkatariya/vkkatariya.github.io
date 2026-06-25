@@ -3436,22 +3436,6 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
       </div>
     </div>
 
-    <!-- 9 · ABOUT — liquid glass · 2×1 -->
-    <div class="w glass s21" style="display:flex;flex-direction:column;justify-content:space-between;">
-      <div class="wlbl-row">
-        <svg class="ico" width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="5.5" stroke="rgba(255,255,255,.28)" stroke-width="1"/><circle cx="6.5" cy="4" r=".9" fill="rgba(255,255,255,.6)"/><line x1="6.5" y1="6" x2="6.5" y2="9.5" stroke="rgba(255,255,255,.55)" stroke-width="1.3" stroke-linecap="round"/></svg>
-        about
-      </div>
-      <div style="font-size:13px;color:var(--w60);line-height:1.75;">
-        CS student at Hochschule Darmstadt. I work across the full stack — training LLMs, wiring APIs, and running self-hosted infra on real ARM hardware. More interested in how it works than what it looks like.
-      </div>
-      <div style="display:flex;gap:6px;flex-wrap:wrap;">
-        <span class="chip">ML / AI</span>
-        <span class="chip">full-stack</span>
-        <span class="chip">infra</span>
-      </div>
-    </div>
-
     <!-- 10 · PROJECTS STAT · 1×1 -->
     <div class="w s11" style="display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden">
       <div class="wlbl-row">
@@ -3462,23 +3446,50 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
       <div class="sub">shipped</div>
     </div>
 
-    <!-- 11 · CONTACT — inverted white · 1×1 -->
-    <div class="w inv s11" style="display:flex;flex-direction:column;justify-content:space-between;">
-      <div style="display:flex;align-items:center;gap:6px;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;color:rgba(8,8,8,.3);text-transform:uppercase;margin-bottom:10px">
-        <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><rect x=".5" y="3" width="12" height="8" rx="2" stroke="rgba(8,8,8,.3)" stroke-width="1" fill="rgba(8,8,8,.04)"/><polyline points=".5,3 6.5,8 12.5,3" stroke="rgba(8,8,8,.3)" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+    <!-- 9 · ABOUT — liquid glass · 2×2 -->
+    <div class="w glass s22" style="display:flex;flex-direction:column;gap:12px;">
+      <div class="wlbl-row">
+        <svg class="ico" width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="5.5" stroke="rgba(255,255,255,.28)" stroke-width="1"/><circle cx="6.5" cy="4" r=".9" fill="rgba(255,255,255,.6)"/><line x1="6.5" y1="6" x2="6.5" y2="9.5" stroke="rgba(255,255,255,.55)" stroke-width="1.3" stroke-linecap="round"/></svg>
+        about
+      </div>
+      <div class="about-bio" style="font-size:12.5px;line-height:1.7;">
+        <p>I'm <strong><span class="wm-cap">Vishal</span></strong> — a CS student at Hochschule Darmstadt, building production systems while studying.</p>
+        <p>I work across the full stack: fine-tuning language models, building REST and WebSocket backends, designing interfaces, and managing self-hosted services on real ARM hardware. The common thread is building things that actually run — not just demos.</p>
+        <p>Currently based in <strong>Dieburg · near Darmstadt</strong>. Looking for internships where I can work on systems that matter — flexible across ML engineering, full-stack development, and DevOps/infrastructure.</p>
+      </div>
+    </div>
+
+    <!-- 11 · CONTACT · 1×2 -->
+    <div class="w s12" style="display:flex;flex-direction:column;justify-content:space-between;">
+      <div class="wlbl-row">
+        <svg class="ico" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V4z" stroke="rgba(255,255,255,.4)" stroke-width="1" fill="rgba(255,255,255,.04)"/><polyline points="1,4 7,8.5 13,4" stroke="rgba(255,255,255,.35)" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
         contact
       </div>
-      <!-- 3D envelope icon -->
-      <div class="ico ico-float" style="opacity:.9">
-        <svg width="38" height="32" viewBox="0 0 38 32" fill="none">
-          <rect x="2" y="5" width="34" height="22" rx="4" fill="rgba(0,0,0,.12)" transform="translate(1,2)"/>
-          <rect x="2" y="3" width="34" height="22" rx="4" fill="#090909" stroke="rgba(0,0,0,.5)" stroke-width="1.5"/>
-          <polyline points="2,3 19,16 36,3" stroke="rgba(0,0,0,.35)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-          <line x1="6" y1="20" x2="14" y2="20" stroke="rgba(0,0,0,.18)" stroke-width="1" stroke-linecap="round"/>
-          <line x1="6" y1="23" x2="18" y2="23" stroke="rgba(0,0,0,.12)" stroke-width="1" stroke-linecap="round"/>
-        </svg>
+      <div style="display:flex;flex-direction:column;gap:6px">
+        <a class="cw-row" href="https://github.com/vkkatariya" target="_blank">
+          <div class="cw-icon">
+            <svg width="13" height="13" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+          </div>
+          <div>
+            <div class="cw-label">github</div>
+            <div class="cw-val">vkkatariya</div>
+          </div>
+        </a>
+        <a class="cw-row" href="https://vishalkatariya.dev" target="_blank">
+          <div class="cw-icon">
+            <svg width="13" height="13" viewBox="0 0 16 16" fill="currentColor"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm7.5-6.923c-.67.204-1.335.82-1.887 1.855A7.97 7.97 0 0 0 5.145 4H7.5V1.077zM4.09 4a9.267 9.267 0 0 1 .64-1.539 6.7 6.7 0 0 1 .597-.933A7.025 7.025 0 0 0 2.255 4H4.09zm-.582 3.5c.03-.877.138-1.718.312-2.5H1.674a6.958 6.958 0 0 0-.656 2.5h2.49zM4.847 5a12.5 12.5 0 0 0-.338 2.5H7.5V5H4.847zM8.5 5v2.5h2.99a12.495 12.495 0 0 0-.337-2.5H8.5zM4.51 8.5a12.5 12.5 0 0 0 .337 2.5H7.5V8.5H4.51zm3.99 0V11h2.653c.187-.765.306-1.608.338-2.5H8.5zM5.145 12c.138.386.295.744.468 1.068.552 1.035 1.218 1.65 1.887 1.855V12H5.145zm.182 2.472a6.696 6.696 0 0 1-.597-.933A9.268 9.268 0 0 1 4.09 12H2.255a7.024 7.024 0 0 0 3.072 2.472zM3.82 11a13.652 13.652 0 0 1-.312-2.5h-2.49c.062.89.291 1.733.656 2.5H3.82zm6.853 3.472A7.024 7.024 0 0 0 13.745 12H11.91a9.27 9.27 0 0 1-.64 1.539 6.688 6.688 0 0 1-.597.933zM8.5 12v2.923c.67-.204 1.335-.82 1.887-1.855.173-.324.33-.682.468-1.068H8.5zm3.68-1h2.146c.365-.767.594-1.61.656-2.5h-2.49a13.65 13.65 0 0 1-.312 2.5zm2.802-3.5a6.959 6.959 0 0 0-.656-2.5H12.18c.174.782.282 1.623.312 2.5h2.49zM11.27 2.461c.247.464.462.98.64 1.539h1.835a7.024 7.024 0 0 0-3.072-2.472c.218.284.418.598.597.933zM10.855 4a7.966 7.966 0 0 0-.468-1.068C9.835 1.897 9.17 1.282 8.5 1.077V4h2.355z"/></svg>
+          </div>
+          <div>
+            <div class="cw-label">web</div>
+            <div class="cw-val">vishalkatariya.dev</div>
+          </div>
+        </a>
       </div>
-      <div style="font-family:'DM Mono',monospace;font-size:10px;color:rgba(8,8,8,.4);letter-spacing:1px;">vkkatariya</div>
+      <div style="display:flex;flex-direction:column;gap:7px">
+        <div class="loc-label">📍 Dieburg · near Darmstadt</div>
+        <div class="avail-badge">available for internships</div>
+        <a href="assets/cv.pdf" download="Vishal-Katariya-Resume.pdf" class="np" style="text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:6px;font-size:10px;padding:8px 14px;margin-top:2px">↓ download resume</a>
+      </div>
     </div>
 
   </div>
@@ -3610,50 +3621,6 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
     </div>
   </div>
 
-  <!-- ══════════════════════════════════════════
-       ABOUT + CONTACT
-  ══════════════════════════════════════════ -->
-  <section class="about-section" id="contact">
-    <div class="sec-head"><h2>about</h2></div>
-    <div class="about-grid">
-      <div class="about-bio">
-        <p>I'm <strong><span class="wm-cap">Vishal</span></strong> — a CS student at Hochschule Darmstadt, building production systems while studying.</p>
-        <p>I work across the full stack: fine-tuning language models, building REST and WebSocket backends, designing interfaces, and managing self-hosted services on real ARM hardware. The common thread is building things that actually run — not just demos.</p>
-        <p>Currently based in <strong>Dieburg · near Darmstadt</strong>. Looking for internships where I can work on systems that matter — flexible across ML engineering, full-stack development, and DevOps/infrastructure.</p>
-      </div>
-      <div class="about-contact">
-        <div class="wlbl-row">
-          <svg class="ico" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V4z" stroke="rgba(255,255,255,.4)" stroke-width="1" fill="rgba(255,255,255,.04)"/><polyline points="1,4 7,8.5 13,4" stroke="rgba(255,255,255,.35)" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
-          contact
-        </div>
-        <div style="display:flex;flex-direction:column;gap:7px">
-          <a class="cw-row" href="https://github.com/vkkatariya" target="_blank">
-            <div class="cw-icon">
-              <svg width="13" height="13" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
-            </div>
-            <div>
-              <div class="cw-label">github</div>
-              <div class="cw-val">vkkatariya</div>
-            </div>
-          </a>
-          <a class="cw-row" href="https://vishalkatariya.dev" target="_blank">
-            <div class="cw-icon">
-              <svg width="13" height="13" viewBox="0 0 16 16" fill="currentColor"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm7.5-6.923c-.67.204-1.335.82-1.887 1.855A7.97 7.97 0 0 0 5.145 4H7.5V1.077zM4.09 4a9.267 9.267 0 0 1 .64-1.539 6.7 6.7 0 0 1 .597-.933A7.025 7.025 0 0 0 2.255 4H4.09zm-.582 3.5c.03-.877.138-1.718.312-2.5H1.674a6.958 6.958 0 0 0-.656 2.5h2.49zM4.847 5a12.5 12.5 0 0 0-.338 2.5H7.5V5H4.847zM8.5 5v2.5h2.99a12.495 12.495 0 0 0-.337-2.5H8.5zM4.51 8.5a12.5 12.5 0 0 0 .337 2.5H7.5V8.5H4.51zm3.99 0V11h2.653c.187-.765.306-1.608.338-2.5H8.5zM5.145 12c.138.386.295.744.468 1.068.552 1.035 1.218 1.65 1.887 1.855V12H5.145zm.182 2.472a6.696 6.696 0 0 1-.597-.933A9.268 9.268 0 0 1 4.09 12H2.255a7.024 7.024 0 0 0 3.072 2.472zM3.82 11a13.652 13.652 0 0 1-.312-2.5h-2.49c.062.89.291 1.733.656 2.5H3.82zm6.853 3.472A7.024 7.024 0 0 0 13.745 12H11.91a9.27 9.27 0 0 1-.64 1.539 6.688 6.688 0 0 1-.597.933zM8.5 12v2.923c.67-.204 1.335-.82 1.887-1.855.173-.324.33-.682.468-1.068H8.5zm3.68-1h2.146c.365-.767.594-1.61.656-2.5h-2.49a13.65 13.65 0 0 1-.312 2.5zm2.802-3.5a6.959 6.959 0 0 0-.656-2.5H12.18c.174.782.282 1.623.312 2.5h2.49zM11.27 2.461c.247.464.462.98.64 1.539h1.835a7.024 7.024 0 0 0-3.072-2.472c.218.284.418.598.597.933zM10.855 4a7.966 7.966 0 0 0-.468-1.068C9.835 1.897 9.17 1.282 8.5 1.077V4h2.355z"/></svg>
-            </div>
-            <div>
-              <div class="cw-label">web</div>
-              <div class="cw-val">vishalkatariya.dev</div>
-            </div>
-          </a>
-        </div>
-        <div style="display:flex;flex-direction:column;gap:8px;margin-top:auto">
-          <div class="loc-label">📍 Dieburg · near Darmstadt</div>
-          <div class="avail-badge">available for internships</div>
-          <a href="assets/cv.pdf" download="Vishal-Katariya-Resume.pdf" class="np" style="text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:6px;font-size:10px;padding:8px 14px;margin-top:2px">↓ download resume</a>
-        </div>
-      </div>
-    </div>
-  </section>
 
 </main>
 </div>
