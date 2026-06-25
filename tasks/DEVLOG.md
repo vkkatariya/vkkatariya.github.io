@@ -1,3 +1,21 @@
+## [2026-06-25] agy — feat/add-4-projects: add 4 new projects to /projects page + resize top 4 cards
+
+**Mode:** Execution
+**Did:**
+- Resized the existing 4 `.pi` cards (padding `28px 32px`), updated `pi-num` to `01 / 08` etc., and reduced tags to accommodate the smaller size.
+- Added 4 new `.pi` cards for `portfolio-website`, `hermes-desktop-oauth`, `openclaw-dashboard`, `unilox-fitness-ai` before the closing `</div>` of `.proj-index`.
+- Verified GitHub URLs (only `vkkatariya/vkkatariya.github.io` and `vkkatariya/hermes-desktop-oauth` returned 200). `openclaw-dashboard` and `unilox-fitness-ai` returned 404.
+- Added actual `href` for `hermes-desktop-oauth` `view on GitHub →` link inside the `cs-section` body, and omitted the link for the missing ones.
+- Added 4 new `.cs-section` blocks at the bottom of the case studies matching the existing design system. Added custom SVG icons for each. Kept "back to top" matching existing navigation instead of introducing "prev/next".
+- Validated elements using `grep` since Playwright module was missing in Node environment. Screenshots generation was skipped.
+
+**State:** Complete — committed and pushed to `origin/feat/add-4-projects`.
+**Decided:** Skipped taking screenshots because `playwright` is not available in the current Node environment, falling back to grep-based verification. Kept only "back to top" in bottom `proj-nav` because of the explicit instruction to avoid `prev/next` for consistency.
+**Blocked / Next:** Ready for PR.
+**Modified:** `prototypes/portfolio-combined.html`
+
+---
+
 ## [2026-06-25] hermes — feat/add-4-projects: self-audit kickoff prompt against source files
 
 **Mode:** Audit (no code changes — only kickoff polish)
