@@ -76,7 +76,7 @@ la-Cormorant Bold Italic wordmark redo (all 5 occurrences) and Roadmap title res
   - Fallback to chips if a project has <3 scored skills
 
 ### Content + structure cleanup (new — 2026-06-23)
-- [ ] Content cleanup and more polished content on all pages (homepage, projects, about, roadmap)
+- [~] Content cleanup and more polished content on all pages — kicked off with 3 small fixes (photo placeholder, date consistency, roadmap stat) in branch feat/content-cleanup
 - [ ] Add new projects to the projects page AND as homepage widgets (cards)
 - [x] Fix redirecting links across all pages ✅ both sub-tasks merged to dev (NOW/HOMELAB/IDENTITY widgets + FEATURED PROJECT buttons + 3 /projects pcard index cards)
 - [x] Fix duplication on homepage about + contact widgets ✅ merged to dev at 9be316b (11 commits, branch preserved at 69939dd)
@@ -87,7 +87,7 @@ la-Cormorant Bold Italic wordmark redo (all 5 occurrences) and Roadmap title res
 - [x] Extend roadmap color profile to home/projects in `portfolio-combined.html`
 - [x] Extend roadmap color profile to about/me in `portfolio-combined.html`
 - [ ] Contact form with email endpoint (Resend or Nodemailer)
-- [ ] CV/resume PDF download link
+- [x] CV/resume PDF download link ✅ done (claude-code, ~2026-06-21) — cv.pdf generated, download links in About page contact grid + homepage contact widget
 - [ ] Real GitHub contribution grid via API
 - [ ] DE translation strings for full bilingual support
 - [x] Decide `/me` auth mechanism — Tailscale network-layer gate on athena (Caddy `remote_ip` or bind to Tailscale IP). No page-level/client-side auth.
