@@ -3074,11 +3074,7 @@ html.light footer.roadmap-footer a { color: var(--w); }
   border-color: var(--glass-border);
 }
 
-/* Project index tiles have rounded corners on some children; keep corners intact */
-#pg-projects .pi:nth-child(1) { border-radius: 16px 0 0 0; }
-#pg-projects .pi:nth-child(2) { border-radius: 0 16px 0 0; }
-#pg-projects .pi:nth-child(3) { border-radius: 0 0 0 16px; }
-#pg-projects .pi:nth-child(4) { border-radius: 0 0 16px 0; }
+/* All .pi cards use uniform border-radius from .pi rule (14px) */
 
 /* --- Roadmap page widgets (timeline items explicitly excluded) --- */
 #pg-roadmap .phase-card,
