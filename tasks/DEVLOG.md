@@ -1,3 +1,26 @@
+## [2026-06-25] claude-code — feat/homepage-about-contact-merge: redistribute about+contact into widget grid
+
+**Mode:** Execution (single-file SPA refactor, dispatched by Hermes)
+**Did:**
+- Replaced widget #9 ABOUT (was `s21` + short bio + chips) with full 3-paragraph bio from the bottom about-section; resized to `s22` to accommodate content.
+- Replaced widget #11 CONTACT (was `inv s11` + envelope icon) with github/web cards, location line, available badge, and ↓ download resume button; resized to `s12`, removed `inv` for visual consistency.
+- Moved widget #10 PROJECTS STAT before widget #9 ABOUT in the grid HTML, filling the empty slot in that row.
+- Deleted entire `<section class="about-section" id="contact">` bottom block.
+- Verified via Playwright screenshot: layout correct, all content visible, no bottom section.
+
+**State:** Complete — committed `c44ae59`, pushed to `origin/feat/homepage-about-contact-merge`.
+
+**Decided:**
+- Changed `s21` → `s22` on widget #9: three full paragraphs cannot fit in 148px; spec requires verbatim copy.
+- Changed `inv s11` → `s12` on widget #11: contact content (6 items) needs more than 148px height.
+- Removed `inv` from widget #11: contact card CSS uses dark-background colors, inv wrapper incompatible.
+
+**Blocked/Next:** Branch ready for PR / merge into main.
+
+**Modified:** `prototypes/portfolio-combined.html`
+
+---
+
 ## [2026-06-23] hermes — feat/cv-pdf merge: resolve DEVLOG conflict, complete merge
 
 **Mode:** Execution
