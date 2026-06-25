@@ -1,3 +1,25 @@
+## [2026-06-23] hermes — feat/cv-pdf merge: resolve DEVLOG conflict, complete merge
+
+**Mode:** Execution
+**Did:**
+- Resolved mid-merge conflict in `tasks/DEVLOG.md` from prior session's `git merge feat/cv-pdf`.
+  - HEAD had the `feat/me-tailscale-gate` entry (2026-06-20).
+  - feat/cv-pdf had 4 newer entries (timeline font polish + 3 cv-pdf commits, 2026-06-21).
+  - Resolution: kept both, feat/cv-pdf entries on top per AGENTS.md "newest-first" DEVLOG convention.
+- Staged 4 deleted kickoff files (consistent with the established pattern `66b4598 docs(todo): mark widget-liquid-glass task done and delete kickoff files`):
+  - `kickoff-feat-cv-pdf.md` (task complete — PDF generated)
+  - `kickoff-feat-me-tailscale-gate.md` (task complete — Caddy config shipped)
+  - `kickoff-feat-widget-liquid-glass.md` + `-v2.md` (task complete — liquid glass applied across all pages)
+- Completed merge commit `4e0ceff`, pushed `dev` to `origin/dev`.
+
+**State:** Working tree clean. `origin/dev` at `4e0ceff`. `feat/cv-pdf` branch preserved on remote (per user correction earlier this week: don't auto-delete branches on merge).
+
+**Modified:**
+- `tasks/DEVLOG.md` — conflict resolved
+- (no source changes this session — pure git hygiene)
+
+---
+
 ---
 
 
