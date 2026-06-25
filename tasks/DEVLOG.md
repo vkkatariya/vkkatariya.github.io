@@ -1,3 +1,22 @@
+## [2026-06-25] agy — feat/widget-svg-icons-all-pages: inline SVG icons on every widget across all 5 pages
+
+**Mode:** Execution
+**Did:**
+- Added inline SVG icons (13×13, `rgba(255,255,255,.5)`, 1–4 primitives) to ~122 widgets across all 5 pages of `portfolio-combined.html`.
+- **Homepage (10 new):** 3 `.pcard-title` (HomelabDashboard, TypeShift, orlon-bot) + 7 `.tl-title` timeline items.
+- **Projects (19 new):** 8 `.pi-title` index cards + 2 `.nd-name` infra nodes + 3 `.plat-name` platforms + 6 `.pipe-name` pipeline stages.
+- **Roadmap (37 new):** 4 `.phase-title` phase cards + 11 topic cards (JS-generated via `TOPIC_ICONS` map) + 10 career cards (JS-generated via `CAREER_ICONS` map) + 12 `.tl-title` roadmap timeline items + 9 `.resource-name` resource books. Skipped `.guide-card` (already has `.wlbl-row`).
+- **About (14 new):** 5 `.sh-label` section headers + 1 `.edu-inst` + 4 `.lang-name` language cards + 4 `.int-title` interest cards.
+- **Me (1 new):** 1 `h2` "Private section" lock icon.
+- Added `vertical-align:middle` to existing `.ico` rule. Added `:not(.wlbl-row)>.ico{margin-right:6px}` to give inline icons spacing from text without affecting existing `.wlbl-row` icons (which use flex gap).
+- Used a Python replacement script for surgical exact-string replacements. For JS-generated topic/career cards, injected `TOPIC_ICONS` and `CAREER_ICONS` lookup maps into the render functions.
+- All icons placed as **first child of existing title element** — no `.wlbl-row` headers added. Existing 18 `.wlbl-row` headers untouched.
+
+**State:** Complete — committed `b0c360e` and pushed to `origin/feat/widget-svg-icons-all-pages`. Ready for Vishal's review.
+**Decided:** Used `:not(.wlbl-row)>.ico{margin-right:6px}` scoped CSS to handle icon spacing for inline-placed icons without affecting the existing `.wlbl-row` icons that already have `gap:7px`. Skipped `.edu-mod` chips (8 tiny chips too small for icons) and `.cw-row` contact rows (already have detailed 18×18 SVG icons inside `.cc-icon`). Used JS lookup maps for the 21 JS-generated topic/career cards since those can't be edited as static HTML.
+**Blocked / Next:** Vishal reviews the branch visually, then merges manually. No push to dev.
+**Modified:** `prototypes/portfolio-combined.html`
+
 ## [2026-06-25] agy — feat/polish-task3: rich vis-wrap visualizations for new cs-sections
 
 **Mode:** Execution
