@@ -65,6 +65,12 @@ la-Cormorant Bold Italic wordmark redo (all 5 occurrences) and Roadmap title res
 - [x] Fix #pg-about missing closing </div>, unblocking /me page
 - [ ] Shared-nav mobile layout still cramped at ≤400px (3 pills overlap) — separate, pre-existing, not roadmap-specific
 
+### Content + structure cleanup (new — 2026-06-23)
+- [ ] Content cleanup and more polished content on all pages (homepage, projects, about, roadmap)
+- [ ] Add new projects to the projects page AND as homepage widgets (cards)
+- [ ] Fix redirecting links across all pages (broken / wrong-target / same-tab-where-new-tab-needed)
+- [ ] Fix duplication on homepage about + contact widgets (currently the same data rendered twice)
+
 ### Theme + color
 - [x] Dark/light mode toggle with `localStorage` persistence (standalone pages: `html.light` + `vk-theme`)
 - [x] Finish light mode on `portfolio-combined.html` — fix remaining dark rectangles/buttons/widgets
