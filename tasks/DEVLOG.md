@@ -1,3 +1,43 @@
+## [2026-06-25] Hermes — feat/content-cleanup: contact widget + about-page cleanup + photo (batches 5-8)
+
+**Mode:** Execution (direct edits, no agent dispatch)
+**Did:**
+- **Contact widget / homepage batch 4 (commit `4c74d52`):**
+  - Contact widget `photo-status` text: `open to internships` → `open to werkstudent jobs` (initial scope)
+  - Bottom HomelabDashboard pcard-title: removed `<br>` so `Homelab Dashboard` is now single-line inline (matches other pcards)
+  - About-page bio chips: removed all 3 `bchip` elements below the bio (`Darmstadt · Germany`, `h_da · CS`, `German · English · Hindi · Gujarati` — the languages one is duplicated by the dedicated `lang-card` section below)
+- **Contact widget avail-badge fix (commit `d6cf504`):**
+  - Fixed the GREEN `avail-badge` "available for internships" on the homepage contact widget — this is what users actually see in the widget, not the `photo-status` text I changed earlier. User caught it from the screenshot.
+  - Lesson: distinguish user-visible widgets from backing text — the `.photo-status` and `.avail-badge` are TWO different status indicators, both showing similar text.
+- **/about contact card cleanup (commit `b3c2184`):**
+  - Removed LinkedIn + Website cards from /about contact-grid (kept only EMAIL + GITHUB per user's "just email and github" rule)
+  - Removed entire `avail-block` (the "Available for internships / Based in Darmstadt" green block)
+  - Replaced homepage `web` `cw-row` with `email` `cw-row` (using the mail envelope SVG icon from the existing /about EMAIL card) — keeps the homepage contact widget at 2 rows (github + email) consistent with the /about page
+- **Projects stat 12→8 (commit `1925643`):**
+  - Homepage PROJECTS widget: `12 shipped` → `8 shipped` to match the actual `cs-section` count on /projects (8 sections: finance-buddy, homelab, typeshift, orlon-bot, portfolio-website, hermes-desktop-oauth, openclaw-dashboard, unilox-fitness-ai)
+- **Photo widget (commits `4b401d1` → `fe4c3e1` → `602e27b`):**
+  - `4b401d1`: First attempt — replaced `<div class="photo-initials">VK</div>` with `<img class="photo-img" src="assets/image-cropped.jpg">` + added `.photo-img` CSS rule (`object-fit:cover`, `object-position:center`). Initial crop was `crop=768:768:0:84` (square crop from y=84 to y=852 of original 768×1344 PNG).
+  - `fe4c3e1`: Recrop — switched to `crop=720:864:22:240` (5:6 portrait matching the 170×200 frame aspect). Changed CSS to `object-position: top center` to anchor the head to the top of the frame. **Did NOT solve the whitespace issue** because the cropped image still had the head positioned around 18% from the top with the rest of the figure (shoulders, body) filling the lower 82%. When displayed in the 170×200 frame, the head appeared in the top portion but the figure body took up most of the visible area.
+  - `602e27b`: User provided a NEW pre-cropped image (680×761 portrait, black background, head centered, no whitespace above). Applied directly via `<img src="assets/image.png">` — no ffmpeg crop step. Removed `image-cropped.jpg` from git tracking. CSS unchanged (still `object-position: top center`).
+- **Merge resolution (already merged to dev as `a1f6a3c` and `d4b1307`):**
+  - `a1f6a3c`: feat/content-cleanup → dev with 2 conflicts (HTML HomelabDashboard pcard-title + DEVLOG). Resolved HTML by combining both sides (SVG icon from dev + inline text from branch). Resolved DEVLOG by taking content-cleanup side (more complete).
+  - `d4b1307`: feat/content-cleanup → dev (projects stat 12→8). No conflicts.
+
+**State:** All 7 commits in this batch pushed to remote. `feat/content-cleanup` merged to dev at `d4b1307` (after the `a1f6a3c` merge). Branch preserved on remote (no `--delete-branch`).
+
+**Decided:** Direct edits for all 7 commits — no agent dispatch needed since each commit was a scoped in-place change (per L-041).
+
+**Lessons (added to lessons.md):**
+- **L-043:** When user gives you a pre-cropped image, don't re-crop it. Apply it directly. The first crop pass is usually wrong because we don't know where the head actually is — PIL/numpy analysis + ASCII rendering is more reliable than vision_analyze (which has the athena quirk of returning empty).
+- **L-044:** Distinguish user-visible widgets from backing text. The contact widget on the homepage has TWO status indicators: a `.photo-status` (small, near the photo block) and a `.avail-badge` (green, prominent near the bottom). User wants both updated together — assuming one covers the other wastes a commit cycle.
+- **L-045:** CSS `object-position` only changes which part of the image is visible inside the frame — it does NOT change the underlying image's content. If the cropped image has whitespace above the head, no CSS will fix that; you need to recrop with different y_start.
+
+**Blocked / Next:** User has more homepage/about fixes queued. Branch `feat/content-cleanup` still active for continuation.
+
+**Modified:** `prototypes/portfolio-combined.html`, `prototypes/assets/image.png`, `prototypes/assets/image-cropped.jpg` (deleted), `tasks/todo.md`, `tasks/DEVLOG.md`, `tasks/lessons.md`
+
+---
+
 ## [2026-06-25] Hermes — feat/content-cleanup: homepage v2 + content fixes 1+2+3
 
 **Mode:** Execution (direct edits, no agent dispatch)
