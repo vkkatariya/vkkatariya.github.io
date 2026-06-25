@@ -1,3 +1,68 @@
+## [2026-06-25] agy — feat/add-4-projects: add 4 new projects to /projects page + resize top 4 cards
+
+**Mode:** Execution
+**Did:**
+- Resized the existing 4 `.pi` cards (padding `28px 32px`), updated `pi-num` to `01 / 08` etc., and reduced tags to accommodate the smaller size.
+- Added 4 new `.pi` cards for `portfolio-website`, `hermes-desktop-oauth`, `openclaw-dashboard`, `unilox-fitness-ai` before the closing `</div>` of `.proj-index`.
+- Verified GitHub URLs (only `vkkatariya/vkkatariya.github.io` and `vkkatariya/hermes-desktop-oauth` returned 200). `openclaw-dashboard` and `unilox-fitness-ai` returned 404.
+- Added actual `href` for `hermes-desktop-oauth` `view on GitHub →` link inside the `cs-section` body, and omitted the link for the missing ones.
+- Added 4 new `.cs-section` blocks at the bottom of the case studies matching the existing design system. Added custom SVG icons for each. Kept "back to top" matching existing navigation instead of introducing "prev/next".
+- Validated elements using `grep` since Playwright module was missing in Node environment. Screenshots generation was skipped.
+
+**State:** Complete — committed and pushed to `origin/feat/add-4-projects`.
+**Decided:** Skipped taking screenshots because `playwright` is not available in the current Node environment, falling back to grep-based verification. Kept only "back to top" in bottom `proj-nav` because of the explicit instruction to avoid `prev/next` for consistency.
+**Blocked / Next:** Ready for PR.
+**Modified:** `prototypes/portfolio-combined.html`
+
+---
+
+## [2026-06-25] hermes — feat/add-4-projects: self-audit kickoff prompt against source files
+
+**Mode:** Audit (no code changes — only kickoff polish)
+**Did:**
+- Self-audited `tasks/kickoff-add-4-projects.md` (266 lines, 16 KB) against the 4 source project files (CONTEXT.md, READMEs, CLAUDE.md).
+- Found 6 gaps that would have made the agent guess or invent content:
+  - Missing GitHub URLs for all 4 new projects
+  - Missing cs-section status badge text (would have been invented)
+  - No URL verification protocol (could have pasted 404 links)
+  - OpenClaw description included a speculative agent roster from my prior knowledge, not from CLAUDE.md
+  - Step 4 ambiguous ("optional but recommended") — agents skip optional steps
+  - No guidance on proj-nav style (prev/next vs back-to-top only)
+- Patched all 6 gaps. Final kickoff is 290 lines, 17.8 KB.
+- Added lesson L-028 to `tasks/lessons.md`: "Before dispatching an agent, audit your own kickoff against source files."
+
+**State:** Kickoff ready for dispatch. Branch `feat/add-4-projects` to be created from `dev` when agent starts.
+
+**Decided:**
+- Self-audit step is mandatory for any kickoff > 10 KB. Reading source files and writing a kickoff are two different cognitive acts; both need to happen separately.
+- Optional steps in kickoffs are dispatch-bait. Either make them required or remove them.
+- Speculative content from "prior knowledge" should be flagged as such or removed. Agents have no way to distinguish "from source file" vs "from my memory" when reading the kickoff.
+
+**Lessons (for tonight's orchestrator log):**
+- A 5 KB kickoff needs 5 min audit; a 17 KB kickoff needs 15 min. Audit duration scales with size.
+- Don't dispatch after a single read-through. Read it once to write, read it once to audit — different mental modes.
+
+**Modified:** `tasks/kickoff-add-4-projects.md` (audited + polished); `tasks/lessons.md` (added L-028).
+
+---
+
+## [2026-06-25] antigravity — feat/fix-redirect-links-subtask2: add redirect links to FEATURED PROJECT + 3 homepage pcard index cards
+
+**Mode:** Execution
+**Did:**
+- Converted FEATURED PROJECT widget #7 (line 3420): 2 inert `<button>` → `<a>` tags. `view →` uses SPA onclick (`showPage('projects')` + setTimeout scroll to `#finance-buddy`). `github` links to `https://github.com/vkkatariya/finance-buddy` (private repo, opens new tab).
+- Converted Homelab Dashboard pcard (line 3585): single `<button>` → 2 `<a>` tags in a flex wrapper. `view →` scrolls to `#homelab`, `github →` links to `https://github.com/vkkatariya/homelab-dashboard`.
+- Converted TypeShift pcard (line 3603): single `<button>` → 2 `<a>` tags. `view →` scrolls to `#typeshift`, `github →` links to `https://github.com/nayalambaliya/TypeShift`.
+- Converted orlon-bot pcard (line 3621): single `<button>` → 2 `<a>` tags. `view →` scrolls to `#orlon-bot`, `github →` links to `https://github.com/vkkatariya/orlon-bot`.
+- GitHub URL verification: all 3 `vkkatariya/*` repos returned 404 (private repos — confirmed by user as expected). `nayalambaliya/TypeShift` pre-confirmed.
+
+**State:** Complete — committed `a886935`, pushed to `origin/feat/fix-redirect-links-subtask2`. Branch ready to merge to dev.
+**Decided:** Used `href="javascript:void(0)"` + `onclick` for internal `view →` links (same SPA pattern as sub-task 1). Each pcard gets both `view →` (`.np` filled style) and `github →` (`.np-ghost` outline style) buttons in a `display:flex;gap:6px` wrapper to match the FEATURED PROJECT's dual-button layout.
+**Blocked / Next:** Both sub-tasks complete. Branches `feat/fix-redirect-links-subtask1` and `feat/fix-redirect-links-subtask2` ready to merge to dev.
+**Modified:** `prototypes/portfolio-combined.html`
+
+---
+
 ## [2026-06-25] hermes — feat/fix-redirect-links-subtask1: arrow visibility iteration
 
 **Mode:** Micro-loop (3 inline overrides + 1 CSS rule tweak)
