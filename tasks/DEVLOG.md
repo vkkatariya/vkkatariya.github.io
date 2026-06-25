@@ -1,3 +1,20 @@
+## [2026-06-25] antigravity — feat/fix-redirect-links-subtask2: add redirect links to FEATURED PROJECT + 3 homepage pcard index cards
+
+**Mode:** Execution
+**Did:**
+- Converted FEATURED PROJECT widget #7 (line 3420): 2 inert `<button>` → `<a>` tags. `view →` uses SPA onclick (`showPage('projects')` + setTimeout scroll to `#finance-buddy`). `github` links to `https://github.com/vkkatariya/finance-buddy` (private repo, opens new tab).
+- Converted Homelab Dashboard pcard (line 3585): single `<button>` → 2 `<a>` tags in a flex wrapper. `view →` scrolls to `#homelab`, `github →` links to `https://github.com/vkkatariya/homelab-dashboard`.
+- Converted TypeShift pcard (line 3603): single `<button>` → 2 `<a>` tags. `view →` scrolls to `#typeshift`, `github →` links to `https://github.com/nayalambaliya/TypeShift`.
+- Converted orlon-bot pcard (line 3621): single `<button>` → 2 `<a>` tags. `view →` scrolls to `#orlon-bot`, `github →` links to `https://github.com/vkkatariya/orlon-bot`.
+- GitHub URL verification: all 3 `vkkatariya/*` repos returned 404 (private repos — confirmed by user as expected). `nayalambaliya/TypeShift` pre-confirmed.
+
+**State:** Complete — committed `a886935`, pushed to `origin/feat/fix-redirect-links-subtask2`. Branch ready to merge to dev.
+**Decided:** Used `href="javascript:void(0)"` + `onclick` for internal `view →` links (same SPA pattern as sub-task 1). Each pcard gets both `view →` (`.np` filled style) and `github →` (`.np-ghost` outline style) buttons in a `display:flex;gap:6px` wrapper to match the FEATURED PROJECT's dual-button layout.
+**Blocked / Next:** Both sub-tasks complete. Branches `feat/fix-redirect-links-subtask1` and `feat/fix-redirect-links-subtask2` ready to merge to dev.
+**Modified:** `prototypes/portfolio-combined.html`
+
+---
+
 ## [2026-06-25] hermes — feat/fix-redirect-links-subtask1: arrow visibility iteration
 
 **Mode:** Micro-loop (3 inline overrides + 1 CSS rule tweak)
