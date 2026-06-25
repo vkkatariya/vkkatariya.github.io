@@ -1384,6 +1384,43 @@ footer {
   color:var(--w60);letter-spacing:.3px;
 }
 
+/* scored skill bars */
+.cs-skills{
+  display:flex;flex-direction:column;gap:10px;
+  margin-bottom:32px;
+}
+.cs-skills-row{
+  display:grid;
+  grid-template-columns:200px 1fr 32px;
+  gap:14px;align-items:center;
+  font-size:11px;
+}
+.cs-skills-name{
+  font-family:'JetBrains Mono',monospace;
+  color:var(--w60);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.cs-skills-bar{
+  height:5px;border-radius:3px;
+  background:var(--w06);
+  overflow:hidden;
+}
+.cs-skills-fill{
+  height:100%;border-radius:3px;
+  transition:width .4s ease;
+}
+.cs-skills-fill.s-high{background:var(--green)}
+.cs-skills-fill.s-mid{background:var(--acc)}
+.cs-skills-fill.s-low{background:var(--amber)}
+.cs-skills-score{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;color:var(--w30);
+  text-align:right;
+}
+@media(max-width:700px){
+  .cs-skills-row{grid-template-columns:120px 1fr 28px;gap:8px}
+}
+
 /* feature list */
 .feat-list{
   display:flex;flex-direction:column;gap:12px;
@@ -3768,7 +3805,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
     <div class="cs-hero">
       <div>
         <div class="cs-number">01 / 04</div>
-        <h2 class="cs-title">Finance<br>Buddy</h2>
+        <h2 class="cs-title">Finance Buddy</h2>
         <p class="cs-tagline">Personal finance tracker built from real transaction data — 993 entries across 44 months of actual spending and income.</p>
         <div class="cs-badges">
           <span class="cs-badge cb-green">Prototype complete</span>
@@ -3874,15 +3911,32 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
 
     <!-- Tech stack -->
     <div class="cs-h">stack</div>
-    <div class="cs-stack" style="margin-bottom:40px">
-      <span class="cs-tech">SvelteKit + TypeScript</span>
-      <span class="cs-tech">Fastify (REST API)</span>
-      <span class="cs-tech">PostgreSQL 16</span>
-      <span class="cs-tech">Drizzle ORM</span>
-      <span class="cs-tech">Chart.js 4.x</span>
-      <span class="cs-tech">Tailscale (private)</span>
-      <span class="cs-tech">Docker + Caddy</span>
-      <span class="cs-tech">Argon2 JWT auth</span>
+    <div class="cs-skills">
+      <div class="cs-skills-row">
+        <span class="cs-skills-name">SvelteKit + TypeScript</span>
+        <div class="cs-skills-bar"><div class="cs-skills-fill s-high" style="width:90%"></div></div>
+        <span class="cs-skills-score">90</span>
+      </div>
+      <div class="cs-skills-row">
+        <span class="cs-skills-name">Fastify (REST API)</span>
+        <div class="cs-skills-bar"><div class="cs-skills-fill s-high" style="width:88%"></div></div>
+        <span class="cs-skills-score">88</span>
+      </div>
+      <div class="cs-skills-row">
+        <span class="cs-skills-name">PostgreSQL 16</span>
+        <div class="cs-skills-bar"><div class="cs-skills-fill s-high" style="width:85%"></div></div>
+        <span class="cs-skills-score">85</span>
+      </div>
+      <div class="cs-skills-row">
+        <span class="cs-skills-name">Chart.js 4.x</span>
+        <div class="cs-skills-bar"><div class="cs-skills-fill s-mid" style="width:75%"></div></div>
+        <span class="cs-skills-score">75</span>
+      </div>
+      <div class="cs-skills-row">
+        <span class="cs-skills-name">Docker + Caddy</span>
+        <div class="cs-skills-bar"><div class="cs-skills-fill s-mid" style="width:70%"></div></div>
+        <span class="cs-skills-score">70</span>
+      </div>
     </div>
 
     <!-- Architecture note -->
@@ -3897,7 +3951,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
     <div class="cs-hero">
       <div>
         <div class="cs-number">02 / 04</div>
-        <h2 class="cs-title">Homelab<br>Dashboard</h2>
+        <h2 class="cs-title">Homelab Dashboard</h2>
         <p class="cs-tagline">Realtime ops dashboard for a self-hosted 2-node cluster — live metrics, service registry, and a Notion docs viewer.</p>
         <div class="cs-badges">
           <span class="cs-badge cb-green">Prototype complete</span>
@@ -3997,15 +4051,32 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
     </div>
 
     <div class="cs-h">stack</div>
-    <div class="cs-stack">
-      <span class="cs-tech">Fastify + TypeScript</span>
-      <span class="cs-tech">WebSocket (ws)</span>
-      <span class="cs-tech">systeminformation npm</span>
-      <span class="cs-tech">pm2</span>
-      <span class="cs-tech">Docker + Caddy</span>
-      <span class="cs-tech">Tailscale file-cert</span>
-      <span class="cs-tech">Notion MCP</span>
-      <span class="cs-tech">NothingOS CSS</span>
+    <div class="cs-skills">
+      <div class="cs-skills-row">
+        <span class="cs-skills-name">Fastify + TypeScript</span>
+        <div class="cs-skills-bar"><div class="cs-skills-fill s-high" style="width:90%"></div></div>
+        <span class="cs-skills-score">90</span>
+      </div>
+      <div class="cs-skills-row">
+        <span class="cs-skills-name">WebSocket (ws)</span>
+        <div class="cs-skills-bar"><div class="cs-skills-fill s-high" style="width:85%"></div></div>
+        <span class="cs-skills-score">85</span>
+      </div>
+      <div class="cs-skills-row">
+        <span class="cs-skills-name">Tailscale file-cert</span>
+        <div class="cs-skills-bar"><div class="cs-skills-fill s-high" style="width:85%"></div></div>
+        <span class="cs-skills-score">85</span>
+      </div>
+      <div class="cs-skills-row">
+        <span class="cs-skills-name">Docker + Caddy</span>
+        <div class="cs-skills-bar"><div class="cs-skills-fill s-high" style="width:80%"></div></div>
+        <span class="cs-skills-score">80</span>
+      </div>
+      <div class="cs-skills-row">
+        <span class="cs-skills-name">NothingOS CSS</span>
+        <div class="cs-skills-bar"><div class="cs-skills-fill s-mid" style="width:70%"></div></div>
+        <span class="cs-skills-score">70</span>
+      </div>
     </div>
   </section>
 
@@ -4083,12 +4154,32 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
     </div>
 
     <div class="cs-h">stack</div>
-    <div class="cs-stack">
-      <span class="cs-tech">Kotlin (Android)</span>
-      <span class="cs-tech">Swift / SwiftUI (macOS)</span>
-      <span class="cs-tech">C# / WinUI 3 (Windows)</span>
-      <span class="cs-tech">Shared AI API backend</span>
-      <span class="cs-tech">GitHub Actions CI</span>
+    <div class="cs-skills">
+      <div class="cs-skills-row">
+        <span class="cs-skills-name">Swift / SwiftUI</span>
+        <div class="cs-skills-bar"><div class="cs-skills-fill s-high" style="width:85%"></div></div>
+        <span class="cs-skills-score">85</span>
+      </div>
+      <div class="cs-skills-row">
+        <span class="cs-skills-name">Kotlin</span>
+        <div class="cs-skills-bar"><div class="cs-skills-fill s-high" style="width:80%"></div></div>
+        <span class="cs-skills-score">80</span>
+      </div>
+      <div class="cs-skills-row">
+        <span class="cs-skills-name">GitHub Actions</span>
+        <div class="cs-skills-bar"><div class="cs-skills-fill s-mid" style="width:75%"></div></div>
+        <span class="cs-skills-score">75</span>
+      </div>
+      <div class="cs-skills-row">
+        <span class="cs-skills-name">Shared AI API backend</span>
+        <div class="cs-skills-bar"><div class="cs-skills-fill s-mid" style="width:70%"></div></div>
+        <span class="cs-skills-score">70</span>
+      </div>
+      <div class="cs-skills-row">
+        <span class="cs-skills-name">C# / WinUI 3</span>
+        <div class="cs-skills-bar"><div class="cs-skills-fill s-mid" style="width:65%"></div></div>
+        <span class="cs-skills-score">65</span>
+      </div>
     </div>
   </section>
 
@@ -4183,15 +4274,32 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
     </div>
 
     <div class="cs-h">stack</div>
-    <div class="cs-stack">
-      <span class="cs-tech">Python</span>
-      <span class="cs-tech">Unsloth</span>
-      <span class="cs-tech">QLoRA (PEFT)</span>
-      <span class="cs-tech">Kaggle T4 GPU</span>
-      <span class="cs-tech">rkllama (NPU)</span>
-      <span class="cs-tech">Rock 5T (athena)</span>
-      <span class="cs-tech">Telegram Bot API</span>
-      <span class="cs-tech">pm2</span>
+    <div class="cs-skills">
+      <div class="cs-skills-row">
+        <span class="cs-skills-name">Telegram Bot API</span>
+        <div class="cs-skills-bar"><div class="cs-skills-fill s-high" style="width:95%"></div></div>
+        <span class="cs-skills-score">95</span>
+      </div>
+      <div class="cs-skills-row">
+        <span class="cs-skills-name">Python</span>
+        <div class="cs-skills-bar"><div class="cs-skills-fill s-high" style="width:90%"></div></div>
+        <span class="cs-skills-score">90</span>
+      </div>
+      <div class="cs-skills-row">
+        <span class="cs-skills-name">Unsloth</span>
+        <div class="cs-skills-bar"><div class="cs-skills-fill s-high" style="width:85%"></div></div>
+        <span class="cs-skills-score">85</span>
+      </div>
+      <div class="cs-skills-row">
+        <span class="cs-skills-name">QLoRA (PEFT)</span>
+        <div class="cs-skills-bar"><div class="cs-skills-fill s-high" style="width:85%"></div></div>
+        <span class="cs-skills-score">85</span>
+      </div>
+      <div class="cs-skills-row">
+        <span class="cs-skills-name">Kaggle T4 GPU</span>
+        <div class="cs-skills-bar"><div class="cs-skills-fill s-high" style="width:80%"></div></div>
+        <span class="cs-skills-score">80</span>
+      </div>
     </div>
 
     <!-- Bottom nav -->
@@ -4216,6 +4324,34 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
       </div>
     </div>
     
+        <!-- Stats -->
+    <div class="cs-stats">
+      <div class="cs-stat"><div class="cs-stat-n">7</div><div class="cs-stat-l">pages · single SPA</div></div>
+      <div class="cs-stat"><div class="cs-stat-n">3</div><div class="cs-stat-l">design systems</div></div>
+      <div class="cs-stat"><div class="cs-stat-n">8</div><div class="cs-stat-l">project cards on top</div></div>
+      <div class="cs-stat"><div class="cs-stat-n">2</div><div class="cs-stat-l">deploy targets</div></div>
+    </div>
+
+    <!-- Visualization -->
+    <div class="vis-wrap">
+      <div class="vis-title">hybrid routing · public vs private</div>
+      <div style="display:flex;gap:8px;align-items:center;justify-content:center;padding:20px 0;flex-wrap:wrap">
+        <span class="cs-tech">/</span>
+        <span style="opacity:.5">→</span>
+        <span class="cs-tech">Vercel CDN</span>
+        <span style="opacity:.5">→</span>
+        <span class="cs-tech">/</span>
+        <span class="cs-tech">/projects</span>
+        <span class="cs-tech">/roadmap</span>
+        <span class="cs-tech">/about</span>
+        <span style="opacity:.5">|</span>
+        <span class="cs-tech">/me/*</span>
+        <span style="opacity:.5">→</span>
+        <span class="cs-tech">Caddy Tailscale-gate</span>
+        <span style="opacity:.5">→</span>
+        <span class="cs-tech">athena:8900</span>
+      </div>
+    </div>
     <div class="cs-body">
       <div>
         <div class="cs-h">Hybrid Architecture</div>
@@ -4228,18 +4364,54 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
       </div>
     </div>
     
+        <div class="cs-h">Features</div>
+    <div class="feat-list" style="margin-bottom:40px">
+      <div class="feat">
+        <div class="feat-icon">📐</div>
+        <div>
+          <div class="feat-title">Hybrid Hosting</div>
+          <div class="feat-desc">Public routes on Vercel CDN + private /me/* behind Tailscale + Caddy IP allowlist on athena</div>
+        </div>
+      </div>
+      <div class="feat">
+        <div class="feat-icon">🎨</div>
+        <div>
+          <div class="feat-title">3 Design Systems</div>
+          <div class="feat-desc">Liquid Glass (nav/frames), Neomorphism (widgets), NeoPOP (CTAs) layered together</div>
+        </div>
+      </div>
+      <div class="feat">
+        <div class="feat-icon">⚡</div>
+        <div>
+          <div class="feat-title">Single SPA</div>
+          <div class="feat-desc">portfolio-combined.html consolidates all 5 standalone prototype pages into one experience</div>
+        </div>
+      </div>
+    </div>
     <div class="cs-h">stack</div>
-    <div class="cs-stack">
-      <span class="cs-tech">SvelteKit</span>
-      <span class="cs-tech">Vercel</span>
-      <span class="cs-tech">Tailscale</span>
-      <span class="cs-tech">Liquid Glass</span>
+    <div class="cs-skills">
+      <div class="cs-skills-row">
+        <span class="cs-skills-name">Tailscale</span>
+        <div class="cs-skills-bar"><div class="cs-skills-fill s-high" style="width:95%"></div></div>
+        <span class="cs-skills-score">95</span>
+      </div>
+      <div class="cs-skills-row">
+        <span class="cs-skills-name">Vercel</span>
+        <div class="cs-skills-bar"><div class="cs-skills-fill s-high" style="width:85%"></div></div>
+        <span class="cs-skills-score">85</span>
+      </div>
+      <div class="cs-skills-row">
+        <span class="cs-skills-name">SvelteKit</span>
+        <div class="cs-skills-bar"><div class="cs-skills-fill s-high" style="width:85%"></div></div>
+        <span class="cs-skills-score">85</span>
+      </div>
+      <div class="cs-skills-row">
+        <span class="cs-skills-name">Liquid Glass</span>
+        <div class="cs-skills-bar"><div class="cs-skills-fill s-mid" style="width:75%"></div></div>
+        <span class="cs-skills-score">75</span>
+      </div>
     </div>
     
-    <div class="proj-nav">
-      <a href="#home" class="pnav-btn" onclick="showPage('home'); return false;">← home</a>
-      <a href="#portfolio-website" class="pnav-btn">↑ back to top</a>
-    </div>
   </section>
 
   <!-- ── 06: HERMES DESKTOP OAUTH ── -->
@@ -4258,6 +4430,27 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
       </div>
     </div>
     
+        <!-- Stats -->
+    <div class="cs-stats">
+      <div class="cs-stat"><div class="cs-stat-n">13</div><div class="cs-stat-l">PRs merged</div></div>
+      <div class="cs-stat"><div class="cs-stat-n">4</div><div class="cs-stat-l">phases shipped</div></div>
+      <div class="cs-stat"><div class="cs-stat-n">38</div><div class="cs-stat-l">tests pass</div></div>
+      <div class="cs-stat"><div class="cs-stat-n">1</div><div class="cs-stat-l">upstream PR pending</div></div>
+    </div>
+
+    <!-- Visualization -->
+    <div class="vis-wrap">
+      <div class="vis-title">OAuth fork · 4 phases</div>
+      <div style="display:flex;gap:6px;align-items:center;justify-content:center;padding:16px 0;flex-wrap:wrap">
+        <span class="cs-badge cb-green">P1 audit</span>
+        <span style="opacity:.5">→</span>
+        <span class="cs-badge cb-green">P2 OAuth flow</span>
+        <span style="opacity:.5">→</span>
+        <span class="cs-badge cb-green">P3 Mac e2e</span>
+        <span style="opacity:.5">→</span>
+        <span class="cs-badge cb-amber">P4 upstream</span>
+      </div>
+    </div>
     <div class="cs-body">
       <div>
         <div class="cs-h">The Problem</div>
@@ -4271,20 +4464,66 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
       </div>
     </div>
     
+        <div class="cs-h">Features</div>
+    <div class="feat-list" style="margin-bottom:40px">
+      <div class="feat">
+        <div class="feat-icon">🔐</div>
+        <div>
+          <div class="feat-title">Nous Portal OAuth</div>
+          <div class="feat-desc">Replaces ?token= URL auth with proper OAuth code path so the community app can talk to gated dashboards</div>
+        </div>
+      </div>
+      <div class="feat">
+        <div class="feat-icon">🎟️</div>
+        <div>
+          <div class="feat-title">Single-Use WS Tickets</div>
+          <div class="feat-desc">Mints per-connection WS auth tickets that don't get burned by probes before the renderer can use them</div>
+        </div>
+      </div>
+      <div class="feat">
+        <div class="feat-icon">🔍</div>
+        <div>
+          <div class="feat-title">Provider Discovery</div>
+          <div class="feat-desc">Discovers dashboard auth providers from /api/status instead of hardcoding nous — community-portable</div>
+        </div>
+      </div>
+      <div class="feat">
+        <div class="feat-icon">🧪</div>
+        <div>
+          <div class="feat-title">38/38 Tests</div>
+          <div class="feat-desc">Vitest suite covers IPC channels, OAuth flow, WS ticket lifecycle, dashboard connection</div>
+        </div>
+      </div>
+    </div>
     <div class="cs-h">stack</div>
-    <div class="cs-stack">
-      <span class="cs-tech">Electron</span>
-      <span class="cs-tech">TypeScript</span>
-      <span class="cs-tech">React 18</span>
-      <span class="cs-tech">Vite</span>
-      <span class="cs-tech">Tailwind</span>
-      <span class="cs-tech">better-sqlite3</span>
+    <div class="cs-skills">
+      <div class="cs-skills-row">
+        <span class="cs-skills-name">Electron</span>
+        <div class="cs-skills-bar"><div class="cs-skills-fill s-high" style="width:95%"></div></div>
+        <span class="cs-skills-score">95</span>
+      </div>
+      <div class="cs-skills-row">
+        <span class="cs-skills-name">React 18</span>
+        <div class="cs-skills-bar"><div class="cs-skills-fill s-high" style="width:85%"></div></div>
+        <span class="cs-skills-score">85</span>
+      </div>
+      <div class="cs-skills-row">
+        <span class="cs-skills-name">Vite</span>
+        <div class="cs-skills-bar"><div class="cs-skills-fill s-high" style="width:80%"></div></div>
+        <span class="cs-skills-score">80</span>
+      </div>
+      <div class="cs-skills-row">
+        <span class="cs-skills-name">Tailwind</span>
+        <div class="cs-skills-bar"><div class="cs-skills-fill s-mid" style="width:75%"></div></div>
+        <span class="cs-skills-score">75</span>
+      </div>
+      <div class="cs-skills-row">
+        <span class="cs-skills-name">better-sqlite3</span>
+        <div class="cs-skills-bar"><div class="cs-skills-fill s-mid" style="width:70%"></div></div>
+        <span class="cs-skills-score">70</span>
+      </div>
     </div>
     
-    <div class="proj-nav">
-      <a href="#home" class="pnav-btn" onclick="showPage('home'); return false;">← home</a>
-      <a href="#hermes-desktop-oauth" class="pnav-btn">↑ back to top</a>
-    </div>
   </section>
 
   <!-- ── 07: OPENCLAW DASHBOARD ── -->
@@ -4302,6 +4541,25 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
       </div>
     </div>
     
+        <!-- Stats -->
+    <div class="cs-stats">
+      <div class="cs-stat"><div class="cs-stat-n">3</div><div class="cs-stat-l">routes</div></div>
+      <div class="cs-stat"><div class="cs-stat-n">7</div><div class="cs-stat-l">agents orchestrated</div></div>
+      <div class="cs-stat"><div class="cs-stat-n">2</div><div class="cs-stat-l">themes</div></div>
+      <div class="cs-stat"><div class="cs-stat-n">1</div><div class="cs-stat-l">gateway port</div></div>
+    </div>
+
+    <!-- Visualization -->
+    <div class="vis-wrap">
+      <div class="vis-title">3 routes · AppShell layout</div>
+      <div style="display:flex;gap:8px;align-items:center;justify-content:center;padding:16px 0;flex-wrap:wrap">
+        <span class="cs-tech">/dashboard</span>
+        <span style="opacity:.5">·</span>
+        <span class="cs-tech">/chat</span>
+        <span style="opacity:.5">·</span>
+        <span class="cs-tech">/theme-test</span>
+      </div>
+    </div>
     <div class="cs-body">
       <div>
         <div class="cs-h">Overview</div>
@@ -4314,18 +4572,54 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
       </div>
     </div>
     
+        <div class="cs-h">Features</div>
+    <div class="feat-list" style="margin-bottom:40px">
+      <div class="feat">
+        <div class="feat-icon">🌐</div>
+        <div>
+          <div class="feat-title">WebSocket RPC</div>
+          <div class="feat-desc">Ed25519 device identity + RPC client connecting to OpenClaw gateway over ws://127.0.0.1:18789</div>
+        </div>
+      </div>
+      <div class="feat">
+        <div class="feat-icon">🎨</div>
+        <div>
+          <div class="feat-title">NeoPOP + Neumorphism</div>
+          <div class="feat-desc">Hybrid design system via @cred/neopop-web, tokens in src/theme/tokens.ts, two themes (dark + light)</div>
+        </div>
+      </div>
+      <div class="feat">
+        <div class="feat-icon">⚡</div>
+        <div>
+          <div class="feat-title">Command Palette</div>
+          <div class="feat-desc">Keyboard-first navigation in src/components/commands/, slash commands like /network and /agent in chat</div>
+        </div>
+      </div>
+    </div>
     <div class="cs-h">stack</div>
-    <div class="cs-stack">
-      <span class="cs-tech">React</span>
-      <span class="cs-tech">TypeScript</span>
-      <span class="cs-tech">WebSocket</span>
-      <span class="cs-tech">Neopop</span>
+    <div class="cs-skills">
+      <div class="cs-skills-row">
+        <span class="cs-skills-name">React</span>
+        <div class="cs-skills-bar"><div class="cs-skills-fill s-high" style="width:95%"></div></div>
+        <span class="cs-skills-score">95</span>
+      </div>
+      <div class="cs-skills-row">
+        <span class="cs-skills-name">TypeScript</span>
+        <div class="cs-skills-bar"><div class="cs-skills-fill s-high" style="width:90%"></div></div>
+        <span class="cs-skills-score">90</span>
+      </div>
+      <div class="cs-skills-row">
+        <span class="cs-skills-name">WebSocket</span>
+        <div class="cs-skills-bar"><div class="cs-skills-fill s-high" style="width:85%"></div></div>
+        <span class="cs-skills-score">85</span>
+      </div>
+      <div class="cs-skills-row">
+        <span class="cs-skills-name">Neopop</span>
+        <div class="cs-skills-bar"><div class="cs-skills-fill s-mid" style="width:75%"></div></div>
+        <span class="cs-skills-score">75</span>
+      </div>
     </div>
     
-    <div class="proj-nav">
-      <a href="#home" class="pnav-btn" onclick="showPage('home'); return false;">← home</a>
-      <a href="#openclaw-dashboard" class="pnav-btn">↑ back to top</a>
-    </div>
   </section>
 
   <!-- ── 08: UNILOX FITNESS AI ── -->
@@ -4344,6 +4638,33 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
       </div>
     </div>
     
+        <!-- Stats -->
+    <div class="cs-stats">
+      <div class="cs-stat"><div class="cs-stat-n">7</div><div class="cs-stat-l">AI modules</div></div>
+      <div class="cs-stat"><div class="cs-stat-n">3</div><div class="cs-stat-l">deploy targets</div></div>
+      <div class="cs-stat"><div class="cs-stat-n">5</div><div class="cs-stat-l">IoT edge devices</div></div>
+      <div class="cs-stat"><div class="cs-stat-n">0</div><div class="cs-stat-l">shipping yet</div></div>
+    </div>
+
+    <!-- Visualization -->
+    <div class="vis-wrap">
+      <div class="vis-title">7 AI modules</div>
+      <div style="display:flex;gap:6px;align-items:center;justify-content:center;padding:16px 0;flex-wrap:wrap">
+        <span class="cs-tech">CV Trainer</span>
+        <span style="opacity:.5">·</span>
+        <span class="cs-tech">Dietician</span>
+        <span style="opacity:.5">·</span>
+        <span class="cs-tech">IoT Asst</span>
+        <span style="opacity:.5">·</span>
+        <span class="cs-tech">Habit Trk</span>
+        <span style="opacity:.5">·</span>
+        <span class="cs-tech">Buddy</span>
+        <span style="opacity:.5">·</span>
+        <span class="cs-tech">Pose</span>
+        <span style="opacity:.5">·</span>
+        <span class="cs-tech">Recommender</span>
+      </div>
+    </div>
     <div class="cs-body">
       <div>
         <div class="cs-h">Overview</div>
@@ -4356,21 +4677,66 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
       </div>
     </div>
     
+        <div class="cs-h">Features</div>
+    <div class="feat-list" style="margin-bottom:40px">
+      <div class="feat">
+        <div class="feat-icon">📷</div>
+        <div>
+          <div class="feat-title">Computer Vision</div>
+          <div class="feat-desc">MediaPipe Pose + custom CNN heads for rep counting, form scoring, biomechanical analysis</div>
+        </div>
+      </div>
+      <div class="feat">
+        <div class="feat-icon">🤖</div>
+        <div>
+          <div class="feat-title">7 AI Modules</div>
+          <div class="feat-desc">Combines CV + NLP + IoT + behavioral ML + conversational AI in a single ecosystem</div>
+        </div>
+      </div>
+      <div class="feat">
+        <div class="feat-icon">📡</div>
+        <div>
+          <div class="feat-title">Edge + Cloud</div>
+          <div class="feat-desc">MQTT (Mosquitto) on Jetson Nano / RPi 5 / ESP32-CAM, FastAPI backend, MLflow for experiment tracking</div>
+        </div>
+      </div>
+    </div>
     <div class="cs-h">stack</div>
-    <div class="cs-stack">
-      <span class="cs-tech">Next.js 14</span>
-      <span class="cs-tech">FastAPI</span>
-      <span class="cs-tech">MediaPipe</span>
-      <span class="cs-tech">HuggingFace</span>
-      <span class="cs-tech">PostgreSQL</span>
-      <span class="cs-tech">MQTT</span>
+    <div class="cs-skills">
+      <div class="cs-skills-row">
+        <span class="cs-skills-name">MQTT</span>
+        <div class="cs-skills-bar"><div class="cs-skills-fill s-high" style="width:85%"></div></div>
+        <span class="cs-skills-score">85</span>
+      </div>
+      <div class="cs-skills-row">
+        <span class="cs-skills-name">Next.js 14</span>
+        <div class="cs-skills-bar"><div class="cs-skills-fill s-high" style="width:80%"></div></div>
+        <span class="cs-skills-score">80</span>
+      </div>
+      <div class="cs-skills-row">
+        <span class="cs-skills-name">FastAPI</span>
+        <div class="cs-skills-bar"><div class="cs-skills-fill s-high" style="width:80%"></div></div>
+        <span class="cs-skills-score">80</span>
+      </div>
+      <div class="cs-skills-row">
+        <span class="cs-skills-name">MediaPipe</span>
+        <div class="cs-skills-bar"><div class="cs-skills-fill s-mid" style="width:75%"></div></div>
+        <span class="cs-skills-score">75</span>
+      </div>
+      <div class="cs-skills-row">
+        <span class="cs-skills-name">PostgreSQL</span>
+        <div class="cs-skills-bar"><div class="cs-skills-fill s-mid" style="width:70%"></div></div>
+        <span class="cs-skills-score">70</span>
+      </div>
     </div>
     
-    <div class="proj-nav">
-      <a href="#home" class="pnav-btn" onclick="showPage('home'); return false;">← home</a>
-      <a href="#unilox-fitness-ai" class="pnav-btn">↑ back to top</a>
-    </div>
   </section>
+
+  <!-- Bottom nav for entire /projects page -->
+  <div class="proj-nav">
+    <a href="#home" class="pnav-btn" onclick="showPage('home'); return false;">← home</a>
+    <a href="#finance-buddy" class="pnav-btn">↑ back to top</a>
+  </div>
 
 </div><!-- /cs -->
 </div><!-- /pg-projects -->

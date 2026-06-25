@@ -1,3 +1,20 @@
+## [2026-06-25] agy — feat/cs-skills-bars: replace cs-stack chips with scored skill bars (8 projects, 38 rows)
+
+**Mode:** Execution
+**Did:**
+- Added `.cs-skills`, `.cs-skills-row`, `.cs-skills-name`, `.cs-skills-bar`, `.cs-skills-fill`, `.cs-skills-score` CSS rules after the existing `.cs-tech` rule (line ~1387).
+- Color bands: `s-high` → `var(--green)` (80–100), `s-mid` → `var(--acc)` (65–79), `s-low` → `var(--amber)` (50–64).
+- Replaced all 8 `.cs-stack` chip blocks with `.cs-skills` bar widgets using exact names and scores from source-of-truth tables.
+- finance-buddy: 5 bars (90/88/85/75/70). homelab: 5 bars (90/85/85/80/70). typeshift: 5 bars (85/80/75/70/65). orlon-bot: 5 bars (95/90/85/85/80). portfolio-website: 4 bars (95/85/85/75). hermes-desktop-oauth: 5 bars (95/85/80/75/70). openclaw-dashboard: 4 bars (95/90/85/75). unilox-fitness-ai: 5 bars (85/80/80/75/70).
+- Grep verified: 0 cs-stack, 8 cs-skills, 38 cs-skills-row.
+
+**State:** Complete — committed and pushed to `origin/feat/cs-skills-bars`.
+**Decided:** Kept strictly to single file. No s-low rows needed (all included skills ≥ 65). portfolio-website and openclaw-dashboard kept at 4 bars each per spec.
+**Blocked / Next:** Ready for PR or merge.
+**Modified:** `prototypes/portfolio-combined.html`
+
+---
+
 ## [2026-06-25] agy — feat/polish-task3: polish task #3 (resize 8 cards, single-line titles, rename UNILOX, remove decorative svgs)
 
 **Mode:** Execution
