@@ -384,3 +384,35 @@ AGENT_BROWSER_ARGS=--no-sandbox
 - **If the user points at a widget using the OLD style after a rollout, that widget IS in scope** — expand the branch (or follow up with another commit) before declaring done. Don't dismiss the user's report as a one-off.
 - **Use `getComputedStyle` on the rendered page**, not grep alone, to verify visual state. The agent's diff is one signal; the rendered output is the source of truth.
 - This rule is the same pattern as L-021 (widget vs wrapper audit before adding hover) and L-024 (duplicate selector audit before font changes) — same shape, different selector dimension. Bundle these as "pre-rollout audit checklist": (1) widget vs wrapper, (2) duplicate definitions, (3) sibling selectors with same intent.
+
+
+## L-027 — When dispatching an agent for a small CSS/HTML fix, inspect the existing CSS rule that the fix will interact with BEFORE writing the kickoff
+
+**Symptom:** Tonight's about+contact widgets refactor took 4 agent dispatch cycles (v1→v2→v3→v4) because the kickoff author (me) didn't inspect the actual CSS rules that constrained the widget. The agents faithfully followed my kickoff specs but the visual result was wrong each time because the kickoff didn't account for:
+- `.w { overflow: hidden }` clipping content in constrained grid cells
+- `.grid { grid-auto-rows: 168px }` forcing fixed-height rows
+- `.about-contact { padding: 20px; gap: 14px }` providing too much breathing room for the new widget context
+
+**Root cause:** I trusted the kickoff spec to be sufficient. The kickoff said "make ABOUT wide + CONTACT narrow" but didn't specify which CSS rules to override or how the existing `.about-contact` would behave in a 336px constrained cell.
+
+**Prevention rule:**
+- Before dispatching an agent for any CSS/HTML fix, **read the CSS rules** that govern the affected element. Use this checklist:
+  ```bash
+  # 1. Find the element's base class
+  grep -nE '\.widget-class\s*\{' file.html
+  # 2. Find the parent's grid/positioning constraints
+  grep -nE '\.parent-grid\s*\{' file.html
+  # 3. Check for overflow:hidden, fixed heights, padding that might constrain
+  grep -nE 'overflow|grid-auto-rows|max-height' file.html
+  ```
+- If the kickoff says "make X look like the original bottom-section card", the agent needs to know:
+  - The original was inside which CSS context (e.g. `1fr 260px` grid)
+  - The original's padding/gap/font-size
+  - Any parent constraints (e.g. `overflow: hidden`)
+- **If the fix is <5 line edits and the constraint is clear after inspection, do it directly.** Don't dispatch an agent for "tweak these 4 inline styles".
+- An agent dispatch for a small fix should be a LAST RESORT when: (a) the work spans multiple files, (b) verification requires browser automation, (c) the change is too complex for inline editing.
+
+**Counter-example from tonight:** The widget surface fix (v3) was the right call to dispatch — it required browser verification + careful class manipulation. But the widget size fix (v5) should have been a direct edit once I saw the actual `.w { overflow: hidden }` and `.grid { grid-auto-rows: 168px }` constraints.
+
+**Related rules:** L-024 (selector audit before rollout), L-026 (exhaustive audit before declaring done), L-021 (widget vs wrapper audit).
+

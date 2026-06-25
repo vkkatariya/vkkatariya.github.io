@@ -1,3 +1,29 @@
+## [2026-06-25] hermes — feat/fix-redirect-links-subtask1: arrow visibility iteration
+
+**Mode:** Micro-loop (3 inline overrides + 1 CSS rule tweak)
+**Did:**
+- After agy dispatched initial redirect links, user requested visual affordance: add `.pi-arrow` `↗` indicator to NOW/HOMELAB/IDENTITY widgets so users know they're clickable.
+- First iteration: position bottom-right (matching existing `/projects` `.pi` card pattern), `font-size:20px`. User pushback — bottom corners have other small icons (3D person, server). Moved to top-right.
+- Second iteration: top-right at `top:14px;right:14px;font-size:14px`. User pushback — too small / too faint (color was `var(--w12)` = 12% white). Bumped to `font-size:18px;color:var(--w60)`.
+- Also added hover rule `.w:hover .pi-arrow { color: var(--w) }` (full white) so hover state is visibly brighter than rest.
+- Inline overrides kept scoped to the 3 widget arrows — did NOT modify global `.pi-arrow` CSS, since 4 `.pi` cards on `/projects` use the same class and look fine at bottom-right + 20px.
+
+**State:** Branch `feat/fix-redirect-links-subtask1` at `5f2c7f7`. Ready to merge into dev. Sub-task 2 (FEATURED PROJECT buttons + 3 `/projects` index cards) queued next.
+
+**Decided:**
+- Inline overrides instead of global CSS change → keeps `/projects` index card arrows unchanged.
+- 18px (not 14, not 20) → fits the widget scale better than the 20px used on larger `.pi` cards.
+- `--w60` rest + `--w` hover → visible at rest, brighter on hover (correct progression; the `.pi` rule had `--w12` → `--w30` which was backwards: hover was DARKER than rest).
+
+**Lessons (for tonight's orchestrator log):**
+- When adding a UI affordance to match an existing pattern, INSPECT the existing pattern's hover state before assuming it's correct. The existing `.pi:hover .pi-arrow` rule was color-broken (rest `--w12` brighter than hover `--w30` is backwards — `--w12` is 12% white, `--w30` is 30% white, so hover is BRIGHTER but barely). My new `.w:hover .pi-arrow` fixed this.
+- "Make it bigger / more visible" is a 2-axis fix: size AND color. Just bumping font-size leaves the issue if color is still faint.
+- The user wants iteration speed. 3 prompt → 3 direct edits → 1 merged commit cycle, all in the same branch. Don't re-dispatch an agent for "tweak the size by 4px".
+
+**Modified:** `prototypes/portfolio-combined.html`
+
+---
+
 ## [2026-06-25] antigravity — feat/fix-redirect-links-subtask1: add redirect links to NOW, HOMELAB, IDENTITY widgets
 
 **Mode:** Execution
