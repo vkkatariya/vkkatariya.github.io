@@ -544,3 +544,29 @@ After the audit pass, all 6 gaps were fixed. The kickoff is now 17.8 KB and disp
 
 **Related rules:** L-043 (don't re-crop what user already cropped), L-031 (verify visually, not just with assertions).
 
+## L-046 — Branch lineage contamination: don't merge a branch just because it's "downstream" — audit the diff first
+
+**What failed:** On 2026-06-26, two branches (`feat/svg-icons-light-mode` and `feat/homepage-oauth-spotlight-widget`) were merged to dev in sequence. Both contained the Hermes OAuth widget because the svg-icons-light-mode branch had been forked AFTER the widget was added on the spotlight branch. The end result: a broken widget + conflicting layout attempts + character-overlap font rendering issues all ended up on dev, and required **two separate `git revert -m 1` operations** to undo. The first revert alone didn't remove the widget (it came in via the earlier svg-icons-light-mode merge), so the widget only disappeared after reverting the svg-icons-light-mode merge too.
+
+**Root cause:** Merged branches without checking what other changes the branch was carrying besides the headline feature. The svg-icons-light-mode merge brought ~250 lines of new SVG light-mode CSS (good) but ALSO the entire Hermes widget + multiple layout fix commits (bad). I treated the merge as "atomic to the SVG fix" when it was actually a bundled delivery.
+
+**Prevention rule:**
+- **Before merging any branch, run `git log main-branch-ancestor..branch --stat` to see ALL commits and ALL files changed.** Don't trust the branch name — branches carry forward everything from their base.
+- **If a branch's base is older than the last clean dev commit, the branch will pull in extra changes.** Either:
+  - (a) Rebase the branch onto a recent dev commit before merging (if safe)
+  - (b) Cherry-pick only the commits you want (if the bad commits are identifiable)
+  - (c) Use `git revert -m 1` for each merge commit (works but pollutes history with revert commits)
+- **For our 3-branch chain (spotlight → svg-icons-light-mode → dev), the safer move would have been:** rebase svg-icons-light-mode onto spotlight's tip (after spotlight was merged), then merge. That keeps the SVG fix cleanly separated from the messy widget work.
+- **Detect this BEFORE merging:** if a branch's tip is more than N commits ahead of where it forked from, audit. The `git merge --no-ff` will show the changed files but doesn't tell you "this branch also re-introduces the spotlight widget from earlier."
+- **Mental model:** every merge is a contract. Read what's in the contract (the diff) before signing.
+
+**Specific to portfolio-website on 2026-06-26:**
+- `feat/homepage-oauth-spotlight-widget` branch tip: `82465fe` (the Hermes fix by claude-code)
+- `feat/svg-icons-light-mode` branch tip: `d3258c1` (the SVG fix by claude-code)
+- The svg-icons-light-mode branch was forked from `b01a030` (a doc-only commit), which itself was downstream of `c2eeb7d` (an earlier spotlight branch commit). So svg-icons-light-mode INHERITED all the messy Hermes work.
+- When I merged svg-icons-light-mode to dev (`41f1cc2`), the diff appeared small (~32 lines) because the SVG fix itself was small, but the merge ALSO brought all of the spotlight branch's commits into dev. The widget appeared on dev at that point.
+- The cleanup required: `git revert -m 1 6d88cbd` (which only removed the spotlight merge) + `git revert -m 1 41f1cc2` (which finally removed the widget since it came in via this earlier merge).
+- The SVG light-mode fix itself was valid — it'll be re-applied in a future session via a clean cherry-pick of just the `2e5f83f` and `6057b15` commits onto a current dev base.
+
+**Related rules:** L-042 (verify branch before committing), L-028 (audit kickoff before dispatch), L-029 (classify CSS vs HTML during conflict resolution).
+

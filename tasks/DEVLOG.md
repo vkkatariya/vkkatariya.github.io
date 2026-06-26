@@ -1,6 +1,30 @@
-## [2026-06-25] Hermes — feat/content-cleanup: contact widget + about-page cleanup + photo (batches 5-8)
+## [2026-06-26] Hermes — feat/homepage-oauth-spotlight-widget ABANDONED + cleanup
 
-**Mode:** Execution (direct edits, no agent dispatch)
+**Mode:** Recovery (git revert) — see L-046 for root cause.
+
+**Did:**
+- **Cleanup commits (this session):**
+  - `ac616a2`: `Revert "merge: feat/homepage-oauth-spotlight-widget"` — undid the spotlight merge that brought the Hermes widget into dev
+  - `3118dd1`: `Revert "merge: feat/svg-icons-light-mode"` — undid the svg-icons merge (which had inherited the Hermes widget via branch lineage, even though its diff was only ~32 lines for the SVG fix)
+  - After both reverts: `portfolio-combined.html` is back to pre-spotlight state. No Hermes widget. No new SVG light-mode rules (those need to be re-applied cleanly later — cherry-pick `2e5f83f` and `6057b15` onto a fresh branch).
+
+**State:**
+- Widget removed: `grep "FEATURED: HERMES ONE OAUTH"` → 0 matches
+- SVG light-mode rules removed: `grep "html.light svg.ico"` → 0 matches
+- Branch cleanup: deleted `feat/homepage-oauth-spotlight-widget`, `feat/svg-icons-light-mode` (and others) — `git branch` shows only `dev` and `main`
+
+**Lessons:**
+- See **L-046**: branch lineage contamination. Merging a branch named "svg-icons-light-mode" doesn't just bring SVG fixes — it brings everything from its base, including unrelated widget work.
+- Hero's first revert (`ac616a2`) didn't remove the Hermes widget because the widget had actually entered dev via the EARLIER svg-icons merge (`41f1cc2`), not via the spotlight merge (`6d88cbd`). Required two reverts to fully undo the contamination.
+- The SVG light-mode fix itself (`2e5f83f`: `html.light svg.ico [stroke*="..."]` selectors) was valid and worked correctly in browser. It just needs to be re-applied on a clean branch without the Hermes widget baggage.
+
+- **Todo updates:**
+- "Add FEATURED: Hermes One OAuth Fork widget on homepage" → marked abandoned (`[ ]`), re-attempt later with cleaner kickoff + scoped visual checks
+- "Fix visibility of SVG icons on all pages in light mode" → noted as `[x]` but the fix is reverted; needs re-apply
+
+---
+
+## [2026-06-25] Hermes — feat/content-cleanup: contact widget + about-page cleanup + photo (batches 5-8)
 **Did:**
 - **Contact widget / homepage batch 4 (commit `4c74d52`):**
   - Contact widget `photo-status` text: `open to internships` → `open to werkstudent jobs` (initial scope)
