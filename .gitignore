@@ -44,3 +44,5 @@ coverage/
 # Caddy certs
 *.crt
 *.key
+.vercel
+.env*
