@@ -111,7 +111,7 @@ la-Cormorant Bold Italic wordmark redo (all 5 occurrences) and Roadmap title res
 - [x] Fix visibility of SVG icons on all pages in light mode — completed in `feat/svg-icons-light-mode` (originally merged as `41f1cc2`, reverted as part of cleanup, **re-applied at `6b83cb9`**). Root cause: existing `html.light .ico svg [stroke*="..."]` rules used descendant combinator, missing SVGs where `.ico` class is on the SVG itself. Fix: added `html.light svg.ico [...]` selectors at commit `2e5f83f` (alongside existing rules). All `.ico` SVGs (113+) + `.ico-blink*` / `.ico-float*` / `.ico-pulse` / `.ico-throb` / `.ico-spin` + project visualization SVGs (routing-flow, phase-timeline, route-flow, module-pipeline) now visible in light mode. **Animation-class SVGs and project-viz SVGs were also re-applied in `feat/svg-icons-complete-lightmode` at `a79641b` (originally `d3258c1`).**
 
 ### New widgets
-- [ ] Add FEATURED: Hermes One OAuth Fork widget on homepage — abandoned 2026-06-26; re-attempt 2026-06-27 also failed (agy dispatched from kickoff, created broken branch). Multiple dispatched agents (agy, claude-code) produced inconsistent layouts (overflow, character-overlap, empty space). Both merge commits reverted (`ac616a2`). Re-attempt with cleaner kickoff + scoped visual checks.
+- [ ] Add FEATURED: Hermes One OAuth Fork widget on homepage — abandoned 2026-06-26. Multiple dispatched agents (agy, claude-code) produced inconsistent layouts (overflow, character-overlap, empty space). Both merge commits reverted (`ac616a2`). Re-attempt with cleaner kickoff + scoped visual checks.
 
 - [x] Decide `/me` auth mechanism — Tailscale network-layer gate on athena (Caddy `remote_ip` or bind to Tailscale IP). No page-level/client-side auth.
 
