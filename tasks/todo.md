@@ -115,11 +115,10 @@ la-Cormorant Bold Italic wordmark redo (all 5 occurrences) and Roadmap title res
     - (c) Full coverage — all user-facing strings in 6600-line HTML file. ~6-8 hours, may need its own session
   - **Mechanism:** data object with EN/DE pairs, lookup function, language switcher in topbar, persist preference to localStorage
   - **Initial DE translations:** most portfolio copy is technical English (project names, framework names) and won't change. Bio paragraphs + nav + section headings + CTAs are the meaningful translation surface.
-- [ ] Fix visibility of SVG icons on all pages in light mode
-  - **Scope:** All `.ico` SVG icons + decorative SVG icons (wlbl-row icons, cs-title icons, pcard-title icons, dot-matrix bg patterns, etc.) on all 5 pages (/, /projects, /roadmap, /about, /me)
-  - **Issue:** In light mode, icons drawn with `rgba(255,255,255,.5)` strokes become invisible on light backgrounds (white-on-white). Need light-mode overrides.
-  - **Approach:** Use `html.light` selector to override icon colors per-context (e.g. `--w12` or `--blue` for body text, `--acc` for accents, etc.)
-  - **Out of scope:** The contact card SVGs (mail, github, linkedin, etc. with `fill="currentColor"`) inherit from the card's color and should already work in light mode.
+- [x] Fix visibility of SVG icons on all pages in light mode — completed in `feat/svg-icons-light-mode`. Root cause: existing `html.light .ico svg [stroke*="..."]` rules used descendant combinator, missing SVGs where `.ico` class is on the SVG itself. Fix: added `html.light svg.ico [...]` selectors at commit `2e5f83f` (alongside existing rules). All `.ico` SVGs (113+) + `.ico-blink*` / `.ico-float*` / `.ico-pulse` / `.ico-throb` / `.ico-spin` + project visualization SVGs (routing-flow, phase-timeline, route-flow, module-pipeline) now visible in light mode. Merged to dev as `41f1cc2`. **(Note: `41f1cc2` reverted on 2026-06-26 — see L-046 for why. The light-mode SVG fix needs to be re-applied.)**
+
+### New widgets
+- [ ] Add FEATURED: Hermes One OAuth Fork widget on homepage — abandoned 2026-06-26. Multiple dispatched agents (agy, claude-code) produced inconsistent layouts (overflow, character-overlap, empty space). Both merge commits reverted (`ac616a2`). Re-attempt with cleaner kickoff + scoped visual checks.
 - [x] Decide `/me` auth mechanism — Tailscale network-layer gate on athena (Caddy `remote_ip` or bind to Tailscale IP). No page-level/client-side auth.
 
 ---
