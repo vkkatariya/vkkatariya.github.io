@@ -5,9 +5,6 @@
   "cleanUrls": true,
   "trailingSlash": false,
   "rewrites": [
-    { "source": "/", "destination": "/prototypes/portfolio-combined.html" },
-    { "source": "/projects", "destination": "/prototypes/portfolio-combined.html#projects" },
-    { "source": "/about", "destination": "/prototypes/portfolio-combined.html#about" },
-    { "source": "/roadmap", "destination": "/prototypes/portfolio-combined.html#roadmap" }
+    { "source": "/(.*)", "destination": "/prototypes/portfolio-combined.html" }
   ]
 }
