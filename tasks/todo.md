@@ -131,17 +131,109 @@ la-Cormorant Bold Italic wordmark redo (all 5 occurrences) and Roadmap title res
 
 ## Phase 1 — SvelteKit Scaffold
 
+**Stack decisions (decided 2026-06-27):**
+- **Svelte 5** (runes) over Svelte 4 — actively developed, future-proof, explicit reactivity via `$state`/`$derived`/`$effect`
+- **TypeScript strict mode** — type safety for 137+ SVG icons, 8 projects, structured data; IDE autocomplete + refactor-safe
+- **Static adapter** (`@sveltejs/adapter-static`) — read-only portfolio content, pre-rendered HTML, free Vercel CDN, zero compute cost
+- **Data format: TypeScript modules** (`src/lib/data/*.ts`) — type-checked at build time, no markdown overhead
+- **Deploy target: Vercel** — already wired to repo + domain; public static site = best fit
+- **Cutover: parallel deploy** — Phase 1.7 ships to `/v2` subpath first, apex flips after 1 week of parity testing
+- **Old `portfolio-combined.html`** — keep in repo during Phase 1 as source of truth, archive to `archive/` after cutover, delete after 30 days post-cutover
+
+**Architecture (hybrid, decided 2026-06-20):** Public routes on Vercel (CDN edge); private `/me/*` and backend services stay on athena behind Tailscale. GitHub is repo-only, not deploy target.
+
 ### 1a — Project init
-- [ ] `pnpm create svelte@latest web` (in repo root)
-- [ ] Set up shared design tokens: `src/lib/styles/tokens.css`
-- [ ] Google Fonts import: Cormorant Garamond + Space Grotesk + Outfit + DM Mono
-- [ ] `src/app.css` — global reset, dot-matrix body bg, CSS variables
+- [ ] `pnpm create svelte@latest web` (in repo root) — Svelte 5 + TypeScript + ESLint + Prettier + Vitest
+- [ ] Install `@sveltejs/adapter-static` and configure `svelte.config.js`
+- [ ] `tsconfig.json` — strict mode, `noImplicitAny`, `strictNullChecks`, `noUncheckedIndexedAccess`
+- [ ] Set up shared design tokens: `src/lib/styles/tokens.css` — `--w`, `--w30`, `--w60`, `--green`, `--blue`, `--acc`, `--font-ndot`, `--bg` + light-mode `[data-theme="light"]` overrides
+- [ ] Google Fonts import in `+layout.svelte`: Cormorant Garamond + Space Grotesk + Outfit + DM Mono (use `link rel="preconnect"` + `display=swap`)
+- [ ] `@font-face` for Ndot (NDOT55Caps.woff2) — copy from `assets/fonts/` to `static/fonts/`
+- [ ] `src/app.css` — global reset, dot-matrix body bg, CSS variables, base typography
+- [ ] `src/lib/styles/glass.css` — extract `.glass` and `.liquid-glass` utility classes from `portfolio-combined.html` lines 140-307
 
 ### 1b — Layout + shared components
-- [ ] `src/routes/+layout.svelte` — 3-pill glass topbar
-- [ ] `src/lib/components/PillTopbar.svelte`
-- [ ] `src/lib/components/WidgetGrid.svelte`
-- [ ] `src/lib/components/Footer.svelte`
+- [ ] `src/routes/+layout.svelte` — 3-pill glass topbar (port from `portfolio-combined.html` line 3288)
+- [ ] `src/lib/components/PillTopbar.svelte` — props: `currentRoute`, `available`; handles active state via store
+- [ ] `src/lib/components/NavLink.svelte` — single nav link with hover/active states
+- [ ] `src/lib/components/WidgetGrid.svelte` — CSS grid container, accepts widgets as children
+- [ ] `src/lib/components/Widget.svelte` — base glass widget wrapper (`s11`/`s12`/`s21`/`s22` size variants)
+- [ ] `src/lib/components/Footer.svelte` — copyright + nav + contact links
+- [ ] `src/lib/components/Icon.svelte` — sprite-based icon component (load `icons.svg` sprite, accept `name` prop)
+  - Generate sprite from existing 137+ inline SVGs in `portfolio-combined.html`
+  - Light-mode compatible (uses currentColor + CSS variables)
+- [ ] `src/lib/stores/theme.ts` — Svelte store for `dark`/`light` theme (default: dark, persist to localStorage, mirror to `html[data-theme]`)
+- [ ] `src/lib/stores/lang.ts` — `en`/`de` language store, translation function `$t('key')`, mirror to `html[lang]`
+- [ ] `src/lib/stores/route.ts` — current route state, drives topbar active state
+
+### 1c — Data layer
+- [ ] `src/lib/data/projects.ts` — array of 8 projects (id, title, tagline, year, stack, tags, csSections, repoUrl, liveUrl) — extracted from `portfolio-combined.html` cs-sections
+- [ ] `src/lib/data/skills.ts` — 6 core skills (Python, ML/AI, TypeScript, Docker, Linux, SvelteKit) with proficiency scores
+- [ ] `src/lib/data/timeline.ts` — career timeline entries (year, title, org, description)
+- [ ] `src/lib/data/edu.ts` — education entries (h_da CS, languages, certifications)
+- [ ] `src/lib/data/topics.ts` — roadmap topics (from existing `TOPICS` const in `portfolio-combined.html`)
+- [ ] `src/lib/data/now.ts` — current "now" widget content (what I'm working on, training status)
+- [ ] `src/lib/data/about.ts` — bio, intro paragraphs, contact info
+- [ ] Each file exports typed constants: `export const PROJECTS: Project[] = [...]` with `interface Project` defined in `src/lib/types/`
+
+### 1d — Migration order (sequential, lowest risk first)
+
+**1d.1 — `/me` page (simplest)**
+- Why first: 1 section, mostly text, no complex interactions. Good test bed for the SvelteKit + data layer pattern.
+- [ ] `src/routes/me/+page.svelte` — port identity vault content
+- [ ] `src/routes/me/+page.ts` — load data from `src/lib/data/`
+- [ ] Browser-verify at all 5 viewports (320, 400, 560, 860, 1920)
+- [ ] Light-mode verify
+- [ ] **Gate:** confirm pattern works before migrating more pages
+
+**1d.2 — `/about` page**
+- Why second: medium complexity, multiple data sections (bio, edu, skills, languages, interests, contact)
+- [ ] `src/routes/about/+page.svelte` — port bio + edu + skills + languages + interests + contact
+- [ ] Wire skills data + edu data + lang grid + contact grid components
+- [ ] Browser-verify + light-mode + cross-breakpoint
+
+**1d.3 — `/projects` page**
+- Why third: has cs-sections + artifacts (node-diagram, pipeline, platform-grid) — components needed for other pages
+- [ ] `src/routes/projects/+page.svelte` — list of project cards + detailed cs-sections
+- [ ] `src/lib/components/ProjectCard.svelte` — `.pcard` style card
+- [ ] `src/lib/components/CsSection.svelte` — case study section wrapper
+- [ ] `src/lib/components/NodeDiagram.svelte` — for projects 5, 8
+- [ ] `src/lib/components/Pipeline.svelte` — for project 6
+- [ ] `src/lib/components/PlatformGrid.svelte` — for project 7
+- [ ] `src/lib/components/BarChart.svelte` — for project 1 (Finance Buddy)
+- [ ] Browser-verify all 8 project sections render correctly
+
+**1d.4 — `/roadmap` page**
+- Why fourth: has internal nav that swaps with shared topbar (`.nav-hidden` animation), timeline center-spine layout
+- [ ] `src/routes/roadmap/+page.svelte` — port timeline + topic cards + career cards
+- [ ] `src/lib/components/RoadmapPage.svelte` — self-contained roadmap component
+- [ ] `src/lib/components/InternalNav.svelte` — for the in-page nav swap
+- [ ] `src/lib/components/TimelineEntry.svelte`
+- [ ] `src/lib/components/TopicCard.svelte`
+- [ ] Browser-verify topbar morph animation works
+
+**1d.5 — `/` homepage (highest risk — last)**
+- Why last: most complex (widget grid, dynamic widgets, hero, multiple data sources)
+- [ ] `src/routes/+page.svelte` — homepage with WidgetGrid
+- [ ] Port all 12+ widgets from current grid (System Time, Identity, GitHub Activity, Skills, Now, Homelab, Stack, Featured Project, Projects stat, About, Contact, Timeline, All Projects)
+- [ ] Wire dynamic widgets (System Time clock, GitHub contribution grid)
+- [ ] Hero section with portrait + intro
+
+### 1e — Pre-cutover verification
+- [ ] All 5 routes pass Svelte/TypeScript strict-mode build
+- [ ] All 5 routes render identical content to old `portfolio-combined.html` (visual diff at 1920px)
+- [ ] All 5 routes render correctly at 320/400/560/860/1920px viewports (both modes)
+- [ ] All routes load with no console errors
+- [ ] Lighthouse audit: Performance >90, Accessibility >95, Best Practices >95, SEO >95
+- [ ] Bundle size <200kb per route (gzipped)
+- [ ] Deployed to `/v2` subpath on Vercel, accessible for 1 week parity testing
+
+### 1f — Cutover
+- [ ] Day 0: Deploy SvelteKit to apex `vishalkatariya.dev/v2/*`
+- [ ] Days 1-7: User reviews daily, reports regressions to fix before cutover
+- [ ] Day 7: Flip Vercel config to serve SvelteKit from apex
+- [ ] Day 7+30: Keep old `portfolio-combined.html` archived in `archive/` for reference
+- [ ] Day 37: Delete old `portfolio-combined.html` from repo
 
 ---
 
