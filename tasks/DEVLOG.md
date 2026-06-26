@@ -6,6 +6,62 @@
 
 ---
 
+## [2026-06-26] [Claude] — Added Hermes OAuth Fork widget to homepage grid; aligned Contact bottom with About
+
+**Mode:** Execution
+**Did:**
+- Added new `s11` (1×1, 168px) Hermes OAuth Fork widget between PROJECTS STAT and ABOUT in `portfolio-combined.html` — 30 lines of new HTML only, no CSS added
+- Widget auto-placed by CSS grid at col4, row5 — the pre-existing empty cell between Stack (rows3-4) and Contact (rows6-7), no explicit grid placement needed
+- Widget uses Ndot dot-matrix font (already loaded) for "HERMES ONE OAUTH FORK" title with `var(--green)` glow, stats in blue/neutral/green tier (matching roadmap color pattern), VIEW → navigates to `showPage('projects')` + `scrollIntoView('hermes-desktop-oauth')`, GITHUB → points to `https://github.com/vkkatariya/hermes-desktop-oauth`
+- Changed Contact widget inline style: `align-self:start` → `align-self:stretch` — Contact now fills rows 6-7 fully (342px), bottom edge pixel-perfect with About's bottom edge (both at y=1342)
+- Verified via Playwright: zero console errors, Hermes at row≈5 col≈4 y=818 h=165, About at y=1000 h=342, Contact at y=1000 h=342 (identical height = bottom-aligned)
+
+**State:** Homepage grid fully working. All 12 widgets render correctly at 1440px. No other pages touched.
+
+**Decided:**
+- `s11` (1 row = 168px) over `s12` (2 rows) for Hermes — the empty cell between Stack and Contact is exactly 1 row; making Hermes 2 rows would require restructuring About's row span and moving Projects stat, which was out of scope and unnecessary
+- Used CSS grid auto-placement (HTML order only) rather than explicit `grid-column`/`grid-row` — simpler, less fragile, and the auto-placement math worked cleanly
+- Ndot font for the title instead of DM Mono — Ndot is the NothingOS dot-matrix font already loaded via `@font-face`, matches the pixel-art aesthetic in the reference screenshots exactly
+
+**Blocked / Next:**
+- Hermes widget is compact at 168px — if content needs to expand (e.g. add description text), it would require grid restructuring (making About span 3-4 rows, moving Projects stat)
+- Mobile responsive check not done for the new Hermes widget — should verify at ≤860px and ≤560px breakpoints that it collapses correctly alongside the rest of the grid
+- Color pass (from previous session's prompt) still pending: applying roadmap's tinted-pill color system to rest of pages via Claude Code
+
+**Modified:** `portfolio-combined.html` only — 2 targeted edits (1 insertion of ~30 lines, 1 attribute change)
+
+---
+
+## [2026-06-26] [Claude] — Redesigned projects 5–8 artifact visualizations to match quality of projects 1–4
+
+**Mode:** Execution
+**Did:**
+- Audited all 8 project sections on `#pg-projects` to map which artifact types projects 1–4 used: `bar-chart` (Finance Buddy), `node-diagram` (Homelab), `platform-grid` (TypeShift), `pipeline` (orlon-bot) — all HTML-based using existing CSS classes with inline SVGs
+- Confirmed projects 5–8 were Gemini-generated basic SVG text diagrams inside `.routing-flow`, `.phase-timeline`, `.route-flow`, `.module-pipeline` containers — no reuse of existing CSS patterns, no SVG icons, plain text nodes
+- Replaced P5 (Portfolio Website): `routing-flow` SVG → `node-diagram` with 2 nodes (Vercel CDN + Athena/Tailscale), green/blue tinted borders, inline SVG icons per node name, color-coded status labels at bottom
+- Replaced P6 (Hermes OAuth Fork): `phase-timeline` SVG → `pipeline` with 4 stages using `flex:1` for equal width distribution; phases 1–3 green `✓ N PRs merged`, phase 4 amber tinted with `⬡ pending` — same visual treatment as orlon-bot's in-progress stages
+- Replaced P7 (OpenClaw Dashboard): `route-flow` SVG → `platform-grid` with 3 cards (/dashboard, /chat, gateway), SVG icons at 36px replacing emoji pattern from TypeShift, `plat-lang` carries technical subtitle (port, commands)
+- Replaced P8 (Unilox Fitness AI): `module-pipeline` SVG → `node-diagram` (3 nodes): Edge (signal icon, blue border) → MQTT connector → Backend (database icon, green border) → REST/WS connector → AI Modules (neural net icon, purple border); `+ 3 more ⬡ planned` uses existing `opacity:.5` homelab convention
+- Zero new CSS written — all 4 artifacts reuse existing `.nd-*`, `.pipe-*`, `.plat` classes; border-color inline overrides provide node-specific color without adding new rules
+- Verified via Playwright: zero JS errors, all artifact node/card/stage counts correct (2 nd-nodes P5, 4 pipe-stages P6, 3 plat cards P7, 3 nd-nodes P8)
+
+**State:** All 8 project sections fully consistent in artifact quality. Projects page renders cleanly at 1400px with no overflow issues.
+
+**Decided:**
+- `node-diagram` for P5 (deploy topology) and P8 (3-tier arch) — both are "nodes connected by a protocol" which is exactly what the existing homelab pattern encodes
+- `platform-grid` for P7 (OpenClaw views) rather than a node diagram — the 3 UI views have equal semantic weight and no directionality, which platform-grid communicates better than a connector chain
+- `pipeline` for P6 (Hermes phases) — linear, ordered, one-way flow with clear status per step is exactly what the pipeline pattern is for
+- Added `flex:1;min-width:130px` inline on each Hermes pipe-stage after discovering that longer description text caused stages to size to content width (~450px each) rather than sharing available space — the orlon-bot pipeline works fine because its stage descriptions happen to be shorter
+- Used `border-color` inline override to color-code nodes in P5 and P8 without adding project-scoped CSS — the colored border + bottom status label gives enough visual differentiation without touching the stylesheet
+
+**Blocked / Next:**
+- No regressions found; pages 1–4 artifacts untouched and verified
+- Color accent pass (roadmap tinted-pill system applied to rest of pages) still pending — was scoped out of this session
+
+**Modified:** `portfolio-combined.html` only — 5 targeted `str_replace` edits (4 artifact container replacements + 1 flex fix on Hermes pipeline stages)
+
+---
+
 ## [2026-06-27] Hermes — GitHub contribution grid (REST → GraphQL → manual count)
 
 **Mode:** Execution + abandonment decision

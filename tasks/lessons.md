@@ -6,6 +6,82 @@
 
 ---
 
+## L-049 — Always do a DOM coordinate audit before any grid layout edit
+
+**What failed:** Previous agents got the Hermes widget placement wrong repeatedly. The root cause in each case was editing the grid without knowing the actual rendered positions — guessing at row/col placement from source order alone.
+
+**Root cause:** CSS grid auto-placement is non-obvious when items have mixed span sizes (s11, s12, s21, s22). You cannot reliably predict where a new widget lands just by reading HTML order; you need to know which cells are actually empty.
+
+**Prevention rule:**
+- Before any homepage grid edit, run a Playwright `getBoundingClientRect()` sweep on all `.grid > .w` elements and map row/col from actual y-coordinates: `row = Math.round((y - gridTop) / (rowHeight + gap)) + 1`
+- Identify the target empty cell from real coordinates, not visual assumption
+- Verify placement AFTER the edit with the same sweep before delivering
+
+---
+
+## L-050 — CSS grid auto-placement is the right tool; explicit placement is the fallback
+
+**What failed:** N/A — this is a positive pattern worth recording after it worked cleanly.
+
+**Root cause / context:** The Hermes widget needed to land at col4 row5. Rather than using `grid-column: 4; grid-row: 5;` (explicit placement), inserting the widget between PROJECTS STAT and ABOUT in HTML order let auto-placement put it in the only empty cell in row5 — col4 — exactly right, with zero extra CSS.
+
+**Prevention rule:**
+- Before reaching for explicit `grid-column`/`grid-row` placement, check if correct HTML ordering achieves the target auto-placement — it's less fragile and doesn't break when other widgets are added/removed
+- Explicit placement is the right choice only when auto-flow cannot produce the target layout (e.g. intentional gaps, reverse order, items that span across non-contiguous cells)
+
+---
+
+## L-051 — Check what fonts are already loaded before designing new widget text
+
+**What failed:** N/A — prevented by checking first. But previous agents on this task likely used DM Mono or generic monospace for the Hermes title, missing the Ndot dot-matrix font that was already loaded via `@font-face` and used throughout the NothingOS widget system.
+
+**Root cause:** Not reading the font loading section of the file before designing text content.
+
+**Prevention rule:**
+- For any new widget in this portfolio, check `@font-face` declarations and `font-family` usage in existing `.w` elements before choosing a font
+- Available custom fonts: `Ndot` (dot-matrix/NothingOS), `JetBrains Mono` (labels/metadata), `DM Mono` (numbers/monospace data), `Space Grotesk` (roadmap page), `Syne` (about/projects pages)
+- Ndot = any pixel-art or dot-matrix title. DM Mono = stat numbers. JetBrains Mono = `wlbl-row` labels and sub-labels
+
+---
+
+## L-052 — Audit existing CSS patterns before designing new artifacts; never invent what already exists
+
+**What failed:** Gemini's artifact implementations for projects 5–8 each invented new SVG-based visualizations from scratch (plain SVG text boxes, colored rect nodes) instead of using the `.nd-node`, `.pipe-stage`, `.plat` patterns that already existed for projects 1–4. The result was visual inconsistency across the projects page.
+
+**Root cause:** The agent didn't read far enough into the file to discover the reusable CSS artifact classes before writing its own approach.
+
+**Prevention rule:**
+- Before building any new visualization on this page, search for `.vis-wrap`, `.node-diagram`, `.pipeline`, `.platform-grid`, `.bar-chart` in the file and read their CSS + one usage example first
+- Map the visualization concept to an existing pattern before reaching for SVG: "nodes connected by protocol" → `node-diagram`, "linear ordered stages" → `pipeline`, "equal-weight alternatives" → `platform-grid`, "quantitative comparison" → `bar-chart`
+- Only use raw SVG when no existing HTML pattern fits the concept
+
+---
+
+## L-053 — flex:1 is required on pipeline stages whenever description text length varies across stages
+
+**What failed:** The Hermes OAuth Fork pipeline rendered with only 2 visible stages at 1400px viewport. Each stage sized to its description text width (~450px) rather than sharing available space, causing the 4-stage pipeline to overflow horizontally and require scrolling.
+
+**Root cause:** `.pipe-stage { flex-shrink:0; min-width:130px }` prevents shrinking below 130px but doesn't constrain growth — the stage expands to fit its content. The orlon-bot pipeline worked fine because its descriptions happened to be short enough. Hermes descriptions were longer, exposing the underlying issue.
+
+**Prevention rule:**
+- Any pipeline with more than 3 stages, or with descriptions longer than ~40 characters, needs `flex:1;min-width:130px` on each `.pipe-stage` to distribute width equally
+- When reusing `.pipeline` with new content, do a quick char-count on the longest `pipe-detail` string — if it's >40 chars, add `flex:1` to the stages
+
+---
+
+## L-054 — Inline border-color is enough to color-code node-diagram nodes; don't add new CSS classes
+
+**What failed:** N/A — prevented by checking first. Considered adding `.nd-node-blue`, `.nd-node-purple` etc. for the Unilox and Portfolio node variants but realized this would add 6+ CSS rules for single-use cosmetic differences.
+
+**Root cause / context:** Multi-node diagrams (P5, P8) needed visual differentiation between nodes beyond the default `var(--w06)` border.
+
+**Prevention rule:**
+- For node color differentiation in `node-diagram`, use inline `style="border-color:rgba(R,G,B,.2)"` directly on the `nd-node` div — this is precisely the kind of one-off cosmetic variation that inline styles are appropriate for
+- Reserve new CSS classes for patterns that appear 3+ times or need hover states
+- The status label at the bottom of each node (e.g. `● PUBLIC · OPEN` in green, `● PRIVATE · TAILSCALE ONLY` in blue) paired with the tinted border provides sufficient differentiation without needing colored dot overrides on `nd-svc-item::before`
+
+---
+
 ## L-048 — "Verified working" requires checking ALL writers, not just the new code
 
 **What failed:** Same as L-047. After committing my fix, I ran `grep -c "loadGitHub"` and other grep checks against my new IIFE, all passed. I declared "31/31 verification checks pass" in the end-of-task report. But the widget was still broken in browser because the OLD code was running.
