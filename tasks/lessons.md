@@ -6,6 +6,28 @@
 
 ---
 
+## L-055 — Always check `git branch --show-current` before committing; agent dispatch may have moved you
+
+**What failed:** On 2026-06-27, I committed `docs(todo): expand Phase 1 ...` while sitting on `feat/topbar-mobile-first` (an agent's working branch for the topbar task), not `dev` where the change belonged. I noticed only after the commit when checking the branch log. The fix was `git reset --hard <commit>`, then `git checkout dev`, then re-apply the change. No data was lost because the commit was local-only (push returned "Everything up-to-date" warning that I missed).
+
+**Root cause:** I had created the kickoff on `dev`, then dispatched the agent. The agent created `feat/topbar-mobile-first` for their work, and when I switched contexts back to todo work, I didn't re-check which branch I was on. The session-continuation pattern from compaction carried me forward without a branch-state check.
+
+**Prevention rule:**
+- **BEFORE every commit**, run `git branch --show-current` and confirm it matches the intended target. Print the branch name in your reasoning, not just trust it.
+- **Especially after async events** (agent dispatch, file edits in another branch, push from another shell): the working branch may have changed under you.
+- **Watch for "Everything up-to-date" on push** — that's a hint the local branch isn't connected to where you thought it was. If you expected your commit to land on `dev` but it didn't, the branch is wrong.
+- **Quick recovery pattern if this happens:**
+  1. `git log --oneline -3` to confirm the wrong-branch commit exists
+  2. `git reset --hard <commit-before-mistake>` to undo locally
+  3. `git checkout <intended-branch>`
+  4. Re-apply the change
+  5. `git push origin <intended-branch>`
+- **Related to L-042 (re-read branch state before committing)** but different: L-042 is about committing while a different agent is actively on a branch (cross-contamination). L-055 is about committing while YOU are on the wrong branch (your own context drift). Both are check-the-branch-first patterns but for different reasons.
+
+**Related rules:** L-042 (re-read branch state), L-046 (branch lineage contamination, audit before merge).
+
+---
+
 ## L-054 — Inline border-color is enough to color-code node-diagram nodes; don't add new CSS classes
 
 **What failed:** N/A — prevented by checking first. Considered adding `.nd-node-blue`, `.nd-node-purple` etc. for the Unilox and Portfolio node variants but realized this would add 6+ CSS rules for single-use cosmetic differences.
@@ -756,8 +778,6 @@ AGENT_BROWSER_ARGS=--no-sandbox
 - Allowed CDNs in this environment: `cdnjs.cloudflare.com`, `esm.sh`, `cdn.jsdelivr.net`, `unpkg.com`, `fonts.googleapis.com`, `fonts.gstatic.com`
 - For icon systems: use **self-contained inline SVG** — zero CDN dependency, full colour control, offline-safe
 - Never plan a feature around an external URL without verifying reachability first
-
----
 
 ---
 
