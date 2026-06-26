@@ -2859,37 +2859,6 @@ html.light .ico svg [stroke*="rgba(61,220,132"],
 html.light .ico svg [fill*="rgba(61,220,132"],
 html.light svg.ico [stroke*="rgba(61,220,132"],
 html.light svg.ico [fill*="rgba(61,220,132"] { stroke: var(--green); fill: var(--green); }
-
-/* Standalone .ico-X SVGs (SVG is the root element, not a child of .ico) */
-html.light svg.ico-blink [stroke*="rgba(255,255,255"],
-html.light svg.ico-blink2 [stroke*="rgba(255,255,255"],
-html.light svg.ico-blink3 [stroke*="rgba(255,255,255"],
-html.light svg.ico-float [stroke*="rgba(255,255,255"],
-html.light svg.ico-float2 [stroke*="rgba(255,255,255"],
-html.light svg.ico-pulse [stroke*="rgba(255,255,255"],
-html.light svg.ico-throb [stroke*="rgba(255,255,255"],
-html.light svg.ico-spin [stroke*="rgba(255,255,255"] { stroke: rgba(13,13,15,.25); }
-html.light svg.ico-blink [fill*="rgba(255,255,255"],
-html.light svg.ico-blink2 [fill*="rgba(255,255,255"],
-html.light svg.ico-blink3 [fill*="rgba(255,255,255"],
-html.light svg.ico-float [fill*="rgba(255,255,255"],
-html.light svg.ico-float2 [fill*="rgba(255,255,255"],
-html.light svg.ico-pulse [fill*="rgba(255,255,255"],
-html.light svg.ico-throb [fill*="rgba(255,255,255"],
-html.light svg.ico-spin [fill*="rgba(255,255,255"] { fill: rgba(13,13,15,.06); }
-html.light svg.ico-spin [stroke="white"] { stroke: rgba(13,13,15,.15); }
-html.light svg.ico-spin [fill="white"] { fill: rgba(13,13,15,.1); }
-
-/* Project visualization SVGs — override white-ish connector lines */
-html.light .routing-flow svg [stroke*="rgba(255,255,255"],
-html.light .phase-timeline svg [stroke*="rgba(255,255,255"],
-html.light .route-flow svg [stroke*="rgba(255,255,255"],
-html.light .module-pipeline svg [stroke*="rgba(255,255,255"] { stroke: rgba(13,13,15,.4); }
-html.light .routing-flow svg [fill*="rgba(255,255,255"],
-html.light .phase-timeline svg [fill*="rgba(255,255,255"],
-html.light .route-flow svg [fill*="rgba(255,255,255"],
-html.light .module-pipeline svg [fill*="rgba(255,255,255"] { fill: rgba(13,13,15,.06); }
-
 html.light .ico-blink2,
 html.light .ico-blink3 { filter: brightness(.8); }
 
@@ -3482,7 +3451,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
       <div class="pi-arrow" style="top:14px;right:14px;font-size:18px;color:var(--w60)">↗</div>
     </a>
 
-    <!-- 8 · TECH STACK · 1×2 -->
+    <!-- 7 · TECH STACK · 1×2 -->
     <div class="w s12">
       <div class="wlbl-row">
         <svg class="ico" width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M6.5 1 L12 3.8 L6.5 6.5 L1 3.8Z" stroke="rgba(255,255,255,.5)" stroke-width="1" stroke-linejoin="round" fill="rgba(255,255,255,.07)"/><path d="M1 7 L6.5 9.7 L12 7" stroke="rgba(255,255,255,.3)" stroke-width="1" stroke-linecap="round" fill="none"/><path d="M1 10 L6.5 12.7 L12 10" stroke="rgba(255,255,255,.18)" stroke-width="1" stroke-linecap="round" fill="none"/></svg>
@@ -3499,52 +3468,24 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
       </div>
     </div>
 
-    <!-- 7 · FEATURED PROJECT — Finance Buddy NeoPOP · 2×2 -->
-    <div class="w s22" style="display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden">
-      <!-- Animated bar chart decoration -->
-      <div style="position:absolute;right:14px;top:12px;pointer-events:none">
-        <svg class="ico-float" width="44" height="44" viewBox="0 0 48 48" fill="none" style="filter:drop-shadow(0 4px 12px rgba(255,255,255,.08))">
-          <!-- shadow -->
-          <rect x="3" y="35" width="8" height="11" rx="1.5" fill="rgba(0,0,0,.4)" transform="translate(1,1.5)"/>
-          <rect x="14" y="27" width="8" height="19" rx="1.5" fill="rgba(0,0,0,.35)" transform="translate(1,1.5)"/>
-          <rect x="25" y="19" width="8" height="27" rx="1.5" fill="rgba(0,0,0,.3)" transform="translate(1,1.5)"/>
-          <rect x="36" y="11" width="8" height="35" rx="1.5" fill="rgba(0,0,0,.25)" transform="translate(1,1.5)"/>
-          <!-- bars -->
-          <rect x="3" y="34" width="8" height="12" rx="1.5" fill="rgba(255,255,255,.07)" stroke="rgba(255,255,255,.15)" stroke-width=".8"/>
-          <rect x="14" y="26" width="8" height="20" rx="1.5" fill="rgba(255,255,255,.09)" stroke="rgba(255,255,255,.18)" stroke-width=".8"/>
-          <rect x="25" y="18" width="8" height="28" rx="1.5" fill="rgba(255,255,255,.12)" stroke="rgba(255,255,255,.22)" stroke-width=".8"/>
-          <rect x="36" y="10" width="8" height="36" rx="1.5" fill="rgba(255,255,255,.16)" stroke="rgba(255,255,255,.28)" stroke-width=".8"/>
-          <!-- trend line -->
-          <path d="M7 30 L18 22 L29 14 L40 6" stroke="rgba(255,255,255,.4)" stroke-width="1.5" stroke-linecap="round" fill="none"/>
-          <circle cx="40" cy="6" r="2.5" fill="rgba(255,255,255,.65)"/>
-        </svg>
+    <!-- 8 · FEATURED: HERMES OAUTH FORK · 1×1 -->
+    <a class="w s11" href="javascript:void(0)" onclick="showPage('projects');setTimeout(()=>document.getElementById('hermes-desktop-oauth')?.scrollIntoView({behavior:'smooth'}),500);return false;" style="text-decoration:none;color:inherit;display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden">
+      <div class="wlbl-row" style="margin-bottom:0">
+        <svg class="ico ico-pulse" width="13" height="13" viewBox="0 0 13 13" fill="none"><rect x=".5" y="3" width="12" height="9" rx="2" stroke="rgba(255,255,255,.35)" stroke-width="1" fill="rgba(255,255,255,.04)"/><line x1="3" y1="3" x2="3" y2="1.5" stroke="rgba(255,255,255,.3)" stroke-width="1" stroke-linecap="round"/><line x1="10" y1="3" x2="10" y2="1.5" stroke="rgba(255,255,255,.3)" stroke-width="1" stroke-linecap="round"/><circle cx="6.5" cy="7.5" r="1.3" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="none"/></svg>
+        featured
       </div>
       <div>
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
-          <div class="wlbl-row" style="margin-bottom:0">
-            <svg class="ico ico-throb" width="13" height="13" viewBox="0 0 13 13" fill="none"><rect x=".5" y="3" width="12" height="9" rx="2" stroke="rgba(255,255,255,.35)" stroke-width="1" fill="rgba(255,255,255,.04)"/><line x1="3" y1="3" x2="3" y2="1.5" stroke="rgba(255,255,255,.3)" stroke-width="1" stroke-linecap="round"/><line x1="10" y1="3" x2="10" y2="1.5" stroke="rgba(255,255,255,.3)" stroke-width="1" stroke-linecap="round"/><rect x="2.5" y="6" width="3.5" height="2" rx=".5" fill="rgba(255,255,255,.25)"/><rect x="7" y="6" width="3.5" height="2" rx=".5" fill="rgba(255,255,255,.15)"/></svg>
-            featured project
-          </div>
-          <span class="proj-num">01 / 04</span>
-        </div>
-        <div class="proj-title">Finance<br>Buddy</div>
-        <div class="nd"><div class="line"></div><i></i><i></i><div class="line"></div></div>
-        <div class="proj-desc">Personal finance tracker built from <strong style="color:var(--w60)">993 real transactions</strong> across 44 months. Spending analysis, category breakdown, waste audit, savings scenarios, and live search.</div>
-        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:10px;">
-          <span class="chip">SvelteKit</span>
-          <span class="chip">Fastify</span>
-          <span class="chip">Postgres</span>
-          <span class="chip">Drizzle</span>
-          <span class="chip">Chart.js</span>
-        </div>
+        <div style="font-family:'Space Grotesk',sans-serif;font-size:clamp(18px,2vw,22px);font-weight:800;line-height:1.15;letter-spacing:-.3px;margin-bottom:6px">Hermes OAuth</div>
+        <div style="font-size:11px;color:var(--w60);line-height:1.45;">OAuth fork for Hermes desktop · 13 PRs · 38/38 tests</div>
       </div>
-      <div style="display:flex;gap:10px;align-items:center;margin-top:16px;">
-        <a class="np" href="javascript:void(0)" onclick="showPage('projects');setTimeout(()=>document.getElementById('finance-buddy')?.scrollIntoView({behavior:'smooth'}),500);return false;" style="text-decoration:none">view →</a>
-        <a class="np-ghost" href="https://github.com/vkkatariya/finance-buddy" target="_blank" rel="noopener noreferrer" style="text-decoration:none">github</a>
+      <div style="display:flex;gap:8px;align-items:center;">
+        <span class="np" style="padding:7px 12px;font-size:10px;letter-spacing:1.2px;cursor:pointer">view →</span>
+        <a class="np-ghost" style="padding:6px 12px;font-size:10px;letter-spacing:1.2px;text-decoration:none" href="https://github.com/vkkatariya/hermes-desktop-oauth" target="_blank" rel="noopener noreferrer">github →</a>
       </div>
-    </div>
+      <div class="pi-arrow" style="top:14px;right:14px;font-size:18px;color:var(--w60)">↗</div>
+    </a>
 
-    <!-- 10 · PROJECTS STAT · 1×1 -->
+    <!-- 9 · PROJECTS STAT · 1×1 -->
     <div class="w s11" style="display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden">
       <div class="wlbl-row">
         <svg class="ico ico-pulse" width="13" height="13" viewBox="0 0 13 13" fill="none"><rect x=".5" y=".5" width="5" height="5" rx="1.2" stroke="rgba(255,255,255,.4)" stroke-width="1" fill="rgba(255,255,255,.08)"/><rect x="7.5" y=".5" width="5" height="5" rx="1.2" stroke="rgba(255,255,255,.4)" stroke-width="1" fill="rgba(255,255,255,.08)"/><rect x=".5" y="7.5" width="5" height="5" rx="1.2" stroke="rgba(255,255,255,.4)" stroke-width="1" fill="rgba(255,255,255,.08)"/><rect x="7.5" y="7.5" width="5" height="5" rx="1.2" stroke="rgba(255,255,255,.4)" stroke-width="1" fill="rgba(255,255,255,.08)"/></svg>
@@ -3554,7 +3495,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
       <div class="sub">shipped</div>
     </div>
 
-    <!-- 9 · ABOUT — liquid glass · 2×2 -->
+    <!-- 10 · ABOUT — liquid glass · 2×2 -->
     <div class="w glass s22" style="display:flex;flex-direction:column;gap:12px;grid-column:span 3;">
       <div class="wlbl-row">
         <svg class="ico" width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="5.5" stroke="rgba(255,255,255,.28)" stroke-width="1"/><circle cx="6.5" cy="4" r=".9" fill="rgba(255,255,255,.6)"/><line x1="6.5" y1="6" x2="6.5" y2="9.5" stroke="rgba(255,255,255,.55)" stroke-width="1.3" stroke-linecap="round"/></svg>
@@ -3676,6 +3617,34 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
   </div>
 
   <div class="proj-row">
+    <div class="pcard" style="animation-delay:.60s;position:relative;overflow:visible">
+      <div style="position:absolute;right:14px;top:14px;opacity:.08;pointer-events:none">
+        <svg class="ico-float" width="44" height="44" viewBox="0 0 48 48" fill="none" style="filter:drop-shadow(0 4px 12px rgba(255,255,255,.08))">
+          <rect x="3" y="35" width="8" height="11" rx="1.5" fill="rgba(0,0,0,.4)" transform="translate(1,1.5)"/>
+          <rect x="14" y="27" width="8" height="19" rx="1.5" fill="rgba(0,0,0,.35)" transform="translate(1,1.5)"/>
+          <rect x="25" y="19" width="8" height="27" rx="1.5" fill="rgba(0,0,0,.3)" transform="translate(1,1.5)"/>
+          <rect x="36" y="11" width="8" height="35" rx="1.5" fill="rgba(0,0,0,.25)" transform="translate(1,1.5)"/>
+          <rect x="3" y="34" width="8" height="12" rx="1.5" fill="rgba(255,255,255,.07)" stroke="rgba(255,255,255,.15)" stroke-width=".8"/>
+          <rect x="14" y="26" width="8" height="20" rx="1.5" fill="rgba(255,255,255,.09)" stroke="rgba(255,255,255,.18)" stroke-width=".8"/>
+          <rect x="25" y="18" width="8" height="28" rx="1.5" fill="rgba(255,255,255,.12)" stroke="rgba(255,255,255,.22)" stroke-width=".8"/>
+          <rect x="36" y="10" width="8" height="36" rx="1.5" fill="rgba(255,255,255,.16)" stroke="rgba(255,255,255,.28)" stroke-width=".8"/>
+          <path d="M7 30 L18 22 L29 14 L40 6" stroke="rgba(255,255,255,.4)" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+          <circle cx="40" cy="6" r="2.5" fill="rgba(255,255,255,.65)"/>
+        </svg>
+      </div>
+      <div class="pcard-num">01 / 05</div>
+      <div class="pcard-title"><svg class="ico" width="16" height="16" viewBox="0 0 13 13" fill="none"><rect x="1" y="8" width="2.5" height="4" fill="rgba(255,255,255,.5)"/><rect x="5.25" y="5" width="2.5" height="7" fill="rgba(255,255,255,.5)"/><rect x="9.5" y="2" width="2.5" height="10" fill="rgba(255,255,255,.5)"/></svg>Finance Buddy</div>
+      <div class="pcard-desc">Personal finance tracker built from 993 real transactions across 44 months. Spending analysis, category breakdown, waste audit, savings scenarios, and live search.</div>
+      <div class="pcard-tags"><span class="chip">SvelteKit</span><span class="chip">Fastify</span><span class="chip">Postgres</span><span class="chip">Drizzle</span><span class="chip">Chart.js</span></div>
+      <div class="pcard-foot">
+        <span class="pfoot-type app">App · prototype</span>
+        <div style="display:flex;gap:6px;align-items:center">
+          <a class="np" style="padding:6px 12px;font-size:10px;text-decoration:none;white-space:nowrap" href="javascript:void(0)" onclick="showPage('projects');setTimeout(()=>document.getElementById('finance-buddy')?.scrollIntoView({behavior:'smooth'}),500);return false;">view →</a>
+          <a class="np-ghost" style="padding:6px 12px;font-size:10px;text-decoration:none;white-space:nowrap" href="https://github.com/vkkatariya/finance-buddy" target="_blank" rel="noopener noreferrer">github →</a>
+        </div>
+      </div>
+    </div>
+
     <div class="pcard" style="animation-delay:.65s;position:relative;overflow:visible">
       <div style="position:absolute;right:14px;top:14px;opacity:.08;pointer-events:none">
         <svg class="ico-float" width="38" height="38" viewBox="0 0 38 38" fill="none">
@@ -3685,7 +3654,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
           <circle cx="19" cy="8" r="2.5" fill="rgba(255,255,255,.35)" stroke="rgba(255,255,255,.6)" stroke-width=".8"/>
         </svg>
       </div>
-      <div class="pcard-num">02 / 04</div>
+      <div class="pcard-num">02 / 05</div>
       <div class="pcard-title"><svg class="ico" width="16" height="16" viewBox="0 0 13 13" fill="none"><rect x="1" y="1" width="4.5" height="5" rx="1" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="none"/><rect x="7.5" y="1" width="4.5" height="3" rx="1" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="none"/><rect x="1" y="8" width="4.5" height="4" rx="1" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="none"/><rect x="7.5" y="6" width="4.5" height="6" rx="1" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="none"/></svg>Homelab Dashboard</div>
       <div class="pcard-desc">Realtime ops dashboard for a 2-node homelab cluster. Live CPU/RAM/network metrics via WebSocket, NothingOS design, Notion docs viewer and service registry.</div>
       <div class="pcard-tags"><span class="chip">Fastify</span><span class="chip">WebSocket</span><span class="chip">Docker</span><span class="chip">Tailscale</span></div>
@@ -3706,7 +3675,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
           <line x1="16" y1="14" x2="22" y2="14" stroke="rgba(255,255,255,.3)" stroke-width="1.5" stroke-linecap="round"/>
         </svg>
       </div>
-      <div class="pcard-num">03 / 04</div>
+      <div class="pcard-num">03 / 05</div>
       <div class="pcard-title"><svg class="ico" width="16" height="16" viewBox="0 0 13 13" fill="none"><rect x="1" y="3" width="11" height="7" rx="1.5" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="none"/><line x1="3.5" y1="5.5" x2="5" y2="5.5" stroke="rgba(255,255,255,.5)" stroke-width="1"/><line x1="8" y1="5.5" x2="9.5" y2="5.5" stroke="rgba(255,255,255,.5)" stroke-width="1"/><line x1="4" y1="8" x2="9" y2="8" stroke="rgba(255,255,255,.5)" stroke-width="1"/></svg>TypeShift</div>
       <div class="pcard-desc">Cross-platform AI writing assistant built in collaboration with nayalambaliya. Android (Kotlin), macOS (Swift), Windows (C#) — shared AI backend for text transformation.</div>
       <div class="pcard-tags"><span class="chip">Kotlin</span><span class="chip">Swift</span><span class="chip">C#</span><span class="chip">AI</span></div>
@@ -3727,7 +3696,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
           <circle cx="19" cy="11" r="3" fill="rgba(255,255,255,.55)" stroke="rgba(255,255,255,.7)" stroke-width=".8"/>
         </svg>
       </div>
-      <div class="pcard-num">04 / 04</div>
+      <div class="pcard-num">04 / 05</div>
       <div class="pcard-title"><svg class="ico" width="16" height="16" viewBox="0 0 13 13" fill="none"><path d="M2 2h9a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H5l-2.5 2.5V9H2a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1z" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="none"/></svg>orlon-bot</div>
       <div class="pcard-desc">Telegram bot with a custom QLoRA fine-tuned model. Trained on Kaggle T4 GPUs via Unsloth. Inference on Rock 5T NPU (6 TOPs). Personal AI assistant — in progress.</div>
       <div class="pcard-tags"><span class="chip">Python</span><span class="chip">QLoRA</span><span class="chip">Unsloth</span><span class="chip">Telegram</span></div>
