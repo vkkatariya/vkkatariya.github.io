@@ -2856,6 +2856,36 @@ html.light .ico svg [fill*="rgba(61,220,132"] { stroke: var(--green); fill: var(
 html.light .ico-blink2,
 html.light .ico-blink3 { filter: brightness(.8); }
 
+/* Standalone .ico-X SVGs (SVG is the root element, not a child of .ico) */
+html.light svg.ico-blink [stroke*="rgba(255,255,255"],
+html.light svg.ico-blink2 [stroke*="rgba(255,255,255"],
+html.light svg.ico-blink3 [stroke*="rgba(255,255,255"],
+html.light svg.ico-float [stroke*="rgba(255,255,255"],
+html.light svg.ico-float2 [stroke*="rgba(255,255,255"],
+html.light svg.ico-pulse [stroke*="rgba(255,255,255"],
+html.light svg.ico-throb [stroke*="rgba(255,255,255"],
+html.light svg.ico-spin [stroke*="rgba(255,255,255"] { stroke: rgba(13,13,15,.25); }
+html.light svg.ico-blink [fill*="rgba(255,255,255"],
+html.light svg.ico-blink2 [fill*="rgba(255,255,255"],
+html.light svg.ico-blink3 [fill*="rgba(255,255,255"],
+html.light svg.ico-float [fill*="rgba(255,255,255"],
+html.light svg.ico-float2 [fill*="rgba(255,255,255"],
+html.light svg.ico-pulse [fill*="rgba(255,255,255"],
+html.light svg.ico-throb [fill*="rgba(255,255,255"],
+html.light svg.ico-spin [fill*="rgba(255,255,255"] { fill: rgba(13,13,15,.06); }
+html.light svg.ico-spin [stroke="white"] { stroke: rgba(13,13,15,.15); }
+html.light svg.ico-spin [fill="white"] { fill: rgba(13,13,15,.1); }
+
+/* Project visualization SVGs — override white-ish connector lines */
+html.light .routing-flow svg [stroke*="rgba(255,255,255"],
+html.light .phase-timeline svg [stroke*="rgba(255,255,255"],
+html.light .route-flow svg [stroke*="rgba(255,255,255"],
+html.light .module-pipeline svg [stroke*="rgba(255,255,255"] { stroke: rgba(13,13,15,.4); }
+html.light .routing-flow svg [fill*="rgba(255,255,255"],
+html.light .phase-timeline svg [fill*="rgba(255,255,255"],
+html.light .route-flow svg [fill*="rgba(255,255,255"],
+html.light .module-pipeline svg [fill*="rgba(255,255,255"] { fill: rgba(13,13,15,.06); }
+
 html.light .modal-card h2,
 html.light .modal-card p,
 html.light .modal-card .modal-body,
@@ -3515,6 +3545,42 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
       </div>
       <div style="font-family:'DM Mono',monospace;font-size:58px;font-weight:400;line-height:1;letter-spacing:-3px;">8</div>
       <div class="sub">shipped</div>
+    </div>
+
+    <!-- 12 · FEATURED: HERMES ONE OAUTH FORK · 1×2 — NeoPOP highlight -->
+    <div class="w s12" style="display:flex;flex-direction:column;gap:10px;padding:14px;position:relative;overflow:hidden;max-height:180px">
+      <div class="wlbl-row">
+        <svg class="ico" width="13" height="13" viewBox="0 0 13 13" fill="none">
+          <rect x="3" y="6" width="7" height="5.5" rx="1" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="rgba(255,255,255,.07)"/>
+          <path d="M4.5 6V4.5C4.5 3.4 5.4 2.5 6.5 2.5C7.6 2.5 8.5 3.4 8.5 4.5V6" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="none"/>
+          <circle cx="6.5" cy="9" r=".9" fill="rgba(255,255,255,.7)"/>
+        </svg>
+        featured · hermes oauth
+      </div>
+      <div style="font-family:var(--font-ndot);font-size:clamp(20px,2.4vw,28px);font-weight:800;letter-spacing:-1.2px;line-height:.95;margin-top:2px;color:var(--w);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">
+        Hermes One<br>OAuth Fork
+      </div>
+      <div style="font-family:'Space Grotesk',sans-serif;font-size:11px;color:var(--w60);line-height:1.4;margin-top:4px">
+        OAuth + device-flow for gated dashboards.
+      </div>
+      <div style="display:flex;gap:14px;margin-top:8px;font-family:'DM Mono',monospace">
+        <div style="display:flex;flex-direction:column;gap:2px">
+          <div style="font-size:22px;font-weight:500;color:var(--green);line-height:1">13</div>
+          <div style="font-size:9px;color:var(--w30);letter-spacing:1.5px;text-transform:uppercase">PRs merged</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:2px">
+          <div style="font-size:22px;font-weight:500;color:var(--acc);line-height:1">4</div>
+          <div style="font-size:9px;color:var(--w30);letter-spacing:1.5px;text-transform:uppercase">phases</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:2px">
+          <div style="font-size:22px;font-weight:500;color:var(--w);line-height:1">38/38</div>
+          <div style="font-size:9px;color:var(--w30);letter-spacing:1.5px;text-transform:uppercase">tests pass</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:6px;margin-top:auto;padding-top:8px">
+        <a class="np" href="javascript:void(0)" onclick="showPage('projects');setTimeout(()=>document.getElementById('hermes-desktop-oauth')?.scrollIntoView({behavior:'smooth'}),500);return false;" style="text-decoration:none;font-size:10px;padding:6px 12px">view →</a>
+        <a class="np-ghost" href="https://github.com/vkkatariya" target="_blank" rel="noopener noreferrer" style="text-decoration:none;font-size:10px;padding:6px 12px">github →</a>
+      </div>
     </div>
 
     <!-- 9 · ABOUT — liquid glass · 2×2 -->
