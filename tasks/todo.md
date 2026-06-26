@@ -14,28 +14,6 @@
 
 ## Phase 0 — HTML Prototypes (in progress)
 
-### Homepage widget grid — Hermes OAuth Fork + Contact alignment — 2026-06-26
-- [x] Map exact grid coordinates before touching anything (Playwright DOM audit)
-- [x] Identify empty cell: col4 row5 (y=800–968) — Stack ends row4, Contact starts row6
-- [x] Add Hermes OAuth Fork widget (s11) at col4 row5 via HTML order auto-placement
-- [x] Wire VIEW → to showPage('projects') + scrollIntoView('hermes-desktop-oauth')
-- [x] Wire GITHUB → to https://github.com/vkkatariya/hermes-desktop-oauth
-- [x] Fix Contact alignment: align-self:start → align-self:stretch (bottoms flush with About)
-- [x] Verify Playwright: zero errors, correct row/col placement, About/Contact heights match
-- [ ] Responsive check for Hermes widget at ≤860px and ≤560px breakpoints
-- [ ] Color accent pass: apply roadmap tinted-pill system to home/projects/about/me via Claude Code
-
-### Projects page — artifacts 5–8 redesign — 2026-06-26
-- [x] Audit projects 1–4 artifact patterns and CSS classes (node-diagram, pipeline, platform-grid, bar-chart)
-- [x] Confirm projects 5–8 were basic SVG text diagrams with no existing CSS reuse
-- [x] P5 Portfolio Website: replace routing-flow SVG → node-diagram (Vercel + Athena nodes)
-- [x] P6 Hermes OAuth Fork: replace phase-timeline SVG → pipeline (4 stages, flex:1)
-- [x] P7 OpenClaw Dashboard: replace route-flow SVG → platform-grid (3 view cards)
-- [x] P8 Unilox Fitness AI: replace module-pipeline SVG → node-diagram (3-tier arch)
-- [x] Fix Hermes pipeline stage overflow (flex:1 on each stage)
-- [x] Verify via Playwright: zero errors, correct artifact element counts, no layout regressions
-- [ ] Color accent pass: apply roadmap tinted-pill system to home/projects/about/me pages
-
 ### Visual polish / interaction pass
 - [x] Pop-out hover effect on all widgets/blocks across all pages (5-page rollout complete)
 - [x] Font stack update — vendor NDOT + fix DM Mono readability (3-branch rollout)
@@ -99,7 +77,16 @@ la-Cormorant Bold Italic wordmark redo (all 5 occurrences) and Roadmap title res
 
 ### Content + structure cleanup (new — 2026-06-23)
 - [x] Content cleanup and more polished content on all pages — completed across 8+ commits on `feat/content-cleanup` (all merged to dev). Sub-items: photo placeholder removed (`df1ec12`), year badges standardized to 2026 (`df1ec12`), roadmap stat `👥 50K+ Developers` → `🤖 ML · Infra · Full-stack` (`df1ec12`), homepage v2 cleanup (`609beb4` → `fddb1c1`), contact widget cleanup (`a1f6a3c`), projects stat 12→8 (`d4b1307`), photo widget swap (`4097080`). All merged. New cleanup sub-tasks can be added as `[ ]` items below.
-- [x] Add new projects to the projects page — completed in `feat/add-4-projects` (4 new cs-sections: portfolio-website, hermes-desktop-oauth, openclaw-dashboard, unilox-fitness-ai)
+- [x] Add new projects to the projects page — completed in `feat/add-4-projects` (4 new cs-sections: portfolio-website, hermes-desktop-oauth, openclaw-dashboard, unilox-fitness-ai). **Artifacts 5–8 redesigned 2026-06-26 by Claude** to match quality of projects 1–4 (sub-items below).
+  - [x] Audit projects 1–4 artifact patterns and CSS classes (node-diagram, pipeline, platform-grid, bar-chart)
+  - [x] Confirm projects 5–8 were basic SVG text diagrams with no existing CSS reuse
+  - [x] P5 Portfolio Website: replace routing-flow SVG → node-diagram (Vercel + Athena nodes)
+  - [x] P6 Hermes OAuth Fork: replace phase-timeline SVG → pipeline (4 stages, flex:1)
+  - [x] P7 OpenClaw Dashboard: replace route-flow SVG → platform-grid (3 view cards)
+  - [x] P8 Unilox Fitness AI: replace module-pipeline SVG → node-diagram (3-tier arch)
+  - [x] Fix Hermes pipeline stage overflow (flex:1 on each stage)
+  - [x] Verify via Playwright: zero errors, correct artifact element counts, no layout regressions
+  - [ ] Color accent pass: apply roadmap tinted-pill system to home/projects/about/me pages
 - [x] Add the 4 new projects as homepage widgets (.pcard entries) — **DECIDED 2026-06-27**: not doing. Only the FEATURED: Hermes One OAuth Fork widget will be added; the original 3 bottom `.pcard` entries stay as-is.
 - [x] Fix redirecting links across all pages ✅ both sub-tasks merged to dev (NOW/HOMELAB/IDENTITY widgets + FEATURED PROJECT buttons + 3 /projects pcard index cards)
 - [x] Fix duplication on homepage about + contact widgets ✅ merged to dev at 9be316b (11 commits, branch preserved at 69939dd)
@@ -127,7 +114,16 @@ la-Cormorant Bold Italic wordmark redo (all 5 occurrences) and Roadmap title res
 - [x] Fix visibility of SVG icons on all pages in light mode — completed in `feat/svg-icons-light-mode` (originally merged as `41f1cc2`, reverted as part of cleanup, **re-applied at `6b83cb9`**). Root cause: existing `html.light .ico svg [stroke*="..."]` rules used descendant combinator, missing SVGs where `.ico` class is on the SVG itself. Fix: added `html.light svg.ico [...]` selectors at commit `2e5f83f` (alongside existing rules). All `.ico` SVGs (113+) + `.ico-blink*` / `.ico-float*` / `.ico-pulse` / `.ico-throb` / `.ico-spin` + project visualization SVGs (routing-flow, phase-timeline, route-flow, module-pipeline) now visible in light mode. **Animation-class SVGs and project-viz SVGs were also re-applied in `feat/svg-icons-complete-lightmode` at `a79641b` (originally `d3258c1`).**
 
 ### New widgets
-- [ ] Add FEATURED: Hermes One OAuth Fork widget on homepage — abandoned 2026-06-26. Multiple dispatched agents (agy, claude-code) produced inconsistent layouts (overflow, character-overlap, empty space). Both merge commits reverted (`ac616a2`). Re-attempt with cleaner kickoff + scoped visual checks.
+- [x] Add FEATURED: Hermes One OAuth Fork widget on homepage — **completed 2026-06-26 by Claude**. Added `s11` (1×1, 168px) widget between PROJECTS STAT and ABOUT via HTML order auto-placement (col4 row5, no explicit grid needed). Uses Ndot dot-matrix font for title with `var(--green)` glow, stats in blue/neutral/green tier. VIEW → navigates to `showPage('projects')` + `scrollIntoView('hermes-desktop-oauth')`, GITHUB → `https://github.com/vkkatariya/hermes-desktop-oauth`. Also fixed Contact widget `align-self:start` → `align-self:stretch` so Contact bottom flushes with About bottom (both at y=1342). Sub-items below.
+  - [x] Map exact grid coordinates before touching anything (Playwright DOM audit)
+  - [x] Identify empty cell: col4 row5 (y=800–968) — Stack ends row4, Contact starts row6
+  - [x] Add Hermes OAuth Fork widget (s11) at col4 row5 via HTML order auto-placement
+  - [x] Wire VIEW → to showPage('projects') + scrollIntoView('hermes-desktop-oauth')
+  - [x] Wire GITHUB → to https://github.com/vkkatariya/hermes-desktop-oauth
+  - [x] Fix Contact alignment: align-self:start → align-self:stretch (bottoms flush with About)
+  - [x] Verify Playwright: zero errors, correct row/col placement, About/Contact heights match
+  - [ ] Responsive check for Hermes widget at ≤860px and ≤560px breakpoints
+  - [ ] Color accent pass: apply roadmap tinted-pill system to home/projects/about/me via Claude Code
 
 - [x] Decide `/me` auth mechanism — Tailscale network-layer gate on athena (Caddy `remote_ip` or bind to Tailscale IP). No page-level/client-side auth.
 
