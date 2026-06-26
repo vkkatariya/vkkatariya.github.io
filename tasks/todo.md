@@ -93,14 +93,7 @@ la-Cormorant Bold Italic wordmark redo (all 5 occurrences) and Roadmap title res
 - [x] Extend roadmap color profile to home/projects in `portfolio-combined.html`
 - [x] Extend roadmap color profile to about/me in `portfolio-combined.html`
 - [ ] Contact form with email endpoint (Resend or Nodemailer)
-- [ ] Contact form with email endpoint (Resend or Nodemailer)
-  - **Scope:** Decide backend approach first
-    - (a) mailto: link with prefilled subject/body — no backend, ~15 min
-    - (b) Hosted form service (Formspree / Web3Forms) — no deploy needed, ~30 min, requires signing up for the service
-    - (c) Self-hosted serverless (Resend + Vercel/Cloudflare Function) — full control, requires deploy
-  - **UI requirements:** name field, email field, message textarea, submit button. Success/error states. Rate limiting on backend.
-  - **Where to place:** Replace or extend the existing `/about` contact section (currently 2 `.contact-card`s: email + github). Or add as a 3rd block below.
-  - **Spam protection:** honeypot field + minimal client-side validation
+- [x] CV/resume PDF download link ✅ done (claude-code, ~2026-06-21) — cv.pdf generated, download links in About page contact grid + homepage contact widget
 - [ ] Real GitHub contribution grid via API
   - **Scope:** Fetch `https://api.github.com/users/vkkatariya/repos?per_page=100`, render stats replacing the placeholder `contributions · 2026` text in the homepage GITHUB ACTIVITY widget (line 3377 of `prototypes/portfolio-combined.html`)
   - **API:** GitHub REST v3, public, no auth needed (60 req/hr unauthenticated rate limit)
@@ -119,6 +112,7 @@ la-Cormorant Bold Italic wordmark redo (all 5 occurrences) and Roadmap title res
 
 ### New widgets
 - [ ] Add FEATURED: Hermes One OAuth Fork widget on homepage — abandoned 2026-06-26. Multiple dispatched agents (agy, claude-code) produced inconsistent layouts (overflow, character-overlap, empty space). Both merge commits reverted (`ac616a2`). Re-attempt with cleaner kickoff + scoped visual checks.
+
 - [x] Decide `/me` auth mechanism — Tailscale network-layer gate on athena (Caddy `remote_ip` or bind to Tailscale IP). No page-level/client-side auth.
 
 ---

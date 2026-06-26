@@ -1,19 +1,3 @@
-## [2026-06-25] agy — feat/homepage-oauth-spotlight-widget: add hermes oauth spotlight widget between stack and contact; move contact to align with about
-
-**Mode:** Execution
-**Did:**
-- Inserted a new 1x2 `.w.s12` widget "FEATURED: Hermes One OAuth Fork" before the ABOUT widget.
-- Ensured it uses the NeoPOP highlight style, matches the provided layout (stat numbers: 13, 4, 38/38, proper `<br>` in titles, correct `href` to `showPage('projects')` and scrolling to `#hermes-desktop-oauth`).
-- The CONTACT widget remained immediately after the ABOUT widget `</div>`, fulfilling the visual grid flow instructions to vertically align ABOUT and CONTACT.
-- Verified DOM placement using grep validations matching the exact instructions.
-
-**State:** Modified `prototypes/portfolio-combined.html`, all changes committed (1776be2) and pushed to remote branch `feat/homepage-oauth-spotlight-widget`.
-**Decided:** Inserted the new widget directly before ABOUT, enabling ABOUT and CONTACT to correctly align in the auto-flow layout while leaving CONTACT untouched.
-**Blocked / Next:** Task completed successfully. No blockers.
-**Modified:** `prototypes/portfolio-combined.html`, `tasks/DEVLOG.md`
-
----
-
 ## [2026-06-25] Hermes — feat/content-cleanup: contact widget + about-page cleanup + photo (batches 5-8)
 
 **Mode:** Execution (direct edits, no agent dispatch)
