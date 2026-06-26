@@ -570,3 +570,12 @@ After the audit pass, all 6 gaps were fixed. The kickoff is now 17.8 KB and disp
 
 **Related rules:** L-042 (verify branch before committing), L-028 (audit kickoff before dispatch), L-029 (classify CSS vs HTML during conflict resolution).
 
+**User-facing impact of this rule being broken on 2026-06-26:**
+- User had originally approved the SVG light-mode fix as "done"
+- I reverted both merges (`ac616a2` and `3118dd1`) thinking I was only reverting the bad widget work
+- This silently undid the SVG fix the user had confirmed as done
+- User discovered the fix was reverted and asked "why did you revert it, it was already done"
+- Recovery required re-applying the fix at `6b83cb9` (~10 min)
+
+**Refinement — always ask before doing a wide revert.** L-046's first version said "use `git revert -m 1` for each merge commit (works but pollutes history with revert commits)". This is true mechanically, but ignores the user-facing contract: when user says "X is messed up, revert it", they usually mean the X-specific work, not the chain of merges that contained X. The safer default is to **ask** before doing a wide revert if the merge is bundled with other (good) work.
+
