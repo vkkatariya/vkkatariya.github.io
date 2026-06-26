@@ -94,7 +94,7 @@ la-Cormorant Bold Italic wordmark redo (all 5 occurrences) and Roadmap title res
 - [x] Extend roadmap color profile to about/me in `portfolio-combined.html`
 - [ ] Contact form with email endpoint (Resend or Nodemailer)
 - [x] CV/resume PDF download link ✅ done (claude-code, ~2026-06-21) — cv.pdf generated, download links in About page contact grid + homepage contact widget
-- [x] Real GitHub contribution grid — **ABANDONED API approaches** (REST returns only repo count, GraphQL needs per-browser PAT — not useful for visitors). **Manual approach in use** (2026-06-27): set count to `51` in `<span id="cc">51</span>` at `prototypes/portfolio-combined.html:3415`. Update manually each time user wants to bump. Grid stays empty (`.cg` has no cells). Decision recorded in DEVLOG.
+- [x] Real GitHub contribution grid — **Manual approach** (2026-06-27): count set to `51` in `<span id="cc">51</span>` at `prototypes/portfolio-combined.html:3415`. Visual grid (random 26×5 cells) preserved. Update count manually in HTML when needed. API approaches (REST + GraphQL) abandoned — recorded in DEVLOG with rationale.
 - [ ] DE translation strings for full bilingual support
   - **Scope decision:** choose a tier
     - (a) Minimal — 5-10 key UI strings (nav links, section headings, primary CTAs). ~30 min

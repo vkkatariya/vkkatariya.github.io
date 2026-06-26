@@ -579,3 +579,40 @@ After the audit pass, all 6 gaps were fixed. The kickoff is now 17.8 KB and disp
 
 **Refinement — always ask before doing a wide revert.** L-046's first version said "use `git revert -m 1` for each merge commit (works but pollutes history with revert commits)". This is true mechanically, but ignores the user-facing contract: when user says "X is messed up, revert it", they usually mean the X-specific work, not the chain of merges that contained X. The safer default is to **ask** before doing a wide revert if the merge is bundled with other (good) work.
 
+## L-047 — When adding new behavior, scan ALL existing code that touches the same DOM elements
+
+**What failed:** On 2026-06-27, I committed `<span id="cc">51</span>` as the new "fixed" contribution count, but the widget still showed random numbers on each load. I had verified my own IIFE didn't override `#cc` — but I missed an EXISTING simulated-grid JS at line ~5828 that did:
+```javascript
+setInterval(() => {
+  document.getElementById('cc').textContent = cur.toLocaleString();
+  if (cur >= target) clearInterval(counter);
+}, 30);
+```
+This was running AFTER my static markup rendered, overwriting `51` with a random animated value.
+
+**Root cause:** I was focused on the new code I'd written (the IIFE) and didn't grep the file for OTHER code that touches the same element. The static `51` was correct, but the existing JS silently overrode it.
+
+**Prevention rule:**
+- **Before declaring any DOM mutation "stable," grep the entire file for the element ID.** Example: `grep -nE "getElementById\(.cc.\)|cc\.textContent|#cc" prototypes/portfolio-combined.html`. If multiple places write to the same element, you have a race condition.
+- **Order matters:** the last-executed JS wins. Even if your static markup is in the HTML, a JS that runs later will overwrite it.
+- **For dynamic widgets, also check `querySelector` and template literals** — not just `getElementById`. Use a broad grep like `grep -nE "id=\"cc\"|id='cc'|\"#cc\"|'#cc'"` to catch all forms.
+- **The fix isn't always to remove the conflicting code.** In this case the user wanted the visual grid to stay but only the static count to be `51`. The right fix was to remove ONLY the `setInterval` block that wrote to `#cc`, keeping the random cell generation. When "fixing" a conflict, ask what each piece was supposed to do before deleting anything.
+
+**Related rules:** L-048 (verify the full chain of DOM mutations), L-029 (classify CSS vs HTML during conflict resolution), L-040 (use playwright/browser-verify for UI changes), L-031 (verify visually not just with assertions).
+
+## L-048 — "Verified working" requires checking ALL writers, not just the new code
+
+**What failed:** Same as L-047. After committing my fix, I ran `grep -c "loadGitHub"` and other grep checks against my new IIFE, all passed. I declared "31/31 verification checks pass" in the end-of-task report. But the widget was still broken in browser because the OLD code was running.
+
+**Root cause:** My verification scripts were scoped to the new code only. They checked file structure (does the IIFE exist? does it have the right keys?) but not runtime behavior (does the IIFE win, or does some older code overwrite its output?).
+
+**Prevention rule:**
+- **Static checks prove the code is PRESENT, not that it RUNS.** Runtime browser-verify is the only way to confirm DOM mutations actually take effect.
+- **When verifying a UI fix, the test should check the final rendered state, not just the source code.** Examples:
+  - Wrong: `grep -c "id='gh-cc'" portfolio-combined.html` (just checks the file)
+  - Right: open browser, wait for JS to run, check `document.getElementById('gh-cc').textContent` (checks what's actually displayed)
+- **Before declaring a fix verified, list ALL the JS that could possibly touch the element.** For each one, ask "is this still running? what does it write?" If any of them writes to the element after your fix, your fix may not be visible.
+- **Diff your static check vs your runtime check.** If they say different things, the runtime check is correct.
+
+**Related rules:** L-047 (scan all writers), L-040 (browser-verify for UI), L-031 (verify visually).
+
