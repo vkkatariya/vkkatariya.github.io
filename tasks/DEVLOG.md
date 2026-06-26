@@ -6,6 +6,21 @@
 
 ---
 
+## [2026-06-26] [Antigravity] — Homepage mobile customization & Topbar refinement
+
+**Mode:** Execution
+**Did:**
+- **Topbar Polish:** Hid the VISHAL KATARIYA logo pill (`.nav-logo`) entirely at `≤560px` to save space. Adjusted `#shared-nav` padding from 20px to 8px to flush the hamburger menu left against the viewport edge. Now the topbar strictly contains `[hamburger] ... [controls pill]` on mobile.
+- **Grid Breakpoint Diagnosis:** Diagnosed that the `≤560px` (2-col) and `≤380px` (1-col) grid breakpoints were failing on the homepage because the 11th widget (About) had an inline style `grid-column: span 3;`. This explicitly forced the CSS Grid to generate 3 columns on mobile, regardless of media queries.
+- **Grid Fix:** Removed the inline style from the About widget and replaced its `s22` class with a newly created `.s32` class (`span 3` wide, `span 2` tall on desktop). Hooked `.s32` into the responsive sizing: `span 2` at 860px and 560px, and `span 1` at 380px.
+- **Very Small Phone Fix:** Updated the `≤380px` breakpoint to explicitly set `.grid { grid-template-columns: 1fr; }` and collapsed all `.s*` classes to `span 1`, achieving a perfect single-column stack on extra-small devices.
+- **Verification:** Ran exhaustive Playwright checks across 5 viewports (1920, 860, 560, 400, 320) in both dark and light modes. Grid scales properly down to 1 column at 320px. Topbar behaves correctly. No console errors or overlap issues. Other pages (projects, roadmap, about) visually verified.
+
+**State:** Homepage grid is fully responsive down to 320px. Topbar is minimal and native-feeling on mobile. All Playwright tests pass 10/10 viewports perfectly.
+**Decided:** To maintain the exact desktop layout where the About widget spans 3 columns, I decoupled it from the inline style and introduced the `.s32` convention matching the existing `.s11` / `.s22` iOS widget paradigm.
+**Blocked / Next:** Ready for user review in browser. Branch pushed, not merged to dev.
+**Modified:** `prototypes/portfolio-combined.html`, `tasks/todo.md`, `tasks/DEVLOG.md`
+
 ## [2026-06-26] [Antigravity] — Mobile-first responsive topbar overhaul (3-tier plan)
 
 **Mode:** Execution

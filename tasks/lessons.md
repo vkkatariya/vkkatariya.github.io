@@ -6,6 +6,19 @@
 
 ---
 
+## L-055 — Inline styles can break responsive CSS Grid media queries
+
+**What failed:** The `≤560px` (2-col) and `≤380px` (1-col) media queries were supposed to apply `grid-template-columns: repeat(2, 1fr)` and `1fr` to the homepage grid container. However, the browser stubbornly rendered 3 columns on mobile devices, ignoring the container's media query constraints.
+
+**Root cause:** The "About" widget had an inline style `grid-column: span 3;` which explicitly demanded 3 columns. Because inline styles supersede CSS classes and media queries, the CSS Grid algorithm was forced to expand the entire grid container to 3 columns to accommodate the single widget, breaking the responsive layout for all other widgets in the row.
+
+**Prevention rule:**
+- **Never use inline styles for structural grid placement (`grid-column`, `grid-row`) in a responsive layout.** Inline styles cannot be overridden by media queries (without `!important`, which is a bad practice).
+- If a widget needs a specific size, create a semantic size class (e.g., `.s32` for `span 3` wide, `span 2` tall) and apply responsive overrides to that class inside your media queries.
+- When diagnosing a grid that refuses to collapse to fewer columns, always check the children elements. The grid will always expand to fit its widest child span requirement, overriding `grid-template-columns`.
+
+---
+
 ## L-054 — Inline border-color is enough to color-code node-diagram nodes; don't add new CSS classes
 
 **What failed:** N/A — prevented by checking first. Considered adding `.nd-node-blue`, `.nd-node-purple` etc. for the Unilox and Portfolio node variants but realized this would add 6+ CSS rules for single-use cosmetic differences.

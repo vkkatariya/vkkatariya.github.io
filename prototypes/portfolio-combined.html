@@ -421,6 +421,8 @@ html.light body::before {
 
 /* ── Tier 2: ≤560px — Collapse center pill to hamburger ── */
 @media (max-width: 560px) {
+  .nav-logo { display: none; }
+  #shared-nav { padding-left: 8px; padding-right: 8px; }
   .nav-menu-btn { display: flex; }
   #shared-nav .nav-links { display: none; }
   /* When roadmap hides shared-nav links, hamburger should also hide */
@@ -481,6 +483,7 @@ main {
 .s21 { grid-column: span 2; grid-row: span 1; }
 .s12 { grid-column: span 1; grid-row: span 2; }
 .s22 { grid-column: span 2; grid-row: span 2; }
+.s32 { grid-column: span 3; grid-row: span 2; }
 .s41 { grid-column: span 4; grid-row: span 1; }
 
 /* ══════════════════════════════════════════
@@ -967,6 +970,7 @@ main {
   .s21 { grid-column: span 2; grid-row: span 1; }
   .s12 { grid-column: span 1; grid-row: span 2; }
   .s11 { grid-column: span 1; grid-row: span 1; }
+  .s32 { grid-column: span 2; grid-row: span 2; }
   .s41 { grid-column: span 3; grid-row: span 1; }
 
   .clock-h, .clock-m { font-size: 58px; letter-spacing: -3px; }
@@ -1040,6 +1044,7 @@ main {
   .s21 { grid-column: span 2; grid-row: span 1; }
   .s12 { grid-column: span 1; grid-row: span 2; }
   .s11 { grid-column: span 1; grid-row: span 1; }
+  .s32 { grid-column: span 2; grid-row: span 2; }
   .s41 { grid-column: span 2; grid-row: span 1; }
 
   /* Clock — shrink text for 2-col */
@@ -1089,7 +1094,8 @@ main {
 
 /* ── Very small phones ── */
 @media (max-width: 380px) {
-  .grid { grid-auto-rows: 148px; gap: 9px; }
+  .grid { grid-template-columns: 1fr; grid-auto-rows: 148px; gap: 9px; }
+  .s22, .s21, .s12, .s11, .s32, .s41 { grid-column: span 1; grid-row: span 1; }
   .clock-h, .clock-m { font-size: 46px; letter-spacing: -2px; }
   .w { padding: 14px; }
 }
@@ -3739,7 +3745,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
     </div>
 
     <!-- 9 · ABOUT — liquid glass · 2×2 -->
-    <div class="w glass s22" style="display:flex;flex-direction:column;gap:12px;grid-column:span 3;">
+    <div class="w glass s32" style="display:flex;flex-direction:column;gap:12px;">
       <div class="wlbl-row">
         <svg class="ico" width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="5.5" stroke="rgba(255,255,255,.28)" stroke-width="1"/><circle cx="6.5" cy="4" r=".9" fill="rgba(255,255,255,.6)"/><line x1="6.5" y1="6" x2="6.5" y2="9.5" stroke="rgba(255,255,255,.55)" stroke-width="1.3" stroke-linecap="round"/></svg>
         about

@@ -122,7 +122,7 @@ la-Cormorant Bold Italic wordmark redo (all 5 occurrences) and Roadmap title res
   - [x] Wire GITHUB → to https://github.com/vkkatariya/hermes-desktop-oauth
   - [x] Fix Contact alignment: align-self:start → align-self:stretch (bottoms flush with About)
   - [x] Verify Playwright: zero errors, correct row/col placement, About/Contact heights match
-  - [ ] Responsive check for Hermes widget at ≤860px and ≤560px breakpoints
+  - [x] Responsive check for Hermes widget at ≤860px and ≤560px breakpoints — fixed broken 560px and 380px grid breakpoints caused by About widget span 3 override
   - [ ] Color accent pass: apply roadmap tinted-pill system to home/projects/about/me via Claude Code
 
 - [x] Decide `/me` auth mechanism — Tailscale network-layer gate on athena (Caddy `remote_ip` or bind to Tailscale IP). No page-level/client-side auth.
