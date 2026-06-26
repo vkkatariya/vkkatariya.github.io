@@ -1,0 +1,15 @@
+{
+  "name": "portfolio-website",
+  "version": "1.0.0",
+  "description": "Vishal Katariya's Portfolio Website",
+  "private": true,
+  "scripts": {
+    "test": "echo \"No tests specified\" && exit 0"
+  },
+  "keywords": [],
+  "author": "Vishal Katariya",
+  "license": "MIT",
+  "dependencies": {
+    "@vercel/speed-insights": "^1.0.15"
+  }
+}
