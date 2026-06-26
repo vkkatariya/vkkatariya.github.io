@@ -2848,17 +2848,11 @@ html.light .dp span { background: rgba(0,0,0,.12); }
 html.light .dp span.on { background: var(--w); }
 
 html.light .ico svg [stroke*="rgba(255,255,255"],
-html.light .ico svg [stroke*="rgba(255, 255, 255"],
-html.light svg.ico [stroke*="rgba(255,255,255"],
-html.light svg.ico [stroke*="rgba(255, 255, 255"] { stroke: rgba(13,13,15,.25) !important; }
+html.light .ico svg [stroke*="rgba(255, 255, 255"] { stroke: rgba(13,13,15,.25) !important; }
 html.light .ico svg [fill*="rgba(255,255,255"],
-html.light .ico svg [fill*="rgba(255, 255, 255"],
-html.light svg.ico [fill*="rgba(255,255,255"],
-html.light svg.ico [fill*="rgba(255, 255, 255"] { fill: rgba(13,13,15,.06) !important; }
+html.light .ico svg [fill*="rgba(255, 255, 255"] { fill: rgba(13,13,15,.06) !important; }
 html.light .ico svg [stroke*="rgba(61,220,132"],
-html.light .ico svg [fill*="rgba(61,220,132"],
-html.light svg.ico [stroke*="rgba(61,220,132"],
-html.light svg.ico [fill*="rgba(61,220,132"] { stroke: var(--green); fill: var(--green); }
+html.light .ico svg [fill*="rgba(61,220,132"] { stroke: var(--green); fill: var(--green); }
 html.light .ico-blink2,
 html.light .ico-blink3 { filter: brightness(.8); }
 
@@ -3554,7 +3548,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
     </div>
 
     <!-- 12 · FEATURED: HERMES ONE OAUTH FORK · 1×2 — NeoPOP highlight -->
-    <div class="w s11" style="display:flex;flex-direction:column;gap:10px;padding:14px;position:relative;overflow:visible;max-height:none">
+    <div class="w s12" style="display:flex;flex-direction:column;gap:10px;padding:14px;position:relative;overflow:hidden;max-height:180px">
       <div class="wlbl-row">
         <svg class="ico" width="13" height="13" viewBox="0 0 13 13" fill="none">
           <rect x="3" y="6" width="7" height="5.5" rx="1" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="rgba(255,255,255,.07)"/>
@@ -3563,22 +3557,29 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
         </svg>
         featured · hermes oauth
       </div>
-      <div style="font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:600;letter-spacing:-.3px;line-height:1;margin-top:4px;color:var(--w);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">
-        Hermes OAuth
+      <div style="font-family:var(--font-ndot);font-size:clamp(20px,2.4vw,28px);font-weight:800;letter-spacing:-1.2px;line-height:.95;margin-top:2px;color:var(--w);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">
+        Hermes One<br>OAuth Fork
       </div>
-      <div style="display:flex;gap:10px;margin-top:auto;font-family:'DM Mono',monospace">
-        <div style="display:flex;flex-direction:column;gap:0">
-          <div style="font-size:14px;font-weight:500;color:var(--green);line-height:1">13</div>
-          <div style="font-size:7px;color:var(--w30);letter-spacing:1.2px;text-transform:uppercase">PRs</div>
+      <div style="font-family:'Space Grotesk',sans-serif;font-size:11px;color:var(--w60);line-height:1.4;margin-top:4px">
+        OAuth + device-flow for gated dashboards.
+      </div>
+      <div style="display:flex;gap:14px;margin-top:8px;font-family:'DM Mono',monospace">
+        <div style="display:flex;flex-direction:column;gap:2px">
+          <div style="font-size:22px;font-weight:500;color:var(--green);line-height:1">13</div>
+          <div style="font-size:9px;color:var(--w30);letter-spacing:1.5px;text-transform:uppercase">PRs merged</div>
         </div>
-        <div style="display:flex;flex-direction:column;gap:0">
-          <div style="font-size:14px;font-weight:500;color:var(--w);line-height:1">38/38</div>
-          <div style="font-size:7px;color:var(--w30);letter-spacing:1.2px;text-transform:uppercase">tests</div>
+        <div style="display:flex;flex-direction:column;gap:2px">
+          <div style="font-size:22px;font-weight:500;color:var(--acc);line-height:1">4</div>
+          <div style="font-size:9px;color:var(--w30);letter-spacing:1.5px;text-transform:uppercase">phases</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:2px">
+          <div style="font-size:22px;font-weight:500;color:var(--w);line-height:1">38/38</div>
+          <div style="font-size:9px;color:var(--w30);letter-spacing:1.5px;text-transform:uppercase">tests pass</div>
         </div>
       </div>
-      <div style="display:flex;gap:6px;padding-top:6px">
+      <div style="display:flex;gap:6px;margin-top:auto;padding-top:8px">
         <a class="np" href="javascript:void(0)" onclick="showPage('projects');setTimeout(()=>document.getElementById('hermes-desktop-oauth')?.scrollIntoView({behavior:'smooth'}),500);return false;" style="text-decoration:none;font-size:10px;padding:6px 12px">view →</a>
-        <a class="np-ghost" href="https://github.com/vkkatariya/hermes-desktop-oauth" target="_blank" rel="noopener noreferrer" style="text-decoration:none;font-size:10px;padding:6px 12px">github →</a>
+        <a class="np-ghost" href="https://github.com/vkkatariya" target="_blank" rel="noopener noreferrer" style="text-decoration:none;font-size:10px;padding:6px 12px">github →</a>
       </div>
     </div>
 
@@ -3596,7 +3597,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
     </div>
 
     <!-- 11 · CONTACT · 1×2 -->
-    <div class="w s11 about-contact" style="width:260px;justify-self:start;gap:8px;padding:12px;overflow:visible;align-self:stretch;flex-shrink:0;grid-column:4;grid-row:6">
+    <div class="w s12 about-contact" style="width:260px;justify-self:start;gap:10px;padding:14px;overflow:visible;align-self:start;flex-shrink:0">
       <div class="wlbl-row">
         <svg class="ico" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V4z" stroke="rgba(255,255,255,.4)" stroke-width="1" fill="rgba(255,255,255,.04)"/><polyline points="1,4 7,8.5 13,4" stroke="rgba(255,255,255,.35)" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
         contact
