@@ -4,6 +4,7 @@
   "description": "Vishal Katariya's Portfolio Website",
   "private": true,
   "scripts": {
+    "build": "echo 'No build step required for HTML prototype'",
     "test": "echo \"No tests specified\" && exit 0"
   },
   "keywords": [],
