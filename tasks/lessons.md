@@ -1,8 +1,26 @@
 # tasks/lessons.md — portfolio-website
 > Prevention rules learned from corrections during this project.
 > Format: what failed · root cause · prevention rule.
-> **Order: NEWEST at top, oldest at bottom** (L-059 first, L-001 last).
+> **Order: NEWEST at top, oldest at bottom** (L-060 first, L-001 last).
 > Agents: read this at session start. Add new entries at the TOP with the next number.
+
+---
+
+## L-060 — Vercel `framework: null` doesn't apply rewrites; `framework: "static"` requires build output
+
+**What failed:** Tried to add a catch-all rewrite (`/(.*) → /prototypes/portfolio-combined.html`) so `/projects`, `/about`, `/roadmap` would serve the SPA. Tested two configurations:
+
+1. `framework: null` + `rewrites`: deploy succeeds, but **rewrites don't apply** — `/projects` returns 404
+2. `framework: "static"` + `rewrites`: **build fails** with "No Output Directory named 'public' found" even with `outputDirectory: "."` set
+
+**Root cause:** `framework: null` skips Vercel's routing config entirely (treats project as bare static files only). `framework: "static"` triggers Vercel's static-site preset which expects a build step producing files in `public/` — incompatible with our `outputDirectory: "."` setup.
+
+**Prevention rule:**
+- **For pure static HTML projects on Hobby plan**: use `framework: null` + `outputDirectory: "."`. Accept that `/projects` etc. won't work; visitors must use `/prototypes/portfolio-combined` (with cleanUrls) or be redirected from `/` via `index.html`.
+- **For projects that need rewrites**: upgrade to Pro plan OR move HTML files to repo root (rename `prototypes/portfolio-combined.html` → `index.html`) OR use a different framework preset like Next.js static export.
+- **Don't waste time debugging Vercel routing** for static sites on Hobby plan — the limitation is by design.
+
+**Related rules:** L-057 (Vercel custom domain rewrites), L-059 (package.json build script).
 
 ---
 
@@ -20,9 +38,9 @@
   }
   ```
 - **When reviewing agent PRs**, check `package.json` for a `build` script. If it's missing or only has `test`/`start`, that's a deploy blocker.
-- **Document this requirement** in dual-deployment plan / kickoff docs so future agents don't recreate the bug.
+- **Also include `outputDirectory`** in `vercel.json` when using `framework: null` — Vercel defaults to looking for `public/` which doesn't exist.
 
-**Related rules:** L-057 (Vercel rewrites), L-040 (browser-verify).
+**Related rules:** L-057 (Vercel rewrites), L-040 (browser-verify), L-060 (framework null vs static).
 
 ---
 

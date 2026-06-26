@@ -71,6 +71,21 @@ Even for "no build step" projects, Vercel CLI runs `npm run build` on every depl
 ```
 See L-059.
 
+### Known limitation: subpath rewrites don't work with `framework: null`
+
+**Tested 2026-06-27:**
+- `vercel.json` with `framework: null` + `rewrites`: deploy succeeds but **rewrites don't apply** (`/projects`, `/about`, `/roadmap` return 404)
+- `vercel.json` with `framework: "static"` + `rewrites`: **build fails** because Vercel expects a build output that doesn't exist
+
+**Workaround:** Visitors must use direct URLs (`/prototypes/portfolio-combined.html` with cleanUrls: `/prototypes/portfolio-combined`). The root URL works via `index.html` redirect splash.
+
+**Permanent fix options:**
+1. Upgrade to Vercel Pro plan — different routing behavior, may support rewrites for static projects
+2. Move all HTML files to root (rename `prototypes/portfolio-combined.html` to `index.html`) — clean URLs work natively
+3. Accept the limitation — visitors bookmark the SPA URL
+
+Currently using workaround #3. Documented as a known limitation of static-HTML-on-Hobby-plan.
+
 ## Domain Roles (resolved 2026-06-27)
 
 | Domain | Status | Target | Notes |
