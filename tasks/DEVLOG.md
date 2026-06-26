@@ -36,6 +36,8 @@
 
 ---
 
+---
+
 ## [2026-06-26] Hermes — feat/homepage-oauth-spotlight-widget ABANDONED + cleanup
 
 **Mode:** Recovery (git revert) — see L-046 for root cause.
@@ -62,7 +64,10 @@
 
 ---
 
+---
+
 ## [2026-06-25] Hermes — feat/content-cleanup: contact widget + about-page cleanup + photo (batches 5-8)
+
 **Did:**
 - **Contact widget / homepage batch 4 (commit `4c74d52`):**
   - Contact widget `photo-status` text: `open to internships` → `open to werkstudent jobs` (initial scope)
@@ -100,6 +105,8 @@
 
 ---
 
+---
+
 ## [2026-06-25] Hermes — feat/content-cleanup: homepage v2 + content fixes 1+2+3
 
 **Mode:** Execution (direct edits, no agent dispatch)
@@ -130,6 +137,8 @@
 
 ---
 
+---
+
 ## [2026-06-25] Hermes — feat/widget-svg-icons-all-pages: cs-title SVG icons (8 fixes on /projects)
 
 **Mode:** Execution (direct edits)
@@ -151,6 +160,8 @@
 **Decided:** 28×28 size picked because `.cs-title` is huge (42–80px). 13×13 (the original kickoff spec for other widgets) would look lost. The kickoff's hard rule "exactly 13×13" was deliberately deviated from — same as agy's dynamic resize commit. Inline placement (not `.wlbl-row` header) per the corrected kickoff guidance from earlier session.
 
 **Modified:** `prototypes/portfolio-combined.html`
+
+---
 
 ---
 
@@ -181,7 +192,10 @@
 
 ---
 
+---
+
 ## [2026-06-25] agy — feat/widget-svg-icons-all-pages: inline SVG icons on every widget across all 5 pages (commit `b0c360e`)
+
 **Mode:** Execution
 **Did:**
 - Added inline SVG icons (13×13, `rgba(255,255,255,.5)`, 1–4 primitives) to ~122 widgets across all 5 pages of `portfolio-combined.html`.
@@ -200,6 +214,9 @@
 **Modified:** `prototypes/portfolio-combined.html`
 
 ---
+
+---
+
 ## [2026-06-25] agy — feat/polish-task3: rich vis-wrap visualizations for new cs-sections
 
 **Mode:** Execution
@@ -213,6 +230,8 @@
 **Decided:** Used targeted python replacement scripts over AST parsing for large HTML blobs to guarantee correct alignment and indentation.
 **Blocked / Next:** Task complete.
 **Modified:** `prototypes/portfolio-combined.html`
+
+---
 
 ## [2026-06-25] agy — feat/polish-task3: rich content in new cs-sections + single-line cs-titles + bottom-only proj-nav (v3 polish)
 
@@ -228,6 +247,8 @@
 **Blocked / Next:** Ready for next tasks or merge.
 **Modified:** `prototypes/portfolio-combined.html`
 
+---
+
 ## [2026-06-25] agy — feat/cs-skills-bars: replace cs-stack chips with scored skill bars (8 projects, 38 rows)
 
 **Mode:** Execution
@@ -242,6 +263,8 @@
 **Decided:** Kept strictly to single file. No s-low rows needed (all included skills ≥ 65). portfolio-website and openclaw-dashboard kept at 4 bars each per spec.
 **Blocked / Next:** Ready for PR or merge.
 **Modified:** `prototypes/portfolio-combined.html`
+
+---
 
 ---
 
@@ -261,6 +284,9 @@
 **Modified:** `prototypes/portfolio-combined.html`
 
 ---
+
+---
+
 ## [2026-06-25] claude-code — feat/stack-bars-widget-size: cs-skills widget header + neomorphism (fix 2/2)
 
 **Mode:** Micro-loop (CSS + HTML, single file)
@@ -270,12 +296,16 @@
 - Updated `.cs-skills` CSS: replaced flat `border: 1px solid var(--w06)` with full neomorphic dual shadow (`5px 5px 16px var(--sd), -2px -2px 7px var(--sl)` + inset highlights) + hover `translateY(-3px) scale(1.015)` — matching `.w` widget exactly.
 - Commit `65d33cc`.
 
+---
+
 ## [2026-06-25] claude-code — feat/stack-bars-widget-size: cs-skills pcard visual treatment (fix 1/2)
 
 **Mode:** Micro-loop (CSS only)
 **Did:**
 - Added `background:var(--bg2)`, `border:1px solid var(--w06)`, `border-radius:20px`, `padding:22px` to `.cs-skills` — Step 3 from kickoff that was initially skipped. Makes each stack widget a contained card matching `.pcard` proportions.
 - Commit `c9b23cf`.
+
+---
 
 ## [2026-06-25] claude-code — feat/stack-bars-widget-size: replace cs-stack chips with scored skill bars (widget-sized)
 
@@ -288,6 +318,9 @@
 - Widget sizing: `max-width:480px` on container + `160px 200px 32px` fixed columns (no `1fr`) — sits in ~half of cs-section width.
 - Commit `361cd41`, branch `feat/stack-bars-widget-size` pushed.
 **Deviations:** None. Task #4 (add bars) and task #5 (size to widget) were combined in a single pass since task #4 had never been implemented.
+
+---
+
 ## [2026-06-25] agy — feat/add-4-projects: add 4 new projects to /projects page + resize top 4 cards
 
 **Mode:** Execution
@@ -303,6 +336,8 @@
 **Decided:** Skipped taking screenshots because `playwright` is not available in the current Node environment, falling back to grep-based verification. Kept only "back to top" in bottom `proj-nav` because of the explicit instruction to avoid `prev/next` for consistency.
 **Blocked / Next:** Ready for PR.
 **Modified:** `prototypes/portfolio-combined.html`
+
+---
 
 ---
 
@@ -336,6 +371,8 @@
 
 ---
 
+---
+
 ## [2026-06-25] antigravity — feat/fix-redirect-links-subtask2: add redirect links to FEATURED PROJECT + 3 homepage pcard index cards
 
 **Mode:** Execution
@@ -350,6 +387,8 @@
 **Decided:** Used `href="javascript:void(0)"` + `onclick` for internal `view →` links (same SPA pattern as sub-task 1). Each pcard gets both `view →` (`.np` filled style) and `github →` (`.np-ghost` outline style) buttons in a `display:flex;gap:6px` wrapper to match the FEATURED PROJECT's dual-button layout.
 **Blocked / Next:** Both sub-tasks complete. Branches `feat/fix-redirect-links-subtask1` and `feat/fix-redirect-links-subtask2` ready to merge to dev.
 **Modified:** `prototypes/portfolio-combined.html`
+
+---
 
 ---
 
@@ -379,6 +418,8 @@
 
 ---
 
+---
+
 ## [2026-06-25] antigravity — feat/fix-redirect-links-subtask1: add redirect links to NOW, HOMELAB, IDENTITY widgets
 
 **Mode:** Execution
@@ -393,6 +434,8 @@
 **Decided:** Used `onclick` + `showPage()` + `setTimeout(scrollIntoView, 500)` for NOW/HOMELAB instead of plain `href="projects#orlon-bot"` — the SPA `hashchange` listener only handles page-level hashes (home/projects/roadmap/about/me), not section anchors. The 500ms delay allows the page transition animation to complete before scrolling.
 **Blocked / Next:** Sub-task 2 (FEATURED PROJECT buttons + 3 /projects index cards) is a separate dispatch — not started here.
 **Modified:** `prototypes/portfolio-combined.html`
+
+---
 
 ---
 
@@ -418,6 +461,8 @@
 
 ---
 
+---
+
 ## [2026-06-25] claude-code — feat/homepage-about-contact-merge: tighten widget content spacing to match original bottom-section
 
 **Mode:** Micro-loop (3 inline style changes + 1 removal)
@@ -433,6 +478,8 @@
 
 ---
 
+---
+
 ## [2026-06-25] claude-code — feat/homepage-about-contact-merge: restore dark neomorphic surface on CONTACT widget
 
 **Mode:** Micro-loop (add one class + one max-width)
@@ -445,6 +492,8 @@
 **State:** Complete — committed `8ddab05`, pushed to `origin/feat/homepage-about-contact-merge`.
 
 **Modified:** `prototypes/portfolio-combined.html`
+
+---
 
 ---
 
@@ -464,6 +513,8 @@
 
 ---
 
+---
+
 ## [2026-06-25] claude-code — feat/homepage-about-contact-merge: stretch ABOUT+CONTACT to fill grid row
 
 **Mode:** Micro-loop (single class change + inner reflow)
@@ -476,6 +527,8 @@
 **Decided:** No further CSS adjustments needed; 2-column inner grid fills the wider widget naturally.
 
 **Modified:** `prototypes/portfolio-combined.html`
+
+---
 
 ---
 
@@ -499,6 +552,8 @@
 **Blocked/Next:** Branch ready for PR / merge into main.
 
 **Modified:** `prototypes/portfolio-combined.html`
+
+---
 
 ---
 
@@ -526,6 +581,7 @@
 
 ---
 
+---
 
 ## [2026-06-21] fix(timeline): homepage timeline font size polish
 
@@ -536,6 +592,8 @@ User flagged timeline text as slightly too big after the prior `feat/timeline-fo
 - `.tl-desc`: `15px` → `13px`
 - `.tl-year`: `14px` → `12px`
 - `.tl-badge`: `13px` → `11px`
+
+---
 
 ---
 
@@ -552,6 +610,8 @@ User flagged timeline text as slightly too big after the prior `feat/timeline-fo
 
 ---
 
+---
+
 ## [2026-06-21] agent(claude-code) — feat/cv-pdf: redesign homepage contact widget + reposition About CV pill
 
 **Commits:** `1810225`
@@ -563,6 +623,8 @@ User flagged timeline text as slightly too big after the prior `feat/timeline-fo
   - New `.cw-row` / `.cw-icon` / `.cw-label` / `.cw-val` classes for icon-label-value card rows (github, website).
   - Download link moved from an accent-coloured text row to a `.np` NeoPOP button at the bottom of the widget — consistent with other widget CTAs in the grid.
   - Removed the Download CV `contact-row` I added in the prior session.
+
+---
 
 ---
 
@@ -583,6 +645,8 @@ User flagged timeline text as slightly too big after the prior `feat/timeline-fo
 - PDF file confirmed at `prototypes/assets/cv.pdf`, 145K, single A4 page.
 - `resume.html` renders with correct dark background, dot-matrix, two-column layout.
 - Download links in both About page contact grid and homepage contact widget.
+
+---
 
 ---
 
@@ -617,6 +681,7 @@ User flagged timeline text as slightly too big after the prior `feat/timeline-fo
 - `tasks/todo.md`
 - `homelab-configs/me-tailscale-caddy.conf`
 
+---
 
 ---
 
@@ -656,6 +721,8 @@ User flagged timeline text as slightly too big after the prior `feat/timeline-fo
 
 ---
 
+---
+
 ## [2026-06-20] agent(claude) — feat/roadmap-header: restructure roadmap hero into .ph wrapper + .hero stats/cta blocks
 
 **Mode:** Execution (surgical markup restructure, ≤10 lines)
@@ -678,6 +745,8 @@ User flagged timeline text as slightly too big after the prior `feat/timeline-fo
 - Branch pushed: `origin/feat/roadmap-header-matches-aesthetic`.
 
 **Files changed:** 1 (`prototypes/portfolio-combined.html`)
+
+---
 
 ---
 
@@ -711,6 +780,8 @@ User flagged timeline text as slightly too big after the prior `feat/timeline-fo
 
 ---
 
+---
+
 ## [2026-06-20] agent(opencode) — feat/name-ndot-wordmark (REDO): full name in NDOT 55 Caps
 
 **Mode:** Execution (surgical markup + CSS cleanup, 22 lines)
@@ -738,6 +809,8 @@ User flagged timeline text as slightly too big after the prior `feat/timeline-fo
 
 ---
 
+---
+
 ## [2026-06-20] agent(agy) — feat/name-ndot-wordmark: replace Cormorant name wordmark with NDOT + Space Grotesk across all 5 occurrences
 
 **Mode:** Execution (surgical markup + CSS, 26 lines)
@@ -759,6 +832,8 @@ User flagged timeline text as slightly too big after the prior `feat/timeline-fo
 
 ---
 
+---
+
 ## [2026-06-20] agent(human) — feat/roadmap-title-cormorant: strip 2025 from roadmap hero + change title to Cormorant Garamond italic
 
 **Mode:** Inline (surgical markup + CSS, 9 lines, after L-025 contamination cleanup)
@@ -772,6 +847,8 @@ User flagged timeline text as slightly too big after the prior `feat/timeline-fo
 - Browser `getComputedStyle` on `#hero-title` after navigating to #pg-roadmap: Cormorant Garamond, italic, 700.
 
 **Files changed:** 1 (prototypes/portfolio-combined.html)
+
+---
 
 ---
 
@@ -789,6 +866,8 @@ User flagged timeline text as slightly too big after the prior `feat/timeline-fo
 - Bio `.hn-script`: Cormorant Garamond italic 700 16px (parent strong font-size).
 
 **Files changed:** 1 (prototypes/portfolio-combined.html)
+
+---
 
 ---
 
@@ -813,6 +892,9 @@ User flagged timeline text as slightly too big after the prior `feat/timeline-fo
 
 **Lesson (L-026 — exhaustive selector audit before declaring a font-stack rollout complete):**
 Branch 5 was scoped from a partial selector list. When the user pointed at the featured project widget (`.proj-title`), I audited ALL `*-title` selectors and found 4 more that needed NDOT for the same accent reason. **Pattern: any roll-out named by a partial list of selectors MUST be followed by a full audit (`grep -E '\.[a-z-]*title[a-z0-9_-]*\s*\{'`) before declaring done.** Otherwise the rollout looks complete from the kickoff list but visually incomplete across the page.
+
+---
+
 ## [2026-06-20] agent(claude) — feat/ndot-widget-titles: apply var(--font-ndot) to 5 accent selectors
 
 **Mode:** Execution (surgical CSS edit — 5 selectors)
@@ -836,6 +918,8 @@ Branch 5 was scoped from a partial selector list. When the user pointed at the f
 
 **Files modified:**
 - `prototypes/portfolio-combined.html` (5 selectors changed: +7/-5)
+
+---
 
 ---
 
@@ -866,6 +950,8 @@ Branch 5 was scoped from a partial selector list. When the user pointed at the f
 
 **Files modified:**
 - `prototypes/portfolio-combined.html`
+
+---
 
 ---
 
@@ -921,6 +1007,8 @@ Branch 5 was scoped from a partial selector list. When the user pointed at the f
 
 ---
 
+---
+
 ## [2026-06-20] Apply NothingOS NDOT to 8 accent selectors — feat/ndot-display-accent complete
 
 **Mode:** Execution (surgical CSS edit — 8 selectors)
@@ -961,6 +1049,8 @@ Branch 5 was scoped from a partial selector list. When the user pointed at the f
 
 **Files modified:**
 - `prototypes/portfolio-combined.html` (8 selectors changed: 16 lines removed, 9 added)
+
+---
 
 ---
 
@@ -1010,6 +1100,8 @@ Branch 5 was scoped from a partial selector list. When the user pointed at the f
 
 ---
 
+---
+
 ## [2026-06-20] DM Mono readability fix — inline execution after agent dispatch blocked
 
 **Mode:** Inline execution (NOT via coding agent — see Notes)
@@ -1050,6 +1142,8 @@ Branch 5 was scoped from a partial selector list. When the user pointed at the f
 
 ---
 
+---
+
 ## [2026-06-20] /me page pop-out hover — complete the 5-page rollout
 
 **Mode:** Execution (micro-loop, ~20 lines CSS + 1 class)
@@ -1083,6 +1177,8 @@ Branch 5 was scoped from a partial selector list. When the user pointed at the f
 
 ---
 
+---
+
 ## [2026-06-20] Agent(agy) — roadmap pop-out: remove `transform: none !important` from #pg-roadmap.active reset
 
 **Mode:** Execution (micro-loop, 1-line CSS fix)
@@ -1106,6 +1202,8 @@ Branch 5 was scoped from a partial selector list. When the user pointed at the f
 - `prototypes/portfolio-combined.html` (−1 line, −1 transform declaration; comment unchanged)
 
 **Commit:** (this entry was added post-hoc after the agent timed out; the underlying CSS change was already on the branch from the agent's partial run)
+
+---
 
 ---
 
@@ -1183,6 +1281,8 @@ $ node --check /tmp/extracted_0.js && node --check /tmp/extracted_1.js   # both 
 **Blocked / Next:** None. Page 4 of 5 is complete. Page 5 (`#pg-me`) is intentionally deferred per `tasks/todo.md` (it has mostly inline-styled content and a separate handler per established agent-autonomy rule).
 **Modified:** `prototypes/portfolio-combined.html` (37 lines added, 0 removed)
 
+---
+
 ## [2026-06-20] Agent(pop-out-hover-about) — pop-out hover on about page (4 widgets + 1 markup change)
 
 **Mode:** Execution (micro-loop, CSS-only + 1 markup class)
@@ -1207,6 +1307,8 @@ $ node --check /tmp/extracted_0.js && node --check /tmp/extracted_1.js   # both 
 
 **Modified:** `prototypes/portfolio-combined.html`, `tasks/todo.md`, `tasks/DEVLOG.md`
 
+---
+
 ## [2026-06-20] Agent(pop-out-hover-projects) — pop-out hover on projects page (15 selectors + 3 markup fixes)
 
 **Mode:** Execution (micro-loop, CSS-only)
@@ -1226,6 +1328,8 @@ $ node --check /tmp/extracted_0.js && node --check /tmp/extracted_1.js   # both 
 **State:** Working on feat/pop-out-hover-projects, awaiting user review
 **Modified:** prototypes/portfolio-combined.html
 
+---
+
 ## [2026-06-20] Agent(pop-out-hover) — homepage pop-out hover on .about-section + .about-contact
 
 **Mode:** Execution (micro-loop, CSS-only)
@@ -1243,6 +1347,8 @@ $ node --check /tmp/extracted_0.js && node --check /tmp/extracted_1.js   # both 
 
 **State:** Working on `feat/pop-out-hover-homepage`, awaiting user review. Branch is 2 commits ahead of `origin/feat/pop-out-hover-homepage` (kickoff + this work).
 **Modified:** `prototypes/portfolio-combined.html`, `tasks/todo.md`, `tasks/DEVLOG.md`
+
+---
 
 ## [2026-06-20] Hermes Agent — apply roadmap color profile to about page
 
@@ -1264,7 +1370,101 @@ $ node --check /tmp/extracted_0.js && node --check /tmp/extracted_1.js   # both 
 **State:** Working on `feat/about-color-profile`, awaiting user review. Diff is scoped to `#pg-about` and `#pg-me` only — verified `git diff dev..HEAD --stat` shows only the kickoff commit, and the brief's check `git diff dev..HEAD -- prototypes/portfolio-combined.html | grep -E '^[-+].*pg-(home|projects|roadmap)'` returns empty.
 **Modified:** `prototypes/portfolio-combined.html`, `tasks/todo.md`
 
+---
+
+## [2026-06-20] agent(opencode) — feat/timeline-center-spine: center-spine alternating layout on homepage timeline + remove 4 stat widgets
+
+**Mode:** Execution (markup edit + CSS rewrite)
+**Did:**
+- Deleted the `<div class="tl-stats">` stats widget block (NODES ONLINE, TXNS TRACKED, PROJECTS SHIPPED, YRS BUILDING) from the homepage timeline markup only.
+- Rewrote the homepage `.tl-outer`/`.tl-body`/`.tl-item` CSS into a center-spine alternating grid:
+  - `.tl-body` is now `display: grid; grid-template-columns: 1fr auto 1fr` with a centered vertical spine via `::before` (`left: 50%`, `translateX(-50%]`).
+  - Added explicit `.tl-dot` markers as children of each `.tl-item` (8 px, centered in the spine column).
+  - Each `.tl-item` uses `display: contents`; `.tl-meta` and `.tl-content` are placed on opposite sides with `:nth-child(odd)` / `:nth-child(even)`.
+  - Odd items: content left, meta right. Even items: meta left, content right.
+  - Wrapped each title/description pair in a new `.tl-content` div for reliable grid placement.
+- Added a mobile fallback at `max-width: 700px`:
+  - Single-column layout with the spine line moved to the left (`left: 11px`).
+  - `.tl-dot` left-aligned, meta/content both left-aligned with `padding-left: 28px`.
+- Preserved the roadmap timeline accordion (`#pg-roadmap .tl-header` + `.tl-body`) unchanged.
+- Preserved `.tl-header` pop-out behavior and existing hover states on other widgets.
+
+**Verification:**
+- Browser `getComputedStyle` check at 1440px / 820px / 390px:
+  - 1440px: spine visible at center (`spineLeft: 460px`, `gridTemplate: 416px 8px 416px`), entries alternate L/R, `.tl-stats` absent.
+  - 820px: layout holds (`gridTemplate: 350px 8px 350px`), alternation still correct.
+  - 390px: falls back to single column (`gridTemplate: 366px`, `spineLeft: 11px`), dot and content aligned left.
+- Screenshot artifacts saved: `/tmp/timeline-{1440,820,390}.png`.
+- CSS brace-balance check passes (862 open / 862 close).
+- `git diff --stat` shows only `prototypes/portfolio-combined.html` changed.
+- No `.tl-stats`, `.tl-stat`, `.tl-stat-num`, or `.tl-stat-lbl` markup remains in the homepage section.
+
+**Files modified:**
+- `prototypes/portfolio-combined.html` (+97 / -76 lines)
+
+**Issues encountered:**
+- The `opencode` local CLI (`opencode run --dangerously-skip-permissions`) started and produced an initial plan but hung for >4 minutes with no further output or disk changes, so the edits were completed inline with the patch tool and Python validation instead.
+- After the first attempted markup rewrite, a stray conflict marker and partial `.tl-stat` divs appeared because the replacement regex matched across item boundaries; this was corrected by reverting and reapplying the patch cleanly.
+---
+
+---
+
+## [2026-06-20] agent(opencode) — feat/roadmap-header-matches-aesthetic
+
+**Mode:** Execution (surgical markup + CSS cleanup)
+**Did:**
+- Updated roadmap hero header markup to match Projects/About page aesthetic.
+- Replaced `.wlbl-row` kicker with `.ph-label`: `<div class="ph-label">vkkatariya · roadmap</div>`.
+- Replaced `<h1 id="hero-title">CS Fundamentals<br>Roadmap</h1>` with `<h1 class="ph-title"><span class="hn-script">R</span>oadmap</h1>`.
+- Removed obsolete `#pg-roadmap #hero-title` / `#pg-roadmap .hero h1` CSS override so `.ph-title` (Syne 800) + `.hn-script` (Cormorant Garamond italic first letter) takes over.
+- Updated `<section>` accessibility from `aria-labelledby="hero-title"` to `aria-label="Roadmap"` since the H1 no longer carries an ID.
+
+**Verification:**
+- `rg -n '<div class="wlbl-row">' prototypes/portfolio-combined.html` count decreased from 15 to 14 (1 less, all other usages unchanged).
+- `rg -n 'hero-title' prototypes/portfolio-combined.html` returned 0 matches.
+- `.ph-label` / `.ph-title` / `.hn-script` CSS rules unchanged; usage count for each increased by 1 on roadmap hero.
+- `git diff --stat`: 1 file changed, 3 insertions(+), 10 deletions(-).
+- Commit: 005220f.
+
+**Files changed:** 1 (`prototypes/portfolio-combined.html`)
+
+---
+
+---
+
+## [2026-06-20] agent(hermes) — feat/timeline-fonts-bigger (REDO v3): scale down .tl-title
+
+User reviewed v2 (NDOT 800 clamp(42-80px) titles) — rejected as way too big for one-line timeline entries. Reference was .cs-title for multi-word hero titles, but timeline entries are short single-line labels.
+
+Changes:
+- `.tl-title`: clamp(42px, 6vw, 80px) NDOT 800 → clamp(18px, 1.5vw, 22px) NDOT 700, letter-spacing -2.5px → -.8px, line-height .9 → 1.15, margin-bottom 8px → 4px
+
+Kept NDOT family and the small-but-readable size band. This is essentially the v1 attempt (agy) size with the NDOT font swap that the user wanted from v2.
+
+---
+
+## [2026-06-20] agent(hermes) — fix(roadmap): compact subtitle-to-badges gap
+
+User reported "space between subtitle and rest of the content" after `.ph` restructure.
+
+Root cause:
+- `.ph` had `padding-bottom: 60px` + `.hero` had `padding-top: 80px` → 140px combined gap between `.ph-sub` subtitle and `.hero-stats` badges
+- `.ph-sub` font was 12px (inherited from global rule), user saw subtitle shrunken
+
+Fix (scoped to `#pg-roadmap`, no other pages touched):
+- `#pg-roadmap .ph-title { margin-bottom: 24px }` (was 56px)
+- `#pg-roadmap .ph-sub { font-size: 15px; color: var(--w60) }` (was 12px / var(--w30))
+- `#pg-roadmap .ph { padding-bottom: 0 }` (was 60px)
+- `#pg-roadmap .hero { padding-top: 20px }` (was 80px)
+
+Result: gap compacted from ~140px → ~20px, subtitle back to readable 15px.
+User confirmed "its fixed now".
+Commit: `18281f7` → `a98b4a9` (docs(todo)).
+
+---
+
 ## [2026-06-19] OpenCode — pop-out hover effect on all widgets/blocks
+
 **Did:**
 - Added pop-out hover effects (`translateY(-2px) scale(1.012)`, enhanced shadow, softer border tint) to all widget families: `.w`, `.pcard`, `.tl-badge`, `.about-contact`, `.edu-card`, `.skill-group`, `.lang-card`, `.contact-card`
 - Updated `.pcard` hover on projects page (line 743) with scale + shadow + border transition
@@ -1278,6 +1478,8 @@ $ node --check /tmp/extracted_0.js && node --check /tmp/extracted_1.js   # both 
 **State:** All widget surfaces across #pg-home, #pg-projects, #pg-about, #pg-roadmap, #pg-me now pop outward on hover with subtle scale + lift + shadow + border tint.
 **Modified:** `prototypes/portfolio-combined.html`
 
+---
+
 ## [2026-06-19] OpenCode — remove roadmap topbar dark ghost rectangle
 
 **Mode:** Execution (micro-loop)
@@ -1289,6 +1491,8 @@ $ node --check /tmp/extracted_0.js && node --check /tmp/extracted_1.js   # both 
 
 **State:** Working — dark mode roadmap internal topbar no longer has the darker rectangular ghost pill behind it; renders as a clean single glass pill matching the shared topbar pills.
 **Modified:** `prototypes/portfolio-combined.html`
+
+---
 
 ## [2026-06-19] OpenCode — roadmap topbar light-mode integration
 
@@ -1303,6 +1507,8 @@ $ node --check /tmp/extracted_0.js && node --check /tmp/extracted_1.js   # both 
 **State:** Working — roadmap internal topbar in light mode now matches the single-pill integrated design seen in dark mode.
 **Modified:** `prototypes/portfolio-combined.html`
 
+---
+
 ## [2026-06-19] OpenCode — light-mode about widget fix
 
 **Mode:** Execution (micro-loop)
@@ -1313,11 +1519,15 @@ $ node --check /tmp/extracted_0.js && node --check /tmp/extracted_1.js   # both 
 **State:** Working — the about-section contact card now renders as a rounded, elevated card instead of a flat white block in light mode
 **Modified:** `prototypes/portfolio-combined.html` (1 line inserted)
 
+---
+
 ## [2026-06-19] Agent — portfolio-combined light-mode CSS pass
 
 Added the remaining `html.light` overrides (buttons/np, .w text + widgets, skill/skb bars, dots, icon SVG strokes/fills, modal fields, contact rows, roadmap hero/phase/topic/career/footer) inside the existing `html.light` block in `prototypes/portfolio-combined.html`; verified the file serves HTTP 200 via `python3 -m http.server 8085`.
 
 `agent(abacus): style(portfolio-combined): add remaining light-mode overrides for buttons, widgets, skill bars, icons, modal`
+
+---
 
 ## [2026-06-19] [Hermes] — Implement `html.light` light mode on standalone portfolio pages
 
@@ -1332,6 +1542,8 @@ Added the remaining `html.light` overrides (buttons/np, .w text + widgets, skill
 
 **State:** Working pass. The big dark rectangles are gone, text is readable, nav inverts correctly.
 **Modified:** `prototypes/portfolio-v4.html`, `prototypes/projects.html`, `prototypes/about.html`
+
+---
 
 ---
 
@@ -1350,6 +1562,8 @@ Added the remaining `html.light` overrides (buttons/np, .w text + widgets, skill
 
 **State:** Working. Standalone prototypes now share the same topbar component and font stack as the canonical homepage.
 **Modified:** `prototypes/projects.html`, `prototypes/about.html`, `tasks/todo.md`
+
+---
 
 ---
 
@@ -1378,6 +1592,8 @@ Added the remaining `html.light` overrides (buttons/np, .w text + widgets, skill
 
 ---
 
+---
+
 ## [2026-06-19] Claude (claude-code) — Two-way integrate cs-roadmap.html visual style into portfolio-combined.html #pg-roadmap
 
 **Mode:** Mixed (Analytical + Builder)
@@ -1395,6 +1611,8 @@ Added the remaining `html.light` overrides (buttons/np, .w text + widgets, skill
 **Decided:** Syne→Space Grotesk required by explicit kickoff constraint (portfolio font stack). `#progress-bar` move required to fix `position:fixed` in CSS-transformed SPA page container (spec behavior, not a browser bug).
 **Blocked / Next:** None blocking. Optional: real-browser visual pass of roadmap page and all transitions. Ready to commit.
 **Modified:** `prototypes/portfolio-combined.html`, `tasks/DEVLOG.md`, `tasks/lessons.md`
+
+---
 
 ---
 
@@ -1416,8 +1634,6 @@ Added the remaining `html.light` overrides (buttons/np, .w text + widgets, skill
 
 ---
 
-
-
 **Mode:** Execution
 **Did:**
 - Fix A (slide direction): changed `#roadmap-internal-nav` hidden state from `translateX(-50%) translateX(100%)` to `translateX(-50%) translateX(-100%)` so it starts off-screen LEFT and slides to center on `.nav-visible`, matching the shared topbar sliding left.
@@ -1428,6 +1644,8 @@ Added the remaining `html.light` overrides (buttons/np, .w text + widgets, skill
 **Decided:** Used the CSS force-visible override (option 1 from the prompt) over re-observe timing for reliability — guarantees content shows regardless of observer state. Used a dark-tinted glass fill rather than adding a backing element, keeping a single clean pill.
 **Blocked / Next:** None blocking. Optional: browser visual pass on all 5 page transitions + roadmap anchors.
 **Modified:** `prototypes/portfolio-combined.html`, `tasks/DEVLOG.md`
+
+---
 
 ---
 
@@ -1447,6 +1665,8 @@ Added the remaining `html.light` overrides (buttons/np, .w text + widgets, skill
 **Blocked / Next:** Visual verification needed in real browser to confirm roadmap nav appearance and content visibility. Manual smoke test with all 5 page transitions.
 
 **Modified:** `prototypes/portfolio-combined.html`, `tasks/DEVLOG.md`
+
+---
 
 ---
 
@@ -1548,7 +1768,6 @@ Added the remaining `html.light` overrides (buttons/np, .w text + widgets, skill
 ## 2026-06-18 · Claude (claude.ai) · Portfolio v4 — 3-pill topbar, hero removed, font stack, design polish
 > Append-only session log. Written by agents at end of every session. **Newest entry at top.**
 > Format: date · agent · one-line summary, then Did / State / Decided / Blocked+Next / Modified.
-
 
 ## 2026-06-18 · Claude (claude.ai) · Portfolio v4 — 3-pill topbar, hero removed, font stack, design polish
 
@@ -1776,6 +1995,8 @@ Added the remaining `html.light` overrides (buttons/np, .w text + widgets, skill
 
 **Modified:** None (research and decision session)
 
+---
+
 ## [2026-06-18] Manual — Clean center-pill collapse (no ghost rectangle)
 
 Reverted the previous "inside-page nav" attempt and went back to the
@@ -1797,6 +2018,8 @@ spot. Fix:
 
 Branch: feat/roadmap-morph-restore → merged to dev (fb7317e).
 
+---
+
 ## [2026-06-18] Hermes — Spawn Claude Code (Sonnet 4.6) for roadmap integrate
 
 **Mode:** Execution
@@ -1809,85 +2032,3 @@ Branch: feat/roadmap-morph-restore → merged to dev (fb7317e).
 **State:** Claude Code running in background (`proc_4b0fe81aec35`). Initial diff shows ~20 lines changed — task in early progress.
 **Decided:** Used `--add-dir` + restricted tool set so Claude can't reach outside the project; blocked Playwright MCP per kickoff.
 **Blocked / Next:** Wait for `proc_4b0fe81aec35` to complete (notify_on_complete=true). When done, verify diff, run smoke test, merge to `dev`.
-## [2026-06-20] agent(opencode) — feat/timeline-center-spine: center-spine alternating layout on homepage timeline + remove 4 stat widgets
-
-**Mode:** Execution (markup edit + CSS rewrite)
-**Did:**
-- Deleted the `<div class="tl-stats">` stats widget block (NODES ONLINE, TXNS TRACKED, PROJECTS SHIPPED, YRS BUILDING) from the homepage timeline markup only.
-- Rewrote the homepage `.tl-outer`/`.tl-body`/`.tl-item` CSS into a center-spine alternating grid:
-  - `.tl-body` is now `display: grid; grid-template-columns: 1fr auto 1fr` with a centered vertical spine via `::before` (`left: 50%`, `translateX(-50%]`).
-  - Added explicit `.tl-dot` markers as children of each `.tl-item` (8 px, centered in the spine column).
-  - Each `.tl-item` uses `display: contents`; `.tl-meta` and `.tl-content` are placed on opposite sides with `:nth-child(odd)` / `:nth-child(even)`.
-  - Odd items: content left, meta right. Even items: meta left, content right.
-  - Wrapped each title/description pair in a new `.tl-content` div for reliable grid placement.
-- Added a mobile fallback at `max-width: 700px`:
-  - Single-column layout with the spine line moved to the left (`left: 11px`).
-  - `.tl-dot` left-aligned, meta/content both left-aligned with `padding-left: 28px`.
-- Preserved the roadmap timeline accordion (`#pg-roadmap .tl-header` + `.tl-body`) unchanged.
-- Preserved `.tl-header` pop-out behavior and existing hover states on other widgets.
-
-**Verification:**
-- Browser `getComputedStyle` check at 1440px / 820px / 390px:
-  - 1440px: spine visible at center (`spineLeft: 460px`, `gridTemplate: 416px 8px 416px`), entries alternate L/R, `.tl-stats` absent.
-  - 820px: layout holds (`gridTemplate: 350px 8px 350px`), alternation still correct.
-  - 390px: falls back to single column (`gridTemplate: 366px`, `spineLeft: 11px`), dot and content aligned left.
-- Screenshot artifacts saved: `/tmp/timeline-{1440,820,390}.png`.
-- CSS brace-balance check passes (862 open / 862 close).
-- `git diff --stat` shows only `prototypes/portfolio-combined.html` changed.
-- No `.tl-stats`, `.tl-stat`, `.tl-stat-num`, or `.tl-stat-lbl` markup remains in the homepage section.
-
-**Files modified:**
-- `prototypes/portfolio-combined.html` (+97 / -76 lines)
-
-**Issues encountered:**
-- The `opencode` local CLI (`opencode run --dangerously-skip-permissions`) started and produced an initial plan but hung for >4 minutes with no further output or disk changes, so the edits were completed inline with the patch tool and Python validation instead.
-- After the first attempted markup rewrite, a stray conflict marker and partial `.tl-stat` divs appeared because the replacement regex matched across item boundaries; this was corrected by reverting and reapplying the patch cleanly.
----
-
-## [2026-06-20] agent(opencode) — feat/roadmap-header-matches-aesthetic
-
-**Mode:** Execution (surgical markup + CSS cleanup)
-**Did:**
-- Updated roadmap hero header markup to match Projects/About page aesthetic.
-- Replaced `.wlbl-row` kicker with `.ph-label`: `<div class="ph-label">vkkatariya · roadmap</div>`.
-- Replaced `<h1 id="hero-title">CS Fundamentals<br>Roadmap</h1>` with `<h1 class="ph-title"><span class="hn-script">R</span>oadmap</h1>`.
-- Removed obsolete `#pg-roadmap #hero-title` / `#pg-roadmap .hero h1` CSS override so `.ph-title` (Syne 800) + `.hn-script` (Cormorant Garamond italic first letter) takes over.
-- Updated `<section>` accessibility from `aria-labelledby="hero-title"` to `aria-label="Roadmap"` since the H1 no longer carries an ID.
-
-**Verification:**
-- `rg -n '<div class="wlbl-row">' prototypes/portfolio-combined.html` count decreased from 15 to 14 (1 less, all other usages unchanged).
-- `rg -n 'hero-title' prototypes/portfolio-combined.html` returned 0 matches.
-- `.ph-label` / `.ph-title` / `.hn-script` CSS rules unchanged; usage count for each increased by 1 on roadmap hero.
-- `git diff --stat`: 1 file changed, 3 insertions(+), 10 deletions(-).
-- Commit: 005220f.
-
-**Files changed:** 1 (`prototypes/portfolio-combined.html`)
-
----
-
-## [2026-06-20] agent(hermes) — feat/timeline-fonts-bigger (REDO v3): scale down .tl-title
-
-User reviewed v2 (NDOT 800 clamp(42-80px) titles) — rejected as way too big for one-line timeline entries. Reference was .cs-title for multi-word hero titles, but timeline entries are short single-line labels.
-
-Changes:
-- `.tl-title`: clamp(42px, 6vw, 80px) NDOT 800 → clamp(18px, 1.5vw, 22px) NDOT 700, letter-spacing -2.5px → -.8px, line-height .9 → 1.15, margin-bottom 8px → 4px
-
-Kept NDOT family and the small-but-readable size band. This is essentially the v1 attempt (agy) size with the NDOT font swap that the user wanted from v2.
-
-## [2026-06-20] agent(hermes) — fix(roadmap): compact subtitle-to-badges gap
-
-User reported "space between subtitle and rest of the content" after `.ph` restructure.
-
-Root cause:
-- `.ph` had `padding-bottom: 60px` + `.hero` had `padding-top: 80px` → 140px combined gap between `.ph-sub` subtitle and `.hero-stats` badges
-- `.ph-sub` font was 12px (inherited from global rule), user saw subtitle shrunken
-
-Fix (scoped to `#pg-roadmap`, no other pages touched):
-- `#pg-roadmap .ph-title { margin-bottom: 24px }` (was 56px)
-- `#pg-roadmap .ph-sub { font-size: 15px; color: var(--w60) }` (was 12px / var(--w30))
-- `#pg-roadmap .ph { padding-bottom: 0 }` (was 60px)
-- `#pg-roadmap .hero { padding-top: 20px }` (was 80px)
-
-Result: gap compacted from ~140px → ~20px, subtitle back to readable 15px.
-User confirmed "its fixed now".
-Commit: `18281f7` → `a98b4a9` (docs(todo)).
