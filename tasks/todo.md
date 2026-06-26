@@ -94,13 +94,7 @@ la-Cormorant Bold Italic wordmark redo (all 5 occurrences) and Roadmap title res
 - [x] Extend roadmap color profile to about/me in `portfolio-combined.html`
 - [ ] Contact form with email endpoint (Resend or Nodemailer)
 - [x] CV/resume PDF download link ✅ done (claude-code, ~2026-06-21) — cv.pdf generated, download links in About page contact grid + homepage contact widget
-- [ ] Real GitHub contribution grid via API
-  - **Scope:** Fetch `https://api.github.com/users/vkkatariya/repos?per_page=100`, render stats replacing the placeholder `contributions · 2026` text in the homepage GITHUB ACTIVITY widget (line 3377 of `prototypes/portfolio-combined.html`)
-  - **API:** GitHub REST v3, public, no auth needed (60 req/hr unauthenticated rate limit)
-  - **Display:** star count + fork count + primary language breakdown as a small grid/chart
-  - **Fallback:** graceful degradation if API fails (show last cached value or "—")
-  - **Caching:** localStorage cache with 24h TTL to avoid rate limits
-  - **Time estimate:** ~30-45 min
+- [ ] Real GitHub contribution grid — **DECIDED 2026-06-27**: abandoning API-based approaches (REST returns only repo count, GraphQL needs per-browser PAT — not useful for visitors). Approach: **manually update the count + grid in `portfolio-combined.html` whenever user updates GitHub activity**. Static placeholder restored at commit `8f20621`.
 - [ ] DE translation strings for full bilingual support
   - **Scope decision:** choose a tier
     - (a) Minimal — 5-10 key UI strings (nav links, section headings, primary CTAs). ~30 min

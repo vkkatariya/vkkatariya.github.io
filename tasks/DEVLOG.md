@@ -1,3 +1,28 @@
+## [2026-06-27] Hermes — GitHub contribution grid (REST → GraphQL → abandoned)
+
+**Mode:** Execution + abandonment decision
+
+**Did:**
+- **`dd8a7db` (REST approach):** Implemented unauthenticated REST API approach in `feat/github-contribution-grid`. Displayed `repos.length` (3) as the "contribution count". Rejected — 3 is repo count, not actual contribution count (user has 50+ in 2026).
+- **`5188871` (Bug fixes):** Fixed cell accumulation (added `cg.innerHTML = ''`) and renamed `id="cc"` to `id="gh-cc"` (was clashing with another widget).
+- **`2683db5` (GraphQL approach):** Implemented GraphQL `contributionsCollection.contributionCalendar` with PAT-from-localStorage. Browser-verified with real token — showed correct `50` count, 26-cell heatmap, light mode working, cache hit on reload, graceful degradation when PAT absent.
+- **ABANDONED (2026-06-27 evening):** Per user decision — the widget shows YOUR contributions, not visitors'. Per-browser PAT setup is not useful for visitors who don't know your contributions. User will update count manually instead.
+- **`746441a`:** Reset branch to `8f20621`, force-pushed, updated `todo.md` with abandon note.
+
+**State:**
+- All GitHub widget work removed from `feat/github-contribution-grid` branch
+- HTML back to original `<span class="sub">contributions · 2026</span>` + `id="cc">—</span>` placeholder
+- `dev` branch untouched at `8f20621`
+- Working tree clean (only untracked kickoff files remain)
+
+**Decided:** Manual updates only — when user updates their GitHub, they edit `prototypes/portfolio-combined.html` directly to bump the count + tweak the grid.
+
+**Lessons:**
+- For personal-only data (contribution counts, "available for hire" status, etc.), don't over-engineer with APIs that require per-user auth. Static is fine.
+- The agent-driven commits `5188871` and `2683db5` were technically correct but took 2× as long because of agent dispatch loops. Direct editing would have been faster for these small changes.
+
+---
+
 ## [2026-06-26] Hermes — feat/homepage-oauth-spotlight-widget ABANDONED + cleanup
 
 **Mode:** Recovery (git revert) — see L-046 for root cause.
