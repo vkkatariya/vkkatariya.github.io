@@ -6,6 +6,41 @@
 
 ---
 
+## [2026-06-27] Hermes — Dual Deployment Strategy: GitHub Pages + Vercel production
+
+**Mode:** Execution
+**Did:**
+- **Cleaned up Vercel + Pages dual deployment state.** Production now serves `https://vishal-katariya.com` via Vercel auto-deploy on push to main. Fallback at `https://vkkatariya.github.io` via GitHub Pages workflow. Preview deployments use auto-generated URLs (`portfolio-website-XXX-orlon-team.vercel.app`) since custom preview domain `vishalkatariya.dev` is locked behind Vercel Pro.
+- **Discovered L-060: Vercel `framework: null` + rewrites = silent failure.** Tested 2 vercel.json configs:
+  1. `framework: null` + `rewrites`: deploy OK, but rewrites don't apply (`/projects` 404s)
+  2. `framework: "static"` + `rewrites`: build fails ("No Output Directory named 'public' found")
+  - Final config: just `framework: null` + `outputDirectory: "."`. Accept the limitation that subpaths don't work — visitors use `/prototypes/portfolio-combined` (cleanUrls) or land on `/` which redirects.
+- **Set up custom domain in Vercel dashboard.** Added `vishal-katariya.com` as production domain pointing at main branch. Deployment Protection OFF so preview URLs are publicly accessible.
+- **Diagnosed bare↔www redirect loop on Hobby plan.** `vishalkatariya.dev` → `www.vishalkatariya.dev` (and back) is Vercel's automatic behavior on Hobby — requires Pro plan to disable. Decision: use auto-generated preview URLs instead.
+- **Closed 2 Vercel agent PRs** (PR #3 Web Analytics, PR #4 Speed Insights) after integrating changes directly to dev with fixes:
+  - PR #4 was missing `build` script in package.json — would have broken CLI deploys (L-059)
+  - PR #3 had UTF-8 corruption in `portfolio-v4.html` (archived file shouldn't be touched anyway)
+- **Integrated Speed Insights + Web Analytics on all 6 live HTML files** (index, about, cs-roadmap, portfolio-combined, projects, resume). Both `window.si` + `window.va` queue initializers and script.js references.
+- **Enhanced Pages smoke test** with 4 new analytics checks. Fixed bug where `$CONTENT` bash variable doesn't persist between GH Actions steps — re-curl in each step.
+- **Wrote `tasks/design-dual-deployment.md`** — full architecture documentation (goals, deployment matrix, domain roles, analytics coverage, smoke test additions, known limitations, implementation order, references).
+- **Added L-059 (package.json build script) and L-060 (Vercel framework: null vs static)** to lessons.md.
+
+**State:** Portfolio fully deployed on dual targets. All subpath URLs return 404 (documented limitation). Custom preview domain not used (Hobby plan). All branches clean except for `fix/vercel-speed-insights` and Vercel bot branches to be deleted.
+
+**Decided:**
+- **Accept the subpath rewrite limitation** — don't waste more time on Vercel Hobby routing. Either upgrade Pro or restructure HTML layout in Phase 1.
+- **Use auto-generated preview URLs** instead of custom `vishalkatariya.dev` domain. Saves Pro upgrade cost, works on Hobby.
+- **Both analytics on production + preview** (not just production) — Vercel tracks both environments separately by default.
+
+**Modified:** `vercel.json`, `package.json`, `.github/workflows/pages.yml`, 6 HTML files (analytics), `tasks/design-dual-deployment.md`, `tasks/lessons.md`, `tasks/todo.md`
+
+**Blocked / Next:**
+- Subpath routing on `vishal-katariya.com/projects` etc. — needs Pro plan or HTML restructure
+- Custom preview domain — needs Pro plan
+- Phase 1 SvelteKit scaffold (still queued)
+
+---
+
 ## [2026-06-27] Hermes — Live deployment on GitHub Pages + Vercel cleanup
 
 **Mode:** Execution

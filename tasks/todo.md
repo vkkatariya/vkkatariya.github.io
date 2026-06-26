@@ -129,11 +129,17 @@ la-Cormorant Bold Italic wordmark redo (all 5 occurrences) and Roadmap title res
 
 ### Live deployment (2026-06-27)
 
-- [x] **GitHub Pages deployment workflow** — `.github/workflows/pages.yml` auto-deploys on push to main when index.html / prototypes / lib / assets / CNAME change. Steps: checkout → configure-pages → touch .nojekyll → upload artifact → deploy-pages. Build time ~30s. Live at `https://vkkatariya.github.io/`.
-- [x] **Root redirect splash** — `index.html` at repo root redirects (meta refresh + JS fallback + clickable "ENTER PORTFOLIO →" link) to `/prototypes/portfolio-combined.html`. Splash matches live site aesthetic (NDOT caps, Cormorant italic name, glass button).
+- [x] **GitHub Pages deployment workflow** — `.github/workflows/pages.yml` auto-deploys on push to main when index.html / prototypes / lib / assets / CNAME change. Includes smoke-test job (HTTP 200, server header not Vercel, widget content, analytics scripts present). Live at `https://vkkatariya.github.io/`.
+- [x] **Root redirect splash** — `index.html` at repo root redirects (meta refresh + JS fallback + clickable "ENTER PORTFOLIO →" link) to `/prototypes/portfolio-combined.html`.
 - [x] **CNAME removed** — was forcing `vkkatariya.github.io` → `vishal-katariya.com` (Vercel). Now GitHub Pages serves directly.
-- [~] **Speed Insights** — off (was on briefly via Vercel, removed with Vercel cleanup). Re-add when needed via Google Analytics or re-link Vercel project.
-- [~] **Custom domain** — `vishal-katariya.com` no longer resolves (Vercel alias removed). Can re-add via Vercel + CNAME file when needed.
+- [x] **Vercel production deployment** — `vishal-katariya.com` auto-deploys on push to main. Config: `framework: null`, `outputDirectory: "."`, `cleanUrls: true`. Live and serving SPA + analytics.
+- [x] **Vercel preview deployments** — auto-generated URLs (`portfolio-website-XXX-orlon-team.vercel.app`) publicly accessible. Deployment Protection OFF. Pushed on every non-main branch.
+- [x] **Speed Insights** — `window.si` queue + `/_vercel/speed-insights/script.js` on all 6 live HTML files.
+- [x] **Web Analytics** — `window.va` queue + `/_vercel/insights/script.js` on all 6 live HTML files.
+- [x] **vercel.json config** — `{"framework": null, "outputDirectory": "."}` (2 lines, minimal)
+- [x] **package.json build script** — `"build": "echo 'No build step required for HTML prototype'"` (CLI deploys safe per L-059)
+- [!] **Subpath rewrites** — `/projects`, `/about`, `/roadmap` return 404 on Vercel. Hobby plan limitation (L-060). Workaround: visitors use `/prototypes/portfolio-combined` (cleanUrls). Permanent fix requires Pro plan or HTML restructure.
+- [!] **Custom preview domain** — `vishalkatariya.dev` not used as preview domain. Bare↔www redirect loop on Hobby plan (requires Pro). Using auto-generated URLs instead.
 - [~] **vishalkatariya.dev** — registrar-level 308 to `www.vishalkatariya.dev` (out of scope, separate issue at DNS provider).
 
 ---
