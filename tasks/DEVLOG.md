@@ -1,3 +1,11 @@
+# tasks/DEVLOG.md — portfolio-website
+> Session-by-session activity log. Each entry = one work session.
+> Format: `[YYYY-MM-DD] Hermes — [what]` · mode · did · state · lessons.
+> **Order: NEWEST at top, oldest at bottom** (2026-06-27 first, working backward).
+> Agents: append a new entry at the TOP for each session.
+
+---
+
 ## [2026-06-27] Hermes — GitHub contribution grid (REST → GraphQL → manual count)
 
 **Mode:** Execution + abandonment decision
