@@ -1,4 +1,9 @@
 {
   "framework": null,
-  "outputDirectory": "."
+  "outputDirectory": ".",
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/prototypes/portfolio-combined.html" }
+  ]
 }
