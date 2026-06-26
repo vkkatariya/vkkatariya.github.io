@@ -33,25 +33,53 @@ Vercel preview (vishalkatariya.dev)         ← preview deployment URL
 | `dev` | — | — | ✓ (preview) |
 | `feat/*` | — | — | ✓ (ephemeral) |
 
-## Domain Roles
+## Domain Roles (resolved 2026-06-27)
 
-| Domain | Status | Target |
-|---|---|---|
-| `vishal-katariya.com` | Apex / production | Vercel (when re-linked) |
-| `www.vishal-katariya.com` | Apex redirect | Vercel (when re-linked) |
-| `vishalkatariya.dev` | Preview | Vercel preview (when re-linked) |
-| `www.vishalkatariya.dev` | 308 → apex | Registrar-level (broken currently, separate issue) |
-| `vkkatariya.github.io` | GitHub Pages fallback | Direct |
+| Domain | Status | Target | Notes |
+|---|---|---|---|
+| `vishal-katariya.com` | ✓ Production | Vercel main | Auto-deploys on push to `main` |
+| `www.vishal-katariya.com` | ✓ Production | Vercel main | Auto-redirects to apex |
+| `vkkatariya.github.io` | ✓ Fallback | GitHub Pages | Served by `GitHub.com`, not Vercel |
+| `vishalkatariya.dev` | ✗ Not used | — | Bare/www redirect loop (Hobby plan limitation) |
+| `www.vishalkatariya.dev` | ✗ Not used | — | Custom domain preview requires Pro |
 
-**Current state (2026-06-27):**
-- `vishal-katariya.com` — Vercel alias removed, no longer resolves
-- `vishalkatariya.dev` — 308 to `www.vishalkatariya.dev` (registrar-level, broken)
-- `vkkatariya.github.io` — Live, serving Phase 0
+**Decision (2026-06-27):** Use **auto-generated preview URLs** (`portfolio-website-XXX-orlon-team.vercel.app`) for previews instead of custom domain. Pro plan ($20/month) needed for custom preview domain.
 
-**Target state (when Vercel is re-linked):**
-- `vishal-katariya.com` → Vercel production (apex)
-- `vishalkatariya.dev` → Vercel preview (dev branch)
-- `vkkatariya.github.io` → GitHub Pages (fallback)
+## Auto-generated Preview URL Pattern
+
+Every push to `dev` (or any non-production branch) creates a deployment with a URL like:
+```
+https://portfolio-website-jflgtqp50-orlon-team.vercel.app
+```
+
+The hash is deployment-specific (changes per push). For a **stable branch URL** that updates on each push, Vercel uses:
+```
+https://portfolio-website-git-dev-orlon-team.vercel.app
+```
+
+The exact pattern depends on Vercel's deployment URL generation. Verify by checking the Deployments tab.
+
+## Production + Preview Flow (current setup)
+
+```
+git push origin main
+    ↓
+Vercel auto-deploys to PRODUCTION
+    ↓
+https://vishal-katariya.com updates (auto-promotion)
+
+git push origin dev
+    ↓
+Vercel creates PREVIEW deployment
+    ↓
+https://portfolio-website-XXX-orlon-team.vercel.app is publicly accessible
+(Deployment Protection is DISABLED — set 2026-06-27)
+
+GitHub Pages runs .github/workflows/pages.yml
+    ↓
+https://vkkatariya.github.io updates
+(Fallback — same content as production since main and dev are in sync)
+```
 
 ## File Inventory (when Vercel is re-linked)
 
