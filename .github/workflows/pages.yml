@@ -44,3 +44,65 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+  smoke-test:
+    needs: deploy
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Wait for Pages propagation
+        run: sleep 30
+
+      - name: Smoke test — root redirect
+        run: |
+          STATUS=$(curl -sL -o /dev/null -w '%{http_code}' 'https://vkkatariya.github.io/')
+          if [ "$STATUS" != "200" ]; then
+            echo "::error::Root URL returned HTTP $STATUS (expected 200)"
+            exit 1
+          fi
+          echo "✓ Root URL HTTP 200"
+
+      - name: Smoke test — SPA
+        run: |
+          STATUS=$(curl -sL -o /dev/null -w '%{http_code}' 'https://vkkatariya.github.io/prototypes/portfolio-combined.html')
+          if [ "$STATUS" != "200" ]; then
+            echo "::error::SPA URL returned HTTP $STATUS (expected 200)"
+            exit 1
+          fi
+          echo "✓ SPA URL HTTP 200"
+
+      - name: Smoke test — server header (verify not Vercel)
+        run: |
+          SERVER=$(curl -sIL 'https://vkkatariya.github.io/' | grep -i '^server:' | head -1 | tr -d '\r')
+          echo "Server: $SERVER"
+          if echo "$SERVER" | grep -qi 'vercel'; then
+            echo "::error::GitHub Pages is being served by Vercel (CNAME redirect chain active). See L-058."
+            exit 1
+          fi
+          if echo "$SERVER" | grep -qi 'github'; then
+            echo "✓ Served by GitHub.com (correct)"
+          else
+            echo "::warning::Server header not GitHub or Vercel: $SERVER"
+          fi
+
+      - name: Smoke test — content sanity
+        run: |
+          CONTENT=$(curl -sL 'https://vkkatariya.github.io/prototypes/portfolio-combined.html')
+          if echo "$CONTENT" | grep -q 'HERMES OAUTH'; then
+            echo "✓ SPA contains HERMES OAUTH widget"
+          else
+            echo "::error::SPA missing expected widget content"
+            exit 1
+          fi
+          if echo "$CONTENT" | grep -q 'GITHUB ACTIVITY'; then
+            echo "✓ SPA contains GITHUB ACTIVITY widget"
+          else
+            echo "::error::SPA missing GITHUB ACTIVITY widget"
+            exit 1
+          fi
+          SIZE=$(echo -n "$CONTENT" | wc -c)
+          if [ "$SIZE" -lt 100000 ]; then
+            echo "::error::SPA content size $SIZE bytes is suspiciously small (expected >100KB)"
+            exit 1
+          fi
+          echo "✓ SPA content size: $SIZE bytes"
