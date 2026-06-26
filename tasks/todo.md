@@ -1,5 +1,5 @@
 # tasks/todo.md — portfolio-website
-> Current sprint items. Vishal manages this file.
+> Current sprint items. Vishal/Hermes/openclaw manages this file.
 > Agents: read at session start. Mark items complete as you go.
 
 ---
@@ -14,6 +14,27 @@
 
 ## Phase 0 — HTML Prototypes (in progress)
 
+### Visual polish / interaction pass
+- [x] Pop-out hover effect on all widgets/blocks across all pages (5-page rollout complete)
+- [x] Font stack update — vendor NDOT + fix DM Mono readability (3-branch rollout)
+- [x] Expand NDOT accent font usage
+  - [x] Branch 4 `feat/ndot-topbar-rollout`: apply var(--font-ndot) to all topbar text (nav links, logo, search, lang, theme, profile) + bump topbar font-size. Keep Space Grotesk for body/headings. Accent-only scope. Confirmed 2026-06-20.
+  - [x] Branch 5 `feat/ndot-widget-titles` + merged into `feat/ndot-titles-and-right-pill`: NDOT to 5 accent selectors (.pcard-title, .topic-name, .career-title, .cs-title, .filter-btn) + Branch 6 right pill fully rounded + stronger liquid glass (blur 56px, saturate 200%, light-mode override). 2026-06-20.
+  - [x] Branch 7 `feat/ndot-proj-title`: post-Branch-5 audit caught 4 more accent title selectors using old font (.proj-title on homepage featured project, .feat-title on case-study modal sections, .int-title on about page interests, .pi-title on /projects index cards). All swapped to var(--font-ndot). Lesson L-026 added: always full selector audit before declaring a pattern rollout complete. 2026-06-20.
+  - [ ] Branch 8 (deferred): NDOT to .tl-title? Mixed semantic context (22 occurrences across timeline entries + roadmap topic titles) — needs separate decision.
+  - [x] Branch 1 `feat/vendor-ndot-font`: pull NDOT .woff2 from GitHub mirror, declare @font-face, add assets/fonts/README.md with source attribution
+  - [x] Branch 2 `fix/dm-mono-readability`: bump font-size ≥11px, add letter-spacing 0.5px, swap UI labels to JetBrains Mono, restrict DM Mono to true monospace contexts
+  - [x] Branch 3 `feat/ndot-display-accent` (depends on #1): use NDOT in 5 NothingOS-accent spots (.pcard-num, .cs-number, .lbl/.lbl-inv, .skill-n, .clock-h/m). Keep Space Grotesk for body/titles/buttons. Syne stays for hero titles.
+  - Strategy: sequential — vendor must complete first, then DM Mono + NDOT display can run parallel. Confirmed with user 2026-06-20.
+  - NOTE: Branches 1+2 were done inline (not via coding agent) because delegate_task subagent dispatch failed 3× with 'nemotron model 404' on the prior session. Branch 3 was dispatched to opencode after gateway restart; the agent completed file edits but ran out of tool budget before commit/push, so I finished the commit + browser verification + DEVLOG entry inline. Future agent dispatches are working.
+- [x] Redesign top-right nav pill: fully rounded + liquid glass effect — done as part of Branch 5/6 (right pill is fully rounded 100px, blur 56px, saturate 200%, light-mode override)
+la-Cormorant Bold Italic wordmark redo (all 5 occurrences) and Roadmap title restructure (Syme/Cormorant hybrid). 2026-06-20.Merged to dev.
+- [x] Roadmap page header — match Projects/About aesthetic (`.ph` wrapper + `vkkatariya · roadmap` kicker + mixed Cormorant/Syne "Roadmap" title). Branch `feat/roadmap-header-matches-aesthetic` → dev @ 9583722. 2026-06-20. First attempt (opencode) only swapped markup but title rendered small (`.hero h1` specificity 0,1,1 overrode `.ph-title` 0,1,0). Second attempt (claude) restructured to `.ph` wrapper like Projects/About — resolves specificity, title now renders at full Syne 800 clamp(48px,8vw,96px). Follow-up fix (inline): scoped `#pg-roadmap .ph-title` margin-bottom 56px→24px, `#pg-roadmap .ph-sub` font-size 15px, `#pg-roadmap .ph` padding-bottom 0, `#pg-roadmap .hero` padding-top 20px — compacted subtitle-to-badges gap from 140px→~20px. User confirmed "its fixed now".
+- [x] Timeline fonts bigger — `.tl-title` now NDOT 700 clamp(18-22px), `.tl-desc` 15px JetBrains Mono, `.tl-year` 14px DM Mono, `.tl-badge` 13px JetBrains Mono. Branch `feat/timeline-fonts-bigger` → dev (this merge). 2026-06-20. Three attempts: v1 (agy) Space Grotesk 17-20px rejected as too small, v2 (codex) NDOT 800 42-80px rejected as way too big for one-line entries, v3 (hermes inline) NDOT 700 18-22px — user confirmed.
+- [x] Timeline font size polish — user found sizes slightly too big after review; nudged down 2px each: `.tl-title` clamp(16-20px), `.tl-desc` 13px, `.tl-year` 12px, `.tl-badge` 11px. Branch `feat/cv-pdf` inline. 2026-06-21.
+- [x] Apply topbar liquid-glass effect to all widgets on all pages — Homepage 16, Projects 11, Roadmap 38 (excl. timeline), About 19, /me 1. Branch `feat/widget-liquid-glass` → dev @ 9da6079. 2026-06-20. Use left/center pill formula: blur 40px saturate 180%, border rgba(255,255,255,.16). Follow-up fixes (inline): made `.w.inv` contact widget and `.about-section` outer block use the same glass surface as other widgets.
+
+### Core prototype tasks
 - [x] Design system defined: NothingOS + Liquid Glass + Neomorphism + NeoPOP
 - [x] Font stack decided: Cormorant Garamond + Space Grotesk + Outfit + DM Mono
 - [x] Portfolio v4 homepage — 3-pill glass topbar, widget grid, hero removed
@@ -21,25 +42,198 @@
 - [x] `/about` prototype — bio, education, skills, 4 languages, contact
 - [x] `/roadmap` prototype — cs-roadmap.html
 - [x] Combined single-file SPA spike (reference only)
+- [x] Reconcile portfolio-combined.html: shared 3-pill topbar + all page sections + SPA page switching
+- [x] Fix portfolio-combined.html structural bugs and restore old background design tokens
+- [x] Fix portfolio-combined.html roadmap page: slide-over topbar + render invisible topic/career cards
 - [x] Project dev setup: AGENTS.md, CONTEXT.md, README.md, DEVLOG.md, todo.md, lessons.md
-- [ ] Finalize homepage (portfolio-v4.html) as the canonical reference
-- [ ] Decide `/me` auth mechanism
+- [x] Finalize portfolio-combined.html roadmap page — match cs-roadmap.html content + style with clean topbar morph
+- [x] Generate CV/resume PDF from About + Projects content using Playwright + Chromium. Branch `feat/cv-pdf` → dev. 2026-06-21.\n- [x] Gate `/me` behind Tailscale on athena, document in CONTEXT.md/README.md/todo.md. Branch `feat/me-tailscale-gate` → dev @ ab88ebd. 2026-06-21.
+  - Decision 2026-06-20: network-layer enforcement only (no page-level password or client-side auth).
+  - Reference config: `homelab-configs/me-tailscale-caddy.conf`.
+  - `portfolio-combined.html` `/me` page updated to: "Private section — available on Tailnet only."
+  - Public Vercel deployment must not include `/me` content.
+
+### Roadmap page (#pg-roadmap) — mobile/JS bugfix pass — 2026-06-19
+- [x] Fix JS crash from modal-overlay/modal-close referenced before existing in DOM
+- [x] Relocate modal + progress-widget markup to a safe body-level position
+- [x] Fix progress-widget visibility race in updateProgressWidget()
+- [x] Find + fix "dark rectangle/ghost pill" — rescope leaked nav{}/.nav-links{}/.nav-logo{} rules to #roadmap-internal-nav
+- [x] Fix cascade specificity issue blocking the targeted top:auto rule
+- [x] Verify topics grid (11 cards) + careers grid (10 cards) render
+- [x] Verify filters, timeline accordion, checkbox→progress-widget, modal open/close
+- [x] Verify desktop (1440px) / tablet (820px) / mobile (390px) — no regressions, console clean
+- [x] Fix #pg-about missing closing </div>, unblocking /me page
+- [x] Shared-nav mobile layout still cramped at ≤400px (3 pills overlap) — fixed via 3-tier responsive plan in `feat/topbar-mobile-first`. ≤860px shrinks pills + flex centering; ≤560px collapses center pill to hamburger + overlay; ≤380px hides search. Playwright verified 10/10 viewports zero overlaps.
+
+### Polish task #3 follow-up — project skill bars
+- [x] Add scored skill bars to each `.cs-section` on /projects page (replace `.cs-stack` chip row) — completed in `feat/cs-skills-bars` (8 cs-sections, 38 bars total, color bands: `s-high` ≥70, `s-mid` ≥50, `s-low` <50)
+  - Source-of-truth: extract current stack from each cs-section, validate against project CONTEXT.md / README.md, score 0-100 by usage depth
+  - Auto color bands: green 80-100, blue 65-79, amber 50-64, omit <50
+  - Top 5 skills per project, sorted by score descending
+  - 8 projects × 5 skills = 40 bars total
+  - Visual: name (left) + colored bar (middle, gradient fill) + score (right-aligned)
+  - `.cs-stack` chip row replaced entirely (no redundant chips + bars)
+  - Fallback to chips if a project has <3 scored skills
+
+### Content + structure cleanup (new — 2026-06-23)
+- [x] Content cleanup and more polished content on all pages — completed across 8+ commits on `feat/content-cleanup` (all merged to dev). Sub-items: photo placeholder removed (`df1ec12`), year badges standardized to 2026 (`df1ec12`), roadmap stat `👥 50K+ Developers` → `🤖 ML · Infra · Full-stack` (`df1ec12`), homepage v2 cleanup (`609beb4` → `fddb1c1`), contact widget cleanup (`a1f6a3c`), projects stat 12→8 (`d4b1307`), photo widget swap (`4097080`). All merged. New cleanup sub-tasks can be added as `[ ]` items below.
+- [x] Add new projects to the projects page — completed in `feat/add-4-projects` (4 new cs-sections: portfolio-website, hermes-desktop-oauth, openclaw-dashboard, unilox-fitness-ai). **Artifacts 5–8 redesigned 2026-06-26 by Claude** to match quality of projects 1–4 (sub-items below).
+  - [x] Audit projects 1–4 artifact patterns and CSS classes (node-diagram, pipeline, platform-grid, bar-chart)
+  - [x] Confirm projects 5–8 were basic SVG text diagrams with no existing CSS reuse
+  - [x] P5 Portfolio Website: replace routing-flow SVG → node-diagram (Vercel + Athena nodes)
+  - [x] P6 Hermes OAuth Fork: replace phase-timeline SVG → pipeline (4 stages, flex:1)
+  - [x] P7 OpenClaw Dashboard: replace route-flow SVG → platform-grid (3 view cards)
+  - [x] P8 Unilox Fitness AI: replace module-pipeline SVG → node-diagram (3-tier arch)
+  - [x] Fix Hermes pipeline stage overflow (flex:1 on each stage)
+  - [x] Verify via Playwright: zero errors, correct artifact element counts, no layout regressions
+  - [ ] Color accent pass: apply roadmap tinted-pill system to home/projects/about/me pages
+- [x] Add the 4 new projects as homepage widgets (.pcard entries) — **DECIDED 2026-06-27**: not doing. Only the FEATURED: Hermes One OAuth Fork widget will be added; the original 3 bottom `.pcard` entries stay as-is.
+- [x] Fix redirecting links across all pages ✅ both sub-tasks merged to dev (NOW/HOMELAB/IDENTITY widgets + FEATURED PROJECT buttons + 3 /projects pcard index cards)
+- [x] Fix duplication on homepage about + contact widgets ✅ merged to dev at 9be316b (11 commits, branch preserved at 69939dd)
+- [x] **Add SVG icons to widgets that are missing them across all pages** — completed and merged to dev as `c8e0cf4` (with cs-title follow-up `6a09a65`). Includes inline `.ico` SVGs on ~122 widgets across 5 pages (homepage `.pcard-title` + `.tl-title`, /projects `.pi-title` + `.nd-name` + `.plat-name` + `.pipe-name` + cs-titles, /roadmap phase/topic/career/timeline/resource cards, /about sections/edu/languages/interests, /me heading). Per-context icon sizes (12-28px) chosen by agy for visual harmony.
+- [x] **Homepage content cleanup v2** — direct edits on `feat/content-cleanup` (no agent dispatch): DevOps added to time chip, Dieburg → Darmstadt x6, STACK widget moved next to HOMELAB, TIMELINE + ALL PROJECTS headings bigger (14px), VIEW ALL bigger. Commit `609beb4` merged to dev as `fddb1c1`.
+- [x] **Contact widget cleanup** — homepage `avail-badge` + about-page `photo-status` → `open to werkstudent jobs`. /about page: kept only EMAIL + GITHUB contact cards (removed LinkedIn + Website); removed avail-block; removed 3 redundant bio chips. Commits `4c74d52` + `d6cf504` + `b3c2184` merged to dev as `a1f6a3c`.
+- [x] **Projects stat fix** — homepage PROJECTS widget `12 shipped` → `8 shipped` to match the actual 8 cs-sections on /projects. Commit `1925643` merged to dev as `d4b1307`.
+- [x] **Photo widget swap** — replaced `VK` initials placeholder in /about photo-block with a real photo. Image is `prototypes/assets/image.png` (user-provided, pre-cropped 680×761 portrait, black background). CSS: `.photo-img { object-fit:cover; object-position:top center }`. Commits `4b401d1` + `fe4c3e1` + `602e27b` on `feat/content-cleanup` (in-progress, will merge with this batch).
+
+### Theme + color
+- [x] Dark/light mode toggle with `localStorage` persistence (standalone pages: `html.light` + `vk-theme`)
+- [x] Finish light mode on `portfolio-combined.html` — fix remaining dark rectangles/buttons/widgets
+- [x] Extend roadmap color profile to home/projects in `portfolio-combined.html`
+- [x] Extend roadmap color profile to about/me in `portfolio-combined.html`
+- [ ] Contact form with email endpoint (Resend or Nodemailer)
+- [x] CV/resume PDF download link ✅ done (claude-code, ~2026-06-21) — cv.pdf generated, download links in About page contact grid + homepage contact widget
+- [x] Real GitHub contribution grid — **Manual approach** (2026-06-27): count set to `51` in `<span id="cc">51</span>` at `prototypes/portfolio-combined.html:3415`. Visual grid (random 26×5 cells) preserved. Update count manually in HTML when needed. API approaches (REST + GraphQL) abandoned — recorded in DEVLOG with rationale.
+- [ ] DE translation strings for full bilingual support
+  - **Scope decision:** choose a tier
+    - (a) Minimal — 5-10 key UI strings (nav links, section headings, primary CTAs). ~30 min
+    - (b) Partial — major sections (homepage + about hero text + section headings). ~2-3 hours
+    - (c) Full coverage — all user-facing strings in 6600-line HTML file. ~6-8 hours, may need its own session
+  - **Mechanism:** data object with EN/DE pairs, lookup function, language switcher in topbar, persist preference to localStorage
+  - **Initial DE translations:** most portfolio copy is technical English (project names, framework names) and won't change. Bio paragraphs + nav + section headings + CTAs are the meaningful translation surface.
+- [x] Fix visibility of SVG icons on all pages in light mode — completed in `feat/svg-icons-light-mode` (originally merged as `41f1cc2`, reverted as part of cleanup, **re-applied at `6b83cb9`**). Root cause: existing `html.light .ico svg [stroke*="..."]` rules used descendant combinator, missing SVGs where `.ico` class is on the SVG itself. Fix: added `html.light svg.ico [...]` selectors at commit `2e5f83f` (alongside existing rules). All `.ico` SVGs (113+) + `.ico-blink*` / `.ico-float*` / `.ico-pulse` / `.ico-throb` / `.ico-spin` + project visualization SVGs (routing-flow, phase-timeline, route-flow, module-pipeline) now visible in light mode. **Animation-class SVGs and project-viz SVGs were also re-applied in `feat/svg-icons-complete-lightmode` at `a79641b` (originally `d3258c1`).**
+
+### New widgets
+- [x] Add FEATURED: Hermes One OAuth Fork widget on homepage — **completed 2026-06-26 by Claude**. Added `s11` (1×1, 168px) widget between PROJECTS STAT and ABOUT via HTML order auto-placement (col4 row5, no explicit grid needed). Uses Ndot dot-matrix font for title with `var(--green)` glow, stats in blue/neutral/green tier. VIEW → navigates to `showPage('projects')` + `scrollIntoView('hermes-desktop-oauth')`, GITHUB → `https://github.com/vkkatariya/hermes-desktop-oauth`. Also fixed Contact widget `align-self:start` → `align-self:stretch` so Contact bottom flushes with About bottom (both at y=1342). Sub-items below.
+  - [x] Map exact grid coordinates before touching anything (Playwright DOM audit)
+  - [x] Identify empty cell: col4 row5 (y=800–968) — Stack ends row4, Contact starts row6
+  - [x] Add Hermes OAuth Fork widget (s11) at col4 row5 via HTML order auto-placement
+  - [x] Wire VIEW → to showPage('projects') + scrollIntoView('hermes-desktop-oauth')
+  - [x] Wire GITHUB → to https://github.com/vkkatariya/hermes-desktop-oauth
+  - [x] Fix Contact alignment: align-self:start → align-self:stretch (bottoms flush with About)
+  - [x] Verify Playwright: zero errors, correct row/col placement, About/Contact heights match
+  - [x] Responsive check for Hermes widget at ≤860px and ≤560px breakpoints — fixed broken 560px and 380px grid breakpoints caused by About widget span 3 override
+  - [ ] Color accent pass: apply roadmap tinted-pill system to home/projects/about/me via Claude Code
+
+- [x] Decide `/me` auth mechanism — Tailscale network-layer gate on athena (Caddy `remote_ip` or bind to Tailscale IP). No page-level/client-side auth.
 
 ---
 
 ## Phase 1 — SvelteKit Scaffold
 
+**Stack decisions (decided 2026-06-27):**
+- **Svelte 5** (runes) over Svelte 4 — actively developed, future-proof, explicit reactivity via `$state`/`$derived`/`$effect`
+- **TypeScript strict mode** — type safety for 137+ SVG icons, 8 projects, structured data; IDE autocomplete + refactor-safe
+- **Static adapter** (`@sveltejs/adapter-static`) — read-only portfolio content, pre-rendered HTML, free Vercel CDN, zero compute cost
+- **Data format: TypeScript modules** (`src/lib/data/*.ts`) — type-checked at build time, no markdown overhead
+- **Deploy target: Vercel** — already wired to repo + domain; public static site = best fit
+- **Cutover: parallel deploy** — Phase 1.7 ships to `/v2` subpath first, apex flips after 1 week of parity testing
+- **Old `portfolio-combined.html`** — keep in repo during Phase 1 as source of truth, archive to `archive/` after cutover, delete after 30 days post-cutover
+
+**Architecture (hybrid, decided 2026-06-20):** Public routes on Vercel (CDN edge); private `/me/*` and backend services stay on athena behind Tailscale. GitHub is repo-only, not deploy target.
+
 ### 1a — Project init
-- [ ] `pnpm create svelte@latest web` (in repo root)
-- [ ] Set up shared design tokens: `src/lib/styles/tokens.css`
-- [ ] Google Fonts import: Cormorant Garamond + Space Grotesk + Outfit + DM Mono
-- [ ] `src/app.css` — global reset, dot-matrix body bg, CSS variables
+- [ ] `pnpm create svelte@latest web` (in repo root) — Svelte 5 + TypeScript + ESLint + Prettier + Vitest
+- [ ] Install `@sveltejs/adapter-static` and configure `svelte.config.js`
+- [ ] `tsconfig.json` — strict mode, `noImplicitAny`, `strictNullChecks`, `noUncheckedIndexedAccess`
+- [ ] Set up shared design tokens: `src/lib/styles/tokens.css` — `--w`, `--w30`, `--w60`, `--green`, `--blue`, `--acc`, `--font-ndot`, `--bg` + light-mode `[data-theme="light"]` overrides
+- [ ] Google Fonts import in `+layout.svelte`: Cormorant Garamond + Space Grotesk + Outfit + DM Mono (use `link rel="preconnect"` + `display=swap`)
+- [ ] `@font-face` for Ndot (NDOT55Caps.woff2) — copy from `assets/fonts/` to `static/fonts/`
+- [ ] `src/app.css` — global reset, dot-matrix body bg, CSS variables, base typography
+- [ ] `src/lib/styles/glass.css` — extract `.glass` and `.liquid-glass` utility classes from `portfolio-combined.html` lines 140-307
 
 ### 1b — Layout + shared components
-- [ ] `src/routes/+layout.svelte` — 3-pill glass topbar
-- [ ] `src/lib/components/PillTopbar.svelte`
-- [ ] `src/lib/components/WidgetGrid.svelte`
-- [ ] `src/lib/components/Footer.svelte`
+- [ ] `src/routes/+layout.svelte` — 3-pill glass topbar (port from `portfolio-combined.html` line 3288)
+- [ ] `src/lib/components/PillTopbar.svelte` — props: `currentRoute`, `available`; handles active state via store
+- [ ] `src/lib/components/NavLink.svelte` — single nav link with hover/active states
+- [ ] `src/lib/components/WidgetGrid.svelte` — CSS grid container, accepts widgets as children
+- [ ] `src/lib/components/Widget.svelte` — base glass widget wrapper (`s11`/`s12`/`s21`/`s22` size variants)
+- [ ] `src/lib/components/Footer.svelte` — copyright + nav + contact links
+- [ ] `src/lib/components/Icon.svelte` — sprite-based icon component (load `icons.svg` sprite, accept `name` prop)
+  - Generate sprite from existing 137+ inline SVGs in `portfolio-combined.html`
+  - Light-mode compatible (uses currentColor + CSS variables)
+- [ ] `src/lib/stores/theme.ts` — Svelte store for `dark`/`light` theme (default: dark, persist to localStorage, mirror to `html[data-theme]`)
+- [ ] `src/lib/stores/lang.ts` — `en`/`de` language store, translation function `$t('key')`, mirror to `html[lang]`
+- [ ] `src/lib/stores/route.ts` — current route state, drives topbar active state
+
+### 1c — Data layer
+- [ ] `src/lib/data/projects.ts` — array of 8 projects (id, title, tagline, year, stack, tags, csSections, repoUrl, liveUrl) — extracted from `portfolio-combined.html` cs-sections
+- [ ] `src/lib/data/skills.ts` — 6 core skills (Python, ML/AI, TypeScript, Docker, Linux, SvelteKit) with proficiency scores
+- [ ] `src/lib/data/timeline.ts` — career timeline entries (year, title, org, description)
+- [ ] `src/lib/data/edu.ts` — education entries (h_da CS, languages, certifications)
+- [ ] `src/lib/data/topics.ts` — roadmap topics (from existing `TOPICS` const in `portfolio-combined.html`)
+- [ ] `src/lib/data/now.ts` — current "now" widget content (what I'm working on, training status)
+- [ ] `src/lib/data/about.ts` — bio, intro paragraphs, contact info
+- [ ] Each file exports typed constants: `export const PROJECTS: Project[] = [...]` with `interface Project` defined in `src/lib/types/`
+
+### 1d — Migration order (sequential, lowest risk first)
+
+**1d.1 — `/me` page (simplest)**
+- Why first: 1 section, mostly text, no complex interactions. Good test bed for the SvelteKit + data layer pattern.
+- [ ] `src/routes/me/+page.svelte` — port identity vault content
+- [ ] `src/routes/me/+page.ts` — load data from `src/lib/data/`
+- [ ] Browser-verify at all 5 viewports (320, 400, 560, 860, 1920)
+- [ ] Light-mode verify
+- [ ] **Gate:** confirm pattern works before migrating more pages
+
+**1d.2 — `/about` page**
+- Why second: medium complexity, multiple data sections (bio, edu, skills, languages, interests, contact)
+- [ ] `src/routes/about/+page.svelte` — port bio + edu + skills + languages + interests + contact
+- [ ] Wire skills data + edu data + lang grid + contact grid components
+- [ ] Browser-verify + light-mode + cross-breakpoint
+
+**1d.3 — `/projects` page**
+- Why third: has cs-sections + artifacts (node-diagram, pipeline, platform-grid) — components needed for other pages
+- [ ] `src/routes/projects/+page.svelte` — list of project cards + detailed cs-sections
+- [ ] `src/lib/components/ProjectCard.svelte` — `.pcard` style card
+- [ ] `src/lib/components/CsSection.svelte` — case study section wrapper
+- [ ] `src/lib/components/NodeDiagram.svelte` — for projects 5, 8
+- [ ] `src/lib/components/Pipeline.svelte` — for project 6
+- [ ] `src/lib/components/PlatformGrid.svelte` — for project 7
+- [ ] `src/lib/components/BarChart.svelte` — for project 1 (Finance Buddy)
+- [ ] Browser-verify all 8 project sections render correctly
+
+**1d.4 — `/roadmap` page**
+- Why fourth: has internal nav that swaps with shared topbar (`.nav-hidden` animation), timeline center-spine layout
+- [ ] `src/routes/roadmap/+page.svelte` — port timeline + topic cards + career cards
+- [ ] `src/lib/components/RoadmapPage.svelte` — self-contained roadmap component
+- [ ] `src/lib/components/InternalNav.svelte` — for the in-page nav swap
+- [ ] `src/lib/components/TimelineEntry.svelte`
+- [ ] `src/lib/components/TopicCard.svelte`
+- [ ] Browser-verify topbar morph animation works
+
+**1d.5 — `/` homepage (highest risk — last)**
+- Why last: most complex (widget grid, dynamic widgets, hero, multiple data sources)
+- [ ] `src/routes/+page.svelte` — homepage with WidgetGrid
+- [ ] Port all 12+ widgets from current grid (System Time, Identity, GitHub Activity, Skills, Now, Homelab, Stack, Featured Project, Projects stat, About, Contact, Timeline, All Projects)
+- [ ] Wire dynamic widgets (System Time clock, GitHub contribution grid)
+- [ ] Hero section with portrait + intro
+
+### 1e — Pre-cutover verification
+- [ ] All 5 routes pass Svelte/TypeScript strict-mode build
+- [ ] All 5 routes render identical content to old `portfolio-combined.html` (visual diff at 1920px)
+- [ ] All 5 routes render correctly at 320/400/560/860/1920px viewports (both modes)
+- [ ] All routes load with no console errors
+- [ ] Lighthouse audit: Performance >90, Accessibility >95, Best Practices >95, SEO >95
+- [ ] Bundle size <200kb per route (gzipped)
+- [ ] Deployed to `/v2` subpath on Vercel, accessible for 1 week parity testing
+
+### 1f — Cutover
+- [ ] Day 0: Deploy SvelteKit to apex `vishalkatariya.dev/v2/*`
+- [ ] Days 1-7: User reviews daily, reports regressions to fix before cutover
+- [ ] Day 7: Flip Vercel config to serve SvelteKit from apex
+- [ ] Day 7+30: Keep old `portfolio-combined.html` archived in `archive/` for reference
+- [ ] Day 37: Delete old `portfolio-combined.html` from repo
 
 ---
 
@@ -58,7 +252,8 @@
   - TypeShift, orlon-bot, other public projects
 
 ### 2c — Roadmap (`/roadmap`)
-- [ ] Port `cs-roadmap.html` into SvelteKit route
+- [ ] `src/routes/roadmap/+page.svelte` — port `cs-roadmap.html` as a real route with clean topbar morph
+- [ ] `src/lib/components/RoadmapPage.svelte` — self-contained roadmap component (content + interactions)
 - [ ] Link from topbar and homepage widget
 
 ### 2d — About (`/about`)
@@ -69,26 +264,44 @@
 
 ## Phase 3 — `/me` Private Section
 
-- [ ] Decide auth: GitHub OAuth, Tailscale-gated URL, or simple JWT
+- [ ] **Host `/me/*` on athena behind Tailscale** (no public exposure; Caddy allowlist or bind to Tailscale IP only)
+- [x] **Choose `/me` gating mechanism:** Tailscale network-layer enforcement only. No page-level password, no client-side auth. Reference: `homelab-configs/me-tailscale-caddy.conf`.
 - [ ] `/me/vault` — identity vault (port from existing artifact)
 - [ ] `/me/docs` — integrate artifacts from `notion-artifacts` project
 - [ ] `/me/notes` — future Notion workspace mirror (backlog)
+
+### Tailscale gate reference
+
+Recommended Caddy rule:
+```caddy
+me.auxois-wyrm.ts.net {
+    @not_tailscale {
+        not remote_ip 100.64.0.0/10
+    }
+    respond @not_tailscale "Access denied — Tailscale required" 403
+    reverse_proxy localhost:8900
+}
+```
+
+Alternative: bind the upstream to the Tailscale IP only:
+```bash
+python3 -m http.server 8900 --bind "$(tailscale ip -4)"
+```
 
 ---
 
 ## Phase 4 — Deploy
 
-- [ ] Vercel project connected to `vkkatariya/vkkatariya.github.io`
+- [ ] Vercel project connected to `vkkatariya/vkkatariya.github.io` — public routes only
 - [ ] Custom domain: `vishalkatariya.dev`
-- [ ] GitHub Pages mirror configured
+- [ ] Private `/me/*` served from athena via Tailscale MagicDNS (`auxois-wyrm.ts.net`)
+- [ ] GitHub Pages mirror configured (optional)
 - [ ] Smoke test all public routes
+
+**Hybrid architecture decision (2026-06-20):** Public site on Vercel for speed/reliability; private backend and `/me` stay on athena behind Tailscale. Domain + Vercel already wired up.
 
 ---
 
 ## Backlog (unscheduled)
 
-- [ ] Dark/light mode toggle with `localStorage` persistence
-- [ ] Contact form with email endpoint (Resend or Nodemailer)
-- [ ] CV/resume PDF download link
-- [ ] Real GitHub contribution grid via API
-- [ ] DE translation strings for full bilingual support
+_(empty — all items moved to Phase 0)_

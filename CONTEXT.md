@@ -33,20 +33,44 @@ A personal portfolio web app at `vishalkatariya.dev`.
 
 ## Architecture v2
 
-| Route | Public/Private | What it is |
-|---|---|---|
-| `/` | public | Homepage — widget grid + career timeline + "now" status |
-| `/projects` | public | Cards linking to standalone project sites, not embedded apps |
-| `/roadmap` | public | Port of `cs-roadmap.html` |
-| `/about` | public | Bio, h_da education, skills, 4 languages, contact |
-| `/me/vault` | private | Identity vault — aliases tracker |
-| `/me/docs` | private | Notion artifacts rendered as HTML |
-| `/me/notes` | private | Future Notion workspace mirror (backlog) |
+| Route | Public/Private | What it is | Host |
+|---|---|---|---|
+| `/` | public | Homepage — widget grid + career timeline + "now" status | Vercel |
+| `/projects` | public | Cards linking to standalone project sites | Vercel |
+| `/roadmap` | public | Port of `cs-roadmap.html` | Vercel |
+| `/about` | public | Bio, h_da education, skills, 4 languages, contact | Vercel |
+| `/me/vault` | private | Identity vault — aliases tracker | athena (Tailscale) |
+| `/me/docs` | private | Notion artifacts rendered as HTML | athena (Tailscale) |
+| `/me/notes` | private | Future Notion workspace mirror (backlog) | athena (Tailscale) |
 
 | Standalone app | Subdomain | Why it's separate |
 |---|---|---|
 | Homelab dashboard | `studio.auxois-wyrm.ts.net` | Private metrics + service control panel |
 | Finance buddy | `buddy.auxois-wyrm.ts.net` | Private transaction dashboard |
+
+**Hosting split:**
+- **Vercel (`vishalkatariya.dev`)** serves all public routes. Repo already connected; domain already configured.
+- **athena (`auxois-wyrm.ts.net`)** serves anything private or backend-heavy via Tailscale. No public exposure.
+- This is a hybrid architecture: public edge CDN for speed + reliability; homelab for private control and self-hosted data.
+
+### Tailscale gating for `/me`
+
+`/me/*` is private and never deployed to the public Vercel site. Access is enforced at the homelab edge, not inside the page:
+
+1. **Preferred: Caddy `remote_ip` matcher** (see `homelab-configs/me-tailscale-caddy.conf`):
+   - Match the Tailscale IPv4 CGNAT range `100.64.0.0/10`.
+   - Return `403` to any non-Tailnet client before the request reaches the upstream.
+   - Upstream is the static server/container bound to `127.0.0.1:8900` on athena.
+
+2. **Alternative: bind the static server to the Tailscale IP only** so the service has no public listening socket:
+   ```bash
+   python3 -m http.server 8900 --bind "$(tailscale ip -4)"
+   ```
+   With this approach no Caddy `remote_ip` rule is required, but the Caddy reverse-proxy + certificate path is still the recommended production pattern.
+
+3. **Explicitly not allowed:** page-level passwords, client-side auth checks, or exposing `/me` content on `vishalkatariya.dev`.
+
+The `/me` page in `portfolio-combined.html` is only an informational placeholder used inside the prototype; the real gate lives at the reverse proxy / network layer on athena.
 
 ---
 
@@ -57,9 +81,9 @@ A personal portfolio web app at `vishalkatariya.dev`.
 | Frontend | SvelteKit + TypeScript | Vercel deploy, `vishalkatariya.dev` |
 | Styling | Vanilla CSS with shared tokens | NothingOS + Liquid Glass + Neomorphism + NeoPOP |
 | Fonts | Cormorant Garamond + Space Grotesk + Outfit + DM Mono | Google Fonts CDN |
-| Backend | None for portfolio itself | External subdomains handle their own backends |
-| DB | None planned | Project metadata hardcoded or fetched at build time |
-| Auth (for `/me`) | TBD | GitHub OAuth, Tailscale-gated URL, or simple JWT |
+| Backend | None for portfolio itself | Vercel serverless functions for contact form + GitHub contribution grid proxy; private `/me` backend on athena |
+| DB | None planned | Project metadata hardcoded or fetched at build time; private data stays on athena |
+| Auth (for `/me`) | Tailscale-gated access on athena | Tailscale IP allowlist or Caddy `remote_ip` matcher; no public auth surface. The `/me` page in `portfolio-combined.html` is just a static info card — real enforcement is at the reverse proxy / network layer. |
 
 ---
 
@@ -118,6 +142,47 @@ A personal portfolio web app at `vishalkatariya.dev`.
 - **DM Mono** — data labels, code, technical labels
 
 **Icons:** Self-contained inline SVG only — no external CDN.
+
+---
+
+## Page transitions & animation spec
+
+**Rule:** Page transitions are optional in Phase 0, mandatory in Phase 1. No jarring hard cuts.
+
+### HTML prototype behavior (Phase 0)
+
+`portfolio-combined.html` uses an inline SPA switch via `showPage(slug)`:
+- The active page gets `.active` (`opacity:1; pointer-events:auto; transform:translateY(0) scale(1)`).
+- Inactive pages keep `.page` (`opacity:0; pointer-events:none; transform:translateY(10px) scale(.99)`).
+- Transition: `opacity .45s cubic-bezier(.22,.61,.36,1), transform .55s cubic-bezier(.22,.61,.36,1)`.
+- Scroll resets to top on every switch (`window.scrollTo(0,0)`).
+- No exit animation — fade-in only (simplest and avoids layout thrash).
+
+### SvelteKit behavior (Phase 1)
+
+Use `svelte/transition` with a global layout wrapper keyed to `$page.url.pathname`:
+```ts
+import { fly, fade } from 'svelte/transition';
+import { cubicOut } from 'svelte/easing';
+
+const pageTransition = (node, { y = 16, duration = 350 }) =>
+  fly(node, { y, duration, easing: cubicOut });
+```
+- Enter: `fly` from `y:16` + `fade` from `0` (simultaneous).
+- Exit: none (Phase 1 MVP) or a fast `fade` if performance budget allows.
+- Easing: `cubic-bezier(.22,.61,.36,1)` (`cubicOut` in Svelte).
+- Duration: 350–450ms on desktop, 250ms on mobile (`prefers-reduced-motion` → instant).
+- Scroll behavior: `scrollTo(0,0)` on route change.
+
+### Motion budget
+
+- Avoid layout-triggering animations (no `width`/`height` transitions on route change).
+- Prefer `transform` + `opacity`.
+- Respect `prefers-reduced-motion: reduce` — disable all transitions.
+
+### Roadmap exception
+
+`/roadmap` is a **single long scrollable page**, not a nested SPA. Internal anchors (overview, topics, careers, resources) scroll smoothly within the page. The roadmap internal nav morphs from the shared topbar center pill.
 
 ---
 
