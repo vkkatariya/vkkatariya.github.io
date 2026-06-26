@@ -1,8 +1,24 @@
 # tasks/lessons.md — portfolio-website
 > Prevention rules learned from corrections during this project.
 > Format: what failed · root cause · prevention rule.
-> **Order: NEWEST at top, oldest at bottom** (L-048 first, L-001 last).
+| **Order: NEWEST at top, oldest at bottom** (L-056 first, L-001 last). |
 > Agents: read this at session start. Add new entries at the TOP with the next number.
+
+---
+
+
+## L-056 — Inline styles can break responsive CSS Grid media queries
+
+**What failed:** The `≤560px` (2-col) and `≤380px` (1-col) media queries were supposed to apply `grid-template-columns: repeat(2, 1fr)` and `1fr` to the homepage grid container. However, the browser stubbornly rendered 3 columns on mobile devices, ignoring the container's media query constraints.
+
+**Root cause:** The "About" widget had an inline style `grid-column: span 3;` which explicitly demanded 3 columns. Because inline styles supersede CSS classes and media queries, the CSS Grid algorithm was forced to expand the entire grid container to 3 columns to accommodate the single widget, breaking the responsive layout for all other widgets in the row.
+
+**Prevention rule:**
+- **Never use inline styles for structural grid placement (`grid-column`, `grid-row`) in a responsive layout.** Inline styles cannot be overridden by media queries (without `!important`, which is a bad practice).
+- If a widget needs a specific size, create a semantic size class (e.g., `.s32` for `span 3` wide, `span 2` tall) and apply responsive overrides to that class inside your media queries.
+- When diagnosing a grid that refuses to collapse to fewer columns, always check the children elements. The grid will always expand to fit its widest child span requirement, overriding `grid-template-columns`.
+
+**Related rules:** L-049 (DOM coordinate audit before grid edit), L-050 (CSS grid auto-placement > explicit).
 
 ---
 
@@ -25,6 +41,7 @@
 - **Related to L-042 (re-read branch state before committing)** but different: L-042 is about committing while a different agent is actively on a branch (cross-contamination). L-055 is about committing while YOU are on the wrong branch (your own context drift). Both are check-the-branch-first patterns but for different reasons.
 
 **Related rules:** L-042 (re-read branch state), L-046 (branch lineage contamination, audit before merge).
+
 
 ---
 

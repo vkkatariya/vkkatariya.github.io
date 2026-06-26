@@ -63,7 +63,7 @@ la-Cormorant Bold Italic wordmark redo (all 5 occurrences) and Roadmap title res
 - [x] Verify filters, timeline accordion, checkbox→progress-widget, modal open/close
 - [x] Verify desktop (1440px) / tablet (820px) / mobile (390px) — no regressions, console clean
 - [x] Fix #pg-about missing closing </div>, unblocking /me page
-- [ ] Shared-nav mobile layout still cramped at ≤400px (3 pills overlap) — separate, pre-existing, not roadmap-specific
+- [x] Shared-nav mobile layout still cramped at ≤400px (3 pills overlap) — fixed via 3-tier responsive plan in `feat/topbar-mobile-first`. ≤860px shrinks pills + flex centering; ≤560px collapses center pill to hamburger + overlay; ≤380px hides search. Playwright verified 10/10 viewports zero overlaps.
 
 ### Polish task #3 follow-up — project skill bars
 - [x] Add scored skill bars to each `.cs-section` on /projects page (replace `.cs-stack` chip row) — completed in `feat/cs-skills-bars` (8 cs-sections, 38 bars total, color bands: `s-high` ≥70, `s-mid` ≥50, `s-low` <50)
@@ -122,7 +122,7 @@ la-Cormorant Bold Italic wordmark redo (all 5 occurrences) and Roadmap title res
   - [x] Wire GITHUB → to https://github.com/vkkatariya/hermes-desktop-oauth
   - [x] Fix Contact alignment: align-self:start → align-self:stretch (bottoms flush with About)
   - [x] Verify Playwright: zero errors, correct row/col placement, About/Contact heights match
-  - [ ] Responsive check for Hermes widget at ≤860px and ≤560px breakpoints
+  - [x] Responsive check for Hermes widget at ≤860px and ≤560px breakpoints — fixed broken 560px and 380px grid breakpoints caused by About widget span 3 override
   - [ ] Color accent pass: apply roadmap tinted-pill system to home/projects/about/me via Claude Code
 
 - [x] Decide `/me` auth mechanism — Tailscale network-layer gate on athena (Caddy `remote_ip` or bind to Tailscale IP). No page-level/client-side auth.
