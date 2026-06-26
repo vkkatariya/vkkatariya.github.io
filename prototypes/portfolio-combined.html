@@ -5825,31 +5825,12 @@ function toggleLang() {
   document.querySelector('.avail-badge').textContent = COPY[lang].avail;
 }
 
-// ── Simulated GitHub contribution grid ──
+// ── GitHub contribution grid (static, count set manually) ──
+// Count value is set in the HTML: <span id="cc">51</span>
+// To update: edit the value in the markup directly. Re-run this decision next year.
 const g = document.getElementById('cg');
-const L = ['','l1','l2','l3','l4'];
-let tot = 0;
-// Responsive: 26×5 desktop, 20×5 mobile
-const cols = window.innerWidth <= 560 ? 20 : 26;
-const cells = cols * 5;
-g.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
-for (let i = 0; i < cells; i++) {
-  const r = Math.random();
-  const lv = r < .42 ? 0 : r < .62 ? 1 : r < .78 ? 2 : r < .92 ? 3 : 4;
-  const c = document.createElement('div');
-  c.className = 'cc' + (L[lv] ? ' '+L[lv] : '');
-  g.appendChild(c);
-  tot += lv;
-}
-// Animate counter
-let cur = 0;
-const target = tot * 4;
-const step = Math.ceil(target / 40);
-const counter = setInterval(() => {
-  cur = Math.min(cur + step, target);
-  document.getElementById('cc').textContent = cur.toLocaleString();
-  if (cur >= target) clearInterval(counter);
-}, 30);
+if (g) g.style.gridTemplateColumns = `repeat(26, 1fr)`;
+// Grid cells are intentionally empty — see todo.md for the design decision.
 
 /* === cs-roadmap JS === */
 
