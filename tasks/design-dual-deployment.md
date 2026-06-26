@@ -1,8 +1,79 @@
 # Dual Deployment Strategy — GitHub Pages + Vercel
 
-> **Status:** Design (Vercel setup deferred)
+> **Status:** Operational (Phase 0 deployed, Phase 1 queued)
 > **Last updated:** 2026-06-27
 > **Owner:** Vishal / Hermes
+
+---
+
+## Mental Model (Quick Reference)
+
+### Architecture
+```
+Repository: vkkatariya/vkkatariya.github.io
+├── main branch ─────┬────────────────┐
+└── dev branch ──────┤                │
+                     │                │
+        ┌────────────▼────────┐  ┌────▼──────────┐
+        │  GitHub Pages        │  │   Vercel      │
+        │  (fallback)          │  │  (primary)    │
+        │  Build: ~30s         │  │  Build: ~5s   │
+        └──────────────────────┘  └───────────────┘
+                     │                     │
+                     ▼                     ▼
+        ┌──────────────────────┐  ┌──────────────────┐
+        │ vkkatariya.github.io │  │ vishal-katariya. │
+        │ (no CNAME, direct)   │  │      com         │
+        └──────────────────────┘  └──────────────────┘
+                                          │
+                                          ▼
+                                  ┌──────────────────┐
+                                  │ portfolio-website│
+                                  │ -XXX-orlon-team. │
+                                  │  vercel.app      │
+                                  │ (preview)        │
+                                  └──────────────────┘
+```
+
+### Working URLs
+| URL | Backend | Status |
+|---|---|---|
+| `https://vishal-katariya.com/` | Vercel prod | ✅ 200 |
+| `https://vishal-katariya.com/prototypes/portfolio-combined` | Vercel prod (cleanUrls) | ✅ 200 |
+| `https://vkkatariya.github.io/` | GitHub Pages fallback | ✅ 200 |
+| `https://portfolio-website-XXX-orlon-team.vercel.app/` | Vercel preview | ✅ 200 |
+
+### Non-working URLs (acknowledged limitations)
+| URL | Issue | Workaround |
+|---|---|---|
+| `/projects`, `/about`, `/roadmap` on Vercel | L-060: rewrites don't apply with `framework: null` | Use direct SPA URL or `/` redirect |
+| `vishalkatariya.dev` / `www.vishalkatariya.dev` | Hobby plan redirect loop | Use auto-generated preview URLs |
+| `/lib/speed-insights.min.js` on Vercel | Not served (only `/_vercel/...` injected by Vercel) | Normal — Vercel injects at runtime |
+
+### Trigger Flow
+- **Push to `main`** → both Vercel production deploys AND GitHub Pages deploys
+- **Push to `dev` (or any non-main branch)** → only Vercel preview deploys
+- **Manual deploy** → `vercel deploy --prod --yes` or `gh workflow run pages.yml`
+
+### Key Config Files
+- `vercel.json` → `{"framework": null, "outputDirectory": "."}` (2 lines)
+- `package.json` → has `build` script (CLI deploys safe per L-059)
+- `.github/workflows/pages.yml` → auto-deploy + smoke test with 9 checks
+- `index.html` → root splash → redirect to SPA
+- **No CNAME** in repo (would create L-058 hidden redirect layer)
+
+### Analytics
+- Speed Insights + Web Analytics on all 6 live HTML files
+- Both load on production + preview (separate Vercel env tracking)
+- Pages smoke test verifies scripts are present after each deploy
+
+### Daily Ops
+- Develop on `dev` → preview URL auto-deploys on push
+- Release to production → `git checkout main && git merge --ff-only dev && git push`
+- If production breaks → Vercel dashboard + GitHub Actions tab both tell you what
+- Analytics check → Vercel dashboard → portfolio-website → Analytics tab
+
+---
 
 ## Goals
 
