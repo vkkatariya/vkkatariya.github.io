@@ -127,6 +127,15 @@ la-Cormorant Bold Italic wordmark redo (all 5 occurrences) and Roadmap title res
 
 - [x] Decide `/me` auth mechanism — Tailscale network-layer gate on athena (Caddy `remote_ip` or bind to Tailscale IP). No page-level/client-side auth.
 
+### Live deployment (2026-06-27)
+
+- [x] **GitHub Pages deployment workflow** — `.github/workflows/pages.yml` auto-deploys on push to main when index.html / prototypes / lib / assets / CNAME change. Steps: checkout → configure-pages → touch .nojekyll → upload artifact → deploy-pages. Build time ~30s. Live at `https://vkkatariya.github.io/`.
+- [x] **Root redirect splash** — `index.html` at repo root redirects (meta refresh + JS fallback + clickable "ENTER PORTFOLIO →" link) to `/prototypes/portfolio-combined.html`. Splash matches live site aesthetic (NDOT caps, Cormorant italic name, glass button).
+- [x] **CNAME removed** — was forcing `vkkatariya.github.io` → `vishal-katariya.com` (Vercel). Now GitHub Pages serves directly.
+- [~] **Speed Insights** — off (was on briefly via Vercel, removed with Vercel cleanup). Re-add when needed via Google Analytics or re-link Vercel project.
+- [~] **Custom domain** — `vishal-katariya.com` no longer resolves (Vercel alias removed). Can re-add via Vercel + CNAME file when needed.
+- [~] **vishalkatariya.dev** — registrar-level 308 to `www.vishalkatariya.dev` (out of scope, separate issue at DNS provider).
+
 ---
 
 ## Phase 1 — SvelteKit Scaffold

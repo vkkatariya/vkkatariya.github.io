@@ -1,12 +1,44 @@
 # tasks/lessons.md — portfolio-website
 > Prevention rules learned from corrections during this project.
 > Format: what failed · root cause · prevention rule.
-| **Order: NEWEST at top, oldest at bottom** (L-056 first, L-001 last). |
+> **Order: NEWEST at top, oldest at bottom** (L-058 first, L-001 last).
 > Agents: read this at session start. Add new entries at the TOP with the next number.
 
 ---
 
+## L-058 — CNAME on `vkkatariya.github.io` adds a hidden redirect layer that bypasses all other deploy targets
 
+**What failed:** After deploying to GitHub Pages, `https://vkkatariya.github.io/` was returning 404 (or serving stale content). I assumed it was a Pages issue. Spent time debugging Pages build artifacts.
+
+**Root cause:** The repo had a `CNAME` file at the root containing `vishal-katariya.com`. GitHub Pages honors CNAME by issuing a 301 redirect from `vkkatariya.github.io` → `<CNAME>`. That domain was on Vercel (which had a broken routing config), so the chain was: `vkkatariya.github.io` → 301 → `vishal-katariya.com` (Vercel, with broken rewrites) → 404. Pages itself was working perfectly — I was chasing the wrong layer.
+
+**Prevention rule:**
+- **When debugging "site not loading" on `username.github.io`, check for a CNAME file FIRST.** It silently overrides everything else.
+- `git ls-files | grep -i cname` (or check the repo root via GitHub UI) before investigating Pages build logs.
+- If the CNAME target is dead/broken, **delete the CNAME file** to fall back to direct `username.github.io` serving. Don't try to fix the dead target — the CNAME is a problem in itself if you don't actively want the custom domain.
+- When using both GitHub Pages AND another deploy target (Vercel/Netlify), the `username.github.io` URL is a useful "fallback" — but only if no CNAME redirects it away. Treat CNAME as "I own a custom domain" intent, not "set up Pages".
+
+**Related rules:** L-055 (check branch before commit), L-040 (browser-verify, not just file inspection).
+
+---
+
+## L-057 — Vercel custom domain rewrites may serve 404 on subpaths even when the deployment URL works
+
+**What failed:** After deploying to Vercel with `vercel.json` rewrites, `https://portfolio-website-bbwmnd8pz.vercel.app/projects` returned 200 (rewrite applied correctly), but `https://vishal-katariya.com/projects` returned 404 (rewrite NOT applied). Same edge region, same deployment, different result.
+
+**Root cause:** Unknown — possibly Vercel edge cache from a prior deployment, possibly domain-level config (separate from deployment-level rewrites), possibly the auto-deploy trigger that fired right after I removed the alias. Tried: re-adding alias, force-redeploy, removing alias then re-adding. None fixed it consistently.
+
+**Prevention rule:**
+- **When you set up a Vercel custom domain, verify ALL subpaths immediately, not just the root.** `curl https://yourdomain.com/somepath` should return 200, not 404.
+- If only the Vercel URL works but the custom domain doesn't, the custom domain may be serving a stale deployment. Time-box this debugging — don't burn hours fighting Vercel's edge.
+- **For static HTML sites, GitHub Pages is often simpler than Vercel.** No edge routing mystery, no custom domain DNS dance, no deploy hook maintenance. Consider Pages-first unless you need SSR or Vercel-specific features.
+- If you do need Vercel + custom domain, test the custom domain subpaths in CI before declaring deploy success. Add a smoke test to your GitHub Actions that hits `/`, `/projects`, `/about` and fails the workflow if any returns non-200.
+
+**Related rules:** L-058 (CNAME issues), L-040 (browser-verify), L-031 (visual verification).
+
+---
+
+## L-056 — Inline styles can break responsive CSS Grid media queries
 ## L-056 — Inline styles can break responsive CSS Grid media queries
 
 **What failed:** The `≤560px` (2-col) and `≤380px` (1-col) media queries were supposed to apply `grid-template-columns: repeat(2, 1fr)` and `1fr` to the homepage grid container. However, the browser stubbornly rendered 3 columns on mobile devices, ignoring the container's media query constraints.

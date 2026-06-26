@@ -6,6 +6,37 @@
 
 ---
 
+## [2026-06-27] Hermes — Live deployment on GitHub Pages + Vercel cleanup
+
+**Mode:** Execution
+**Did:**
+- **Phase 0 cutover to main:** Merged dev → main at `c75e79c` (Phase 0 complete: 56 commits, 20 files changed, 11,251 insertions). All today's work shipped: topbar v2 (name hidden + hamburger flush left at ≤559px), homepage mobile grid fix (`.s32` class + 1fr at 380px), Vercel Speed Insights targeting portfolio-combined.html, and all Hermes widget / projects 5-8 redesign work.
+- **Added GitHub Pages deployment:** Created root `index.html` that redirects (meta refresh + JS fallback + clickable link) to `/prototypes/portfolio-combined.html`. Added `.github/workflows/pages.yml` that auto-deploys on push to main when index.html / prototypes / lib / assets / CNAME change. Steps: checkout → configure-pages → touch .nojekyll → upload artifact → deploy-pages. Build time ~30s.
+- **First Pages deploy:** Committed at `0702ce4`, triggered workflow, build succeeded. Pages now live at `https://vkkatariya.github.io/` (status 200).
+- **Vercel project relink attempt:** Installed Vercel CLI v54.17.3, ran `vercel link` which created `vkkatariyas-projects/portfolio-website` project (projectId `prj_HiBHEBWvGMTXxeibsudRdmtZGdjW`). Ran `vercel deploy --prod --yes` which succeeded — produced deployment URL `portfolio-website-xi-orcin-18-vkkatariyas-projects.vercel.app`.
+- **Fixed vercel.json routing:** Original rewrites used hash fragments (`/projects → /prototypes/portfolio-combined.html#projects`) which Vercel couldn't handle — replaced with single catch-all rewrite `/(.*) → /prototypes/portfolio-combined.html`. Committed at `1c04f08`, redeployed.
+- **Updated index.html to Vercel URL:** Pointed all redirects at the production Vercel URL. Committed at `7f6277c`, redeployed. Vercel deployment got the `vishal-katariya.com` alias.
+- **Discovered Vercel routing bug:** Custom domain `vishal-katariya.com` returned 404 for `/projects`, `/about`, `/roadmap` subpaths even though the Vercel deployment URL served them correctly. Tried re-adding the alias, force-deploying — Vercel kept returning 404 for custom domain subpaths but 200 for the Vercel URL. Root cause unknown (Vercel edge cache / domain config issue). Time-boxed this debugging.
+- **Clean Vercel teardown:** User decided to scrap Vercel for now and rely on GitHub Pages only. Removed `vercel.json`, `package.json`, `package-lock.json`, `lib/`, `.vercel/`, `.env.local` from repo. Ran `vercel alias rm vishal-katariya.com --yes` to remove the alias. User manually disconnected Vercel GitHub integration via dashboard.
+- **Removed CNAME:** The repo's `CNAME` file pointed `vkkatariya.github.io` → `vishal-katariya.com` (Vercel). Even after Vercel cleanup, the CNAME was forcing GitHub Pages to 301 redirect to the dead Vercel domain. Removed `CNAME` via `git rm`. Committed at `2bbdd00`, triggered Pages rebuild.
+- **Verified GitHub Pages is live:** `https://vkkatariya.github.io/` now returns 200 with `server: GitHub.com` (no more Vercel handoff). Full SPA at `/prototypes/portfolio-combined.html` returns 200 with 356 KB of content. Confirmed end-to-end via curl + urllib.
+
+**State:** Portfolio fully live on GitHub Pages. Custom domain `vishal-katariya.com` no longer resolves (Vercel alias removed). `vishalkatariya.dev` returns 308 to `www.vishalkatariya.dev` (registrar-level, separate issue). Vercel CLI installed and logged in but no project linked. Working tree clean. Repo has 2 untracked kickoff files (to be cleaned up).
+
+**Decided:**
+- **GitHub Pages only** for now (skip Vercel complexity). Pages works, no edge-routing mystery, no extra deploy steps.
+- **Removed all Vercel files** (vercel.json, package.json, lib/, .vercel/) — no longer needed. Can re-add cleanly when Vercel work resumes.
+- **Removed CNAME** — keeps `vkkatariya.github.io` serving GitHub Pages directly instead of 301-redirecting to a dead custom domain.
+
+**Modified:** `index.html`, `.github/workflows/pages.yml`, `vercel.json`, `package.json`, `package-lock.json`, `lib/speed-insights.min.js`, `.vercel/`, `.env.local`, `CNAME` (all removed), `tasks/DEVLOG.md` (this entry)
+
+**Blocked / Next:**
+- Speed Insights is currently off (was on briefly, removed with Vercel files). Re-add when needed via Google Analytics or Vercel.
+- Vercel edge routing bug for custom domain subpaths — unresolved but no longer blocking.
+- `vishalkatariya.dev` registrar-level 308 to `www.vishalkatariya.dev` — separate issue, not in scope.
+
+---
+
 ## [2026-06-26] [Antigravity] — Homepage mobile customization & Topbar refinement
 
 **Mode:** Execution
