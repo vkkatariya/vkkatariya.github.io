@@ -39,7 +39,6 @@
 ---
 
 ## L-056 — Inline styles can break responsive CSS Grid media queries
-## L-056 — Inline styles can break responsive CSS Grid media queries
 
 **What failed:** The `≤560px` (2-col) and `≤380px` (1-col) media queries were supposed to apply `grid-template-columns: repeat(2, 1fr)` and `1fr` to the homepage grid container. However, the browser stubbornly rendered 3 columns on mobile devices, ignoring the container's media query constraints.
 
