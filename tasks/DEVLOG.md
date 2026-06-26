@@ -3,6 +3,47 @@
 > Format: date · agent · one-line summary, then Did / State / Decided / Blocked+Next / Modified.
 
 
+## 2026-06-26 · Vade (Vercel AI Agent) · Installed and configured Vercel Speed Insights for static HTML portfolio
+
+**Mode:** Builder + Execution
+
+**Did:**
+- Fetched latest Vercel Speed Insights documentation from official docs
+- Created `package.json` with `@vercel/speed-insights` v1.3.1 dependency
+- Installed package via npm, generating `package-lock.json`
+- Created `lib/speed-insights.min.js` — minified browser-ready tracking script
+- Added Speed Insights initialization code to all 4 active HTML prototypes:
+  - `prototypes/portfolio-v4.html` (homepage)
+  - `prototypes/projects.html` (project showcase)
+  - `prototypes/about.html` (bio and contact)
+  - `prototypes/cs-roadmap.html` (CS roadmap)
+- Created `vercel.json` with URL rewrites and deployment configuration for static site
+- Configured clean URLs and proper routing for prototype pages
+
+**State:** Working and ready for Vercel deployment
+- All HTML files successfully updated with Speed Insights tracking
+- Script loads `injectSpeedInsights()` function which dynamically injects Vercel's tracking script
+- Speed Insights will automatically track Core Web Vitals and performance metrics once deployed to Vercel
+- Data collection only works in production (disabled in development mode)
+
+**Decided:**
+- Used vanilla JS approach suitable for Phase 0 static HTML prototypes
+- Created standalone minified script in `lib/` directory for browser compatibility
+- Kept implementation simple and non-invasive — just adds script tags before closing `</head>`
+- When project migrates to SvelteKit, can switch to framework-specific `<SpeedInsights />` component
+
+**Blocked / Next:**
+- Ready for Vercel deployment via `vercel deploy`
+- Speed Insights must be enabled in Vercel dashboard after first deployment
+- Metrics will appear in dashboard after a few days of visitor traffic
+- Consider migrating to SvelteKit implementation when Phase 1 begins
+
+**Modified:**
+- Created: `package.json`, `package-lock.json`, `lib/speed-insights.min.js`, `vercel.json`, `.vade-report`
+- Modified: `prototypes/portfolio-v4.html`, `prototypes/projects.html`, `prototypes/about.html`, `prototypes/cs-roadmap.html`
+
+---
+
 ## 2026-06-18 · Claude (claude.ai) · Portfolio v4 — 3-pill topbar, hero removed, font stack, design polish
 
 **Mode:** Builder + Execution · **File:** `portfolio-v4.html` only
