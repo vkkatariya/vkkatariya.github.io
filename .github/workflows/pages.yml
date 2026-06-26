@@ -106,3 +106,33 @@ jobs:
             exit 1
           fi
           echo "✓ SPA content size: $SIZE bytes"
+
+      - name: Smoke test — Speed Insights script
+        run: |
+          if echo "$CONTENT" | grep -q 'window.si.*window.siq'; then
+            echo "✓ Speed Insights queue initializer present"
+          else
+            echo "::error::Speed Insights snippet missing"
+            exit 1
+          fi
+          if echo "$CONTENT" | grep -q '/_vercel/speed-insights/script.js'; then
+            echo "✓ Speed Insights script reference present"
+          else
+            echo "::error::Speed Insights script.js reference missing"
+            exit 1
+          fi
+
+      - name: Smoke test — Web Analytics script
+        run: |
+          if echo "$CONTENT" | grep -q 'window.va.*window.vaq'; then
+            echo "✓ Web Analytics queue initializer present"
+          else
+            echo "::error::Web Analytics snippet missing"
+            exit 1
+          fi
+          if echo "$CONTENT" | grep -q '/_vercel/insights/script.js'; then
+            echo "✓ Web Analytics script reference present"
+          else
+            echo "::error::Web Analytics script.js reference missing"
+            exit 1
+          fi

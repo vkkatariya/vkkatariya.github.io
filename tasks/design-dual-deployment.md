@@ -27,11 +27,49 @@ Vercel preview (vishalkatariya.dev)         ← preview deployment URL
 
 ## Deployment Matrix
 
-| Branch | GitHub Pages | Vercel Production | Vercel Preview |
+| Environment | GitHub Pages | Vercel Production | Vercel Preview |
 |---|---|---|---|
 | `main` | ✓ (fallback) | ✓ (apex) | — |
 | `dev` | — | — | ✓ (preview) |
 | `feat/*` | — | — | ✓ (ephemeral) |
+
+## Analytics & Monitoring (added 2026-06-27)
+
+| Tool | Purpose | Snippet |
+|---|---|---|
+| **Vercel Speed Insights** | Core Web Vitals (LCP, FID, CLS) tracking | `window.si` queue + `/_vercel/speed-insights/script.js` |
+| **Vercel Web Analytics** | Page views, visitors, referrers | `window.va` queue + `/_vercel/insights/script.js` |
+| **GitHub Pages smoke test** | Verifies analytics scripts are present after deploy | `.github/workflows/pages.yml` smoke-test job |
+
+### Analytics coverage
+All 6 HTML files include **both** Speed Insights + Web Analytics:
+- `index.html` (root redirect splash)
+- `prototypes/about.html`
+- `prototypes/cs-roadmap.html`
+- `prototypes/portfolio-combined.html` (live SPA)
+- `prototypes/projects.html`
+- `prototypes/resume.html`
+
+**Excluded:** `prototypes/portfolio-v4.html` (archived prototype, not deployed to production).
+
+### Smoke test additions
+The Pages workflow now verifies (in addition to existing checks):
+- `window.si` queue initializer present
+- `/_vercel/speed-insights/script.js` reference present
+- `window.va` queue initializer present
+- `/_vercel/insights/script.js` reference present
+
+This catches accidental removal of analytics snippets in future commits.
+
+### Known gotcha: package.json must have `build` script
+Even for "no build step" projects, Vercel CLI runs `npm run build` on every deploy. If package.json only has a `test` script, CLI deploys fail. Always include:
+```json
+"scripts": {
+  "build": "echo 'No build step required for HTML prototype'",
+  "test": "..."
+}
+```
+See L-059.
 
 ## Domain Roles (resolved 2026-06-27)
 

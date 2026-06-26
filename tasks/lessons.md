@@ -1,8 +1,28 @@
 # tasks/lessons.md — portfolio-website
 > Prevention rules learned from corrections during this project.
 > Format: what failed · root cause · prevention rule.
-> **Order: NEWEST at top, oldest at bottom** (L-058 first, L-001 last).
+> **Order: NEWEST at top, oldest at bottom** (L-059 first, L-001 last).
 > Agents: read this at session start. Add new entries at the TOP with the next number.
+
+---
+
+## L-059 — package.json MUST have a `build` script even for static HTML sites with no build step
+
+**What failed:** Vercel agent created PR #4 (Speed Insights) with a `package.json` containing only a `test` script. When I tried to deploy via `vercel deploy --prod --yes`, the CLI ran `npm run build` (default Vercel behavior) which failed with "Missing script: build". Production deployment broken because of a missing one-line script.
+
+**Root cause:** Vercel's deploy infrastructure assumes every project with a `package.json` has a build step. The CLI runs `npm run build` (or equivalent) by default. For static HTML sites, you still need a no-op build script that Vercel can run successfully.
+
+**Prevention rule:**
+- **ALWAYS include a `build` script** in `package.json`, even if it's just an echo:
+  ```json
+  "scripts": {
+    "build": "echo 'No build step required for HTML prototype'"
+  }
+  ```
+- **When reviewing agent PRs**, check `package.json` for a `build` script. If it's missing or only has `test`/`start`, that's a deploy blocker.
+- **Document this requirement** in dual-deployment plan / kickoff docs so future agents don't recreate the bug.
+
+**Related rules:** L-057 (Vercel rewrites), L-040 (browser-verify).
 
 ---
 
