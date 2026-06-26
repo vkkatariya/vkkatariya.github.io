@@ -6,6 +6,24 @@
 
 ---
 
+## [2026-06-26] [Antigravity] — Mobile-first responsive topbar overhaul (3-tier plan)
+
+**Mode:** Execution
+**Did:**
+- Conducted Playwright baseline audit at 1920, 860, 560, 400, and 320px in light/dark modes. Verified topbar pills broke and overlapped heavily at all viewports <860px due to `.nav-links` using `position:absolute` which removed it from the flex container.
+- Implemented 3-tier responsive plan in `prototypes/portfolio-combined.html`:
+  - **Tier 1 (≤860px)**: Shrunk pill padding/fonts and switched `.nav-links` from `position:absolute` to `position:static; margin:0 auto` (flex-flow centering). This eliminates all overlaps.
+  - **Tier 2 (≤560px)**: Collapsed center pill (`.nav-links`) and replaced it with a glass-pill hamburger menu (`.nav-menu-btn`). Added a full-width glass `.nav-menu-overlay` below the topbar for mobile navigation.
+  - **Tier 3 (≤380px)**: Further minimized the logo and fully hid the search bar to fit on extra-small screens.
+- Added `toggleMenu()`, `openMenu()`, `closeMenu()` JS logic. Hooked into `showPage()` to sync active link states between the desktop nav and the mobile overlay, and to auto-close the menu on navigation. Supported ESC key to close.
+- Aligned breakpoints (`860px` and `560px`) to match existing media queries in the file.
+- Ran exhaustive Playwright post-verification script testing all 10 viewport/mode combos plus a cross-page interaction check. All tests passed with zero overlaps. Confirmed 320px horizontal scroll was pre-existing (caused by `.np-ghost`).
+
+**State:** Topbar is fully responsive, works cleanly at all viewports without overlaps, and preserves all visual styling and Roadmap-specific nav overrides. All tests pass.
+**Decided:** Switched center pill from absolute to flex centering at ≤860px as the core structural fix. Decided against "VK" logo shortening at 320px as the full name fit perfectly with the search bar hidden.
+**Blocked / Next:** Ready for merge to dev.
+**Modified:** `prototypes/portfolio-combined.html`, `tasks/todo.md`
+
 ## [2026-06-26] [Claude] — Added Hermes OAuth Fork widget to homepage grid; aligned Contact bottom with About
 
 **Mode:** Execution

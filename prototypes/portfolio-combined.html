@@ -325,6 +325,139 @@ html.light body::before {
 
 /* Note: a second .nav-lang rule existed below (was dead — no markup used it because the topbar lang button matches the .nav-lang rule at line ~236 which comes later in the stylesheet and wins the cascade). Removed in feat/ndot-topbar-rollout to prevent the duplicate from overriding the NDOT topbar rule. */
 
+/* ═══════════════════════════════════════════════
+   TOPBAR RESPONSIVE — Mobile-first overhaul
+   Breakpoints: ≤859px (shrink) / ≤559px (hamburger) / ≤380px (tiny)
+   Root cause: center pill used position:absolute, causing overlap.
+   Fix: switch to flex-flow centering at ≤859px.
+   Date: 2026-06-26 · Branch: feat/topbar-mobile-first
+   ═══════════════════════════════════════════════ */
+
+/* ── Hamburger button — hidden by default, shown at ≤559px ── */
+.nav-menu-btn {
+  display: none;
+  align-items: center; justify-content: center;
+  width: 40px; height: 40px;
+  background: linear-gradient(135deg, rgba(255,255,255,.10) 0%, rgba(255,255,255,.04) 100%);
+  backdrop-filter: blur(40px) saturate(180%); -webkit-backdrop-filter: blur(40px) saturate(180%);
+  border: 1px solid rgba(255,255,255,.16);
+  border-radius: 100px;
+  box-shadow: 0 4px 28px rgba(0,0,0,.55), 0 1px 0 rgba(255,255,255,.12) inset;
+  cursor: pointer; flex-shrink: 0;
+  color: rgba(241,240,246,.45);
+  transition: color .13s, background .13s;
+}
+.nav-menu-btn:hover { color: var(--w); background: rgba(255,255,255,.07); }
+.nav-menu-btn.act { background: rgba(255,255,255,.12); color: var(--w); }
+
+/* ── Mobile nav overlay — glass panel below topbar ── */
+.nav-menu-overlay {
+  position: fixed;
+  top: 62px; left: 16px; right: 16px;
+  z-index: 199;
+  background: linear-gradient(135deg, rgba(255,255,255,.10) 0%, rgba(255,255,255,.04) 100%);
+  backdrop-filter: blur(40px) saturate(180%); -webkit-backdrop-filter: blur(40px) saturate(180%);
+  border: 1px solid rgba(255,255,255,.16);
+  border-radius: 20px;
+  box-shadow: 0 8px 40px rgba(0,0,0,.6), 0 1px 0 rgba(255,255,255,.12) inset;
+  padding: 8px;
+  list-style: none; margin: 0;
+  opacity: 0; pointer-events: none;
+  transform: translateY(-10px);
+  transition: opacity .22s ease, transform .22s ease;
+}
+.nav-menu-overlay.open {
+  opacity: 1; pointer-events: auto;
+  transform: translateY(0);
+}
+.nav-menu-overlay a {
+  display: flex; align-items: center;
+  font-family: var(--font-ndot); font-size: 15px; letter-spacing: .8px;
+  color: rgba(241,240,246,.5);
+  padding: 14px 18px; border-radius: 14px;
+  text-decoration: none;
+  transition: color .13s, background .13s;
+}
+.nav-menu-overlay a:hover { color: rgba(241,240,246,.8); background: rgba(255,255,255,.07); }
+.nav-menu-overlay a.act { background: rgba(255,255,255,.12); color: var(--w); }
+.nav-menu-overlay .nav-overlay-avail {
+  display: flex; align-items: center; gap: 6px;
+  padding: 10px 18px;
+  font-family: var(--font-ndot); font-size: 13px; letter-spacing: .5px;
+  color: var(--green);
+}
+
+/* ── Tier 1: ≤860px — Shrink all pills, switch center to flex flow ── */
+@media (max-width: 860px) {
+  #shared-nav .nav-links {
+    position: static;
+    transform: none;
+    margin: 0 auto;
+    flex-shrink: 1;
+    min-width: 0;
+  }
+  #shared-nav.nav-hidden .nav-links {
+    transform: scale(0);
+  }
+  .nav-logo {
+    padding: 8px 14px;
+  }
+  .nav-logo-name {
+    font-size: 18px;
+  }
+  #shared-nav .nav-links a {
+    padding: 6px 10px;
+    font-size: 12px;
+  }
+  .nav-avail-txt { display: none; }
+  .nav-avail-item { padding: 6px 8px 6px 8px; margin-left: 0; }
+  .nav-search-input { width: 60px; }
+  .nav-search-input:focus { width: 90px; }
+  .nav-right {
+    gap: 2px;
+    padding: 4px 6px;
+  }
+}
+
+/* ── Tier 2: ≤560px — Collapse center pill to hamburger ── */
+@media (max-width: 560px) {
+  .nav-menu-btn { display: flex; }
+  #shared-nav .nav-links { display: none; }
+  /* When roadmap hides shared-nav links, hamburger should also hide */
+  #shared-nav.nav-hidden .nav-menu-btn { display: none; }
+  .nav-search-input { display: none; }
+  .nav-search { padding: 4px 4px; border-right: none; margin-right: 0; }
+  .nav-lang { display: none; }
+  .nav-right { gap: 2px; padding: 4px 5px; }
+}
+
+/* ── Tier 3: ≤380px — Extra small phones ── */
+@media (max-width: 380px) {
+  .nav-logo { padding: 6px 10px; }
+  .nav-logo-name { font-size: 16px; }
+  .nav-search { display: none; }
+  .nav-right { padding: 3px 4px; }
+  .nav-menu-overlay { left: 8px; right: 8px; }
+}
+
+/* ── Light mode overrides for responsive topbar ── */
+html.light .nav-menu-btn {
+  background: linear-gradient(135deg, rgba(255,255,255,.78) 0%, rgba(245,245,245,.72) 100%);
+  border-color: rgba(13,13,15,.12);
+  box-shadow: 0 4px 24px rgba(0,0,0,.10), 0 1px 0 rgba(255,255,255,.95) inset;
+  color: rgba(13,13,15,.45);
+}
+html.light .nav-menu-btn:hover { color: var(--w); background: rgba(0,0,0,.05); }
+html.light .nav-menu-btn.act { background: rgba(0,0,0,.08); color: var(--w); }
+html.light .nav-menu-overlay {
+  background: linear-gradient(135deg, rgba(255,255,255,.85) 0%, rgba(245,245,245,.78) 100%);
+  border-color: rgba(13,13,15,.12);
+  box-shadow: 0 8px 40px rgba(0,0,0,.12), 0 1px 0 rgba(255,255,255,.95) inset;
+}
+html.light .nav-menu-overlay a { color: rgba(13,13,15,.45); }
+html.light .nav-menu-overlay a:hover { color: rgba(13,13,15,.8); background: rgba(0,0,0,.05); }
+html.light .nav-menu-overlay a.act { background: rgba(0,0,0,.08); color: var(--w); }
+
 /* ── main no longer needs huge top padding — hero handles it ── */
 main {
   position: relative; z-index: 1;
@@ -3292,6 +3425,14 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
     </div>
   </a>
 
+  <button class="nav-menu-btn" id="navMenuBtn" aria-label="Menu" onclick="toggleMenu()">
+    <svg width="18" height="14" viewBox="0 0 18 14" fill="none" aria-hidden="true">
+      <line x1="1" y1="1" x2="17" y2="1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="1" y1="7" x2="17" y2="7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="1" y1="13" x2="17" y2="13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+    </svg>
+  </button>
+
   <ul class="nav-links">
     <li><a href="#home" class="act" onclick="showPage('home')">home</a></li>
     <li><a href="#projects" onclick="showPage('projects')">projects</a></li>
@@ -3318,6 +3459,18 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
     <button class="nav-profile" onclick="showPage('me')" title="Private section">VK</button>
   </div>
 </nav>
+
+<!-- Mobile hamburger nav overlay (shown at ≤559px when menu is open) -->
+<div id="navMenuOverlay" class="nav-menu-overlay" aria-hidden="true">
+  <a href="#home" class="act" onclick="showPage('home');closeMenu()">home</a>
+  <a href="#projects" onclick="showPage('projects');closeMenu()">projects</a>
+  <a href="#roadmap" onclick="showPage('roadmap');closeMenu()">roadmap</a>
+  <a href="#about" onclick="showPage('about');closeMenu()">about</a>
+  <div class="nav-overlay-avail">
+    <span class="nav-avail-dot"></span>
+    <span>available</span>
+  </div>
+</div>
 
 <!-- Roadmap internal nav (slides in when roadmap page active) -->
 <nav id="roadmap-internal-nav">
@@ -6659,6 +6812,35 @@ const chartObserver = new IntersectionObserver((entries) => {
 const financeChartWrap = document.getElementById('finance-buddy');
 if (financeChartWrap) chartObserver.observe(financeChartWrap);
 
+/* ── Hamburger menu toggle (mobile topbar, ≤559px) ── */
+function openMenu() {
+  const overlay = document.getElementById('navMenuOverlay');
+  const btn = document.getElementById('navMenuBtn');
+  if (overlay) { overlay.classList.add('open'); overlay.setAttribute('aria-hidden', 'false'); }
+  if (btn) btn.classList.add('act');
+}
+function closeMenu() {
+  const overlay = document.getElementById('navMenuOverlay');
+  const btn = document.getElementById('navMenuBtn');
+  if (overlay) { overlay.classList.remove('open'); overlay.setAttribute('aria-hidden', 'true'); }
+  if (btn) btn.classList.remove('act');
+}
+function toggleMenu() {
+  const overlay = document.getElementById('navMenuOverlay');
+  if (overlay && overlay.classList.contains('open')) closeMenu();
+  else openMenu();
+}
+document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeMenu(); });
+// Close menu when clicking outside
+document.addEventListener('click', function(e) {
+  const overlay = document.getElementById('navMenuOverlay');
+  const btn = document.getElementById('navMenuBtn');
+  if (overlay && overlay.classList.contains('open') &&
+      !overlay.contains(e.target) && !btn.contains(e.target)) {
+    closeMenu();
+  }
+});
+
 function showPage(id, opts) {
   const options = opts || {};
   const valid = ['home','projects','roadmap','about','me'];
@@ -6694,6 +6876,11 @@ function showPage(id, opts) {
   document.querySelectorAll('#shared-nav .nav-links a').forEach(a => a.classList.remove('act'));
   const navLink = document.querySelector('#shared-nav .nav-links a[href="#' + id + '"]');
   if (navLink) navLink.classList.add('act');
+  // Sync mobile overlay active link
+  document.querySelectorAll('#navMenuOverlay a').forEach(a => a.classList.remove('act'));
+  const overlayLink = document.querySelector('#navMenuOverlay a[href="#' + id + '"]');
+  if (overlayLink) overlayLink.classList.add('act');
+  closeMenu();
   const progressWidget = document.getElementById('progress-widget');
   if (progressWidget) {
     progressWidget.style.display = id === 'roadmap' && progressWidget.classList.contains('show') ? 'block' : 'none';

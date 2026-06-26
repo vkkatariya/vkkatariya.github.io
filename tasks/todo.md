@@ -63,7 +63,7 @@ la-Cormorant Bold Italic wordmark redo (all 5 occurrences) and Roadmap title res
 - [x] Verify filters, timeline accordion, checkbox→progress-widget, modal open/close
 - [x] Verify desktop (1440px) / tablet (820px) / mobile (390px) — no regressions, console clean
 - [x] Fix #pg-about missing closing </div>, unblocking /me page
-- [ ] Shared-nav mobile layout still cramped at ≤400px (3 pills overlap) — separate, pre-existing, not roadmap-specific
+- [x] Shared-nav mobile layout still cramped at ≤400px (3 pills overlap) — fixed via 3-tier responsive plan in `feat/topbar-mobile-first`. ≤860px shrinks pills + flex centering; ≤560px collapses center pill to hamburger + overlay; ≤380px hides search. Playwright verified 10/10 viewports zero overlaps.
 
 ### Polish task #3 follow-up — project skill bars
 - [x] Add scored skill bars to each `.cs-section` on /projects page (replace `.cs-stack` chip row) — completed in `feat/cs-skills-bars` (8 cs-sections, 38 bars total, color bands: `s-high` ≥70, `s-mid` ≥50, `s-low` <50)
