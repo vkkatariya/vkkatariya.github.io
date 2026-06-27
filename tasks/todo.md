@@ -15,7 +15,6 @@
 ## Phase 0 — HTML Prototypes (in progress)
 
 ### Visual polish / interaction pass
-- [x] **Calligraphic initial + uppercase sans body for personal name** (2026-06-27) — topbar logo + IDENTIFY widget. Reuses .hn-script / .hn-sans / .hn-gap classes (already proven for page-hero titles). Branch `feat/calligraphic-name-wordmark` ready for review.
 - [x] Pop-out hover effect on all widgets/blocks across all pages (5-page rollout complete)
 - [x] Font stack update — vendor NDOT + fix DM Mono readability (3-branch rollout)
 - [x] **Remove NDOT font entirely** (2026-06-27): user feedback after public deploy — the dot-matrix NothingOS aesthetic didn't suit the deployed site. Removed `Ndot55-Regular.otf` + `Ndot55Caps-Regular.otf`, deleted both `@font-face` blocks in portfolio-combined.html and resume.html, repointed `--font-ndot: 'Space Grotesk', sans-serif` (all 29 selectors cascade automatically), updated `.wm-cap` + visible `/projects` paragraph copy + `index.html` root splash. Branch `feat/remove-ndot-font` (this commit).

@@ -6,26 +6,6 @@
 
 ---
 
-## [2026-06-27] Antigravity — feat/calligraphic-name-wordmark: calligraphic initial treatment
-
-**Mode:** Builder
-**Did:**
-- Restyled topbar logo name from `<span class="wm-cap">Vishal</span> <span class="wm-cap">Katariya</span>` (DM Mono caps) to `<span class="hn-script">V</span><span class="hn-sans">ISHAL</span><span class="hn-gap"></span><span class="hn-script">K</span><span class="hn-sans">ATARIYA</span>` (Cormorant italic initial + Space Grotesk uppercase body)
-- Same treatment applied to homepage IDENTIFY widget (stacked "VISHAL" / "KATARIYA")
-- Tuned .hn-script rule: added font-size 1.6em, line-height .85, inline-block, margin-right -.06em
-- Tuned .hn-sans rule: weight 800 -> 700
-- Tuned .hn-gap rule: width .18em -> .35em (visible space between names)
-- Fixed whitespace-collapse bug: literal space " " between flex items was being silently dropped by the browser, rendering "VISHALKATARIYA" with no separator
-- Verified page-hero titles (Projects, Roadmap, About) still render acceptably with the new hn-script font-size scaling
-
-**State:** Branch `feat/calligraphic-name-wordmark` ready for review. Not merged to dev.
-**Decided:**
-- Reused existing .hn-script / .hn-sans / .hn-gap classes (already used for page-hero titles) instead of inventing new classes
-- 1.6em script size for visual drama (vs 1.15em which was too subtle)
-- 0.35em gap width for visible space (vs 0.18em which was almost invisible)
-- Did NOT scope the .hn-script font-size to topbar only — page-hero titles get the same bigger script letter, which is consistent design
-**Blocked / Next:** Vishal visual review. If topbar proportions don't match reference, next pass would try a more dramatic script font (e.g. Birthstone or Allura) vendored locally.
-
 ## [2026-06-27] Hermes — feat/remove-ndot-font: drop NothingOS dot-matrix aesthetic post-deploy
 
 **Mode:** Execution (direct edits, no agent dispatch)
