@@ -71,12 +71,14 @@ html.light {
 }
 
 /* ── font variable ─────────────────────────────────────────────────────────
-   Kept the variable name for minimal blast radius — all 22+ selectors that
-   already reference var(--font-ndot) cascade to Space Grotesk automatically.
-   NDOT font files removed 2026-06-27 (user feedback: dot-matrix aesthetic
-   didn't suit the deployed site). ── */
+   Kept the variable name for minimal blast radius — all 29 selectors that
+   already reference var(--font-ndot) cascade through to DM Mono now.
+   NDOT removed from the cascade 2026-06-27 (user wanted to see what the
+   page looks like without NDOT — DM Mono takes over as the fallback).
+   The font files are still vendored; only the @font-face declarations
+   were dropped so the cascade skips Ndot entirely. ── */
 :root {
-  --font-ndot: 'Space Grotesk', sans-serif;
+  --font-ndot: 'DM Mono', monospace;
 }
 
 :root {
@@ -185,14 +187,14 @@ html.light body::before {
 }
 .nav-logo-name .hn-sans { font-weight: 700; }
 
-/* ── NAME WORDMARK — full name wordmark (formerly NDOT 55 Caps, now Space Grotesk) ── */
+/* ── NAME WORDMARK — full name wordmark ── */
 .wm-cap {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: 'DM Mono', monospace;
   font-variant: all-small-caps;
   text-transform: uppercase;
-  font-weight: 600;
+  font-weight: 500;
   color: var(--w);
-  letter-spacing: 0.02em;
+  letter-spacing: 0.04em;
 }
 
 /* CENTER — nav pill (home/projects/roadmap/about + available dot) */
@@ -3714,7 +3716,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
         featured · hermes oauth
       </div>
       <!-- dot-matrix title -->
-      <div style="font-family:'Space Grotesk',sans-serif;font-size:17px;font-weight:600;color:var(--green);line-height:1.15;letter-spacing:.3px;text-shadow:0 0 10px rgba(52,199,123,.35)">HERMES ONE<br>OAUTH FORK</div>
+      <div style="font-family:'DM Mono',monospace;font-size:17px;font-weight:500;color:var(--green);line-height:1.15;letter-spacing:.3px;text-shadow:0 0 10px rgba(52,199,123,.35)">HERMES ONE<br>OAUTH FORK</div>
       <!-- stats -->
       <div style="display:flex;gap:10px;align-items:flex-end">
         <div>
