@@ -17,6 +17,8 @@
 ### Visual polish / interaction pass
 - [x] Pop-out hover effect on all widgets/blocks across all pages (5-page rollout complete)
 - [x] Font stack update — vendor NDOT + fix DM Mono readability (3-branch rollout)
+- [x] **Remove NDOT font entirely** (2026-06-27): user feedback after public deploy — the dot-matrix NothingOS aesthetic didn't suit the deployed site. Removed `Ndot55-Regular.otf` + `Ndot55Caps-Regular.otf`, deleted both `@font-face` blocks in portfolio-combined.html and resume.html, repointed `--font-ndot: 'Space Grotesk', sans-serif` (all 29 selectors cascade automatically), updated `.wm-cap` + visible `/projects` paragraph copy + `index.html` root splash. Branch `feat/remove-ndot-font` (this commit).
+  - [x] Phase 1 SvelteKit should NOT re-vendor NDOT — drop `--font-ndot` from Phase 1c tokens list (todo.md line 164, 166)
 - [x] Expand NDOT accent font usage
   - [x] Branch 4 `feat/ndot-topbar-rollout`: apply var(--font-ndot) to all topbar text (nav links, logo, search, lang, theme, profile) + bump topbar font-size. Keep Space Grotesk for body/headings. Accent-only scope. Confirmed 2026-06-20.
   - [x] Branch 5 `feat/ndot-widget-titles` + merged into `feat/ndot-titles-and-right-pill`: NDOT to 5 accent selectors (.pcard-title, .topic-name, .career-title, .cs-title, .filter-btn) + Branch 6 right pill fully rounded + stronger liquid glass (blur 56px, saturate 200%, light-mode override). 2026-06-20.

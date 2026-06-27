@@ -6,6 +6,55 @@
 
 ---
 
+## [2026-06-27] Hermes — feat/remove-ndot-font: drop NothingOS dot-matrix aesthetic post-deploy
+
+**Mode:** Execution (direct edits, no agent dispatch)
+**Did:**
+- **Removed NDOT font entirely** per user feedback after `vishal-katariya.com` went live — the dot-matrix NothingOS aesthetic didn't suit the deployed site.
+- **`prototypes/portfolio-combined.html`** (5 edits):
+  - Deleted both `@font-face` blocks for `Ndot55-Regular.otf` + `Ndot55Caps-Regular.otf` (~12 lines)
+  - Repointed `--font-ndot: 'Ndot', 'DM Mono', monospace` → `'Space Grotesk', sans-serif`. **All 29 selectors that reference `var(--font-ndot)` cascade automatically** — single-point-of-change worked perfectly
+  - Updated `.wm-cap` (name wordmark) literal from `'Ndot', 'DM Mono', monospace` → `'Space Grotesk', sans-serif`. Bumped weight 400→600 + tightened letter-spacing 0.06em→0.02em since Space Grotesk renders heavier than NDOT at small sizes
+  - Fixed the inline Hermes OAuth Fork widget title: `style="font-family:var(--font-ndot),..."` → `'Space Grotesk',sans-serif`. Bumped weight 400→600 to match
+  - Fixed visible `/projects` page paragraph (was incorrectly advertising "NDOT (accent)" in the typography stack description)
+- **`prototypes/resume.html`** (2 edits): removed `@font-face` block + changed `.hdr-name` literal `font-family: 'Ndot', 'Space Grotesk'` → `'Space Grotesk'`
+- **`index.html`** (root splash, 1 edit): `font-family: 'Ndot', monospace` → `'Space Grotesk', sans-serif`
+- **Deleted font files** via `git rm`: `Ndot55-Regular.otf` (77 KB) + `Ndot55Caps-Regular.otf` (220 KB). Bundle saved ~297 KB
+- **Rewrote `prototypes/assets/fonts/README.md`** as a historical reference: documents the NDOT removal + lists the 6 fonts still in use (Cormorant Garamond, Space Grotesk, Outfit, DM Mono, JetBrains Mono, Syne)
+- **`tasks/todo.md`** (1 edit): added "Remove NDOT font entirely" entry with sub-item flagging Phase 1 SvelteKit should NOT re-vendor NDOT (drop from tokens list at line 164, 166)
+- **`tasks/lessons.md`** (1 edit): added **L-061** — "Font + design feedback is more reliable after public deploy than during dev preview"
+
+**State:** All NDOT references in LIVE files eliminated except intentional ones:
+- `var(--font-ndot)` × 29 — these cascade to Space Grotesk via the variable (intentional, no edit needed)
+- 4 historical/code comments referencing "NDOT" — kept as-is (internal documentation)
+- Branch `feat/remove-ndot-font` ready for review + merge to dev
+
+**Decided:**
+- **Kept the `--font-ndot` variable name** instead of renaming to `--font-display-accent` or similar. This is the lowest-blast-radius change: every selector that already references the variable picks up Space Grotesk via the repointed value, no need to touch 29 individual CSS rules. Renaming would require touching every selector + a future global search-and-replace — not worth it for a backwards-compatible change
+- **Did NOT pre-emptively re-tune font-size** on topbar/`.cs-title`/`.tl-title` for the Space Grotesk weight shift. User said "very simple fix" — do the literal swap, let user evaluate the rendered output before chasing visual follow-ups. If topbar feels too heavy or `.cs-title` looks chunky at 80px, do a follow-up branch
+- **Did NOT delete the variable entirely** (vs. just nuking all `var(--font-ndot)` references and inlining Space Grotesk). Future font swaps are now a single-line change. If user wants another accent font (e.g. JetBrains Mono for monospace accents), the variable is already in place
+- **Removed the font files via `git rm`** not just untracked. The OTF files are 297 KB of dead weight on the repo — better to actually delete than leave them around for nostalgia
+- **Skipped the user-suggested Phase 1 SvelteKit implications** beyond a todo.md flag. Phase 1 work isn't started, so dropping `--font-ndot` from tokens.css / `@font-face` for `Ndot55Caps.woff2` is for whoever starts Phase 1 — added the reminder to todo.md so it doesn't get re-introduced
+
+**Modified:**
+- `prototypes/portfolio-combined.html` (5 edits)
+- `prototypes/resume.html` (2 edits)
+- `index.html` (1 edit)
+- `prototypes/assets/fonts/Ndot55-Regular.otf` (deleted via git rm)
+- `prototypes/assets/fonts/Ndot55Caps-Regular.otf` (deleted via git rm)
+- `prototypes/assets/fonts/README.md` (rewritten)
+- `tasks/todo.md` (1 entry added)
+- `tasks/lessons.md` (L-061 added)
+
+**Blocked / Next:**
+- Browser-verify the deployed preview URL once user pushes branch to remote. Topbar font-size may feel chunky at the old 13-16px sizes (designed for NDOT's small dotted character) — flag for follow-up if user reports it
+- `.cs-title` at `clamp(42px, 6vw, 80px)` with Space Grotesk 700 will likely look heavier than the NDOT version did. May need weight 600 or size reduction
+- `.tl-title` at 700 weight + small sizes will also feel heavier. May need weight 500-600
+- `.wm-cap` name wordmark will lose the NothingOS "dotted/letterform" character and become a regular uppercase sans-serif. This is the most visible aesthetic loss — user explicitly requested it but worth flagging that the wordmark is now "generic" instead of "distinctive"
+- Phase 1 SvelteKit should drop NDOT from design tokens when started (flagged in todo.md)
+
+---
+
 ## [2026-06-27] Hermes — Dual Deployment Strategy: GitHub Pages + Vercel production
 
 **Mode:** Execution

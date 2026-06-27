@@ -6,6 +6,23 @@
 
 ---
 
+## L-061 — Font + design feedback is more reliable after public deploy than during dev preview
+
+**What failed:** Spent 4 NDOT rollout branches (feat/vendor-ndot-font → feat/ndot-display-accent → feat/ndot-topbar-rollout → feat/ndot-widget-titles → feat/ndot-proj-title + redo) perfecting the NothingOS dot-matrix aesthetic. Multiple agents, multiple kicks, selector audit passes, font-size tuning, redo loops. User accepted each branch during dev. **Then on 2026-06-27, after the site went live on `vishal-katariya.com`, user said the dot-matrix font doesn't suit — remove it.**
+
+**Root cause:** Dev preview ≠ deployed reality. The dot-matrix font is a distinctive design choice that reads differently when you can compare it side-by-side with the rest of the design system on a real domain vs seeing it incrementally as you build. During dev, each small change feels intentional and on-brand. After deploy, the cumulative effect becomes obvious — too busy, too noisy, fights the body text.
+
+**Prevention rule:**
+- For distinctive/aesthetic font choices (anything other than system sans/serif defaults), flag in the kickoff: *"this needs user review after deploy — expect potential swap"*
+- Don't burn more than 2-3 branches perfecting an aesthetic font choice. After 3 branches, it's probably wrong for the project even if user hasn't said so yet
+- The Phase 1 SvelteKit cutover is also a good moment to revisit font choices — clean slate, easy to swap
+- Default to safe fonts (Space Grotesk / Inter / system-ui) for accent roles when the design language is otherwise distinctive — accent typography should amplify, not introduce noise
+- When removing a font like NDOT, the `--font-ndot` variable trick works perfectly: keep the variable name, repoint its value, all 29 cascading selectors pick up the new font with zero additional edits
+
+**Related rules:** L-026 (selector audit), L-049 (DOM coordinate audit), L-052 (audit existing patterns before building).
+
+---
+
 ## L-060 — Vercel `framework: null` doesn't apply rewrites; `framework: "static"` requires build output
 
 **What failed:** Tried to add a catch-all rewrite (`/(.*) → /prototypes/portfolio-combined.html`) so `/projects`, `/about`, `/roadmap` would serve the SPA. Tested two configurations:
