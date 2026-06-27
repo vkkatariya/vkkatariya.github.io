@@ -178,14 +178,8 @@ html.light body::before {
 .nav-logo:hover { box-shadow: 0 6px 32px rgba(0,0,0,.65), 0 1px 0 rgba(255,255,255,.16) inset; }
 .nav-logo-name {
   font-family: 'Space Grotesk', sans-serif; font-size: 24px; line-height: 1; white-space: nowrap; letter-spacing: -.3px;
+  display: inline-flex; align-items: baseline;
 }
-.nav-logo-name .hn-script {
-  font-family: 'Cormorant Garamond', serif;
-  font-style: italic; font-weight: 700;
-  font-size: 1.5em; letter-spacing: -1px;
-  vertical-align: baseline;
-}
-.nav-logo-name .hn-sans { font-weight: 700; }
 
 /* ── NAME WORDMARK — full name wordmark ── */
 .wm-cap {
@@ -285,13 +279,19 @@ html.light body::before {
 .hn-script {
   font-family: 'Cormorant Garamond', serif;
   font-style: italic; font-weight: 700;
+  font-size: 1.6em;
   color: var(--w); letter-spacing: -2px;
+  line-height: .85;
+  vertical-align: baseline;
+  display: inline-block;
+  margin-right: -.06em;
 }
 .hn-sans {
   font-family: 'Space Grotesk', sans-serif;
-  font-weight: 800; color: var(--w);
+  font-weight: 700; color: var(--w);
+  letter-spacing: -.5px;
 }
-.hn-gap { display: inline-block; width: .18em; }
+.hn-gap { display: inline-block; width: .35em; }
 
 /* ── right pill controls ── */
 .nav-right {
@@ -3422,7 +3422,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
 <nav id="shared-nav">
   <a href="#home" class="nav-logo" onclick="showPage('home')">
     <div class="nav-logo-name">
-      <span class="wm-cap">Vishal</span> <span class="wm-cap">Katariya</span>
+      <span class="hn-script">V</span><span class="hn-sans">ISHAL</span><span class="hn-gap"></span><span class="hn-script">K</span><span class="hn-sans">ATARIYA</span>
     </div>
   </a>
 
@@ -3538,8 +3538,8 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
       </div>
       <div style="display:flex;align-items:flex-end;justify-content:space-between">
         <div style="line-height:1;letter-spacing:-.5px;">
-          <div style="font-size:clamp(28px,3.5vw,36px)"><span class="wm-cap">Vishal</span></div>
-          <div style="font-size:clamp(28px,3.5vw,36px)"><span class="wm-cap">Katariya</span></div>
+          <div style="font-size:clamp(28px,3.5vw,36px)"><span class="hn-script">V</span><span class="hn-sans">ISHAL</span></div>
+          <div style="font-size:clamp(28px,3.5vw,36px)"><span class="hn-script">K</span><span class="hn-sans">ATARIYA</span></div>
         </div>
         <!-- 3D person icon -->
         <div class="ico ico-float" style="opacity:.18;margin-bottom:4px">
@@ -3566,7 +3566,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
       <div class="cg" id="cg"></div>
       <div style="display:flex;justify-content:space-between;align-items:baseline;margin-top:4px;">
         <span class="sub">contributions · 2026</span>
-        <span style="font-family:'DM Mono',monospace;font-size:22px;font-weight:500;letter-spacing:-1px;" id="cc">51</span>
+        <span style="font-family:'DM Mono',monospace;font-size:22px;font-weight:500;letter-spacing:-1px;" id="cc">401</span>
       </div>
     </div>
 
@@ -6046,7 +6046,7 @@ function toggleLang() {
 }
 
 // ── Simulated GitHub contribution grid (cells only) ──
-// Cells are random for visual interest. The count is fixed in HTML at <span id="cc">51</span>.
+// Cells are random for visual interest. The count is fixed in HTML at <span id="cc">401</span>.
 // Do NOT add a setInterval here that writes to #cc — it will override the static value.
 const g = document.getElementById('cg');
 const L = ['','l1','l2','l3','l4'];
