@@ -177,15 +177,21 @@ html.light body::before {
 }
 .nav-logo:hover { box-shadow: 0 6px 32px rgba(0,0,0,.65), 0 1px 0 rgba(255,255,255,.16) inset; }
 .nav-logo-name {
-  font-family: 'Space Grotesk', sans-serif; font-size: 24px; line-height: 1; white-space: nowrap; letter-spacing: -.3px;
+  font-family: 'Syne', sans-serif; font-size: 18px; line-height: 1; white-space: nowrap; letter-spacing: -.3px;
 }
 .nav-logo-name .hn-script {
   font-family: 'Cormorant Garamond', serif;
   font-style: italic; font-weight: 700;
-  font-size: 1.5em; letter-spacing: -1px;
-  vertical-align: baseline;
+  font-size: 1.9em; letter-spacing: -1px;
+  line-height: 0.82;
+  display: inline-block;
+  margin-right: -.09em;
+  vertical-align: -.12em;
 }
-.nav-logo-name .hn-sans { font-weight: 700; }
+.nav-logo-name .hn-sans {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+}
 
 /* ── NAME WORDMARK — full name wordmark ── */
 .wm-cap {
@@ -1374,6 +1380,11 @@ footer {
 }
 .ph-title .hn-script{
   font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:700;
+  font-size: 1.52em;
+  line-height: 0.82;
+  display: inline-block;
+  margin-right: -.06em;
+  vertical-align: -.14em;
 }
 
 /* ── PROJECT CARDS (index) ── */
@@ -3422,7 +3433,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
 <nav id="shared-nav">
   <a href="#home" class="nav-logo" onclick="showPage('home')">
     <div class="nav-logo-name">
-      <span class="wm-cap">Vishal</span> <span class="wm-cap">Katariya</span>
+      <span class="hn-script">V</span><span class="hn-sans">ishal</span>&thinsp;<span class="hn-script">K</span><span class="hn-sans">atariya</span>
     </div>
   </a>
 
@@ -3537,9 +3548,9 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
         identity
       </div>
       <div style="display:flex;align-items:flex-end;justify-content:space-between">
-        <div style="line-height:1;letter-spacing:-.5px;">
-          <div style="font-size:clamp(28px,3.5vw,36px)"><span class="wm-cap">Vishal</span></div>
-          <div style="font-size:clamp(28px,3.5vw,36px)"><span class="wm-cap">Katariya</span></div>
+        <div style="line-height:1;letter-spacing:-1.5px;font-family:'Syne',sans-serif;font-weight:800;">
+          <div style="font-size:clamp(28px,3.5vw,36px)"><span class="hn-script" style="font-size:1.5em;line-height:0.82;display:inline-block;margin-right:-.07em;vertical-align:-.14em;">V</span><span class="hn-sans" style="font-family:'Syne',sans-serif;font-weight:800;">ishal</span></div>
+          <div style="font-size:clamp(28px,3.5vw,36px)"><span class="hn-script" style="font-size:1.5em;line-height:0.82;display:inline-block;margin-right:-.07em;vertical-align:-.14em;">K</span><span class="hn-sans" style="font-family:'Syne',sans-serif;font-weight:800;">atariya</span></div>
         </div>
         <!-- 3D person icon -->
         <div class="ico ico-float" style="opacity:.18;margin-bottom:4px">

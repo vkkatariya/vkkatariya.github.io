@@ -6,7 +6,84 @@
 
 ---
 
-## [2026-06-27] Hermes — feat/remove-ndot-font: drop NothingOS dot-matrix aesthetic post-deploy
+## [2026-06-27] Claude — typography overhaul: logo, identity widget, page titles
+
+**Mode:** Builder (via Claude chat, transcribed by Hermes)
+**Did:**
+
+Three areas of the portfolio got a unified typographic treatment. The goal was to make the logo pill and homepage identity widget visually consistent with the inner page titles (Projects, Roadmap, About), and push the whole system toward a more editorial, mixed-type aesthetic.
+
+### 1 — logo pill (topbar left)
+
+Before: `wm-cap` class — DM Mono, all-small-caps, uppercase. "VISHAL KATARIYA" in a monospace font that read more like a terminal label than a name.
+
+After: Split-font wordmark matching the inner page title treatment. V + K in Cormorant Garamond italic (the script initial), ishal + atariya in Syne 800 weight.
+
+CSS changes:
+- `.nav-logo-name` — switched base font-family from Space Grotesk → Syne, reduced font-size 24px → 18px (the oversized script initial reads bigger, so the base needed to come down)
+- `.nav-logo-name .hn-sans` — added explicit `font-family: 'Syne'` and bumped font-weight 700 → 800
+
+HTML change — replaced two `wm-cap` spans with the `hn-script` / `hn-sans` pattern already used by the page titles, with a `&thinsp;` between first and last name for tighter optical spacing.
+
+### 2 — identity widget (homepage grid)
+
+The 2×1 "identity" widget on the home bento grid showed the same `wm-cap` DM Mono treatment and needed to match.
+
+After: Each line (Vishal / Katariya) now uses inline Syne 800 as the base with `hn-script` on the first letter. Same split as the logo but at a larger scale — `clamp(28px, 3.5vw, 36px)` base — so the calligraphic initial has more room to read.
+
+Tightened letter-spacing from -.5px → -1.5px on the wrapper to compensate for Syne 800's slightly wider metrics at this weight.
+
+### 3 — casing fix
+
+Caught immediately after the first edit: the sans portions of the wordmark were typed ISHAL / ATARIYA (all-caps) instead of ishal / atariya. The reference pages — Projects, Roadmap, About — all use a capital initial then lowercase body (Projects, not PROJECTS). One-line fix in both the logo pill HTML and the identity widget HTML.
+
+### 4 — artistic script treatment (all three locations)
+
+Inspired by a reference showing a dramatic mixed-type wordmark (Zack Webster's site) where the calligraphic initials are significantly taller than the accompanying sans-serif and visually overlap it. Three properties make this work:
+
+font-size — Script initial scaled up relative to the parent:
+- `.ph-title .hn-script` → 1.52em (page titles, base is clamp(48px, 8vw, 96px))
+- `.nav-logo-name .hn-script` → 1.9em (logo pill, base is 18px)
+- Identity widget hn-script spans → 1.5em inline (base is clamp(28px, 3.5vw, 36px))
+
+margin-right (negative) — Pulls the following sans text leftward so it tucks slightly under the script letter's swash rather than sitting gap-separated:
+- Page titles: -.06em
+- Logo pill: -.09em
+- Identity widget: -.07em
+
+vertical-align — The oversized initial naturally floats above the baseline; pushing it down with a negative vertical-align settles it back onto the same optical floor as the sans body text:
+- -.14em on page titles and identity widget
+- -.12em on the logo pill (smaller base, less correction needed)
+
+line-height: 0.82 + display: inline-block — Without this, an oversized inline element pushes the line box taller and everything below drops. Setting line-height below 1 and display: inline-block constrains the space the initial occupies in the flow so surrounding text doesn't get nudged.
+
+### Files modified
+
+`prototypes/portfolio-combined.html` — all changes are self-contained in this single file. No new dependencies added; Cormorant Garamond and Syne were already in the Google Fonts import at the top of the document.
+
+### Notes / known tuning handles
+
+The three values (font-size, margin-right, vertical-align) on each `.hn-script` instance are independent dials. If the overlap feels too tight on a specific viewport or the script reads too large/small on mobile, those are the exact numbers to reach for — nothing else needs to change.
+
+The `.wm-cap` class itself was deliberately left untouched; it's still used in body text within the About page ("I'm Vishal...") and should stay as DM Mono small-caps in that prose context.
+
+**State:** All three locations (logo pill, identity widget, page titles) now share the calligraphic-initial + sans-serif-body pattern. Logo and identity use Syne 800 (matching `.ph-title` page-title treatment). Page-hero script letters render at 145.92px (1.52em × 96px clamp), logo script at 34.2px (1.9em × 18px), identity script at 54px (1.5em × 36px clamp). Casing consistent: ishal/atariya (not ISHAL/ATARIYA).
+
+**Decided:**
+- Same calligraphic treatment across all three locations — visual consistency wins over per-location uniqueness
+- Logo base font went DOWN 24→18px to compensate for the bigger script initial (the script letter visually dominates)
+- Syne chosen over Space Grotesk for body letters — heavier weight + slightly wider metrics reads more "editorial" against the Cormorant italic
+- Used inline styles on the identity widget hn-script spans (vs adding a scoped class) because it's a single-use location and inline keeps it close to the markup it affects
+- `.wm-cap` kept intact for About-page body text usage — different role (prose emphasis vs name wordmark) deserves different typography
+
+**Blocked / Next:**
+- Visual review needed: 1.9em script on 18px base = ~34px script letter may overlap visually with the ishal/atariya body. Tune margin-right (-.09em → -.05em) if it looks too tight at certain viewports.
+- Mobile (≤560px) topbar: topbar wordmark is 18px base, script 34px — may overflow on very narrow screens. Currently relies on the existing `.nav-logo-name` font-size: 16px media query at 860px, which scales to 16px → script 30.4px. Probably fine but verify.
+- Mobile hamburger overlay's nav-links use `var(--font-ndot)` (DM Mono) — different visual rhythm than the new Syne wordmark. Could be unified later but not in this pass.
+
+---
+
+## [2026-06-27] Hermes — feat/remove-ndot-font: drop NDOT, cascade to DM Mono
 
 **Mode:** Execution (direct edits, no agent dispatch)
 **Did:**
