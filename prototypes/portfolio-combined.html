@@ -215,10 +215,11 @@ html.light body::before {
 }
 .nav-links a {
   display: flex; align-items: center;
-  font-family: var(--font-ndot); font-size: 14px; letter-spacing: .8px;
+  font-family: var(--font-ndot); font-size: 14px; letter-spacing: 1.2px;
   color: rgba(241,240,246,.38); background: none;
   border: none; padding: 7px 16px; border-radius: 100px;
   text-decoration: none; transition: color .13s, background .13s; white-space: nowrap;
+  text-transform: uppercase;
 }
 .nav-links a:hover { color: rgba(241,240,246,.8); background: rgba(255,255,255,.07); }
 .nav-links a.act { background: rgba(255,255,255,.12); color: var(--w); box-shadow: 0 1px 8px rgba(0,0,0,.4), 0 1px 0 rgba(255,255,255,.1) inset; }
@@ -373,11 +374,12 @@ html.light body::before {
 }
 .nav-menu-overlay a {
   display: flex; align-items: center;
-  font-family: var(--font-ndot); font-size: 15px; letter-spacing: .8px;
+  font-family: var(--font-ndot); font-size: 15px; letter-spacing: 1.2px;
   color: rgba(241,240,246,.5);
   padding: 14px 18px; border-radius: 14px;
   text-decoration: none;
   transition: color .13s, background .13s;
+  text-transform: uppercase;
 }
 .nav-menu-overlay a:hover { color: rgba(241,240,246,.8); background: rgba(255,255,255,.07); }
 .nav-menu-overlay a.act { background: rgba(255,255,255,.12); color: var(--w); }
@@ -2225,9 +2227,10 @@ html.light #pg-about .contact-card:nth-of-type(4) .cc-icon { color: var(--acc); 
   backdrop-filter: none; -webkit-backdrop-filter: none;
 }
 #roadmap-internal-nav .nav-links a {
-  display: flex; align-items: center; font-family: var(--font-ndot); font-size: 13px; letter-spacing: normal; color: rgba(241,240,246,.38); text-decoration: none;
+  display: flex; align-items: center; font-family: var(--font-ndot); font-size: 13px; letter-spacing: 1.2px; color: rgba(241,240,246,.38); text-decoration: none;
   background: none; border: none; border-radius: 100px; padding: 7px 16px;
   transition: color .13s, background .13s;
+  text-transform: uppercase;
 }
 #roadmap-internal-nav .nav-links a:hover,
 #roadmap-internal-nav .nav-links a.active { color: var(--w); background: rgba(255,255,255,.07); }
