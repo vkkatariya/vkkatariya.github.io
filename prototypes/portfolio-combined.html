@@ -70,28 +70,15 @@ html.light {
   --glass-b: rgba(13,13,15,.1);
 }
 
-/* ── NothingOS NDOT font (vendored 2026-06-20 from github.com/xeji01/nothingfont)
-   ── Used in feat/ndot-display-accent for NothingOS-style accents (widget
-   ── indices, status labels, clock display). NOT a Google Font; loaded
-   ── from prototypes/assets/fonts/. License note: see README.md in that dir.
-   ── Do NOT remove without checking with the design owner. ── */
-@font-face {
-  font-family: 'Ndot';
-  src: url('assets/fonts/Ndot55-Regular.otf') format('opentype');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Ndot';
-  src: url('assets/fonts/Ndot55Caps-Regular.otf') format('opentype');
-  font-weight: 400;
-  font-style: normal;
-  font-variant: all-small-caps;
-  font-display: swap;
-}
+/* ── font variable ─────────────────────────────────────────────────────────
+   Kept the variable name for minimal blast radius — all 29 selectors that
+   already reference var(--font-ndot) cascade through to DM Mono now.
+   NDOT removed from the cascade 2026-06-27 (user wanted to see what the
+   page looks like without NDOT — DM Mono takes over as the fallback).
+   The font files are still vendored; only the @font-face declarations
+   were dropped so the cascade skips Ndot entirely. ── */
 :root {
-  --font-ndot: 'Ndot', 'DM Mono', monospace;
+  --font-ndot: 'DM Mono', monospace;
 }
 
 :root {
@@ -200,14 +187,14 @@ html.light body::before {
 }
 .nav-logo-name .hn-sans { font-weight: 700; }
 
-/* ── NAME WORDMARK — full name in NDOT 55 Caps ── */
+/* ── NAME WORDMARK — full name wordmark ── */
 .wm-cap {
-  font-family: 'Ndot', 'DM Mono', monospace;
+  font-family: 'DM Mono', monospace;
   font-variant: all-small-caps;
   text-transform: uppercase;
-  font-weight: 400;
+  font-weight: 500;
   color: var(--w);
-  letter-spacing: 0.06em;
+  letter-spacing: 0.04em;
 }
 
 /* CENTER — nav pill (home/projects/roadmap/about + available dot) */
@@ -3729,7 +3716,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
         featured · hermes oauth
       </div>
       <!-- dot-matrix title -->
-      <div style="font-family:var(--font-ndot),'DM Mono',monospace;font-size:17px;font-weight:400;color:var(--green);line-height:1.15;letter-spacing:.3px;text-shadow:0 0 10px rgba(52,199,123,.35)">HERMES ONE<br>OAUTH FORK</div>
+      <div style="font-family:'DM Mono',monospace;font-size:17px;font-weight:500;color:var(--green);line-height:1.15;letter-spacing:.3px;text-shadow:0 0 10px rgba(52,199,123,.35)">HERMES ONE<br>OAUTH FORK</div>
       <!-- stats -->
       <div style="display:flex;gap:10px;align-items:flex-end">
         <div>
@@ -4641,7 +4628,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
       <div>
         <div class="cs-h">Hybrid Architecture</div>
         <p class="cs-p">Personal portfolio at vishalkatariya.dev — built as a self-contained SvelteKit SPA, hybrid-hosted with public routes on Vercel and private <code>/me/*</code> behind a Tailscale + Caddy IP allowlist on athena.</p>
-        <p class="cs-p">Design system uses three layered surfaces: liquid glass (nav/frames), neomorphism (widgets), and NeoPOP (CTAs). Typography stacks Cormorant Garamond italic (initials) with Space Grotesk (display), Outfit (body), DM Mono (labels), and NDOT (accent).</p>
+        <p class="cs-p">Design system uses three layered surfaces: liquid glass (nav/frames), neomorphism (widgets), and NeoPOP (CTAs). Typography stacks Cormorant Garamond italic (initials) with Space Grotesk (display + accents), Outfit (body), DM Mono (labels), JetBrains Mono (topbar metadata), and Syne (about/projects hero titles).</p>
       </div>
       <div>
         <div class="cs-h">Consolidated SPA</div>
