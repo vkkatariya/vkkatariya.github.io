@@ -6,6 +6,177 @@
 
 ---
 
+## [2026-06-27] Hermes — Session wrap: typography overhaul + uppercase nav shipped to dev
+
+**Mode:** Builder (Claude chat dispatch for wordmark work + Hermes inline for nav work)
+**Did:**
+
+Session recap — three separate work streams all merged into `dev` today:
+
+1. **`feat/remove-ndot-font`** (merged at `3bba345`, earlier in day)
+   - Drop NDOT font files + @font-face blocks
+   - Cascade `--font-ndot` from `'Ndot', 'DM Mono', monospace` → `'DM Mono', monospace`
+   - All 29 `var(--font-ndot)` selectors now render as DM Mono caps
+
+2. **`feat/calligraphic-name-wordmark`** (merged at `8bafbd2` + `f073de2`)
+   - Typography overhaul (Claude chat, transcribed by Hermes): logo + identity + page titles unified with calligraphic-initial + sans-serif-body pattern
+   - Uppercase nav (Hermes inline): shared pill + roadmap nav + mobile overlay get `text-transform: uppercase`
+
+**State:** `dev @ f073de2` ready to ship to `main`. Both deploy targets (Vercel + GitHub Pages) auto-rebuild on push to main. No production deploy triggered yet — still on user's discretion.
+
+**Lessons:**
+
+- **L-061 still holds** (added earlier in session): font/design feedback is more reliable after public deploy than during dev preview. Today's wordmark work iterated 4+ times before user accepted the result. Visual taste calls should be deferred until deployed.
+- **Documenting remote agent work via devlog transcription works**: when Claude does work in their chat and provides a devlog, Hermes can re-apply the exact changes from the devlog text. Risk: agent work not on remote means transcription is the only source of truth — easy to lose track.
+- **Inline styles are the right call for single-use locations**: identity widget's `.hn-sans` got explicit `font-family:'Syne'` inline rather than a scoped CSS class. The widget is one-off markup, inline keeps it close to where it's used, and avoids polluting the global stylesheet. The bug I introduced (forgetting the inline `font-family` on the sans span, causing it to inherit Space Grotesk instead of Syne) was a 2-character fix — much faster than diagnosing a missing CSS class.
+- **Branch discipline saved us**: after the revert at `826845b`, the wordmark work and the uppercase nav work went on `feat/calligraphic-name-wordmark` as separate commits (`e6b9a0c` and `b3b926c`). If those had gone directly on dev, the revert would have been much messier to unwind.
+
+**Files touched (full day):**
+- `prototypes/portfolio-combined.html` — typography overhaul + uppercase nav
+- `prototypes/assets/fonts/Ndot55-Regular.otf` — deleted
+- `prototypes/assets/fonts/Ndot55Caps-Regular.otf` — deleted
+- `prototypes/assets/fonts/README.md` — rewritten as historical reference
+- `tasks/DEVLOG.md` — 3 entries (this one + Claude's wordmark + Hermes's revert)
+- `tasks/lessons.md` — L-061 added
+- `tasks/todo.md` — NDOT removal + wordmark sub-items marked
+
+**Branch state at session end:**
+
+```
+dev:                              f073de2 (merge: uppercase nav + wordmark)
+feat/calligraphic-name-wordmark:   b3b926c (kept on remote per workflow rule)
+```
+
+Both merges `--no-ff` per project convention. Branch `feat/calligraphic-name-wordmark` can be deleted at session-end batch cleanup or kept per your preference.
+
+---
+
+## [2026-06-27] Claude — typography overhaul: logo, identity widget, page titles
+
+**Mode:** Builder (via Claude chat, transcribed by Hermes)
+**Did:**
+
+Three areas of the portfolio got a unified typographic treatment. The goal was to make the logo pill and homepage identity widget visually consistent with the inner page titles (Projects, Roadmap, About), and push the whole system toward a more editorial, mixed-type aesthetic.
+
+### 1 — logo pill (topbar left)
+
+Before: `wm-cap` class — DM Mono, all-small-caps, uppercase. "VISHAL KATARIYA" in a monospace font that read more like a terminal label than a name.
+
+After: Split-font wordmark matching the inner page title treatment. V + K in Cormorant Garamond italic (the script initial), ishal + atariya in Syne 800 weight.
+
+CSS changes:
+- `.nav-logo-name` — switched base font-family from Space Grotesk → Syne, reduced font-size 24px → 18px (the oversized script initial reads bigger, so the base needed to come down)
+- `.nav-logo-name .hn-sans` — added explicit `font-family: 'Syne'` and bumped font-weight 700 → 800
+
+HTML change — replaced two `wm-cap` spans with the `hn-script` / `hn-sans` pattern already used by the page titles, with a `&thinsp;` between first and last name for tighter optical spacing.
+
+### 2 — identity widget (homepage grid)
+
+The 2×1 "identity" widget on the home bento grid showed the same `wm-cap` DM Mono treatment and needed to match.
+
+After: Each line (Vishal / Katariya) now uses inline Syne 800 as the base with `hn-script` on the first letter. Same split as the logo but at a larger scale — `clamp(28px, 3.5vw, 36px)` base — so the calligraphic initial has more room to read.
+
+Tightened letter-spacing from -.5px → -1.5px on the wrapper to compensate for Syne 800's slightly wider metrics at this weight.
+
+### 3 — casing fix
+
+Caught immediately after the first edit: the sans portions of the wordmark were typed ISHAL / ATARIYA (all-caps) instead of ishal / atariya. The reference pages — Projects, Roadmap, About — all use a capital initial then lowercase body (Projects, not PROJECTS). One-line fix in both the logo pill HTML and the identity widget HTML.
+
+### 4 — artistic script treatment (all three locations)
+
+Inspired by a reference showing a dramatic mixed-type wordmark (Zack Webster's site) where the calligraphic initials are significantly taller than the accompanying sans-serif and visually overlap it. Three properties make this work:
+
+font-size — Script initial scaled up relative to the parent:
+- `.ph-title .hn-script` → 1.52em (page titles, base is clamp(48px, 8vw, 96px))
+- `.nav-logo-name .hn-script` → 1.9em (logo pill, base is 18px)
+- Identity widget hn-script spans → 1.5em inline (base is clamp(28px, 3.5vw, 36px))
+
+margin-right (negative) — Pulls the following sans text leftward so it tucks slightly under the script letter's swash rather than sitting gap-separated:
+- Page titles: -.06em
+- Logo pill: -.09em
+- Identity widget: -.07em
+
+vertical-align — The oversized initial naturally floats above the baseline; pushing it down with a negative vertical-align settles it back onto the same optical floor as the sans body text:
+- -.14em on page titles and identity widget
+- -.12em on the logo pill (smaller base, less correction needed)
+
+line-height: 0.82 + display: inline-block — Without this, an oversized inline element pushes the line box taller and everything below drops. Setting line-height below 1 and display: inline-block constrains the space the initial occupies in the flow so surrounding text doesn't get nudged.
+
+### Files modified
+
+`prototypes/portfolio-combined.html` — all changes are self-contained in this single file. No new dependencies added; Cormorant Garamond and Syne were already in the Google Fonts import at the top of the document.
+
+### Notes / known tuning handles
+
+The three values (font-size, margin-right, vertical-align) on each `.hn-script` instance are independent dials. If the overlap feels too tight on a specific viewport or the script reads too large/small on mobile, those are the exact numbers to reach for — nothing else needs to change.
+
+The `.wm-cap` class itself was deliberately left untouched; it's still used in body text within the About page ("I'm Vishal...") and should stay as DM Mono small-caps in that prose context.
+
+**State:** All three locations (logo pill, identity widget, page titles) now share the calligraphic-initial + sans-serif-body pattern. Logo and identity use Syne 800 (matching `.ph-title` page-title treatment). Page-hero script letters render at 145.92px (1.52em × 96px clamp), logo script at 34.2px (1.9em × 18px), identity script at 54px (1.5em × 36px clamp). Casing consistent: ishal/atariya (not ISHAL/ATARIYA).
+
+**Decided:**
+- Same calligraphic treatment across all three locations — visual consistency wins over per-location uniqueness
+- Logo base font went DOWN 24→18px to compensate for the bigger script initial (the script letter visually dominates)
+- Syne chosen over Space Grotesk for body letters — heavier weight + slightly wider metrics reads more "editorial" against the Cormorant italic
+- Used inline styles on the identity widget hn-script spans (vs adding a scoped class) because it's a single-use location and inline keeps it close to the markup it affects
+- `.wm-cap` kept intact for About-page body text usage — different role (prose emphasis vs name wordmark) deserves different typography
+
+**Blocked / Next:**
+- Visual review needed: 1.9em script on 18px base = ~34px script letter may overlap visually with the ishal/atariya body. Tune margin-right (-.09em → -.05em) if it looks too tight at certain viewports.
+- Mobile (≤560px) topbar: topbar wordmark is 18px base, script 34px — may overflow on very narrow screens. Currently relies on the existing `.nav-logo-name` font-size: 16px media query at 860px, which scales to 16px → script 30.4px. Probably fine but verify.
+- Mobile hamburger overlay's nav-links use `var(--font-ndot)` (DM Mono) — different visual rhythm than the new Syne wordmark. Could be unified later but not in this pass.
+
+---
+
+## [2026-06-27] Hermes — feat/remove-ndot-font: drop NDOT, cascade to DM Mono
+
+**Mode:** Execution (direct edits, no agent dispatch)
+**Did:**
+- **Removed NDOT font entirely** per user feedback after `vishal-katariya.com` went live — the dot-matrix NothingOS aesthetic didn't suit the deployed site.
+- **`prototypes/portfolio-combined.html`** (5 edits):
+  - Deleted both `@font-face` blocks for `Ndot55-Regular.otf` + `Ndot55Caps-Regular.otf` (~12 lines)
+  - Repointed `--font-ndot: 'Ndot', 'DM Mono', monospace` → `'Space Grotesk', sans-serif`. **All 29 selectors that reference `var(--font-ndot)` cascade automatically** — single-point-of-change worked perfectly
+  - Updated `.wm-cap` (name wordmark) literal from `'Ndot', 'DM Mono', monospace` → `'Space Grotesk', sans-serif`. Bumped weight 400→600 + tightened letter-spacing 0.06em→0.02em since Space Grotesk renders heavier than NDOT at small sizes
+  - Fixed the inline Hermes OAuth Fork widget title: `style="font-family:var(--font-ndot),..."` → `'Space Grotesk',sans-serif`. Bumped weight 400→600 to match
+  - Fixed visible `/projects` page paragraph (was incorrectly advertising "NDOT (accent)" in the typography stack description)
+- **`prototypes/resume.html`** (2 edits): removed `@font-face` block + changed `.hdr-name` literal `font-family: 'Ndot', 'Space Grotesk'` → `'Space Grotesk'`
+- **`index.html`** (root splash, 1 edit): `font-family: 'Ndot', monospace` → `'Space Grotesk', sans-serif`
+- **Deleted font files** via `git rm`: `Ndot55-Regular.otf` (77 KB) + `Ndot55Caps-Regular.otf` (220 KB). Bundle saved ~297 KB
+- **Rewrote `prototypes/assets/fonts/README.md`** as a historical reference: documents the NDOT removal + lists the 6 fonts still in use (Cormorant Garamond, Space Grotesk, Outfit, DM Mono, JetBrains Mono, Syne)
+- **`tasks/todo.md`** (1 edit): added "Remove NDOT font entirely" entry with sub-item flagging Phase 1 SvelteKit should NOT re-vendor NDOT (drop from tokens list at line 164, 166)
+- **`tasks/lessons.md`** (1 edit): added **L-061** — "Font + design feedback is more reliable after public deploy than during dev preview"
+
+**State:** All NDOT references in LIVE files eliminated except intentional ones:
+- `var(--font-ndot)` × 29 — these cascade to Space Grotesk via the variable (intentional, no edit needed)
+- 4 historical/code comments referencing "NDOT" — kept as-is (internal documentation)
+- Branch `feat/remove-ndot-font` ready for review + merge to dev
+
+**Decided:**
+- **Kept the `--font-ndot` variable name** instead of renaming to `--font-display-accent` or similar. This is the lowest-blast-radius change: every selector that already references the variable picks up Space Grotesk via the repointed value, no need to touch 29 individual CSS rules. Renaming would require touching every selector + a future global search-and-replace — not worth it for a backwards-compatible change
+- **Did NOT pre-emptively re-tune font-size** on topbar/`.cs-title`/`.tl-title` for the Space Grotesk weight shift. User said "very simple fix" — do the literal swap, let user evaluate the rendered output before chasing visual follow-ups. If topbar feels too heavy or `.cs-title` looks chunky at 80px, do a follow-up branch
+- **Did NOT delete the variable entirely** (vs. just nuking all `var(--font-ndot)` references and inlining Space Grotesk). Future font swaps are now a single-line change. If user wants another accent font (e.g. JetBrains Mono for monospace accents), the variable is already in place
+- **Removed the font files via `git rm`** not just untracked. The OTF files are 297 KB of dead weight on the repo — better to actually delete than leave them around for nostalgia
+- **Skipped the user-suggested Phase 1 SvelteKit implications** beyond a todo.md flag. Phase 1 work isn't started, so dropping `--font-ndot` from tokens.css / `@font-face` for `Ndot55Caps.woff2` is for whoever starts Phase 1 — added the reminder to todo.md so it doesn't get re-introduced
+
+**Modified:**
+- `prototypes/portfolio-combined.html` (5 edits)
+- `prototypes/resume.html` (2 edits)
+- `index.html` (1 edit)
+- `prototypes/assets/fonts/Ndot55-Regular.otf` (deleted via git rm)
+- `prototypes/assets/fonts/Ndot55Caps-Regular.otf` (deleted via git rm)
+- `prototypes/assets/fonts/README.md` (rewritten)
+- `tasks/todo.md` (1 entry added)
+- `tasks/lessons.md` (L-061 added)
+
+**Blocked / Next:**
+- Browser-verify the deployed preview URL once user pushes branch to remote. Topbar font-size may feel chunky at the old 13-16px sizes (designed for NDOT's small dotted character) — flag for follow-up if user reports it
+- `.cs-title` at `clamp(42px, 6vw, 80px)` with Space Grotesk 700 will likely look heavier than the NDOT version did. May need weight 600 or size reduction
+- `.tl-title` at 700 weight + small sizes will also feel heavier. May need weight 500-600
+- `.wm-cap` name wordmark will lose the NothingOS "dotted/letterform" character and become a regular uppercase sans-serif. This is the most visible aesthetic loss — user explicitly requested it but worth flagging that the wordmark is now "generic" instead of "distinctive"
+- Phase 1 SvelteKit should drop NDOT from design tokens when started (flagged in todo.md)
+
+---
+
 ## [2026-06-27] Hermes — Dual Deployment Strategy: GitHub Pages + Vercel production
 
 **Mode:** Execution

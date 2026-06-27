@@ -70,28 +70,15 @@ html.light {
   --glass-b: rgba(13,13,15,.1);
 }
 
-/* ── NothingOS NDOT font (vendored 2026-06-20 from github.com/xeji01/nothingfont)
-   ── Used in feat/ndot-display-accent for NothingOS-style accents (widget
-   ── indices, status labels, clock display). NOT a Google Font; loaded
-   ── from prototypes/assets/fonts/. License note: see README.md in that dir.
-   ── Do NOT remove without checking with the design owner. ── */
-@font-face {
-  font-family: 'Ndot';
-  src: url('assets/fonts/Ndot55-Regular.otf') format('opentype');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Ndot';
-  src: url('assets/fonts/Ndot55Caps-Regular.otf') format('opentype');
-  font-weight: 400;
-  font-style: normal;
-  font-variant: all-small-caps;
-  font-display: swap;
-}
+/* ── font variable ─────────────────────────────────────────────────────────
+   Kept the variable name for minimal blast radius — all 29 selectors that
+   already reference var(--font-ndot) cascade through to DM Mono now.
+   NDOT removed from the cascade 2026-06-27 (user wanted to see what the
+   page looks like without NDOT — DM Mono takes over as the fallback).
+   The font files are still vendored; only the @font-face declarations
+   were dropped so the cascade skips Ndot entirely. ── */
 :root {
-  --font-ndot: 'Ndot', 'DM Mono', monospace;
+  --font-ndot: 'DM Mono', monospace;
 }
 
 :root {
@@ -190,24 +177,30 @@ html.light body::before {
 }
 .nav-logo:hover { box-shadow: 0 6px 32px rgba(0,0,0,.65), 0 1px 0 rgba(255,255,255,.16) inset; }
 .nav-logo-name {
-  font-family: 'Space Grotesk', sans-serif; font-size: 24px; line-height: 1; white-space: nowrap; letter-spacing: -.3px;
+  font-family: 'Syne', sans-serif; font-size: 18px; line-height: 1; white-space: nowrap; letter-spacing: -.3px;
 }
 .nav-logo-name .hn-script {
   font-family: 'Cormorant Garamond', serif;
   font-style: italic; font-weight: 700;
-  font-size: 1.5em; letter-spacing: -1px;
-  vertical-align: baseline;
+  font-size: 1.9em; letter-spacing: -1px;
+  line-height: 0.82;
+  display: inline-block;
+  margin-right: -.09em;
+  vertical-align: -.12em;
 }
-.nav-logo-name .hn-sans { font-weight: 700; }
+.nav-logo-name .hn-sans {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+}
 
-/* ── NAME WORDMARK — full name in NDOT 55 Caps ── */
+/* ── NAME WORDMARK — full name wordmark ── */
 .wm-cap {
-  font-family: 'Ndot', 'DM Mono', monospace;
+  font-family: 'DM Mono', monospace;
   font-variant: all-small-caps;
   text-transform: uppercase;
-  font-weight: 400;
+  font-weight: 500;
   color: var(--w);
-  letter-spacing: 0.06em;
+  letter-spacing: 0.04em;
 }
 
 /* CENTER — nav pill (home/projects/roadmap/about + available dot) */
@@ -222,10 +215,11 @@ html.light body::before {
 }
 .nav-links a {
   display: flex; align-items: center;
-  font-family: var(--font-ndot); font-size: 14px; letter-spacing: .8px;
+  font-family: var(--font-ndot); font-size: 14px; letter-spacing: 1.2px;
   color: rgba(241,240,246,.38); background: none;
   border: none; padding: 7px 16px; border-radius: 100px;
   text-decoration: none; transition: color .13s, background .13s; white-space: nowrap;
+  text-transform: uppercase;
 }
 .nav-links a:hover { color: rgba(241,240,246,.8); background: rgba(255,255,255,.07); }
 .nav-links a.act { background: rgba(255,255,255,.12); color: var(--w); box-shadow: 0 1px 8px rgba(0,0,0,.4), 0 1px 0 rgba(255,255,255,.1) inset; }
@@ -380,11 +374,12 @@ html.light body::before {
 }
 .nav-menu-overlay a {
   display: flex; align-items: center;
-  font-family: var(--font-ndot); font-size: 15px; letter-spacing: .8px;
+  font-family: var(--font-ndot); font-size: 15px; letter-spacing: 1.2px;
   color: rgba(241,240,246,.5);
   padding: 14px 18px; border-radius: 14px;
   text-decoration: none;
   transition: color .13s, background .13s;
+  text-transform: uppercase;
 }
 .nav-menu-overlay a:hover { color: rgba(241,240,246,.8); background: rgba(255,255,255,.07); }
 .nav-menu-overlay a.act { background: rgba(255,255,255,.12); color: var(--w); }
@@ -1387,6 +1382,11 @@ footer {
 }
 .ph-title .hn-script{
   font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:700;
+  font-size: 1.52em;
+  line-height: 0.82;
+  display: inline-block;
+  margin-right: -.06em;
+  vertical-align: -.14em;
 }
 
 /* ── PROJECT CARDS (index) ── */
@@ -2227,9 +2227,10 @@ html.light #pg-about .contact-card:nth-of-type(4) .cc-icon { color: var(--acc); 
   backdrop-filter: none; -webkit-backdrop-filter: none;
 }
 #roadmap-internal-nav .nav-links a {
-  display: flex; align-items: center; font-family: var(--font-ndot); font-size: 13px; letter-spacing: normal; color: rgba(241,240,246,.38); text-decoration: none;
+  display: flex; align-items: center; font-family: var(--font-ndot); font-size: 13px; letter-spacing: 1.2px; color: rgba(241,240,246,.38); text-decoration: none;
   background: none; border: none; border-radius: 100px; padding: 7px 16px;
   transition: color .13s, background .13s;
+  text-transform: uppercase;
 }
 #roadmap-internal-nav .nav-links a:hover,
 #roadmap-internal-nav .nav-links a.active { color: var(--w); background: rgba(255,255,255,.07); }
@@ -3435,7 +3436,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
 <nav id="shared-nav">
   <a href="#home" class="nav-logo" onclick="showPage('home')">
     <div class="nav-logo-name">
-      <span class="wm-cap">Vishal</span> <span class="wm-cap">Katariya</span>
+      <span class="hn-script">V</span><span class="hn-sans">ishal</span>&thinsp;<span class="hn-script">K</span><span class="hn-sans">atariya</span>
     </div>
   </a>
 
@@ -3550,9 +3551,9 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
         identity
       </div>
       <div style="display:flex;align-items:flex-end;justify-content:space-between">
-        <div style="line-height:1;letter-spacing:-.5px;">
-          <div style="font-size:clamp(28px,3.5vw,36px)"><span class="wm-cap">Vishal</span></div>
-          <div style="font-size:clamp(28px,3.5vw,36px)"><span class="wm-cap">Katariya</span></div>
+        <div style="line-height:1;letter-spacing:-1.5px;font-family:'Syne',sans-serif;font-weight:800;">
+          <div style="font-size:clamp(28px,3.5vw,36px)"><span class="hn-script" style="font-size:1.5em;line-height:0.82;display:inline-block;margin-right:-.07em;vertical-align:-.14em;">V</span><span class="hn-sans" style="font-family:'Syne',sans-serif;font-weight:800;">ishal</span></div>
+          <div style="font-size:clamp(28px,3.5vw,36px)"><span class="hn-script" style="font-size:1.5em;line-height:0.82;display:inline-block;margin-right:-.07em;vertical-align:-.14em;">K</span><span class="hn-sans" style="font-family:'Syne',sans-serif;font-weight:800;">atariya</span></div>
         </div>
         <!-- 3D person icon -->
         <div class="ico ico-float" style="opacity:.18;margin-bottom:4px">
@@ -3579,7 +3580,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
       <div class="cg" id="cg"></div>
       <div style="display:flex;justify-content:space-between;align-items:baseline;margin-top:4px;">
         <span class="sub">contributions · 2026</span>
-        <span style="font-family:'DM Mono',monospace;font-size:22px;font-weight:500;letter-spacing:-1px;" id="cc">51</span>
+        <span style="font-family:'DM Mono',monospace;font-size:22px;font-weight:500;letter-spacing:-1px;" id="cc">401</span>
       </div>
     </div>
 
@@ -3729,7 +3730,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
         featured · hermes oauth
       </div>
       <!-- dot-matrix title -->
-      <div style="font-family:var(--font-ndot),'DM Mono',monospace;font-size:17px;font-weight:400;color:var(--green);line-height:1.15;letter-spacing:.3px;text-shadow:0 0 10px rgba(52,199,123,.35)">HERMES ONE<br>OAUTH FORK</div>
+      <div style="font-family:'DM Mono',monospace;font-size:17px;font-weight:500;color:var(--green);line-height:1.15;letter-spacing:.3px;text-shadow:0 0 10px rgba(52,199,123,.35)">HERMES ONE<br>OAUTH FORK</div>
       <!-- stats -->
       <div style="display:flex;gap:10px;align-items:flex-end">
         <div>
@@ -4641,7 +4642,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
       <div>
         <div class="cs-h">Hybrid Architecture</div>
         <p class="cs-p">Personal portfolio at vishalkatariya.dev — built as a self-contained SvelteKit SPA, hybrid-hosted with public routes on Vercel and private <code>/me/*</code> behind a Tailscale + Caddy IP allowlist on athena.</p>
-        <p class="cs-p">Design system uses three layered surfaces: liquid glass (nav/frames), neomorphism (widgets), and NeoPOP (CTAs). Typography stacks Cormorant Garamond italic (initials) with Space Grotesk (display), Outfit (body), DM Mono (labels), and NDOT (accent).</p>
+        <p class="cs-p">Design system uses three layered surfaces: liquid glass (nav/frames), neomorphism (widgets), and NeoPOP (CTAs). Typography stacks Cormorant Garamond italic (initials) with Space Grotesk (display + accents), Outfit (body), DM Mono (labels), JetBrains Mono (topbar metadata), and Syne (about/projects hero titles).</p>
       </div>
       <div>
         <div class="cs-h">Consolidated SPA</div>
@@ -6059,7 +6060,7 @@ function toggleLang() {
 }
 
 // ── Simulated GitHub contribution grid (cells only) ──
-// Cells are random for visual interest. The count is fixed in HTML at <span id="cc">51</span>.
+// Cells are random for visual interest. The count is fixed in HTML at <span id="cc">401</span>.
 // Do NOT add a setInterval here that writes to #cc — it will override the static value.
 const g = document.getElementById('cg');
 const L = ['','l1','l2','l3','l4'];
