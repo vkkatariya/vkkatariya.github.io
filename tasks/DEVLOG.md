@@ -6,6 +6,51 @@
 
 ---
 
+## [2026-06-27] Hermes — Session wrap: typography overhaul + uppercase nav shipped to dev
+
+**Mode:** Builder (Claude chat dispatch for wordmark work + Hermes inline for nav work)
+**Did:**
+
+Session recap — three separate work streams all merged into `dev` today:
+
+1. **`feat/remove-ndot-font`** (merged at `3bba345`, earlier in day)
+   - Drop NDOT font files + @font-face blocks
+   - Cascade `--font-ndot` from `'Ndot', 'DM Mono', monospace` → `'DM Mono', monospace`
+   - All 29 `var(--font-ndot)` selectors now render as DM Mono caps
+
+2. **`feat/calligraphic-name-wordmark`** (merged at `8bafbd2` + `f073de2`)
+   - Typography overhaul (Claude chat, transcribed by Hermes): logo + identity + page titles unified with calligraphic-initial + sans-serif-body pattern
+   - Uppercase nav (Hermes inline): shared pill + roadmap nav + mobile overlay get `text-transform: uppercase`
+
+**State:** `dev @ f073de2` ready to ship to `main`. Both deploy targets (Vercel + GitHub Pages) auto-rebuild on push to main. No production deploy triggered yet — still on user's discretion.
+
+**Lessons:**
+
+- **L-061 still holds** (added earlier in session): font/design feedback is more reliable after public deploy than during dev preview. Today's wordmark work iterated 4+ times before user accepted the result. Visual taste calls should be deferred until deployed.
+- **Documenting remote agent work via devlog transcription works**: when Claude does work in their chat and provides a devlog, Hermes can re-apply the exact changes from the devlog text. Risk: agent work not on remote means transcription is the only source of truth — easy to lose track.
+- **Inline styles are the right call for single-use locations**: identity widget's `.hn-sans` got explicit `font-family:'Syne'` inline rather than a scoped CSS class. The widget is one-off markup, inline keeps it close to where it's used, and avoids polluting the global stylesheet. The bug I introduced (forgetting the inline `font-family` on the sans span, causing it to inherit Space Grotesk instead of Syne) was a 2-character fix — much faster than diagnosing a missing CSS class.
+- **Branch discipline saved us**: after the revert at `826845b`, the wordmark work and the uppercase nav work went on `feat/calligraphic-name-wordmark` as separate commits (`e6b9a0c` and `b3b926c`). If those had gone directly on dev, the revert would have been much messier to unwind.
+
+**Files touched (full day):**
+- `prototypes/portfolio-combined.html` — typography overhaul + uppercase nav
+- `prototypes/assets/fonts/Ndot55-Regular.otf` — deleted
+- `prototypes/assets/fonts/Ndot55Caps-Regular.otf` — deleted
+- `prototypes/assets/fonts/README.md` — rewritten as historical reference
+- `tasks/DEVLOG.md` — 3 entries (this one + Claude's wordmark + Hermes's revert)
+- `tasks/lessons.md` — L-061 added
+- `tasks/todo.md` — NDOT removal + wordmark sub-items marked
+
+**Branch state at session end:**
+
+```
+dev:                              f073de2 (merge: uppercase nav + wordmark)
+feat/calligraphic-name-wordmark:   b3b926c (kept on remote per workflow rule)
+```
+
+Both merges `--no-ff` per project convention. Branch `feat/calligraphic-name-wordmark` can be deleted at session-end batch cleanup or kept per your preference.
+
+---
+
 ## [2026-06-27] Claude — typography overhaul: logo, identity widget, page titles
 
 **Mode:** Builder (via Claude chat, transcribed by Hermes)
