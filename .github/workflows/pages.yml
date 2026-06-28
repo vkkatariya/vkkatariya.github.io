@@ -21,7 +21,24 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  validate:
+    name: Pre-deploy HTML validation
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - run: npm ci
+
+      - name: Lint HTML prototypes
+        run: npm run lint:html
+
   deploy:
+    needs: validate
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -53,7 +70,7 @@ jobs:
       - name: Wait for Pages propagation
         run: sleep 30
 
-      - name: Smoke test — root redirect
+      - name: Check root URL returns HTTP 200
         run: |
           STATUS=$(curl -sL -o /dev/null -w '%{http_code}' 'https://vkkatariya.github.io/')
           if [ "$STATUS" != "200" ]; then
@@ -62,16 +79,7 @@ jobs:
           fi
           echo "✓ Root URL HTTP 200"
 
-      - name: Smoke test — SPA
-        run: |
-          STATUS=$(curl -sL -o /dev/null -w '%{http_code}' 'https://vkkatariya.github.io/prototypes/portfolio-combined.html')
-          if [ "$STATUS" != "200" ]; then
-            echo "::error::SPA URL returned HTTP $STATUS (expected 200)"
-            exit 1
-          fi
-          echo "✓ SPA URL HTTP 200"
-
-      - name: Smoke test — server header (verify not Vercel)
+      - name: Verify served by GitHub (not Vercel)
         run: |
           SERVER=$(curl -sIL 'https://vkkatariya.github.io/' | grep -i '^server:' | head -1 | tr -d '\r')
           echo "Server: $SERVER"
@@ -82,59 +90,63 @@ jobs:
           if echo "$SERVER" | grep -qi 'github'; then
             echo "✓ Served by GitHub.com (correct)"
           else
-            echo "::warning::Server header not GitHub or Vercel: $SERVER"
+            echo "::warning::Unexpected server header: $SERVER"
           fi
 
-      - name: Smoke test — content sanity
+      - name: Fetch SPA content once
         run: |
-          CONTENT=$(curl -sL 'https://vkkatariya.github.io/prototypes/portfolio-combined.html')
-          if echo "$CONTENT" | grep -q 'HERMES OAUTH'; then
-            echo "✓ SPA contains HERMES OAUTH widget"
-          else
-            echo "::error::SPA missing expected widget content"
+          curl -sL 'https://vkkatariya.github.io/prototypes/portfolio-combined.html' > /tmp/spa.html
+          BYTES=$(wc -c < /tmp/spa.html)
+          echo "Fetched $BYTES bytes"
+          if [ "$BYTES" -lt 100000 ]; then
+            echo "::error::SPA suspiciously small ($BYTES bytes, expected >100KB)"
             exit 1
           fi
-          if echo "$CONTENT" | grep -q 'GITHUB ACTIVITY'; then
-            echo "✓ SPA contains GITHUB ACTIVITY widget"
-          else
-            echo "::error::SPA missing GITHUB ACTIVITY widget"
-            exit 1
-          fi
-          SIZE=$(echo -n "$CONTENT" | wc -c)
-          if [ "$SIZE" -lt 100000 ]; then
-            echo "::error::SPA content size $SIZE bytes is suspiciously small (expected >100KB)"
-            exit 1
-          fi
-          echo "✓ SPA content size: $SIZE bytes"
+          echo "✓ SPA content size: $BYTES bytes"
 
-      - name: Smoke test — Speed Insights script
+      - name: Check SPA page sections present
         run: |
-          CONTENT=$(curl -sL 'https://vkkatariya.github.io/prototypes/portfolio-combined.html')
-          if echo "$CONTENT" | grep -q 'window.siq'; then
-            echo "✓ Speed Insights queue initializer present"
-          else
-            echo "::error::Speed Insights snippet missing"
-            exit 1
-          fi
-          if echo "$CONTENT" | grep -q '/_vercel/speed-insights/script.js'; then
-            echo "✓ Speed Insights script reference present"
-          else
-            echo "::error::Speed Insights script.js reference missing"
-            exit 1
-          fi
+          fail=0
+          check() {
+            grep -q "$1" /tmp/spa.html \
+              && echo "✓ $2" \
+              || { echo "::error::Missing $2"; fail=1; }
+          }
+          check 'id="pg-home"'            "pg-home section"
+          check 'id="pg-projects"'        "pg-projects section"
+          check 'id="pg-roadmap"'         "pg-roadmap section"
+          check 'id="pg-about"'           "pg-about section"
+          check 'id="themeBtn"'           "theme toggle button"
+          check 'id="langBtn"'            "language toggle button"
+          check 'id="navMenuBtn"'         "mobile menu button"
+          check 'id="modal-overlay"'      "roadmap modal"
+          check 'id="shared-nav"'         "shared navigation"
+          exit $fail
 
-      - name: Smoke test — Web Analytics script
+      - name: Check widget content
         run: |
-          CONTENT=$(curl -sL 'https://vkkatariya.github.io/prototypes/portfolio-combined.html')
-          if echo "$CONTENT" | grep -q 'window.vaq'; then
-            echo "✓ Web Analytics queue initializer present"
-          else
-            echo "::error::Web Analytics snippet missing"
-            exit 1
-          fi
-          if echo "$CONTENT" | grep -q '/_vercel/insights/script.js'; then
-            echo "✓ Web Analytics script reference present"
-          else
-            echo "::error::Web Analytics script.js reference missing"
-            exit 1
-          fi
+          fail=0
+          check() {
+            grep -q "$1" /tmp/spa.html \
+              && echo "✓ $2" \
+              || { echo "::error::Missing $2"; fail=1; }
+          }
+          check 'HERMES OAUTH'        "HERMES OAUTH widget"
+          check 'GITHUB ACTIVITY'     "GITHUB ACTIVITY widget"
+          check 'topics-grid'         "CS roadmap topics grid"
+          check 'careers-grid'        "CS roadmap careers grid"
+          exit $fail
+
+      - name: Check analytics scripts
+        run: |
+          fail=0
+          check() {
+            grep -q "$1" /tmp/spa.html \
+              && echo "✓ $2" \
+              || { echo "::error::Missing $2"; fail=1; }
+          }
+          check 'window.siq'                          "Speed Insights queue initializer"
+          check '/_vercel/speed-insights/script.js'   "Speed Insights script reference"
+          check 'window.vaq'                          "Web Analytics queue initializer"
+          check '/_vercel/insights/script.js'         "Web Analytics script reference"
+          exit $fail
