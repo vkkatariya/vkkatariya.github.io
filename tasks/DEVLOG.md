@@ -6,6 +6,33 @@
 
 ---
 
+## [2026-06-28] Claude Code — Add SessionStart hook for Claude Code on the web
+
+**Mode:** Execution
+
+**Did:**
+- Created `.claude/hooks/session-start.sh` — runs `npm install` on session start, no-op when `CLAUDE_CODE_REMOTE` is unset (local machines unaffected)
+- Created `.claude/settings.json` — registers the hook under `SessionStart` event
+- Validated hook: `npm install` completed cleanly (72 packages, 0 vulnerabilities)
+- Validated linter: `htmlhint prototypes/portfolio-v4.html` — no errors
+- Validated tests: all 29 Playwright e2e tests passed (SPA nav, theme toggle, lang toggle, mobile menu, roadmap modal)
+- Committed `ci(portfolio): add SessionStart hook for Claude Code on the web` and pushed to `claude/session-start-pf8kdz`
+- Hook confirmed firing on session resume (system log: `npm install` ran, up to date in 1s)
+
+**State:** Branch `claude/session-start-pf8kdz` pushed and ready to merge. Hook is live and working — session resume confirmed it ran successfully. No production deploy needed (infrastructure change only).
+
+**Decided:**
+- Synchronous mode (not async) — guarantees deps are installed before any tool runs. Adds ~1–2s to session start with warm npm cache, which is acceptable.
+- Hook is remote-only (`CLAUDE_CODE_REMOTE=true` guard) — local dev sessions are unaffected.
+
+**Blocked / Next:** Merge `claude/session-start-pf8kdz` → `dev` → `main` to activate for all future remote sessions.
+
+**Modified:**
+- `.claude/hooks/session-start.sh` (new)
+- `.claude/settings.json` (new)
+
+---
+
 ## [2026-06-28] Hermes — Session workflow validated by Claude Code + L1/L2/L3 layer model
 
 **Mode:** Workflow design (cross-tool conversation: Hermes → Claude Code via user relay)
