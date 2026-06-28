@@ -118,7 +118,8 @@ vkkatariya.github.io/
 │   ├── about.html
 │   ├── cs-roadmap.html
 │   └── portfolio-combined.html
-├── ref:resources/          ← architecture diagrams, references
+├── docs/                  ← architecture diagrams, references
+│   ├── mental-model-tree.html
 │   └── portfolio_architecture_v2.html
 └── tasks/
     ├── todo.md             ← sprint tracker
