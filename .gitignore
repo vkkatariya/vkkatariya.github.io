@@ -49,4 +49,6 @@ playwright-report/
 *.crt
 *.key
 .vercel
-.env*
+
+# Local dev workflow symlink (homelab-only, see ~/dev-shared/workflow/)
+workflow

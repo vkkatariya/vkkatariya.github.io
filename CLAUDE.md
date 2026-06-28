@@ -13,6 +13,22 @@ Before any meaningful work, read these files in order:
 3. `tasks/todo.md` — sprint items and phase status
 4. `tasks/lessons.md` — active prevention rules (L-001 through L-061+)
 
+## Workflow references (symlinked, homelab-only)
+
+The `./workflow/` directory is a symlink to `~/dev-shared/workflow/` — same path on every machine via mutagen sync. **Do not commit it** (already in `.gitignore`). Read workflow files on demand, not at every session start:
+
+- `./workflow/SESSION-WORKFLOW.md` — Claude Code session lifecycle, /remote-control, compaction
+- `./workflow/AI-ROUTING.md` — L1/L2/L3 layer model, tool vs agent routing
+- `./workflow/GIT-GITHUB-BLUEPRINT.md` — branch/commit/PR conventions
+- `./workflow/agents_workflow/AI-AGENTS-ORCHESTRATION.md` — sub-agent dispatch patterns
+- `./workflow/TODAY.md` — daily task list
+- `./workflow/PROJECTS.md` — cross-project statuses
+
+If the symlink is broken on a fresh clone, recreate it:
+```bash
+ln -sf ~/dev-shared/workflow ./workflow
+```
+
 ---
 
 ## Commands
