@@ -1,0 +1,357 @@
+# Instincts generated from https://github.com/vkkatariya/vkkatariya.github.io
+# Generated: 2026-06-28T12:12:59.676Z
+# Version: 2.0
+# NOTE: This file supplements (does not replace) any existing curated instincts.
+# High-confidence manually curated instincts should be preserved alongside these.
+
+---
+id: vkkatariya.github.io-commit-conventional
+trigger: "when writing a commit message"
+confidence: 0.85
+domain: git
+source: repo-analysis
+source_repo: https://github.com/vkkatariya/vkkatariya.github.io
+---
+
+# Vkkatariya.github.io Commit Conventional
+
+## Action
+
+Use conventional commit format with prefixes: feat, chore
+
+## Evidence
+
+- 2 commits analyzed
+- Detected conventional commit pattern
+- Examples: feat(tests): add e2e test suite and CI test infrastructure, chore: ignore Playwright test-results and report artifacts
+
+---
+id: vkkatariya.github.io-commit-length
+trigger: "when writing a commit message"
+confidence: 0.6
+domain: git
+source: repo-analysis
+source_repo: https://github.com/vkkatariya/vkkatariya.github.io
+---
+
+# Vkkatariya.github.io Commit Length
+
+## Action
+
+Write moderate-length commit messages (~58 characters)
+
+## Evidence
+
+- Average commit message length: 58 chars
+- Based on 2 commits
+
+---
+id: vkkatariya.github.io-naming-files
+trigger: "when creating a new file"
+confidence: 0.8
+domain: code-style
+source: repo-analysis
+source_repo: https://github.com/vkkatariya/vkkatariya.github.io
+---
+
+# Vkkatariya.github.io Naming Files
+
+## Action
+
+Use camelCase naming convention
+
+## Evidence
+
+- Analyzed file naming patterns in repository
+- Dominant pattern: camelCase
+
+---
+id: vkkatariya.github.io-import-relative
+trigger: "when importing modules"
+confidence: 0.75
+domain: code-style
+source: repo-analysis
+source_repo: https://github.com/vkkatariya/vkkatariya.github.io
+---
+
+# Vkkatariya.github.io Import Relative
+
+## Action
+
+Use relative imports for project files
+
+## Evidence
+
+- Import analysis shows relative import pattern
+- Example: import { x } from '../lib/x'
+
+---
+id: vkkatariya.github.io-export-style
+trigger: "when exporting from a module"
+confidence: 0.7
+domain: code-style
+source: repo-analysis
+source_repo: https://github.com/vkkatariya/vkkatariya.github.io
+---
+
+# Vkkatariya.github.io Export Style
+
+## Action
+
+Prefer named exports
+
+## Evidence
+
+- Export pattern analysis
+- Dominant style: named
+
+---
+id: vkkatariya.github.io-test-separate
+trigger: "when writing tests"
+confidence: 0.8
+domain: testing
+source: repo-analysis
+source_repo: https://github.com/vkkatariya/vkkatariya.github.io
+---
+
+# Vkkatariya.github.io Test Separate
+
+## Action
+
+Place tests in the tests/ or __tests__/ directory, mirroring src structure
+
+## Evidence
+
+- Separate test directory pattern detected
+- Tests live in dedicated test folders
+
+---
+id: vkkatariya.github.io-instinct-file-naming
+trigger: "When creating a new file in the repository"
+confidence: 0.8
+domain: code-style
+source: repo-analysis
+source_repo: vkkatariya/vkkatariya.github.io
+---
+
+# Vkkatariya.github.io Instinct File Naming
+
+## Action
+
+Name the file using camelCase convention
+
+## Evidence
+
+- Pattern in namingConventions.files
+
+---
+id: vkkatariya.github.io-instinct-function-naming
+trigger: "When defining a new function"
+confidence: 0.8
+domain: code-style
+source: repo-analysis
+source_repo: vkkatariya/vkkatariya.github.io
+---
+
+# Vkkatariya.github.io Instinct Function Naming
+
+## Action
+
+Name the function using camelCase convention
+
+## Evidence
+
+- Pattern in namingConventions.functions
+
+---
+id: vkkatariya.github.io-instinct-class-naming
+trigger: "When defining a new class"
+confidence: 0.8
+domain: code-style
+source: repo-analysis
+source_repo: vkkatariya/vkkatariya.github.io
+---
+
+# Vkkatariya.github.io Instinct Class Naming
+
+## Action
+
+Name the class using PascalCase convention
+
+## Evidence
+
+- Pattern in namingConventions.classes
+
+---
+id: vkkatariya.github.io-instinct-constant-naming
+trigger: "When defining a constant"
+confidence: 0.8
+domain: code-style
+source: repo-analysis
+source_repo: vkkatariya/vkkatariya.github.io
+---
+
+# Vkkatariya.github.io Instinct Constant Naming
+
+## Action
+
+Name the constant using SCREAMING_SNAKE_CASE convention
+
+## Evidence
+
+- Pattern in namingConventions.constants
+
+---
+id: vkkatariya.github.io-instinct-import-style
+trigger: "When importing modules in JavaScript files"
+confidence: 0.8
+domain: code-style
+source: repo-analysis
+source_repo: vkkatariya/vkkatariya.github.io
+---
+
+# Vkkatariya.github.io Instinct Import Style
+
+## Action
+
+Use relative import paths
+
+## Evidence
+
+- Pattern in importStyle
+
+---
+id: vkkatariya.github.io-instinct-export-style
+trigger: "When exporting functions or variables"
+confidence: 0.8
+domain: code-style
+source: repo-analysis
+source_repo: vkkatariya/vkkatariya.github.io
+---
+
+# Vkkatariya.github.io Instinct Export Style
+
+## Action
+
+Use named exports
+
+## Evidence
+
+- Pattern in exportStyle
+
+---
+id: vkkatariya.github.io-instinct-test-location
+trigger: "When adding new tests"
+confidence: 0.9
+domain: testing
+source: repo-analysis
+source_repo: vkkatariya/vkkatariya.github.io
+---
+
+# Vkkatariya.github.io Instinct Test Location
+
+## Action
+
+Place test files in the separate 'tests' folder
+
+## Evidence
+
+- Pattern in folderStructure.testLocation
+- Presence of 'tests' folder
+
+---
+id: vkkatariya.github.io-instinct-test-type
+trigger: "When writing end-to-end tests"
+confidence: 0.7
+domain: testing
+source: repo-analysis
+source_repo: vkkatariya/vkkatariya.github.io
+---
+
+# Vkkatariya.github.io Instinct Test Type
+
+## Action
+
+Use Playwright for e2e test suites
+
+## Evidence
+
+- Seen in commit: 'feat(tests): add e2e test suite and CI test infrastructure'
+
+---
+id: vkkatariya.github.io-instinct-commit-prefix-feat
+trigger: "When committing a new feature"
+confidence: 0.9
+domain: git
+source: repo-analysis
+source_repo: vkkatariya/vkkatariya.github.io
+---
+
+# Vkkatariya.github.io Instinct Commit Prefix Feat
+
+## Action
+
+Prefix the commit message with 'feat'
+
+## Evidence
+
+- Seen in commit: 'feat(tests): add e2e test suite and CI test infrastructure'
+
+---
+id: vkkatariya.github.io-instinct-commit-prefix-chore
+trigger: "When committing maintenance or non-feature changes"
+confidence: 0.9
+domain: git
+source: repo-analysis
+source_repo: vkkatariya/vkkatariya.github.io
+---
+
+# Vkkatariya.github.io Instinct Commit Prefix Chore
+
+## Action
+
+Prefix the commit message with 'chore'
+
+## Evidence
+
+- Seen in commit: 'chore: ignore Playwright test-results and report artifacts'
+
+---
+id: vkkatariya.github.io-instinct-commit-format-length
+trigger: "When writing a commit message"
+confidence: 0.7
+domain: git
+source: repo-analysis
+source_repo: vkkatariya/vkkatariya.github.io
+---
+
+# Vkkatariya.github.io Instinct Commit Format Length
+
+## Action
+
+Keep the commit message concise, around 58 characters on average
+
+## Evidence
+
+- Pattern in commits.averageLength
+
+---
+id: vkkatariya.github.io-instinct-commit-format-conventional
+trigger: "When writing a commit message"
+confidence: 0.9
+domain: git
+source: repo-analysis
+source_repo: vkkatariya/vkkatariya.github.io
+---
+
+# Vkkatariya.github.io Instinct Commit Format Conventional
+
+## Action
+
+Follow the Conventional Commits format: <type>(<scope>): <description>
+
+## Evidence
+
+- Pattern in commits.type
+- Examples in commits.examples
+
