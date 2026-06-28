@@ -6,6 +6,38 @@
 
 ---
 
+## L-063 — CSS Grid items have `min-width: auto` by default; always set `min-width: 0` on mobile grid children
+
+**What failed:** On the homepage mobile grid (`repeat(2, 1fr)`), the right-column widgets (orlon-bot, homelab) were clipping beyond the right edge of the screen. `body { overflow-x: hidden }` was clipping the overflow rather than preventing it.
+
+**Root cause:** CSS Grid items default to `min-width: auto`, which allows them to expand to their content's intrinsic minimum width. On a `1fr` column, if a child has content wider than `1fr`, the item stays wide and forces horizontal scroll (clipped by body overflow).
+
+**Prevention rule:**
+- On every mobile grid layout, add `min-width: 0` to all direct grid children: `.grid > * { min-width: 0 }`
+- This is required for `1fr` to behave as a true upper bound, not a suggestion
+- Applies equally to flexbox children that may overflow: `flex: 1; min-width: 0`
+- Also add `overflow-x: hidden` on the grid container itself as a second line of defense
+- `body { overflow-x: hidden }` alone is insufficient — it clips content but doesn't fix the layout
+
+**Related rules:** L-049 (DOM coordinate audit before grid changes), L-050 (prefer auto-placement over explicit grid lines).
+
+---
+
+## L-062 — Base (non-media-query) CSS silently overrides mobile media query rules for the same property
+
+**What failed:** Added `width: calc(100% - 32px)` to `#roadmap-internal-nav` inside `@media (max-width: 560px)`. The RESOURCES tab still clipped on mobile. The base CSS `#roadmap-internal-nav { max-width: calc(100% - 40px) }` (outside any media query) was never inside the media query, so it applied at all viewport sizes including mobile, constraining the bar width regardless of the fix.
+
+**Root cause:** When adding a mobile override for a property, `max-width`, `min-width`, and `width` interact — a mobile `width: X` fix is silently capped by a base `max-width: Y` if Y < X. The base rule applies at all sizes and can override the mobile-specific rule even though both are technically "valid".
+
+**Prevention rule:**
+- When adding a mobile override for a width/size property, **grep the file for all selectors that also set `max-width`, `min-width`, or `width` on the same element** — any of those rules at higher or equal specificity outside the media query will constrain your fix
+- The fix is to add `max-width: none` (or `min-width: 0`) alongside your mobile override to explicitly cancel the base constraint
+- Before writing a mobile override, check: does the base CSS set any related dimension that could cap the override?
+
+**Related rules:** L-023 (check duplicate selectors before editing CSS), L-024 (later source-order rule wins).
+
+---
+
 ## L-061 — Font + design feedback is more reliable after public deploy than during dev preview
 
 **What failed:** Spent 4 NDOT rollout branches (feat/vendor-ndot-font → feat/ndot-display-accent → feat/ndot-topbar-rollout → feat/ndot-widget-titles → feat/ndot-proj-title + redo) perfecting the NothingOS dot-matrix aesthetic. Multiple agents, multiple kicks, selector audit passes, font-size tuning, redo loops. User accepted each branch during dev. **Then on 2026-06-27, after the site went live on `vishal-katariya.com`, user said the dot-matrix font doesn't suit — remove it.**

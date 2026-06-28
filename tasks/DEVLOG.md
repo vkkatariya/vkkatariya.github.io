@@ -6,6 +6,44 @@
 
 ---
 
+## [2026-06-28] Claude Code — Mobile UX fixes: roadmap RESOURCES tab + homepage identity-first layout
+
+**Mode:** Execution
+
+**Did:**
+1. **fix(roadmap): RESOURCES tab clipping in mobile bottom bar** (`a005a43` → `dev`)
+   - Root cause: base CSS `#roadmap-internal-nav { max-width: calc(100% - 40px) }` was not inside the media query, silently overriding the mobile `width: calc(100% - 32px)` fix (→ L-062)
+   - Fix: added `max-width: none` in `@media (max-width: 560px)`, `width: 100%` on `.nav-links`, `min-width: 0` on `li` items, reduced tab padding to `6px`, font to `10px`, letter-spacing to `.5px`, added `white-space: nowrap; overflow: hidden; text-overflow: ellipsis` safety fallback
+
+2. **fix(homepage): identity-first hero grid on mobile** (`6285b3f` → `dev`)
+   - Root cause 1: CLOCK widget (s22, 2×160px = 320px) was first in grid, pushing IDENTITY below the fold
+   - Root cause 2: grid items with `min-width: auto` caused right-column widgets (orlon-bot, homelab) to overflow their `1fr` column (→ L-063)
+   - Root cause 3: `intern-ready` chip partially cut off by body `overflow-x: hidden` clipping
+   - Fix: hide clock on mobile (`display: none`), reorder identity widget first (`order: -1`), `grid-row: span 2` makes it hero-sized (320px), name font scaled to 48px on mobile, `min-width: 0` on all grid items, `overflow-x: hidden` on grid container
+   - Added `id="home-clock"`, `id="home-identity"`, `class="hn-name"` to HTML for CSS targeting
+
+3. **Read all .md files** to understand session workflow: `CLAUDE.md`, `CONTEXT.md`, `AGENTS.md`, `tasks/DEVLOG.md`, `tasks/todo.md`, `tasks/lessons.md` — confirmed mandatory DEVLOG rule and applied it
+
+**State:** `dev @ 6285b3f` — both fixes committed and pushed. All 29 Playwright e2e tests passing (spa.spec.js: SPA navigation, theme toggle, language toggle, mobile menu, roadmap modal suites). No production deploy — still on user's discretion.
+
+**Decided:**
+- Hiding the clock widget on mobile is correct UX (time shown in phone status bar)
+- `order: -1` CSS reorder preferred over changing HTML order (preserves desktop layout)
+- `min-width: 0` on all grid children is now standard practice for mobile grids (→ L-063)
+
+**Blocked / Next:**
+- [ ] Color accent pass: apply roadmap tinted-pill system to home/projects/about/me pages
+- [ ] Contact form with email endpoint (Resend or Nodemailer)
+- [ ] DE translation strings — scope decision needed (minimal/partial/full)
+- [ ] Branch 8 (deferred): NDOT to `.tl-title` — needs separate decision
+
+**Modified:**
+- `prototypes/portfolio-combined.html` — two separate edits (RESOURCES tab CSS + homepage mobile CSS + HTML IDs/class)
+- `tasks/DEVLOG.md` — this entry
+- `tasks/lessons.md` — added L-062, L-063
+
+---
+
 ## [2026-06-27] Hermes — Session wrap: typography overhaul + uppercase nav shipped to dev
 
 **Mode:** Builder (Claude chat dispatch for wordmark work + Hermes inline for nav work)
