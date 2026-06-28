@@ -44,6 +44,58 @@
 
 ---
 
+## [2026-06-28] Claude Code — Test coverage analysis: 29 Playwright e2e tests + CI overhaul (earlier in session)
+
+**Mode:** Analytical → Execution
+
+**Did:**
+1. **Analysed test coverage gap** — repo had zero automated tests and CI with permanently-skipped Phase 1 placeholder jobs (frontend/backend on `if: hashFiles('web/package.json')` — always false). `pages.yml` smoke tests ran 5 separate curl calls against live Vercel URL with fragile grep checks.
+
+2. **feat(tests): add e2e test suite and CI infrastructure** (`c282a2e` → branch `claude/test-coverage-analysis-o1a960`)
+   - Added `tests/e2e/spa.spec.js`: 29 Playwright e2e tests across 5 suites:
+     - SPA navigation (8 tests): default page, nav links, hash routing, unknown hash, roadmap nav swap, nav restore
+     - Theme toggle (5 tests): default dark, toggle to light/back, localStorage persistence
+     - Language toggle (5 tests): default EN, DE toggle, availability badge text
+     - Mobile menu (5 tests): closed on load, open/close hamburger, Escape key, link navigates + closes — at `375×812` viewport
+     - Roadmap modal (6 tests): closed default, expand button opens, title populated, close button, backdrop click, second topic replaces content
+   - Added `playwright.config.js` — Chromium only, `http://localhost:8080` baseURL, single worker
+   - Added `.htmlhintrc` — 8 rules: `tagname-lowercase`, `attr-value-double-quotes`, `doctype-first`, `tag-pair`, `src-not-empty`, `title-require`, `id-unique`
+   - Added `package.json` scripts: `test` (Playwright), `lint:html` (HTMLHint on `prototypes/*.html`)
+   - Rewrote `ci.yml`: replaced Phase 1 placeholder jobs with `lint-html` + `e2e` (needs lint-html) running on every `main`/`dev` push and every PR — CI now actually runs on every commit
+   - Refactored `pages.yml` smoke: added `validate` job (pre-deploy HTML lint gate), merged 5 curl calls into a single fetch stored in `/tmp/spa.html`, expanded grep checks to cover all 4 page sections + nav controls + widget IDs + analytics scripts
+
+3. **chore: ignore Playwright artifacts** (`56d8c12`) — `.gitignore` entries for `test-results/` and `playwright-report/`
+
+4. **fix(mobile): initial RESOURCES tab clipping fix + hamburger on roadmap** (`5095286`)
+   - Removed CSS rule that hid `.nav-menu-btn` when `#shared-nav` had `.nav-hidden` (hamburger now always accessible on roadmap mobile page)
+   - Added `width: calc(100% - 32px)` to mobile `#roadmap-internal-nav` (first attempt; partially resolved — full fix landed in next session as `a005a43`)
+
+5. **All merged** to `dev` at `3f6a5b1`
+
+**State:** `dev @ 3f6a5b1` after merge. All 29 Playwright tests pass locally. CI now runs real tests. HTMLHint lints 8 HTML prototype files with 0 errors.
+
+**Decided:**
+- Playwright over Cypress: simpler config, built-in Chromium, no server needed for HTML prototypes
+- Single worker (`workers: 1`) to avoid race conditions on shared localStorage state between tests
+- Pre-deploy HTML lint gate in `pages.yml` so malformed HTML is caught before any deployment artifacts are uploaded
+
+**Blocked / Next:**
+- RESOURCES tab still partially clipped on device (initial width fix insufficient — base CSS `max-width: calc(100% - 40px)` overrides it) → fixed in follow-on session as `a005a43`
+- Homepage mobile layout still broken (not addressed in this branch) → fixed as `6285b3f`
+
+**Modified:**
+- `.github/workflows/ci.yml` — full rewrite
+- `.github/workflows/pages.yml` — full rewrite
+- `.gitignore` — +4 lines
+- `.htmlhintrc` — new file
+- `package.json` — added test/lint scripts + devDependencies
+- `package-lock.json` — new file
+- `playwright.config.js` — new file
+- `tests/e2e/spa.spec.js` — new file (215 lines, 29 tests)
+- `prototypes/portfolio-combined.html` — 2-line CSS fix (hamburger visibility + initial RESOURCES width)
+
+---
+
 ## [2026-06-27] Hermes — Session wrap: typography overhaul + uppercase nav shipped to dev
 
 **Mode:** Builder (Claude chat dispatch for wordmark work + Hermes inline for nav work)
