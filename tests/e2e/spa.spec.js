@@ -48,12 +48,18 @@ test.describe('SPA navigation', () => {
   });
 
   test('navigating away from roadmap restores shared nav', async ({ page }) => {
-    await page.locator('#shared-nav .nav-links a[href="#roadmap"]').click();
+    // Reset to home first (test #44 may have left us on roadmap with nav-links hidden)
+    await page.evaluate(() => window.showPage('home'));
+    await expect(page.locator('#pg-home')).toHaveClass(/active/);
+    // Use showPage directly — once on roadmap the nav links are visibility:hidden
+    // and Playwright clicks on hidden links timeout inconsistently (test flake root cause)
+    await page.evaluate(() => window.showPage('roadmap'));
     await expect(page.locator('#shared-nav')).toHaveClass(/nav-hidden/);
     // nav-links are visibility:hidden while roadmap is active; call showPage directly
     await page.evaluate(() => window.showPage('home'));
-    await expect(page.locator('#shared-nav')).not.toHaveClass(/nav-hidden/);
+    // Wait for the page transition to complete (pg-home gets .active + page-visible)
     await expect(page.locator('#pg-home')).toHaveClass(/active/);
+    await expect(page.locator('#shared-nav')).not.toHaveClass(/nav-hidden/);
   });
 });
 

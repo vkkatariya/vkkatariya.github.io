@@ -1,8 +1,20 @@
 # tasks/lessons.md — portfolio-website
 > Prevention rules learned from corrections during this project.
 > Format: what failed · root cause · prevention rule.
-> **Order: NEWEST at top, oldest at bottom** (L-064 first, L-001 last).
+> **Order: NEWEST at top, oldest at bottom** (L-065 first, L-001 last).
 > Agents: read this at session start. Add new entries at the TOP with the next number.
+
+---
+
+## L-065 — Don't click navigation links that become visibility:hidden after page transition — call showPage() directly
+
+**What failed:** Playwright e2e test "navigating away from roadmap restores shared nav" was flaky, failing ~60% of full-suite runs. Test clicked `#shared-nav .nav-links a[href="#roadmap"]`, but once you navigate to /roadmap, the nav links become `visibility: hidden` (CSS hides them because the roadmap internal nav takes over). Playwright's actionability check timed out inconsistently on the hidden link — sometimes the click went through (when Playwright checked quickly), sometimes it timed out.
+
+**Root cause:** Playwright's `.click()` waits for the element to be actionable (visible, stable, receives events). `visibility: hidden` elements fail this check, but the timing of the failure vs the test's default timeout was inconsistent.
+
+**Prevention:** In e2e tests, when navigation state changes CSS visibility of links, use `page.evaluate(() => window.showPage('X'))` directly instead of clicking links. This is also faster and more deterministic. Reserve `.click()` for user-flow tests where the click is the actual behavior under test. Apply same pattern to any test that needs to navigate to/from a state that triggers visibility changes (modals, dropdowns, sidebars).
+
+The visible/computed-state snapshot also told the story: the failing test's error context showed `#shared-nav` WITHOUT `nav-hidden` class and roadmap page active — meaning the showPage('home') call ran but the shared-nav state didn't update. This is because `showPage()` only removes `nav-hidden` for non-roadmap targets, and the test was still on /roadmap when showPage('home') ran (because the click failed). Symptom was confusing; root cause was the click actionability check timing.
 
 ---
 
