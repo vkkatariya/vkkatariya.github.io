@@ -1,8 +1,25 @@
 # tasks/lessons.md — portfolio-website
 > Prevention rules learned from corrections during this project.
 > Format: what failed · root cause · prevention rule.
-> **Order: NEWEST at top, oldest at bottom** (L-060 first, L-001 last).
+> **Order: NEWEST at top, oldest at bottom** (L-064 first, L-001 last).
 > Agents: read this at session start. Add new entries at the TOP with the next number.
+
+---
+
+## L-064 — Don't invent Claude Code CLI command names — verify with the actual tool
+
+**What failed:** I (Hermes) told user `/rc` is a built-in Claude Code command for relaying sessions between devices. User asked Claude Code directly, who confirmed the real command is `/remote-control`. Concept was right (relay moves running session to another device), name was hallucinated.
+
+**Root cause:** I generated the flag name from intuition instead of verifying against the actual CLI. Claude Code's CLI surface has many similar-sounding commands (`/compact`, `/rewind`, `/remote-control`, `/teleport`, `/memory`, `/clear`, `/rename`, `/init`, `/plan`, `/add-dir`, `/cd`) and they're easy to confuse when reasoning from first principles.
+
+**Prevention:** When citing a specific CLI command, slash command, or flag, either:
+1. Verify against the tool's docs (https://code.claude.com/docs) or `--help` output, or
+2. Frame as "I believe the command is X but verify before relying on it"
+3. Or ask user to confirm before committing to memory / writing docs that will be referenced later
+
+This applies to ANY external tool's CLI — Claude Code, Codex, Opencode, Hermes, gh CLI, vercel CLI, etc. The naming surface is large and "sounds right" doesn't mean "is right".
+
+Companion lesson: Claude Code's docs page (https://code.claude.com/docs/en/sessions) explicitly states CLI sessions are local-only per machine and `/remote-control` is the relay command — this is the authoritative source.
 
 ---
 
