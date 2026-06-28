@@ -1,8 +1,20 @@
 # tasks/lessons.md — portfolio-website
 > Prevention rules learned from corrections during this project.
 > Format: what failed · root cause · prevention rule.
-> **Order: NEWEST at top, oldest at bottom** (L-065 first, L-001 last).
+> **Order: NEWEST at top, oldest at bottom** (L-066 first, L-001 last).
 > Agents: read this at session start. Add new entries at the TOP with the next number.
+
+---
+
+## L-066 — Inline `display:flex` on grid children overrides `@media` rules trying to hide them
+
+**What failed:** Dev branch had CSS rules `#home-clock { display: none; }` and `#home-identity { order: -1; grid-row: span 2; }` inside a `@media (max-width: 560px)` block, but they weren't applying on mobile. Identity widget rendered AFTER the clock (not before), and clock was visible despite `display: none`. Audit before merge to main caught the regression.
+
+**Root cause:** The widgets had inline `style="display:flex;..."` on the elements themselves. Inline styles have higher specificity than any ID selector, so the `@media` rule's `display: none` was overridden by the inline `display: flex`. Same pattern as L-056 (inline `grid-column: span N` overriding parent grid-template-columns).
+
+**Prevention:** When adding CSS rules that override properties on elements with inline styles, you need `!important` to win the specificity war. Alternative: remove the inline style and put the property in the stylesheet. For audit-before-merge: ALWAYS verify mobile/responsive layouts in a real browser viewport (not just the test suite, which may not catch inline-style overrides because tests focus on functional state, not visual hierarchy).
+
+**Audit catch:** Before merging to main, ran Playwright at 380px viewport and discovered clock was visible (offsetWidth=356, offsetHeight=148, display=flex). HTML lint passed. Playwright e2e tests passed (29/29). Neither test caught the visual regression because they didn't check element visibility in mobile viewport.
 
 ---
 
