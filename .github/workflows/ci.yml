@@ -7,6 +7,41 @@ on:
     branches: [main]
 
 jobs:
+  lint-html:
+    name: HTML Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: npm ci
+      - name: Lint HTML prototypes
+        run: npm run lint:html
+
+  e2e:
+    name: E2E Tests (Playwright)
+    runs-on: ubuntu-latest
+    needs: lint-html
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: npm ci
+      - name: Install Playwright browser
+        run: npx playwright install --with-deps chromium
+      - name: Run E2E tests
+        run: npm test
+      - name: Upload Playwright report
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 7
+
+  # Placeholder jobs for Phase 1 (SvelteKit scaffold — not yet started)
   frontend:
     name: Frontend — Typecheck · Lint · Build
     runs-on: ubuntu-latest
