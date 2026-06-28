@@ -1,8 +1,81 @@
 # tasks/lessons.md — portfolio-website
 > Prevention rules learned from corrections during this project.
 > Format: what failed · root cause · prevention rule.
-> **Order: NEWEST at top, oldest at bottom** (L-060 first, L-001 last).
+> **Order: NEWEST at top, oldest at bottom** (L-066 first, L-001 last).
 > Agents: read this at session start. Add new entries at the TOP with the next number.
+
+---
+
+## L-066 — Inline `display:flex` on grid children overrides `@media` rules trying to hide them
+
+**What failed:** Dev branch had CSS rules `#home-clock { display: none; }` and `#home-identity { order: -1; grid-row: span 2; }` inside a `@media (max-width: 560px)` block, but they weren't applying on mobile. Identity widget rendered AFTER the clock (not before), and clock was visible despite `display: none`. Audit before merge to main caught the regression.
+
+**Root cause:** The widgets had inline `style="display:flex;..."` on the elements themselves. Inline styles have higher specificity than any ID selector, so the `@media` rule's `display: none` was overridden by the inline `display: flex`. Same pattern as L-056 (inline `grid-column: span N` overriding parent grid-template-columns).
+
+**Prevention:** When adding CSS rules that override properties on elements with inline styles, you need `!important` to win the specificity war. Alternative: remove the inline style and put the property in the stylesheet. For audit-before-merge: ALWAYS verify mobile/responsive layouts in a real browser viewport (not just the test suite, which may not catch inline-style overrides because tests focus on functional state, not visual hierarchy).
+
+**Audit catch:** Before merging to main, ran Playwright at 380px viewport and discovered clock was visible (offsetWidth=356, offsetHeight=148, display=flex). HTML lint passed. Playwright e2e tests passed (29/29). Neither test caught the visual regression because they didn't check element visibility in mobile viewport.
+
+---
+
+## L-065 — Don't click navigation links that become visibility:hidden after page transition — call showPage() directly
+
+**What failed:** Playwright e2e test "navigating away from roadmap restores shared nav" was flaky, failing ~60% of full-suite runs. Test clicked `#shared-nav .nav-links a[href="#roadmap"]`, but once you navigate to /roadmap, the nav links become `visibility: hidden` (CSS hides them because the roadmap internal nav takes over). Playwright's actionability check timed out inconsistently on the hidden link — sometimes the click went through (when Playwright checked quickly), sometimes it timed out.
+
+**Root cause:** Playwright's `.click()` waits for the element to be actionable (visible, stable, receives events). `visibility: hidden` elements fail this check, but the timing of the failure vs the test's default timeout was inconsistent.
+
+**Prevention:** In e2e tests, when navigation state changes CSS visibility of links, use `page.evaluate(() => window.showPage('X'))` directly instead of clicking links. This is also faster and more deterministic. Reserve `.click()` for user-flow tests where the click is the actual behavior under test. Apply same pattern to any test that needs to navigate to/from a state that triggers visibility changes (modals, dropdowns, sidebars).
+
+The visible/computed-state snapshot also told the story: the failing test's error context showed `#shared-nav` WITHOUT `nav-hidden` class and roadmap page active — meaning the showPage('home') call ran but the shared-nav state didn't update. This is because `showPage()` only removes `nav-hidden` for non-roadmap targets, and the test was still on /roadmap when showPage('home') ran (because the click failed). Symptom was confusing; root cause was the click actionability check timing.
+
+---
+
+## L-064 — Don't invent Claude Code CLI command names — verify with the actual tool
+
+**What failed:** I (Hermes) told user `/rc` is a built-in Claude Code command for relaying sessions between devices. User asked Claude Code directly, who confirmed the real command is `/remote-control`. Concept was right (relay moves running session to another device), name was hallucinated.
+
+**Root cause:** I generated the flag name from intuition instead of verifying against the actual CLI. Claude Code's CLI surface has many similar-sounding commands (`/compact`, `/rewind`, `/remote-control`, `/teleport`, `/memory`, `/clear`, `/rename`, `/init`, `/plan`, `/add-dir`, `/cd`) and they're easy to confuse when reasoning from first principles.
+
+**Prevention:** When citing a specific CLI command, slash command, or flag, either:
+1. Verify against the tool's docs (https://code.claude.com/docs) or `--help` output, or
+2. Frame as "I believe the command is X but verify before relying on it"
+3. Or ask user to confirm before committing to memory / writing docs that will be referenced later
+
+This applies to ANY external tool's CLI — Claude Code, Codex, Opencode, Hermes, gh CLI, vercel CLI, etc. The naming surface is large and "sounds right" doesn't mean "is right".
+
+Companion lesson: Claude Code's docs page (https://code.claude.com/docs/en/sessions) explicitly states CLI sessions are local-only per machine and `/remote-control` is the relay command — this is the authoritative source.
+
+---
+
+## L-063 — CSS Grid items have `min-width: auto` by default; always set `min-width: 0` on mobile grid children
+
+**What failed:** On the homepage mobile grid (`repeat(2, 1fr)`), the right-column widgets (orlon-bot, homelab) were clipping beyond the right edge of the screen. `body { overflow-x: hidden }` was clipping the overflow rather than preventing it.
+
+**Root cause:** CSS Grid items default to `min-width: auto`, which allows them to expand to their content's intrinsic minimum width. On a `1fr` column, if a child has content wider than `1fr`, the item stays wide and forces horizontal scroll (clipped by body overflow).
+
+**Prevention rule:**
+- On every mobile grid layout, add `min-width: 0` to all direct grid children: `.grid > * { min-width: 0 }`
+- This is required for `1fr` to behave as a true upper bound, not a suggestion
+- Applies equally to flexbox children that may overflow: `flex: 1; min-width: 0`
+- Also add `overflow-x: hidden` on the grid container itself as a second line of defense
+- `body { overflow-x: hidden }` alone is insufficient — it clips content but doesn't fix the layout
+
+**Related rules:** L-049 (DOM coordinate audit before grid changes), L-050 (prefer auto-placement over explicit grid lines).
+
+---
+
+## L-062 — Base (non-media-query) CSS silently overrides mobile media query rules for the same property
+
+**What failed:** Added `width: calc(100% - 32px)` to `#roadmap-internal-nav` inside `@media (max-width: 560px)`. The RESOURCES tab still clipped on mobile. The base CSS `#roadmap-internal-nav { max-width: calc(100% - 40px) }` (outside any media query) was never inside the media query, so it applied at all viewport sizes including mobile, constraining the bar width regardless of the fix.
+
+**Root cause:** When adding a mobile override for a property, `max-width`, `min-width`, and `width` interact — a mobile `width: X` fix is silently capped by a base `max-width: Y` if Y < X. The base rule applies at all sizes and can override the mobile-specific rule even though both are technically "valid".
+
+**Prevention rule:**
+- When adding a mobile override for a width/size property, **grep the file for all selectors that also set `max-width`, `min-width`, or `width` on the same element** — any of those rules at higher or equal specificity outside the media query will constrain your fix
+- The fix is to add `max-width: none` (or `min-width: 0`) alongside your mobile override to explicitly cancel the base constraint
+- Before writing a mobile override, check: does the base CSS set any related dimension that could cap the override?
+
+**Related rules:** L-023 (check duplicate selectors before editing CSS), L-024 (later source-order rule wins).
 
 ---
 

@@ -30,6 +30,10 @@ pnpm-debug.log*
 # Test coverage
 coverage/
 
+# Playwright artifacts
+test-results/
+playwright-report/
+
 # Database (local dev only)
 *.sqlite
 *.sqlite3
@@ -45,4 +49,6 @@ coverage/
 *.crt
 *.key
 .vercel
-.env*
+
+# Local dev workflow symlink (homelab-only, see ~/dev-shared/workflow/)
+workflow

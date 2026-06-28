@@ -5,12 +5,19 @@
   "private": true,
   "scripts": {
     "build": "echo 'No build step required for HTML prototype'",
-    "test": "echo \"No tests specified\" && exit 0"
+    "test": "npx playwright test",
+    "test:e2e": "npx playwright test",
+    "lint:html": "npx htmlhint 'prototypes/*.html' --config .htmlhintrc"
   },
   "keywords": [],
   "author": "Vishal Katariya",
   "license": "MIT",
   "dependencies": {
     "@vercel/speed-insights": "^1.0.15"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.56.1",
+    "htmlhint": "^1.1.4",
+    "http-server": "^14.1.1"
   }
 }

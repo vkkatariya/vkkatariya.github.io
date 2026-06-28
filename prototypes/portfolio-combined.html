@@ -428,8 +428,6 @@ html.light body::before {
   #shared-nav { padding-left: 8px; padding-right: 8px; }
   .nav-menu-btn { display: flex; }
   #shared-nav .nav-links { display: none; }
-  /* When roadmap hides shared-nav links, hamburger should also hide */
-  #shared-nav.nav-hidden .nav-menu-btn { display: none; }
   .nav-search-input { display: none; }
   .nav-search { padding: 4px 4px; border-right: none; margin-right: 0; }
   .nav-lang { display: none; }
@@ -1000,8 +998,19 @@ main {
   .hero { min-height: 75vh; padding: 70px 16px 0; }
   .hero-role { font-size: 10px; letter-spacing: 1.5px; gap: 8px 10px; }
   .nav-lang { display: none; }
+
+  /* ── Homepage: identity-first hero layout ── */
+  #home-clock { display: none !important; }
+  #home-identity { order: -1 !important; grid-row: span 2 !important; }
+  #home-identity .hn-name > div { font-size: 48px; }
+  #home-identity .hn-name .hn-script { font-size: 1.2em; }
+  /* prevent grid items from forcing column expansion */
+  #pg-home .grid { overflow-x: hidden; }
+  #pg-home .grid > * { min-width: 0; }
   #roadmap-internal-nav {
     bottom: 16px;
+    width: calc(100% - 32px);
+    max-width: none;
     gap: 0;
     padding: 0;
     background: rgba(8,8,8,.75);
@@ -1018,16 +1027,21 @@ main {
   #roadmap-internal-nav .nav-logo { display: none; }
   #roadmap-internal-nav .nav-links {
     display: flex;
+    width: 100%;
     gap: 0;
   }
-  #roadmap-internal-nav .nav-links li { flex: 1; }
+  #roadmap-internal-nav .nav-links li { flex: 1; min-width: 0; }
   #roadmap-internal-nav .nav-links a {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 14px 12px;
-    font-size: 11px;
+    padding: 14px 6px;
+    font-size: 10px;
+    letter-spacing: .5px;
     border-right: 1px solid rgba(255,255,255,.06);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   #roadmap-internal-nav .nav-links li:last-child a { border-right: none; }
   #roadmap-internal-nav .nav-links a:hover { background: rgba(255,255,255,.05); }
@@ -3510,7 +3524,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
   <div class="grid">
 
     <!-- 1 · CLOCK — NothingOS ndot · 2×2 -->
-    <div class="w glass s22" style="display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden">
+    <div class="w glass s22" id="home-clock" style="display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden">
       <!-- Animated background clock decoration -->
       <div style="position:absolute;right:-10px;bottom:-10px;pointer-events:none;opacity:.06">
         <svg class="ico-spin" width="140" height="140" viewBox="0 0 140 140" fill="none">
@@ -3545,13 +3559,13 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
     </div>
 
     <!-- 2 · IDENTITY · 2×1 -->
-    <a class="w s21" href="#about" onclick="showPage('about');return false;" style="text-decoration:none;color:inherit;display:flex;flex-direction:column;justify-content:space-between;">
+    <a class="w s21" id="home-identity" href="#about" onclick="showPage('about');return false;" style="text-decoration:none;color:inherit;display:flex;flex-direction:column;justify-content:space-between;">
       <div class="wlbl-row">
         <svg class="ico" width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="5" r="2.8" stroke="rgba(255,255,255,.4)" stroke-width="1"/><path d="M2 13 C2 10 4.5 8.5 7 8.5 C9.5 8.5 12 10 12 13" stroke="rgba(255,255,255,.4)" stroke-width="1" stroke-linecap="round" fill="none"/></svg>
         identity
       </div>
       <div style="display:flex;align-items:flex-end;justify-content:space-between">
-        <div style="line-height:1;letter-spacing:-1.5px;font-family:'Syne',sans-serif;font-weight:800;">
+        <div class="hn-name" style="line-height:1;letter-spacing:-1.5px;font-family:'Syne',sans-serif;font-weight:800;">
           <div style="font-size:clamp(28px,3.5vw,36px)"><span class="hn-script" style="font-size:1.5em;line-height:0.82;display:inline-block;margin-right:-.07em;vertical-align:-.14em;">V</span><span class="hn-sans" style="font-family:'Syne',sans-serif;font-weight:800;">ishal</span></div>
           <div style="font-size:clamp(28px,3.5vw,36px)"><span class="hn-script" style="font-size:1.5em;line-height:0.82;display:inline-block;margin-right:-.07em;vertical-align:-.14em;">K</span><span class="hn-sans" style="font-family:'Syne',sans-serif;font-weight:800;">atariya</span></div>
         </div>

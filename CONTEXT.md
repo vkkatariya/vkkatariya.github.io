@@ -192,7 +192,7 @@ const pageTransition = (node, { y = 16, duration = 350 }) =>
 |---|---|
 | kebab-case | All filenames |
 | `prototypes/` | HTML prototypes, source of truth for design |
-| `ref:resources/` | Architecture diagrams, reference images |
+| `docs/` | Architecture diagrams, reference HTML (mental-model-tree, portfolio_architecture_v2) |
 | `src/lib/styles/tokens.css` | Shared design tokens (Phase 1) |
 | `src/lib/components/` | SvelteKit components (Phase 1) |
 | `src/routes/` | SvelteKit routes |
