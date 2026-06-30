@@ -17,18 +17,27 @@ Before any meaningful work, read these files in order:
 
 - **Local session** (this is normally the one you are): `[portfolio-website]-local`
   - Host: athena tmux (`tmux attach -t claude-portfolio-local`)
-  - Worktree: `~/dev-shared/projects/portfolio-website.claude-local` on branch `claude/local`
+  - Branch convention: do your work on `claude/local` (or sub-branches off it, e.g. `feat/<task>`)
   - Use for: design iteration, file edits, debugging, `vercel deploy`, dev server
 - **Cloud session** (sibling, long-lived): `[portfolio-website]-cloud`
   - Host: Anthropic container (accessed via claude.ai/code or Claude Desktop)
-  - Worktree: `~/dev-shared/projects/portfolio-website.claude-cloud` on branch `claude/cloud`
+  - Branch convention: do cloud-session work on `claude/cloud` (or sub-branches off it)
   - Use for: `npm install`, Playwright runs (29 tests), full e2e audit, builds
 
-**One-time setup** (run on first session per machine):
+**Branch discipline:** `claude/local` and `claude/cloud` are the **lineage markers** for each session's work. Both merge into `dev`. Don't write directly to `dev` from either session. One session works at a time, or use sub-branches if parallel work is needed:
+
 ```bash
-cd ~/dev-shared/projects/portfolio-website
-git worktree add ../portfolio-website.claude-local -b claude/local dev
-git worktree add ../portfolio-website.claude-cloud -b claude/cloud dev
+# Local session
+git checkout claude/local
+git checkout -b feat/<task>   # work branch off claude/local
+# ... do work, commit, push ...
+# When done: merge feat/<task> → claude/local → dev
+
+# Cloud session
+git checkout claude/cloud
+git checkout -b feat/<task>-cloud   # work branch off claude/cloud
+# ... do work, commit, push ...
+# When done: merge feat/<task>-cloud → claude/cloud → dev
 ```
 
 **Cross-session handoff:** read top 3 of `tasks/DEVLOG.md` on every resume — the cloud and local sessions log to the same DEVLOG with `cloud-session-start` / `cloud-session-end` / `local-session-handoff` markers so the other side knows what happened.
@@ -37,7 +46,7 @@ git worktree add ../portfolio-website.claude-cloud -b claude/cloud dev
 
 The `./workflow/` directory is a symlink to `~/dev-shared/workflow/` — same path on every machine via mutagen sync. **Do not commit it** (already in `.gitignore`). Read workflow files on demand, not at every session start:
 
-- `./workflow/SESSION-WORKFLOW.md` — Claude Code session lifecycle, dual-session (local + cloud), worktrees, /remote-control, compaction
+- `./workflow/SESSION-WORKFLOW.md` — Claude Code session lifecycle, dual-session (local + cloud), lineage branches, /remote-control, compaction
 - `./workflow/CLAUDE-CODE-WORKFLOW-REPORT.md` — full architecture history behind the v2 model
 - `./workflow/AI-ROUTING.md` — L1/L2/L3 layer model, tool vs agent routing
 - `./workflow/GIT-GITHUB-BLUEPRINT.md` — branch/commit/PR conventions
