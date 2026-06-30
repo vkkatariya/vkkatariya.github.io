@@ -367,3 +367,5 @@ All icons are **self-contained inline SVG** with class `.ico`. No external CDN. 
 Agents write to `tasks/DEVLOG.md` (newest entry at top) at the end of every session. Format and required fields are in `AGENTS.md`. This is mandatory — a missing DEVLOG entry breaks the next session's handoff.
 
 Lessons from corrections go in `tasks/lessons.md` (newest at top, numbered L-0NN).
+
+<!-- 2026-06-30 · local-session smoke test · branch feat/claude-local-smoke -->
