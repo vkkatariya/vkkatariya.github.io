@@ -6,6 +6,35 @@
 
 ---
 
+## [2026-06-30] Claude Code (local) — feat/logo-everywhere (6 of 7 sub-places)
+
+**Mode:** Builder
+
+**Did:**
+- Generated logo-128/256/512 derivatives from logo.png (Pillow, dark bg)
+- Generated og-image.png (1200×630, Pillow — dark bg, logo left, name + tagline right)
+- Added og:image / twitter:card meta tags to all 7 HTML files
+- Sub-place 1: topbar scroll-swap (wordmark → logo mark past 80px, rAF debounced)
+- Sub-place 2: profile icon — VK text replaced with logo, glass ring border, transparent bg
+- Sub-place 4: hero identity widget — person SVG replaced with logo mark (opacity .45)
+- Sub-place 6: resume.html header — small logo above name (22px, print-safe)
+- Sub-place 7: /me auth card — VK gradient circle → logo with glass ring
+- Sub-place 5 (about photo block) removed by Vishal — didn't look right there
+- Visual QA at 1920px, 560px, all sub-places via Playwright
+
+**Decided:**
+- About photo block (sub-place 5) dropped — 6/7 completed
+- Glass ring color: rgba(255,255,255,.22) — matches rest of site's white-glass aesthetic
+- OG image: system font (DejaVu Bold) for text — no web font at gen time
+
+**State:** `feat/logo-everywhere` pushed, awaiting PR + merge to dev
+
+**Next:** Open PR feat/logo-everywhere → dev, merge, kill HTTP server
+
+**Modified:** 11 files (4 new PNGs, 7 HTML files)
+
+---
+
 ## [2026-06-30] Claude Code (local) — Favicon border fix (Option C enhanced contrast)
 
 **Mode:** Builder
