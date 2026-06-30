@@ -17,36 +17,35 @@ Before any meaningful work, read these files in order:
 
 - **Local session** (this is normally the one you are): `[portfolio-website]-local`
   - Host: athena tmux (`tmux attach -t claude-portfolio-local`)
-  - Branch convention: do your work on `claude/local` (or sub-branches off it, e.g. `feat/<task>`)
-  - Use for: design iteration, file edits, debugging, `vercel deploy`, dev server
+  - Process: Claude CLI on athena, started with `claude --remote-control '[portfolio-website]-local'`
+  - Branch: `claude/local` (work on `feat/<task>` sub-branches off it)
+  - Filesystem: full local access (athena's `/home/radxa/...`, Docker, etc.)
+  - Use for: design iteration, file edits, debugging, `vercel deploy`, dev server, anything needing local FS
 - **Cloud session** (sibling, long-lived): `[portfolio-website]-cloud`
-  - Host: Anthropic container (accessed via claude.ai/code or Claude Desktop)
-  - Branch convention: do cloud-session work on `claude/cloud` (or sub-branches off it)
-  - Use for: `npm install`, Playwright runs (29 tests), full e2e audit, builds
+  - Host: Anthropic cloud container (NOT your machine)
+  - Process: started from https://claude.ai/code → Code tab → New session → pick repo → pick branch `claude/cloud`
+  - Branch: `claude/cloud` (work on `feat/<task>-cloud` sub-branches off it)
+  - Filesystem: **ONLY the GitHub repo** (no `~/dev-shared/`, no Docker, no `.env.local`, no local servers)
+  - Use for: `npm install`, Playwright runs (29 tests), full e2e audit, builds, anything that needs CPU isolation
+  - **Cannot do:** `vercel deploy` (no auth), access local servers, run Docker
 
-**Branch discipline:** `claude/local` and `claude/cloud` are the **lineage markers** for each session's work. Both merge into `dev`. Don't write directly to `dev` from either session. One session works at a time, or use sub-branches if parallel work is needed:
-
+**One-time setup** (run on first session per project, on athena):
 ```bash
-# Local session
-git checkout claude/local
-git checkout -b feat/<task>   # work branch off claude/local
-# ... do work, commit, push ...
-# When done: merge feat/<task> → claude/local → dev
-
-# Cloud session
-git checkout claude/cloud
-git checkout -b feat/<task>-cloud   # work branch off claude/cloud
-# ... do work, commit, push ...
-# When done: merge feat/<task>-cloud → claude/cloud → dev
+cd ~/dev-shared/projects/portfolio-website
+git branch claude/local dev
+git branch claude/cloud dev
+git push origin claude/local claude/cloud
 ```
 
-**Cross-session handoff:** read top 3 of `tasks/DEVLOG.md` on every resume — the cloud and local sessions log to the same DEVLOG with `cloud-session-start` / `cloud-session-end` / `local-session-handoff` markers so the other side knows what happened.
+**How to start the cloud session:** open https://claude.ai/code → Code tab → New session → pick `vkkatariya/vkkatariya.github.io` → pick branch `claude/cloud` → rename to `[portfolio-website]-cloud`. NOT from the CLI — `claude --remote-control` is a relay, not a cloud container.
+
+**Cross-session handoff:** read top 3 of `tasks/DEVLOG.md` on every resume — the cloud and local sessions log to the same DEVLOG with `cloud-session-start` / `cloud-session-end` / `local-session-handoff` markers so the other side knows what happened. Coordination also happens via git branches and PRs.
 
 ## Workflow references (symlinked, homelab-only)
 
 The `./workflow/` directory is a symlink to `~/dev-shared/workflow/` — same path on every machine via mutagen sync. **Do not commit it** (already in `.gitignore`). Read workflow files on demand, not at every session start:
 
-- `./workflow/SESSION-WORKFLOW.md` — Claude Code session lifecycle, dual-session (local + cloud), lineage branches, /remote-control, compaction
+- `./workflow/SESSION-WORKFLOW.md` — Claude Code session lifecycle, dual-session (local relay + Anthropic cloud), lineage branches, /remote-control, compaction
 - `./workflow/CLAUDE-CODE-WORKFLOW-REPORT.md` — full architecture history behind the v2 model
 - `./workflow/AI-ROUTING.md` — L1/L2/L3 layer model, tool vs agent routing
 - `./workflow/GIT-GITHUB-BLUEPRINT.md` — branch/commit/PR conventions
