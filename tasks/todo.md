@@ -267,6 +267,37 @@ la-Cormorant Bold Italic wordmark redo (all 5 occurrences) and Roadmap title res
 - [ ] Day 7+30: Keep old `portfolio-combined.html` archived in `archive/` for reference
 - [ ] Day 37: Delete old `portfolio-combined.html` from repo
 
+### 1g — Site opening latency optimization (queued 2026-06-30, deferred per user)
+
+**Goal:** reduce cold load time from current ~400ms (Vercel analytics) to <200ms. Currently: 308 redirect (vishal-katariya.com → www, ~150ms) + meta refresh in index.html (~200ms) + 369KB single-file HTML payload (~200-300ms cold). Repeat visits cached at ~50ms.
+
+**Priority order** (cheapest wins first):
+
+1. **Eliminate the meta refresh redirect** (saves 200-300ms, biggest win)
+   - Option A: Move `prototypes/portfolio-combined.html` to root `index.html`, update all internal asset paths
+   - Option B: Use Vercel `vercel.json` rewrites to point `/` → `/prototypes/portfolio-combined.html` (if Vercel supports static rewrites)
+   - Either approach: remove the `<meta http-equiv="refresh">` and `window.location.replace` from the current `index.html`
+2. **Set `Cache-Control: public, max-age=300` on `portfolio-combined.html`** (saves 100-200ms on repeat visits, 5min cache is safe for portfolio content)
+3. **Add preconnect + dns-prefetch to portfolio-combined.html `<head>`** (saves 20-50ms)
+4. **Minify the HTML** (whitespace removal, saves 10-20ms cold, no functional change)
+5. **Lazy-load the 137 inline SVG icons** (move to a sprite, fetch on demand, saves 50-100ms)
+6. **Extract + minify the CSS** (saves 10-20ms)
+
+**Realistic target after #1-#4:** 150-200ms cold load, 50-100ms warm. Vercel Hobby plan (current).
+
+**Decisions needed before starting:**
+- [ ] Choose Option A vs Option B for redirect elimination
+- [ ] Confirm portfolio update cadence (how often does the site change? affects safe cache duration)
+- [ ] Are you OK with the URL pattern change (no more `/prototypes/` prefix) if Option A?
+
+**Long-term:** Phase 1 (SvelteKit migration) will solve most of this — static adapter output + per-route code splitting naturally reduces both payload and round trips. This section is the "Phase 0 stopgap" optimization.
+
+**Reference measurement (2026-06-30):**
+- `vishal-katariya.com/` (cold): 353ms total (308 redirect 153ms + meta refresh ~200ms)
+- `vishal-katariya.com/` (warm, browser cached): 144ms
+- `vishal-katariya.com/prototypes/portfolio-combined.html` (cold): 441ms (369KB payload)
+- `vkkatariya.github.io/prototypes/portfolio-combined.html` (GitHub Pages, cold): 330ms
+
 ---
 
 ## Phase 2 — Public Routes
