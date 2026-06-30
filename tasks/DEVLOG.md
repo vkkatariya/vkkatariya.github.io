@@ -6,6 +6,24 @@
 
 ---
 
+## [2026-06-30] Claude Code (local) — Favicon border fix (Option C enhanced contrast)
+
+**Mode:** Builder
+
+**Did:**
+- New `prototypes/assets/logo.png` (1108×1122) dropped by Vishal — less border than old 1254×1254
+- Generated 4 processing options (A: tight crop dark, B: tight crop light, C: 1.6× contrast + 1.3× brightness, D: noise removal)
+- Vishal approved **Option C** after visual review at 16–180px
+- Regenerated all 9 favicon assets: `favicon.ico`, `favicon.svg`, `favicon-16x16.png`, `favicon-32x32.png`, `apple-touch-icon.png`, `icon-192.png`, `icon-512.png`, `icon-mask.png`, root `favicon.ico`
+- Added `logo-cropped.png` (512px processed source) as reference artifact
+- Committed + pushed `fix/favicon-borders` to origin
+
+**State:** Branch `fix/favicon-borders` pushed, awaiting PR + merge to dev
+
+**Next:** Open PR fix/favicon-borders → dev, merge, delete branch
+
+---
+
 ## [2026-06-30] Claude Code (local) — Multi-format favicon from glass VK logo
 
 **Mode:** Builder
