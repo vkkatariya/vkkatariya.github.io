@@ -13,11 +13,32 @@ Before any meaningful work, read these files in order:
 3. `tasks/todo.md` — sprint items and phase status
 4. `tasks/lessons.md` — active prevention rules (L-001 through L-061+)
 
+**This project runs in the dual-session model** (see `workflow/SESSION-WORKFLOW.md` v2):
+
+- **Local session** (this is normally the one you are): `[portfolio-website]-local`
+  - Host: athena tmux (`tmux attach -t claude-portfolio-local`)
+  - Worktree: `~/dev-shared/projects/portfolio-website.claude-local` on branch `claude/local`
+  - Use for: design iteration, file edits, debugging, `vercel deploy`, dev server
+- **Cloud session** (sibling, long-lived): `[portfolio-website]-cloud`
+  - Host: Anthropic container (accessed via claude.ai/code or Claude Desktop)
+  - Worktree: `~/dev-shared/projects/portfolio-website.claude-cloud` on branch `claude/cloud`
+  - Use for: `npm install`, Playwright runs (29 tests), full e2e audit, builds
+
+**One-time setup** (run on first session per machine):
+```bash
+cd ~/dev-shared/projects/portfolio-website
+git worktree add ../portfolio-website.claude-local -b claude/local dev
+git worktree add ../portfolio-website.claude-cloud -b claude/cloud dev
+```
+
+**Cross-session handoff:** read top 3 of `tasks/DEVLOG.md` on every resume — the cloud and local sessions log to the same DEVLOG with `cloud-session-start` / `cloud-session-end` / `local-session-handoff` markers so the other side knows what happened.
+
 ## Workflow references (symlinked, homelab-only)
 
 The `./workflow/` directory is a symlink to `~/dev-shared/workflow/` — same path on every machine via mutagen sync. **Do not commit it** (already in `.gitignore`). Read workflow files on demand, not at every session start:
 
-- `./workflow/SESSION-WORKFLOW.md` — Claude Code session lifecycle, /remote-control, compaction
+- `./workflow/SESSION-WORKFLOW.md` — Claude Code session lifecycle, dual-session (local + cloud), worktrees, /remote-control, compaction
+- `./workflow/CLAUDE-CODE-WORKFLOW-REPORT.md` — full architecture history behind the v2 model
 - `./workflow/AI-ROUTING.md` — L1/L2/L3 layer model, tool vs agent routing
 - `./workflow/GIT-GITHUB-BLUEPRINT.md` — branch/commit/PR conventions
 - `./workflow/agents_workflow/AI-AGENTS-ORCHESTRATION.md` — sub-agent dispatch patterns
@@ -28,6 +49,14 @@ If the symlink is broken on a fresh clone, recreate it:
 ```bash
 ln -sf ~/dev-shared/workflow ./workflow
 ```
+
+## Compaction + /remote-control (project-specific)
+
+- **/remote-control** is the real command (not `/rc` — that's hallucinated)
+- **PreCompact hook** is installed in `.claude/settings.json` — auto-writes a marker to `tasks/DEVLOG.md` before context collapses
+- **Before manual /compact:** commit, push, append your work-in-progress to `tasks/DEVLOG.md` (the hook handles auto-compact, but manual is your responsibility)
+- **After /compact** or /clear: re-read top 3 of `tasks/DEVLOG.md`, re-read this CLAUDE.md, check `git status` to reconstruct in-flight work
+- **Pro plan 5hr rolling limit:** dual session uses 2 surfaces in parallel. Heavy days may hit limits. Run heavy CPU work (Playwright, builds) in cloud, not local, to spread load
 
 ---
 
