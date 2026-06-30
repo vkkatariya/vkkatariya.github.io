@@ -378,3 +378,4 @@ Agents write to `tasks/DEVLOG.md` (newest entry at top) at the end of every sess
 Lessons from corrections go in `tasks/lessons.md` (newest at top, numbered L-0NN).
 
 <!-- 2026-06-30 · local-session smoke test · branch feat/claude-local-smoke -->
+<!-- 2026-06-30 · cloud-session smoke test · branch feat/claude-cloud-smoke -->
