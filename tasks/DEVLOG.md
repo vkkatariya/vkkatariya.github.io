@@ -6,6 +6,29 @@
 
 ---
 
+## [2026-06-30] Claude Code (local) — fix/og-banner-margin
+
+**Mode:** Builder
+
+**Did:**
+- Found `feat/og-banner-rebuild` (PR #10) had merged to `dev`, `dev` had merged to `main` (PR #11), and the workflow model moved to v3 (no lineage branches, L-069/L-070) — all outside this session's visible context. `_og-template.html` (gitignored) was deleted by an external cleanup commit; recreated from memory on a new `fix/og-banner-margin` branch cut off `main` per the new convention.
+- Fixed large dark margin around the OG card in share previews (WhatsApp): card widened 900×470 → 1170×600, full-bleed within the 1200×630 canvas, `body-row` vertically centered.
+- Per follow-up feedback: scaled up all inner content (logo 120→168px, name 34→41px, pill/contact fonts up), added a scaled-down github contribution sub-widget (26×5 heatmap replicating the site's real `.cg`/`.cc` pattern, lighter glass per feedback) placed next to the "open to work" pill, reflowed left column upward (`body-row` align-items center→flex-start, `right-col` self-stretch + justify-center).
+- Fixed name text ("Katariya") overflowing into the email contact pill — font-size tuned down then back up by 1pt after re-check; contribution count set to 404.
+- 4 rounds of visual review with Vishal before commit (L-068) — final render approved ("perfect").
+
+**Decided:**
+- Branch off `main` directly (not `dev`) per the new v3 no-lineage-branch workflow.
+- Contribution widget sits beside the status pill (not below) per explicit feedback, to use the freed vertical space.
+
+**State:** Committed (0f9867a), pushed, PR #12 opened against `main`. Awaiting Vishal's merge approval — DO NOT auto-merge.
+
+**Next:** Vishal reviews/merges PR #12; confirm WhatsApp/social share preview post-merge.
+
+**Modified:** `prototypes/assets/og-image.png` (tracked); `prototypes/assets/_og-template.html` (gitignored, not committed)
+
+---
+
 ## [2026-06-30] Claude Code (local) — feat/og-banner-rebuild
 
 **Mode:** Builder
