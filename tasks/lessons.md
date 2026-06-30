@@ -7,6 +7,44 @@
 ---
 
 
+
+## L-070 — Document the actual workflow, not the aspirational one — lineage branches were the wrong isolation mechanism for dual-session Claude Code
+
+**What failed:** Built v2 of SESSION-WORKFLOW.md around a "lineage branch" model: `claude/local` and `claude/cloud` as persistent branches that all sub-branches would branch off. Made CLAUDE.md files for 9 projects reference the model. Set up the branches. Documented one-time setup commands. Spent a full day on it. The pattern never got used — all actual work happened on `feat/*` sub-branches off `dev` directly, merged via PRs. The lineage branches sat frozen for 5+ hours while 30+ commits landed on dev. Then I deleted them as "orphan garbage" (per L-067 cleanup pattern), which was the correct call for the branches themselves but a sign the whole model was wrong.
+
+**Root cause:** I designed an architecture for a workflow that didn't exist. The real workflow was:
+- One persistent local Claude Code session (tmux on athena, accessed via `claude --remote-control`)
+- Occasional ephemeral cloud sessions for heavy ops (spawned from claude.ai/code when needed)
+- All work happens on `feat/<task>` sub-branches off `dev` (or `main`)
+- Cross-session coordination via git + `tasks/DEVLOG.md`
+
+The lineage branches added a layer of indirection with no benefit. They were "scaffolding for a future workflow" that never materialized. The cloud session I designed for spawned multiple times never did, because today's tasks didn't need heavy CPU isolation (they were all small static HTML changes).
+
+**Three failure modes I should have caught earlier:**
+
+1. **Designed for parallelism, got serial work.** I imagined 2 parallel Claude agents writing code simultaneously. The reality: You are the orchestrator. Both sessions are tools for your tasks, not peers writing code in parallel. Today's flow was: you dispatch → local session does the work → you review → you merge. One Claude at a time.
+2. **Invented naming/branches before the workflow was operational.** The branches existed as test infrastructure for a system that wasn't built. The "smoke test commits" (`7913892 chore(local):`, `ec30473 chore(cloud):`) were placeholders for sessions that never ran.
+3. **Didn't notice the branches were orphan until cleanup.** When the cloud session work didn't materialize, the branches just sat there. I should have either made the workflow work or removed the documentation. I did neither for 5+ hours.
+
+**Prevention:** Before adding architectural complexity to documentation:
+
+1. **Run the workflow first, document it second.** If a workflow hasn't been used in production, it's aspirational. Aspirational workflows in documentation become noise.
+2. **Delete documentation that doesn't match reality.** When I noticed the lineage branches had been frozen for 5+ hours, the right move was to remove them from docs too — not just delete the branches.
+3. **L-069 already covers the technical risk** (branch drift when both sessions share a dir). L-070 covers the design risk: building scaffolding for workflows you don't have.
+4. **Test the mental model in chat first.** "Cloud session is started from claude.ai/code → Code tab → New session" is a 3-step browser interaction. Did I actually do that? Did you? No. We talked about it. The architecture was designed for an interaction that never happened.
+
+**The new model (v3 of SESSION-WORKFLOW.md, 2026-06-30):**
+- No lineage branches. Sub-branches go directly off `dev`/`main`.
+- Cloud session is ephemeral, started when needed for heavy work.
+- Local session is the persistent one (tmux on athena, accessed via `claude --remote-control`).
+- Cross-session coordination: git + `tasks/DEVLOG.md`.
+- Both sessions work on the same dir, one at a time. No worktrees, no lineage branches.
+
+**When this rule applies:** any new "persistent" infrastructure (branches, services, configs, scheduled jobs). If you haven't used it in production, it's not infrastructure, it's a plan. Document the plan, build the thing, then document the thing.
+
+**Audit catch (2026-06-30):** User asked "what are you gonna do about claude/local and claude/cloud branch setup we planned today?" — I had to face the fact that the "plan" was actually just aspirational scaffolding. The conversation that followed was the cleanup: removed lineage branches from SESSION-WORKFLOW.md, removed lineage setup from 9 CLAUDE.md files, added L-070 to prevent this pattern from recurring.
+
+---
 ## L-069 — Long-running tmux session can drift off its lineage branch — the working tree branch ≠ the branch the session was started on
 
 **What failed:** Created `claude --remote-control [portfolio-website]-local` tmux session on `claude/local` branch earlier today (2026-06-30 ~16:47). Later ran `git checkout dev`, `git checkout main` in the same shell to do other work. The tmux session's Claude process kept running, but its working tree was now on `dev` or `main` (whichever I had last checked out). When user asked to "check on claude-code tmux session", the active branch showed whatever the last `git checkout` was — not `claude/local`. User noticed and called it out: "claude didn't follow claude/local branch cuz you kept switching to dev while it was running".
