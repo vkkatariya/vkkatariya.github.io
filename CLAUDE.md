@@ -17,27 +17,35 @@ Before any meaningful work, read these files in order:
 
 - **Local session** (this is normally the one you are): `[portfolio-website]-local`
   - Host: athena tmux (`tmux attach -t claude-portfolio-local`)
-  - Worktree: `~/dev-shared/projects/portfolio-website.claude-local` on branch `claude/local`
-  - Use for: design iteration, file edits, debugging, `vercel deploy`, dev server
+  - Process: Claude CLI on athena, started with `claude --remote-control '[portfolio-website]-local'`
+  - Branch: `claude/local` (work on `feat/<task>` sub-branches off it)
+  - Filesystem: full local access (athena's `/home/radxa/...`, Docker, etc.)
+  - Use for: design iteration, file edits, debugging, `vercel deploy`, dev server, anything needing local FS
 - **Cloud session** (sibling, long-lived): `[portfolio-website]-cloud`
-  - Host: Anthropic container (accessed via claude.ai/code or Claude Desktop)
-  - Worktree: `~/dev-shared/projects/portfolio-website.claude-cloud` on branch `claude/cloud`
-  - Use for: `npm install`, Playwright runs (29 tests), full e2e audit, builds
+  - Host: Anthropic cloud container (NOT your machine)
+  - Process: started from https://claude.ai/code → Code tab → New session → pick repo → pick branch `claude/cloud`
+  - Branch: `claude/cloud` (work on `feat/<task>-cloud` sub-branches off it)
+  - Filesystem: **ONLY the GitHub repo** (no `~/dev-shared/`, no Docker, no `.env.local`, no local servers)
+  - Use for: `npm install`, Playwright runs (29 tests), full e2e audit, builds, anything that needs CPU isolation
+  - **Cannot do:** `vercel deploy` (no auth), access local servers, run Docker
 
-**One-time setup** (run on first session per machine):
+**One-time setup** (run on first session per project, on athena):
 ```bash
 cd ~/dev-shared/projects/portfolio-website
-git worktree add ../portfolio-website.claude-local -b claude/local dev
-git worktree add ../portfolio-website.claude-cloud -b claude/cloud dev
+git branch claude/local dev
+git branch claude/cloud dev
+git push origin claude/local claude/cloud
 ```
 
-**Cross-session handoff:** read top 3 of `tasks/DEVLOG.md` on every resume — the cloud and local sessions log to the same DEVLOG with `cloud-session-start` / `cloud-session-end` / `local-session-handoff` markers so the other side knows what happened.
+**How to start the cloud session:** open https://claude.ai/code → Code tab → New session → pick `vkkatariya/vkkatariya.github.io` → pick branch `claude/cloud` → rename to `[portfolio-website]-cloud`. NOT from the CLI — `claude --remote-control` is a relay, not a cloud container.
+
+**Cross-session handoff:** read top 3 of `tasks/DEVLOG.md` on every resume — the cloud and local sessions log to the same DEVLOG with `cloud-session-start` / `cloud-session-end` / `local-session-handoff` markers so the other side knows what happened. Coordination also happens via git branches and PRs.
 
 ## Workflow references (symlinked, homelab-only)
 
 The `./workflow/` directory is a symlink to `~/dev-shared/workflow/` — same path on every machine via mutagen sync. **Do not commit it** (already in `.gitignore`). Read workflow files on demand, not at every session start:
 
-- `./workflow/SESSION-WORKFLOW.md` — Claude Code session lifecycle, dual-session (local + cloud), worktrees, /remote-control, compaction
+- `./workflow/SESSION-WORKFLOW.md` — Claude Code session lifecycle, dual-session (local relay + Anthropic cloud), lineage branches, /remote-control, compaction
 - `./workflow/CLAUDE-CODE-WORKFLOW-REPORT.md` — full architecture history behind the v2 model
 - `./workflow/AI-ROUTING.md` — L1/L2/L3 layer model, tool vs agent routing
 - `./workflow/GIT-GITHUB-BLUEPRINT.md` — branch/commit/PR conventions
