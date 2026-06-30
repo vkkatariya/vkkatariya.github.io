@@ -6,6 +6,32 @@
 
 ---
 
+## [2026-06-30] Claude Code (local) — feat/og-banner-rebuild
+
+**Mode:** Builder
+
+**Did:**
+- Rebuilt `prototypes/assets/og-image.png` via Playwright HTML render (Approach B), replacing the old Pillow-generated banner (had a text-truncation bug — "Infrastructur" cut off)
+- New `prototypes/assets/_og-template.html` (gitignored, temp): 1200×630 page using real site glass tokens (`--glass-bg`/`--glass-border`/`--glass-shadow`, `blur(40px) saturate(180%)`), Cormorant Garamond script + Syne 800 wordmark (matched actual `.hn-script`/`.hn-sans` font stack from `portfolio-combined.html`, not a Space Grotesk substitute), 120px logo, two-column layout (identity/pills/status left, contact pills right)
+- Iterated 6 rounds with Vishal before commit (L-068): card resized to business-card proportions, name moved inline + font fixed to match site wordmark, status converted to green-dot pill ("open to work"), added AI/ML · Full Stack · DevOps/Infra pill row, contacts moved to right column as rounded pills, logo doubled to 120px, spacing tightened
+- Found mid-task: branch had drifted to `dev` (reflog shows an unexplained `checkout` + cherry-picked commit before this session's visible context) — switched back to `feat/og-banner-rebuild` before any commit, no dev commits made
+- Global replace `vishalkatariya.dev` → `vishal-katariya.com` (live domain) across 10 live-facing files: `portfolio-combined.html`, `portfolio-v4.html`, `portfolio-prototypev.1/2.html`, `about.html`, `resume.html`, `README.md`, `CONTEXT.md`, `docs/portfolio_architecture_v2.html`, `docs/mental-model-tree.html`
+- Left `tasks/todo.md`, `tasks/design-dual-deployment.md`, `tasks/DEVLOG.md` untouched — they document a real registrar 308-redirect-loop issue specific to the `.dev` domain, not a live link
+- Added missing `og:url` meta tags to all 7 live HTML files (kickoff assumed they already existed from the favicon task; they didn't) — added with per-file canonical paths
+- `npm run lint:html` clean (8 files, 0 errors)
+
+**Decided:**
+- Real site fonts (Cormorant Garamond italic + Syne 800) over Space Grotesk substitute — matches `.hn-script`/`.hn-sans` exactly
+- `_og-template.html` gitignored as a temp render source, not shipped
+
+**State:** `feat/og-banner-rebuild` committed (24a1e1b) locally, NOT yet pushed or PR'd — awaiting explicit go-ahead to push/open PR
+
+**Next:** Push branch, open PR → dev, wait for Vishal review/merge
+
+**Modified:** 15 files (.gitignore, CONTEXT.md, README.md, 2 docs/*.html, index.html, 7 prototypes/*.html, og-image.png)
+
+---
+
 ## [2026-06-30] Claude Code (local) — feat/logo-everywhere (6 of 7 sub-places)
 
 **Mode:** Builder
