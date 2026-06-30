@@ -6,6 +6,31 @@
 
 ---
 
+## [2026-06-30] Claude Code (local) — Multi-format favicon from glass VK logo
+
+**Mode:** Builder
+
+**Did:**
+- Generated 8 favicon assets from `prototypes/assets/logo.png` (1254×1254 glass VK monogram, approved by Vishal) — no redrawing
+- `favicon.ico` (7KB, 16+32+48 in ICO container) + root copy at `/favicon.ico` for browser auto-request
+- `favicon.svg` (9KB, PNG-in-SVG base64 + dark-mode `@media` style block)
+- `favicon-32x32.png`, `favicon-16x16.png` — PNG fallbacks
+- `apple-touch-icon.png` (180×180, #080808 bg, 10% padding) — iOS home screen
+- `icon-192.png`, `icon-512.png`, `icon-mask.png` — PWA / Android / maskable
+- `site.webmanifest` (validated JSON)
+- Wired favicon `<head>` block to all 7 HTML files; relative paths throughout (L-060): `assets/...` for prototypes, `prototypes/assets/...` for root index.html
+- Playwright: 6/6 prototype pages confirm tags + hrefs resolve. index.html confirmed via grep (instant meta-refresh redirect prevents DOM eval)
+- htmlhint: 8 files, 0 errors
+
+**State:** Branch `feat/favicon` pushed to origin. All assets committed. Awaiting Vishal review before merge to dev/main.
+
+**Modified:**
+- `prototypes/assets/` — logo.png (source), favicon.ico, favicon.svg, apple-touch-icon.png, favicon-32x32.png, favicon-16x16.png, icon-192.png, icon-512.png, icon-mask.png, site.webmanifest
+- `favicon.ico` (root)
+- `index.html`, `prototypes/portfolio-combined.html`, `prototypes/portfolio-v4.html`, `prototypes/projects.html`, `prototypes/about.html`, `prototypes/cs-roadmap.html`, `prototypes/resume.html`
+
+---
+
 ## [2026-06-28] Claude Code — Add SessionStart hook for Claude Code on the web
 
 **Mode:** Execution

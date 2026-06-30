@@ -46,7 +46,6 @@ git push origin claude/local claude/cloud
 The `./workflow/` directory is a symlink to `~/dev-shared/workflow/` — same path on every machine via mutagen sync. **Do not commit it** (already in `.gitignore`). Read workflow files on demand, not at every session start:
 
 - `./workflow/SESSION-WORKFLOW.md` — Claude Code session lifecycle, dual-session (local relay + Anthropic cloud), lineage branches, /remote-control, compaction
-- `./workflow/CLAUDE-CODE-WORKFLOW-REPORT.md` — full architecture history behind the v2 model
 - `./workflow/AI-ROUTING.md` — L1/L2/L3 layer model, tool vs agent routing
 - `./workflow/GIT-GITHUB-BLUEPRINT.md` — branch/commit/PR conventions
 - `./workflow/agents_workflow/AI-AGENTS-ORCHESTRATION.md` — sub-agent dispatch patterns
