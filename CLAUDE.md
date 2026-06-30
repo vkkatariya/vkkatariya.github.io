@@ -13,11 +13,39 @@ Before any meaningful work, read these files in order:
 3. `tasks/todo.md` — sprint items and phase status
 4. `tasks/lessons.md` — active prevention rules (L-001 through L-061+)
 
+**This project runs in the dual-session model** (see `workflow/SESSION-WORKFLOW.md` v2):
+
+- **Local session** (this is normally the one you are): `[portfolio-website]-local`
+  - Host: athena tmux (`tmux attach -t claude-portfolio-local`)
+  - Process: Claude CLI on athena, started with `claude --remote-control '[portfolio-website]-local'`
+  - Branch: `claude/local` (work on `feat/<task>` sub-branches off it)
+  - Filesystem: full local access (athena's `/home/radxa/...`, Docker, etc.)
+  - Use for: design iteration, file edits, debugging, `vercel deploy`, dev server, anything needing local FS
+- **Cloud session** (sibling, long-lived): `[portfolio-website]-cloud`
+  - Host: Anthropic cloud container (NOT your machine)
+  - Process: started from https://claude.ai/code → Code tab → New session → pick repo → pick branch `claude/cloud`
+  - Branch: `claude/cloud` (work on `feat/<task>-cloud` sub-branches off it)
+  - Filesystem: **ONLY the GitHub repo** (no `~/dev-shared/`, no Docker, no `.env.local`, no local servers)
+  - Use for: `npm install`, Playwright runs (29 tests), full e2e audit, builds, anything that needs CPU isolation
+  - **Cannot do:** `vercel deploy` (no auth), access local servers, run Docker
+
+**One-time setup** (run on first session per project, on athena):
+```bash
+cd ~/dev-shared/projects/portfolio-website
+git branch claude/local dev
+git branch claude/cloud dev
+git push origin claude/local claude/cloud
+```
+
+**How to start the cloud session:** open https://claude.ai/code → Code tab → New session → pick `vkkatariya/vkkatariya.github.io` → pick branch `claude/cloud` → rename to `[portfolio-website]-cloud`. NOT from the CLI — `claude --remote-control` is a relay, not a cloud container.
+
+**Cross-session handoff:** read top 3 of `tasks/DEVLOG.md` on every resume — the cloud and local sessions log to the same DEVLOG with `cloud-session-start` / `cloud-session-end` / `local-session-handoff` markers so the other side knows what happened. Coordination also happens via git branches and PRs.
+
 ## Workflow references (symlinked, homelab-only)
 
 The `./workflow/` directory is a symlink to `~/dev-shared/workflow/` — same path on every machine via mutagen sync. **Do not commit it** (already in `.gitignore`). Read workflow files on demand, not at every session start:
 
-- `./workflow/SESSION-WORKFLOW.md` — Claude Code session lifecycle, /remote-control, compaction
+- `./workflow/SESSION-WORKFLOW.md` — Claude Code session lifecycle, dual-session (local relay + Anthropic cloud), lineage branches, /remote-control, compaction
 - `./workflow/AI-ROUTING.md` — L1/L2/L3 layer model, tool vs agent routing
 - `./workflow/GIT-GITHUB-BLUEPRINT.md` — branch/commit/PR conventions
 - `./workflow/agents_workflow/AI-AGENTS-ORCHESTRATION.md` — sub-agent dispatch patterns
@@ -28,6 +56,14 @@ If the symlink is broken on a fresh clone, recreate it:
 ```bash
 ln -sf ~/dev-shared/workflow ./workflow
 ```
+
+## Compaction + /remote-control (project-specific)
+
+- **/remote-control** is the real command (not `/rc` — that's hallucinated)
+- **PreCompact hook** is installed in `.claude/settings.json` — auto-writes a marker to `tasks/DEVLOG.md` before context collapses
+- **Before manual /compact:** commit, push, append your work-in-progress to `tasks/DEVLOG.md` (the hook handles auto-compact, but manual is your responsibility)
+- **After /compact** or /clear: re-read top 3 of `tasks/DEVLOG.md`, re-read this CLAUDE.md, check `git status` to reconstruct in-flight work
+- **Pro plan 5hr rolling limit:** dual session uses 2 surfaces in parallel. Heavy days may hit limits. Run heavy CPU work (Playwright, builds) in cloud, not local, to spread load
 
 ---
 
@@ -338,3 +374,6 @@ All icons are **self-contained inline SVG** with class `.ico`. No external CDN. 
 Agents write to `tasks/DEVLOG.md` (newest entry at top) at the end of every session. Format and required fields are in `AGENTS.md`. This is mandatory — a missing DEVLOG entry breaks the next session's handoff.
 
 Lessons from corrections go in `tasks/lessons.md` (newest at top, numbered L-0NN).
+
+<!-- 2026-06-30 · local-session smoke test · branch feat/claude-local-smoke -->
+<!-- 2026-06-30 · cloud-session smoke test · branch feat/claude-cloud-smoke -->

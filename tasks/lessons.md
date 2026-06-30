@@ -6,6 +6,26 @@
 
 ---
 
+## L-068 — Don't merge favicon/icon work without visual verification at the target display size
+
+**What failed:** Merged favicon work to dev on 2026-06-30 (commit f1fbaf7). All file-level checks passed (paths resolve, JSON valid, content-types correct, 200s on all 10 URLs). But user reported deployed favicon has visible black borders — V/K not legible at 16×16. Root cause: source `logo.png` (1254×1254) had 64-204px black borders + dark glass shadow extending to canvas edges, which dominated the V/K at small favicon sizes. The dark glass effect that looks great at hero size is unreadable at 16×16.
+
+**Root cause:** Audit verified the BYTES (file exists, correct MIME, correct size) but not the VISUALS (does the V/K actually appear when rendered?). `vision_analyze` returns empty on local paths (L-066) so I couldn't check the rendered output myself. I should have either (a) generated Playwright screenshots and had the user eyeball them, or (b) computed the V/K vs background contrast ratio numerically to detect legibility issues. I did neither — just trusted the bytes were right and merged.
+
+**Prevention:** Before merging any work that produces rendered visual output (favicons, icons, logos, screenshots, images, anything that's viewed not read):
+1. Render the output at the actual target display size (16×16 for favicon, 32×32 retina, 180×180 iOS touch icon, etc.)
+2. Save the rendered preview to a path the user can view
+3. Either:
+   - Ask the user to eyeball the previews before merging
+   - Compute visual metrics programmatically (luminance ratio, edge contrast, etc.) and flag if below threshold
+4. ONLY merge when the visual is verified — bytes being right ≠ visual being right
+
+For favicon/icon work specifically: the V/K must be visible at the SMALLEST target size. If it's a black box at 16×16, the task isn't done regardless of how clean the source files look.
+
+**Audit catch:** None. User caught it after merge, after deploy. Re-derivation work is now queued in `tasks/todo.md` + `tasks/kickoff-favicon-borders-fix.md`. Fix is on `fix/favicon-borders` branch awaiting user dispatch.
+
+---
+
 ## L-066 — Inline `display:flex` on grid children overrides `@media` rules trying to hide them
 
 **What failed:** Dev branch had CSS rules `#home-clock { display: none; }` and `#home-identity { order: -1; grid-row: span 2; }` inside a `@media (max-width: 560px)` block, but they weren't applying on mobile. Identity widget rendered AFTER the clock (not before), and clock was visible despite `display: none`. Audit before merge to main caught the regression.

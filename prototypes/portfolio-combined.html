@@ -19,6 +19,22 @@ window.va = window.va || function () { (window.vaq = window.vaq || []).push(argu
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Vishal Katariya</title>
+<!-- Favicon -->
+<link rel="icon" href="assets/favicon.ico" sizes="any">
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<link rel="manifest" href="assets/site.webmanifest">
+<meta name="theme-color" content="#080808">
+<meta name="theme-color" content="#f0f0f0" media="(prefers-color-scheme: light)">
+<meta property="og:image" content="assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:url" content="https://vishal-katariya.com/prototypes/portfolio-combined">
+<meta property="og:title" content="Vishal Katariya — Portfolio">
+<meta property="og:description" content="CS student at Hochschule Darmstadt. ML Engineering, Full-Stack, Infrastructure.">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="assets/og-image.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,600;1,700&family=DM+Mono:wght@300;400;500&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -191,6 +207,40 @@ html.light body::before {
 .nav-logo-name .hn-sans {
   font-family: 'Syne', sans-serif;
   font-weight: 800;
+}
+
+/* ── Topbar scroll-swap: wordmark → logo mark ── */
+.nav-logo {
+  transition: box-shadow .2s, padding .35s cubic-bezier(.22,.61,.36,1);
+  overflow: hidden;
+}
+.nav-logo-name {
+  max-width: 200px;
+  overflow: hidden;
+  transition: max-width .35s cubic-bezier(.22,.61,.36,1), opacity .3s ease;
+}
+.nav-logo-mark {
+  width: 28px; height: 28px; flex-shrink: 0;
+  border-radius: 6px; object-fit: cover;
+  opacity: 0; max-width: 0; overflow: hidden;
+  transition: max-width .35s cubic-bezier(.22,.61,.36,1), opacity .3s ease;
+}
+#shared-nav.scrolled .nav-logo-name { max-width: 0; opacity: 0; }
+#shared-nav.scrolled .nav-logo-mark { max-width: 28px; opacity: 1; }
+#shared-nav.scrolled .nav-logo { padding: 10px 12px; }
+
+/* ── Profile icon: logo fills circle, glass border ── */
+.nav-profile { background: transparent !important; overflow: hidden; padding: 0 !important; box-shadow: 0 0 0 1.5px rgba(255,255,255,.22) !important; }
+.nav-profile-mark { width: 34px; height: 34px; border-radius: 50%; object-fit: cover; display: block; }
+
+/* ── Hero identity mark ── */
+.home-identity-mark {
+  width: 40px; height: 40px; border-radius: 8px; object-fit: cover; opacity: .45; margin-bottom: 4px;
+}
+
+/* ── About photo mark ── */
+.about-photo-mark {
+  width: 28px; height: 28px; border-radius: 6px; object-fit: cover; opacity: .65;
 }
 
 /* ── NAME WORDMARK — full name wordmark ── */
@@ -3452,6 +3502,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
     <div class="nav-logo-name">
       <span class="hn-script">V</span><span class="hn-sans">ishal</span>&thinsp;<span class="hn-script">K</span><span class="hn-sans">atariya</span>
     </div>
+    <img class="nav-logo-mark" src="assets/logo-128.png" alt="VK" width="28" height="28">
   </a>
 
   <button class="nav-menu-btn" id="navMenuBtn" aria-label="Menu" onclick="toggleMenu()">
@@ -3485,7 +3536,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
     <button class="nav-theme" id="themeBtn" onclick="toggleTheme()" title="Toggle theme">
       <svg width="16" height="16" aria-hidden="true"><use id="theme-ico" href="#ic-moon"></use></svg>
     </button>
-    <button class="nav-profile" onclick="showPage('me')" title="Private section">VK</button>
+    <button class="nav-profile" onclick="showPage('me')" title="Private section"><img class="nav-profile-mark" src="assets/logo-128.png" alt="VK" width="26" height="26"></button>
   </div>
 </nav>
 
@@ -3569,13 +3620,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
           <div style="font-size:clamp(28px,3.5vw,36px)"><span class="hn-script" style="font-size:1.5em;line-height:0.82;display:inline-block;margin-right:-.07em;vertical-align:-.14em;">V</span><span class="hn-sans" style="font-family:'Syne',sans-serif;font-weight:800;">ishal</span></div>
           <div style="font-size:clamp(28px,3.5vw,36px)"><span class="hn-script" style="font-size:1.5em;line-height:0.82;display:inline-block;margin-right:-.07em;vertical-align:-.14em;">K</span><span class="hn-sans" style="font-family:'Syne',sans-serif;font-weight:800;">atariya</span></div>
         </div>
-        <!-- 3D person icon -->
-        <div class="ico ico-float" style="opacity:.18;margin-bottom:4px">
-          <svg width="42" height="42" viewBox="0 0 42 42" fill="none">
-            <circle cx="21" cy="15" r="9" fill="rgba(255,255,255,.6)" stroke="rgba(255,255,255,.8)" stroke-width="1.5"/>
-            <path d="M4 42 C4 31 12 26 21 26 C30 26 38 31 38 42" fill="rgba(255,255,255,.6)" stroke="rgba(255,255,255,.8)" stroke-width="1.5" stroke-linecap="round"/>
-          </svg>
-        </div>
+        <img class="home-identity-mark" src="assets/logo-256.png" alt="VK" width="42" height="42">
       </div>
       <div style="display:flex;gap:6px;flex-wrap:wrap;">
         <span class="chip">Darmstadt · DE</span>
@@ -4618,7 +4663,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
             <svg class="ico" width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M6.5 1.5L12 11.5H1L6.5 1.5Z" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="rgba(52,199,123,.1)"/></svg>
             vercel
           </div>
-          <div class="nd-hw">vishalkatariya.dev · global CDN edge network</div>
+          <div class="nd-hw">vishal-katariya.com · global CDN edge network</div>
           <div class="nd-svc">
             <span class="nd-svc-item">/ · home</span>
             <span class="nd-svc-item">/projects · /roadmap</span>
@@ -4655,7 +4700,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
     <div class="cs-body">
       <div>
         <div class="cs-h">Hybrid Architecture</div>
-        <p class="cs-p">Personal portfolio at vishalkatariya.dev — built as a self-contained SvelteKit SPA, hybrid-hosted with public routes on Vercel and private <code>/me/*</code> behind a Tailscale + Caddy IP allowlist on athena.</p>
+        <p class="cs-p">Personal portfolio at vishal-katariya.com — built as a self-contained SvelteKit SPA, hybrid-hosted with public routes on Vercel and private <code>/me/*</code> behind a Tailscale + Caddy IP allowlist on athena.</p>
         <p class="cs-p">Design system uses three layered surfaces: liquid glass (nav/frames), neomorphism (widgets), and NeoPOP (CTAs). Typography stacks Cormorant Garamond italic (initials) with Space Grotesk (display + accents), Outfit (body), DM Mono (labels), JetBrains Mono (topbar metadata), and Syne (about/projects hero titles).</p>
       </div>
       <div>
@@ -6013,7 +6058,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
 <div class="page" id="pg-me">
 <div class="page-wrap" style="max-width:520px;padding-top:100px;margin:0 auto">
   <div class="me-auth-card" style="text-align:center;padding:56px 36px;border-radius:24px">
-    <div style="width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,var(--green),var(--blue));display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:18px;font-weight:500;color:#050505;margin:0 auto 20px">VK</div>
+    <img src="assets/logo-128.png" alt="VK" width="56" height="56" style="border-radius:50%;margin:0 auto 20px;display:block;box-shadow:0 0 0 1.5px rgba(255,255,255,.22)">
     <h2 style="font-family:'Space Grotesk',sans-serif;font-size:24px;font-weight:700;margin:0 0 10px"><svg class="ico" width="24" height="24" viewBox="0 0 13 13" fill="none"><rect x="3" y="6" width="7" height="5.5" rx="1" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="none"/><path d="M4.5 6V4.5a2 2 0 0 1 4 0V6" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="none"/><circle cx="6.5" cy="9" r=".8" fill="rgba(255,255,255,.5)"/></svg>Private section</h2>
     <p style="color:var(--w60);font-size:14px;line-height:1.6;margin:0 0 28px">/me is only available on the Tailnet.<br>Connect to Tailscale and open the private site.</p>
     <p style="color:var(--w30);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.4px;margin:0 0 24px">me.auxois-wyrm.ts.net</p>
@@ -6038,6 +6083,21 @@ function tick() {
     `${D[n.getDay()]} · ${String(n.getDate()).padStart(2,'0')} ${M[n.getMonth()]} ${n.getFullYear()}`;
 }
 tick(); setInterval(tick, 1000);
+
+// ── Topbar scroll-swap (wordmark → logo mark past 80px) ──
+(function(){
+  const nav = document.getElementById('shared-nav');
+  let ticking = false;
+  window.addEventListener('scroll', function(){
+    if (!ticking) {
+      requestAnimationFrame(function(){
+        nav.classList.toggle('scrolled', window.scrollY > 80);
+        ticking = false;
+      });
+      ticking = true;
+    }
+  }, { passive: true });
+})();
 
 // ── Theme toggle
 function toggleTheme() {

@@ -6,6 +6,104 @@
 
 ---
 
+## [2026-06-30] Claude Code (local) — feat/og-banner-rebuild
+
+**Mode:** Builder
+
+**Did:**
+- Rebuilt `prototypes/assets/og-image.png` via Playwright HTML render (Approach B), replacing the old Pillow-generated banner (had a text-truncation bug — "Infrastructur" cut off)
+- New `prototypes/assets/_og-template.html` (gitignored, temp): 1200×630 page using real site glass tokens (`--glass-bg`/`--glass-border`/`--glass-shadow`, `blur(40px) saturate(180%)`), Cormorant Garamond script + Syne 800 wordmark (matched actual `.hn-script`/`.hn-sans` font stack from `portfolio-combined.html`, not a Space Grotesk substitute), 120px logo, two-column layout (identity/pills/status left, contact pills right)
+- Iterated 6 rounds with Vishal before commit (L-068): card resized to business-card proportions, name moved inline + font fixed to match site wordmark, status converted to green-dot pill ("open to work"), added AI/ML · Full Stack · DevOps/Infra pill row, contacts moved to right column as rounded pills, logo doubled to 120px, spacing tightened
+- Found mid-task: branch had drifted to `dev` (reflog shows an unexplained `checkout` + cherry-picked commit before this session's visible context) — switched back to `feat/og-banner-rebuild` before any commit, no dev commits made
+- Global replace `vishalkatariya.dev` → `vishal-katariya.com` (live domain) across 10 live-facing files: `portfolio-combined.html`, `portfolio-v4.html`, `portfolio-prototypev.1/2.html`, `about.html`, `resume.html`, `README.md`, `CONTEXT.md`, `docs/portfolio_architecture_v2.html`, `docs/mental-model-tree.html`
+- Left `tasks/todo.md`, `tasks/design-dual-deployment.md`, `tasks/DEVLOG.md` untouched — they document a real registrar 308-redirect-loop issue specific to the `.dev` domain, not a live link
+- Added missing `og:url` meta tags to all 7 live HTML files (kickoff assumed they already existed from the favicon task; they didn't) — added with per-file canonical paths
+- `npm run lint:html` clean (8 files, 0 errors)
+
+**Decided:**
+- Real site fonts (Cormorant Garamond italic + Syne 800) over Space Grotesk substitute — matches `.hn-script`/`.hn-sans` exactly
+- `_og-template.html` gitignored as a temp render source, not shipped
+
+**State:** `feat/og-banner-rebuild` committed (24a1e1b) locally, NOT yet pushed or PR'd — awaiting explicit go-ahead to push/open PR
+
+**Next:** Push branch, open PR → dev, wait for Vishal review/merge
+
+**Modified:** 15 files (.gitignore, CONTEXT.md, README.md, 2 docs/*.html, index.html, 7 prototypes/*.html, og-image.png)
+
+---
+
+## [2026-06-30] Claude Code (local) — feat/logo-everywhere (6 of 7 sub-places)
+
+**Mode:** Builder
+
+**Did:**
+- Generated logo-128/256/512 derivatives from logo.png (Pillow, dark bg)
+- Generated og-image.png (1200×630, Pillow — dark bg, logo left, name + tagline right)
+- Added og:image / twitter:card meta tags to all 7 HTML files
+- Sub-place 1: topbar scroll-swap (wordmark → logo mark past 80px, rAF debounced)
+- Sub-place 2: profile icon — VK text replaced with logo, glass ring border, transparent bg
+- Sub-place 4: hero identity widget — person SVG replaced with logo mark (opacity .45)
+- Sub-place 6: resume.html header — small logo above name (22px, print-safe)
+- Sub-place 7: /me auth card — VK gradient circle → logo with glass ring
+- Sub-place 5 (about photo block) removed by Vishal — didn't look right there
+- Visual QA at 1920px, 560px, all sub-places via Playwright
+
+**Decided:**
+- About photo block (sub-place 5) dropped — 6/7 completed
+- Glass ring color: rgba(255,255,255,.22) — matches rest of site's white-glass aesthetic
+- OG image: system font (DejaVu Bold) for text — no web font at gen time
+
+**State:** `feat/logo-everywhere` pushed, awaiting PR + merge to dev
+
+**Next:** Open PR feat/logo-everywhere → dev, merge, kill HTTP server
+
+**Modified:** 11 files (4 new PNGs, 7 HTML files)
+
+---
+
+## [2026-06-30] Claude Code (local) — Favicon border fix (Option C enhanced contrast)
+
+**Mode:** Builder
+
+**Did:**
+- New `prototypes/assets/logo.png` (1108×1122) dropped by Vishal — less border than old 1254×1254
+- Generated 4 processing options (A: tight crop dark, B: tight crop light, C: 1.6× contrast + 1.3× brightness, D: noise removal)
+- Vishal approved **Option C** after visual review at 16–180px
+- Regenerated all 9 favicon assets: `favicon.ico`, `favicon.svg`, `favicon-16x16.png`, `favicon-32x32.png`, `apple-touch-icon.png`, `icon-192.png`, `icon-512.png`, `icon-mask.png`, root `favicon.ico`
+- Added `logo-cropped.png` (512px processed source) as reference artifact
+- Committed + pushed `fix/favicon-borders` to origin
+
+**State:** Branch `fix/favicon-borders` pushed, awaiting PR + merge to dev
+
+**Next:** Open PR fix/favicon-borders → dev, merge, delete branch
+
+---
+
+## [2026-06-30] Claude Code (local) — Multi-format favicon from glass VK logo
+
+**Mode:** Builder
+
+**Did:**
+- Generated 8 favicon assets from `prototypes/assets/logo.png` (1254×1254 glass VK monogram, approved by Vishal) — no redrawing
+- `favicon.ico` (7KB, 16+32+48 in ICO container) + root copy at `/favicon.ico` for browser auto-request
+- `favicon.svg` (9KB, PNG-in-SVG base64 + dark-mode `@media` style block)
+- `favicon-32x32.png`, `favicon-16x16.png` — PNG fallbacks
+- `apple-touch-icon.png` (180×180, #080808 bg, 10% padding) — iOS home screen
+- `icon-192.png`, `icon-512.png`, `icon-mask.png` — PWA / Android / maskable
+- `site.webmanifest` (validated JSON)
+- Wired favicon `<head>` block to all 7 HTML files; relative paths throughout (L-060): `assets/...` for prototypes, `prototypes/assets/...` for root index.html
+- Playwright: 6/6 prototype pages confirm tags + hrefs resolve. index.html confirmed via grep (instant meta-refresh redirect prevents DOM eval)
+- htmlhint: 8 files, 0 errors
+
+**State:** Branch `feat/favicon` pushed to origin. All assets committed. Awaiting Vishal review before merge to dev/main.
+
+**Modified:**
+- `prototypes/assets/` — logo.png (source), favicon.ico, favicon.svg, apple-touch-icon.png, favicon-32x32.png, favicon-16x16.png, icon-192.png, icon-512.png, icon-mask.png, site.webmanifest
+- `favicon.ico` (root)
+- `index.html`, `prototypes/portfolio-combined.html`, `prototypes/portfolio-v4.html`, `prototypes/projects.html`, `prototypes/about.html`, `prototypes/cs-roadmap.html`, `prototypes/resume.html`
+
+---
+
 ## [2026-06-28] Claude Code — Add SessionStart hook for Claude Code on the web
 
 **Mode:** Execution

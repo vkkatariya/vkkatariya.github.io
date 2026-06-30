@@ -115,6 +115,21 @@ la-Cormorant Bold Italic wordmark redo (all 5 occurrences) and Roadmap title res
   - **Initial DE translations:** most portfolio copy is technical English (project names, framework names) and won't change. Bio paragraphs + nav + section headings + CTAs are the meaningful translation surface.
 - [x] Fix visibility of SVG icons on all pages in light mode — completed in `feat/svg-icons-light-mode` (originally merged as `41f1cc2`, reverted as part of cleanup, **re-applied at `6b83cb9`**). Root cause: existing `html.light .ico svg [stroke*="..."]` rules used descendant combinator, missing SVGs where `.ico` class is on the SVG itself. Fix: added `html.light svg.ico [...]` selectors at commit `2e5f83f` (alongside existing rules). All `.ico` SVGs (113+) + `.ico-blink*` / `.ico-float*` / `.ico-pulse` / `.ico-throb` / `.ico-spin` + project visualization SVGs (routing-flow, phase-timeline, route-flow, module-pipeline) now visible in light mode. **Animation-class SVGs and project-viz SVGs were also re-applied in `feat/svg-icons-complete-lightmode` at `a79641b` (originally `d3258c1`).**
 
+### Brand assets (new — 2026-06-30)
+
+**Favicon** (fix queued — prior agent's work had visible black borders)
+- [x] ~~`assets/logo.png` → favicon across all browsers + devices~~ (PRIOR AGENT 2026-06-30: 9 assets generated, 7 HTML files updated, MERGED to dev @ f1fbaf7 — but visible black borders in deployed favicon. V/K not legible at 16×16 due to dark glass shadow extending to canvas edges. Source was 1254×1254 with 64-204px black borders. Visual QA was skipped — L-066 in lessons.md called this out and I didn't enforce. Kept on remote for forensics.)
+- [ ] **Fix: re-derive favicon from cropped source** — User dropped new `assets/logo.png` (1108×1122, less border). Plan: crop to V/K content (1090×985), add 5% padding, square to 1024×1024, composite on clean background (white recommended for legibility on both light + dark browser chrome), re-derive all 9 favicon assets, visual QA at 16/32/180/192/512 before commit. **Kickoff at `tasks/kickoff-favicon-borders-fix.md`** (Hermes-authored 2026-06-30, awaiting dispatch). Branch: `fix/favicon-borders` off dev.
+
+**Topbar logo** (queued — parent task, 7 sub-places identified 2026-06-30)
+- [ ] **Sub-place 1: Topbar pill (left) — scroll-responsive logo swap** — Current topbar pill (`#shared-nav > .nav-logo` at `prototypes/portfolio-combined.html:3451-3455`) shows the full "Vishal Katariya" wordmark in `hn-script` (Cormorant italic) + `hn-sans` (Space Grotesk 800). On scroll-down, the wordmark should fade out and a small logo mark should fade in (in-place, same pill, no layout shift). On scroll-up, the wordmark fades back in. Reduces pill width when scrolled, gives more room for the center nav links. Use the same `assets/logo.png` source as the favicon task.
+- [ ] **Sub-place 2: Profile icon (top right pill) — replace "VK" initials with logo SVG** — The right pill currently shows "VK" initials as a profile/identity indicator. Replace that with the logo SVG. The roadmap page has a separate `CS<em>.</em>` variant at line 3506 — keep that as-is, only update the main `VK` initials.
+- [ ] **Sub-place 3: Open Graph image for social share previews** — No OG image currently set. When the site is shared on Twitter/LinkedIn/Slack, the preview shows a missing-image placeholder. Generate a 1200×630 OG image using the logo + name + tagline. Add `<meta property="og:image" content="...">` to all 7 HTML files.
+- [ ] **Sub-place 4: Hero identity widget (`#home-identity`) — add logo mark alongside wordmark** — Current homepage hero identity widget has the big "Vishal" calligraphic + sans wordmark. Add the logo mark as a separate element (icon, badge, or small image) — placement: above the wordmark, beside it, or as a subtle watermark. User decides final placement.
+- [ ] **Sub-place 5: About page photo block — add logo mark below photo** — Current `/about` page has a photo (line 5709 references `assets/image.png`) + "I'm Vishal Katariya" text. Add a small logo mark beneath the photo (or as an overlay) for branding consistency.
+- [ ] **Sub-place 6: Resume page header — add logo mark to `resume.html`** — Resume page (`prototypes/resume.html`) has its own header structure. Add the logo mark to the header for visual brand consistency with the main site.
+- [ ] **Sub-place 7: `/me` private page — add logo mark to heading area** — The Tailscale-only `/me` private section has its own heading markup. Add the logo mark for branding consistency, matching the rest of the site's identity treatment.
+
 ### New widgets
 - [x] Add FEATURED: Hermes One OAuth Fork widget on homepage — **completed 2026-06-26 by Claude**. Added `s11` (1×1, 168px) widget between PROJECTS STAT and ABOUT via HTML order auto-placement (col4 row5, no explicit grid needed). Uses Ndot dot-matrix font for title with `var(--green)` glow, stats in blue/neutral/green tier. VIEW → navigates to `showPage('projects')` + `scrollIntoView('hermes-desktop-oauth')`, GITHUB → `https://github.com/vkkatariya/hermes-desktop-oauth`. Also fixed Contact widget `align-self:start` → `align-self:stretch` so Contact bottom flushes with About bottom (both at y=1342). Sub-items below.
   - [x] Map exact grid coordinates before touching anything (Playwright DOM audit)
@@ -251,6 +266,37 @@ la-Cormorant Bold Italic wordmark redo (all 5 occurrences) and Roadmap title res
 - [ ] Day 7: Flip Vercel config to serve SvelteKit from apex
 - [ ] Day 7+30: Keep old `portfolio-combined.html` archived in `archive/` for reference
 - [ ] Day 37: Delete old `portfolio-combined.html` from repo
+
+### 1g — Site opening latency optimization (queued 2026-06-30, deferred per user)
+
+**Goal:** reduce cold load time from current ~400ms (Vercel analytics) to <200ms. Currently: 308 redirect (vishal-katariya.com → www, ~150ms) + meta refresh in index.html (~200ms) + 369KB single-file HTML payload (~200-300ms cold). Repeat visits cached at ~50ms.
+
+**Priority order** (cheapest wins first):
+
+1. **Eliminate the meta refresh redirect** (saves 200-300ms, biggest win)
+   - Option A: Move `prototypes/portfolio-combined.html` to root `index.html`, update all internal asset paths
+   - Option B: Use Vercel `vercel.json` rewrites to point `/` → `/prototypes/portfolio-combined.html` (if Vercel supports static rewrites)
+   - Either approach: remove the `<meta http-equiv="refresh">` and `window.location.replace` from the current `index.html`
+2. **Set `Cache-Control: public, max-age=300` on `portfolio-combined.html`** (saves 100-200ms on repeat visits, 5min cache is safe for portfolio content)
+3. **Add preconnect + dns-prefetch to portfolio-combined.html `<head>`** (saves 20-50ms)
+4. **Minify the HTML** (whitespace removal, saves 10-20ms cold, no functional change)
+5. **Lazy-load the 137 inline SVG icons** (move to a sprite, fetch on demand, saves 50-100ms)
+6. **Extract + minify the CSS** (saves 10-20ms)
+
+**Realistic target after #1-#4:** 150-200ms cold load, 50-100ms warm. Vercel Hobby plan (current).
+
+**Decisions needed before starting:**
+- [ ] Choose Option A vs Option B for redirect elimination
+- [ ] Confirm portfolio update cadence (how often does the site change? affects safe cache duration)
+- [ ] Are you OK with the URL pattern change (no more `/prototypes/` prefix) if Option A?
+
+**Long-term:** Phase 1 (SvelteKit migration) will solve most of this — static adapter output + per-route code splitting naturally reduces both payload and round trips. This section is the "Phase 0 stopgap" optimization.
+
+**Reference measurement (2026-06-30):**
+- `vishal-katariya.com/` (cold): 353ms total (308 redirect 153ms + meta refresh ~200ms)
+- `vishal-katariya.com/` (warm, browser cached): 144ms
+- `vishal-katariya.com/prototypes/portfolio-combined.html` (cold): 441ms (369KB payload)
+- `vkkatariya.github.io/prototypes/portfolio-combined.html` (GitHub Pages, cold): 330ms
 
 ---
 

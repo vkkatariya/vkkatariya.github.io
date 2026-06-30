@@ -52,3 +52,6 @@ playwright-report/
 
 # Local dev workflow symlink (homelab-only, see ~/dev-shared/workflow/)
 workflow
+
+# Temporary render templates (used to generate static assets, not shipped)
+prototypes/assets/_og-template.html

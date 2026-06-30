@@ -10,7 +10,7 @@
 
 ## What this is
 
-A personal portfolio web app at `vishalkatariya.dev`.
+A personal portfolio web app at `vishal-katariya.com`.
 
 - Public: homepage, project showcase, CS roadmap, about/contact.
 - Private (behind auth): `/me/vault`, `/me/docs`.
@@ -49,7 +49,7 @@ A personal portfolio web app at `vishalkatariya.dev`.
 | Finance buddy | `buddy.auxois-wyrm.ts.net` | Private transaction dashboard |
 
 **Hosting split:**
-- **Vercel (`vishalkatariya.dev`)** serves all public routes. Repo already connected; domain already configured.
+- **Vercel (`vishal-katariya.com`)** serves all public routes. Repo already connected; domain already configured.
 - **athena (`auxois-wyrm.ts.net`)** serves anything private or backend-heavy via Tailscale. No public exposure.
 - This is a hybrid architecture: public edge CDN for speed + reliability; homelab for private control and self-hosted data.
 
@@ -68,7 +68,7 @@ A personal portfolio web app at `vishalkatariya.dev`.
    ```
    With this approach no Caddy `remote_ip` rule is required, but the Caddy reverse-proxy + certificate path is still the recommended production pattern.
 
-3. **Explicitly not allowed:** page-level passwords, client-side auth checks, or exposing `/me` content on `vishalkatariya.dev`.
+3. **Explicitly not allowed:** page-level passwords, client-side auth checks, or exposing `/me` content on `vishal-katariya.com`.
 
 The `/me` page in `portfolio-combined.html` is only an informational placeholder used inside the prototype; the real gate lives at the reverse proxy / network layer on athena.
 
@@ -78,7 +78,7 @@ The `/me` page in `portfolio-combined.html` is only an informational placeholder
 
 | Layer | Technology | Notes |
 |---|---|---|
-| Frontend | SvelteKit + TypeScript | Vercel deploy, `vishalkatariya.dev` |
+| Frontend | SvelteKit + TypeScript | Vercel deploy, `vishal-katariya.com` |
 | Styling | Vanilla CSS with shared tokens | NothingOS + Liquid Glass + Neomorphism + NeoPOP |
 | Fonts | Cormorant Garamond + Space Grotesk + Outfit + DM Mono | Google Fonts CDN |
 | Backend | None for portfolio itself | Vercel serverless functions for contact form + GitHub contribution grid proxy; private `/me` backend on athena |
@@ -97,7 +97,7 @@ The `/me` page in `portfolio-combined.html` is only an informational placeholder
 | Vercel | Portfolio frontend CDN | public |
 
 **Tailnet:** `auxois-wyrm.ts.net`  
-**Portfolio deploy:** Vercel → `vishalkatariya.dev`  
+**Portfolio deploy:** Vercel → `vishal-katariya.com`  
 **GitHub mirror:** `vkkatariya.github.io`
 
 ---
@@ -105,7 +105,7 @@ The `/me` page in `portfolio-combined.html` is only an informational placeholder
 ## Repo
 
 - **GitHub:** `vkkatariya/vkkatariya.github.io`
-- **Domain:** `vishalkatariya.dev`
+- **Domain:** `vishal-katariya.com`
 - **GitHub username:** `vkkatariya`
 
 ---
