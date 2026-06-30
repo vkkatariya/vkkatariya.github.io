@@ -6,6 +6,26 @@
 
 ---
 
+
+## L-069 — Long-running tmux session can drift off its lineage branch — the working tree branch ≠ the branch the session was started on
+
+**What failed:** Created `claude --remote-control [portfolio-website]-local` tmux session on `claude/local` branch earlier today (2026-06-30 ~16:47). Later ran `git checkout dev`, `git checkout main` in the same shell to do other work. The tmux session's Claude process kept running, but its working tree was now on `dev` or `main` (whichever I had last checked out). When user asked to "check on claude-code tmux session", the active branch showed whatever the last `git checkout` was — not `claude/local`. User noticed and called it out: "claude didn't follow claude/local branch cuz you kept switching to dev while it was running".
+
+**Root cause:** `claude --remote-control` runs in the same CWD as the shell, so any `git checkout` in another shell (or the same shell) silently changes the branch the Claude process is "on". The Claude process has no awareness of branch — it just operates on whatever the working tree currently has checked out. The session's name (e.g. `[portfolio-website]-local`) is a label only, not a branch binding.
+
+**Prevention:** When you have a long-running Claude Code tmux session on a specific branch:
+
+1. **Use a dedicated worktree** for the session, not the main repo. `git worktree add ../<project>.session <branch>` then attach the tmux to that directory. The session's branch is locked to the worktree's branch, immune to your other shell activity.
+2. **If using the main repo**, run `git checkout <branch>` immediately before starting the tmux session, and **don't run `git checkout` in any other shell** while the session is alive. Communicate to the user: "I'm on `<branch>` for the Claude session, don't ask me to switch branches in this shell."
+3. **When debugging branch drift** (user asks "is Claude still on `<branch>`?"), check: `pwdx <claude_pid>` + `git -C <cwd> branch --show-current` — both are needed because the Claude process's CWD determines which git repo + which branch it's operating on.
+4. **At session cleanup**, kill the tmux session OR reset its working tree to the right branch before resuming — don't leave a session in an unknown state.
+
+**Better long-term pattern:** for persistent dual-session workflows, use worktrees per session (was discussed in CLAUDE-CODE-WORKFLOW-REPORT.md, then reverted per L-067 — but that L-067 was about "don't create worktrees by default when branches suffice", NOT "don't use worktrees for isolation"). For long-running sessions specifically, worktree-per-session is the right pattern.
+
+**Audit catch (2026-06-30):** User noticed during chat that the Claude session wasn't following `claude/local` lineage. Verified via `tmux capture-pane` + `ps` + `pwdx` + `git -C <cwd> branch --show-current` that the working tree had been switched to `main` by another terminal call. The Claude session itself was healthy (process alive, /rc active), just on the wrong branch for the lineage.
+
+---
+
 ## L-068 — Don't merge favicon/icon work without visual verification at the target display size
 
 **What failed:** Merged favicon work to dev on 2026-06-30 (commit f1fbaf7). All file-level checks passed (paths resolve, JSON valid, content-types correct, 200s on all 10 URLs). But user reported deployed favicon has visible black borders — V/K not legible at 16×16. Root cause: source `logo.png` (1254×1254) had 64-204px black borders + dark glass shadow extending to canvas edges, which dominated the V/K at small favicon sizes. The dark glass effect that looks great at hero size is unreadable at 16×16.
