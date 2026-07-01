@@ -6,6 +6,33 @@
 
 ---
 
+## [2026-07-01] Claude Code (local) — feat/resume-redesign
+
+**Mode:** Builder
+
+**Did:** Full resume redesign, `resume.html` (light, default) + `resume-dark.html` (dark, hardcoded tokens), through several correction rounds — checkpoints frozen along the way as `resume-v1.html` (pre-redesign baseline) → `resume-v2.html`/`resume-v2-dark.html` (round-1 checkpoint) → `resume-v3.html`/`resume-v3-dark.html` (round-2 checkpoint).
+- Rebuilt from scratch: hero (photo top-left 32×38mm, name centered, contacts top-right incl. "open to work" pill), left column (Technical Skills w/ categorized chips Backend/Infra·AI-ML·Frontend·Hosting, Languages, Interests), right column (Education, Projects, Work Experience), all with sourced SVG icons (copied from `portfolio-combined.html`, not hand-rolled).
+- Round 1 fixes: hero resized back down to v1 proportions, restored 4 categorized skill-chip groups, education "currently enrolled" badge moved right (mirrors project-status pattern), added Interests SVG icons, tightened widget spacing.
+- Round 2 fixes: moved "open to work" from a status-pill into a 5th `hc-pill` under the location pill (hero row nudged down via `padding-top`), removed project status text entirely, shortened Interests descriptions to one line each, expanded all 5 project descriptions to fuller 3-line versions sourced from `vishal_resume_library.md`, closed remaining widget gaps.
+- Round 3: stripped the glass-card widget treatment (`background`/`border`/`backdrop-filter`/`box-shadow`/`padding`) from every section including Projects — page is now fully flat, no card boxes anywhere.
+- Bumped font sizes ~10–15% across every section below the hero (s-label, education, languages, interests, skills, projects, work-exp, footer) to fill leftover whitespace at the page bottom — hero left untouched.
+- Added a dashed vertical divider down the middle of the left/right column gap (`.body::before`, positioned via `calc(62mm + 1.5mm)`, no markup change).
+- Added a new first Work Experience bullet (DE→EN translated from user-supplied German source: "Precise sorting, scanning, and organizing of packages by delivery route for efficient shipping operations.").
+- Fixed Education "Modules completed" chips — were abbreviated (`Algorithms & DS`, `OOP`, `Math for CS`, `Architecture`, `Networks`); expanded to full course names.
+- QA: Playwright overlap-detection script (`.hero.section, .col-left > .section, .col-right > .section` pairwise rect-intersection) confirmed zero widget overlaps at every stage; screenshots rendered at A4/1280/1920/380px for both themes and sent for sign-off after each round.
+
+**Decided:**
+- Checkpoint-before-edit pattern: each correction round's starting state gets `cp`'d to `resume-vN.html`/`resume-vN-dark.html` before continuing to edit the live `resume.html`/`resume-dark.html` in place.
+- Two physical files for light/dark (not one file + `prefers-color-scheme`) — established earlier in this branch's history, kept consistent throughout.
+
+**State:** All rounds complete, both theme files verified structurally identical (diff shows only theme-token/meta differences), content fits one A4 page (1128px vs 1123px page height), 0 widget overlaps. Committing this session per explicit go-ahead.
+
+**Next:** Open PR `feat/resume-redesign` → `dev` (not `main`, per branch convention).
+
+**Modified:** `prototypes/resume.html`, `prototypes/resume-dark.html`, `prototypes/resume-v1.html`, `prototypes/resume-v2.html`, `prototypes/resume-v2-dark.html`, `prototypes/resume-v3.html`, `prototypes/resume-v3-dark.html`, `tasks/DEVLOG.md`
+
+---
+
 ## [2026-06-30] Claude Code (local) — fix/og-banner-margin
 
 **Mode:** Builder
