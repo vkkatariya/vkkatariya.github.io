@@ -6,6 +6,62 @@
 
 ---
 
+
+## [2026-07-01] Hermes — feat/resume-redesign · cv.pdf regen + corner-to-corner widget
+
+**Mode:** Builder (scripted)
+
+**Did:** Regenerated `prototypes/assets/cv.pdf` from the new `resume.html` after user-specified design adjustments. Also applied matching changes to `resume-dark.html` to keep both theme files structurally identical (per the previous session's checkpoint pattern).
+- Rendered `resume.html` → A4 PDF via Playwright (`/tmp/render-cv3.py` script). Diagnosed initial 2-page output as 3.6mm body overflow from `min-height: 297mm` + card `margin: 3mm` = 300.6mm total content height.
+- Wrapped the entire `.resume` div in a single corner-to-corner rounded widget — `background: var(--sec-bg)`, `backdrop-filter: blur(12px)`, `border: 1px solid var(--sec-border)`, `border-radius: 5mm`, `box-shadow`, plus print-specific white-background override.
+- Wrapped all resume content in a new `.resume-inner` div so the outer `.resume` widget can have `padding: 0` while the inner content keeps the original `padding: 9mm 12mm 9mm`.
+- Replaced the "VISHAL KATARIYA · RESUME · 2026" footer text with just a divider line (`.resume-footer` is now an empty div with `border-top: 1px solid var(--w06)`). User: "its alright if footer doesnt fit in pdf, just leave it out."
+- Fixed the green dot rendering for "Open to work" pill: increased dot from 5px to 7px, added `display: inline-block` + `vertical-align: middle`, reduced `box-shadow` glow from 6px to 3px. Was previously distorted at print size.
+- Final 2-page fix: forced `html, body { width: 210mm !important; height: 297mm !important; min-height: 0 !important; overflow: hidden !important; }` in `@media print`. This clips any sub-pixel overflow and locks the body to exact A4 dimensions. Result: 1-page A4.
+- Print stylesheet (`@media print`) updated to: compress content (`.resume-inner { padding: 7mm 10mm 7mm }`, `.section { margin-bottom: 2.8mm }`, `.work-bullets li { font-size: 8px }`), strip widget background to white, keep border + border-radius for the A4 print look.
+
+**Decided:**
+- All 7 generated `resume-*.html` files (v1, v2, v2-dark, v3, v3-dark) stay on disk as reference checkpoints per the checkpoint-before-edit pattern (L-068 forensics).
+- Footer text completely removed (not commented out) per user instruction. Easy to restore by re-inserting the `<span>` block if needed.
+- Two-theme files stay (light = `resume.html`, dark = `resume-dark.html`), structurally identical except for theme tokens + meta tags.
+- `cv.pdf` rendered from the LIVE `resume.html` (not a print-optimized copy), per user instruction "original resume.html should stay intact". The `height: 297mm !important; overflow: hidden` rule in @media print is the only thing that makes it fit.
+
+**State:** `prototypes/assets/cv.pdf` replaced (148KB → 974KB, **1 page A4**). Both `resume.html` and `resume-dark.html` updated. Working tree clean except for the 3 files being committed. Branch: `feat/resume-redesign`. No commit yet.
+
+**Next:** Commit on `feat/resume-redesign`, push, create PR to `dev`, then merge dev → main to ship to production.
+
+**Modified:** `prototypes/resume.html`, `prototypes/resume-dark.html`, `prototypes/assets/cv.pdf`, `tasks/DEVLOG.md`, `tasks/todo.md`, `tasks/lessons.md`
+
+---
+
+
+## [2026-07-01] Claude Code (local) — feat/resume-redesign
+
+**Mode:** Builder
+
+**Did:** Full resume redesign, `resume.html` (light, default) + `resume-dark.html` (dark, hardcoded tokens), through several correction rounds — checkpoints frozen along the way as `resume-v1.html` (pre-redesign baseline) → `resume-v2.html`/`resume-v2-dark.html` (round-1 checkpoint) → `resume-v3.html`/`resume-v3-dark.html` (round-2 checkpoint).
+- Rebuilt from scratch: hero (photo top-left 32×38mm, name centered, contacts top-right incl. "open to work" pill), left column (Technical Skills w/ categorized chips Backend/Infra·AI-ML·Frontend·Hosting, Languages, Interests), right column (Education, Projects, Work Experience), all with sourced SVG icons (copied from `portfolio-combined.html`, not hand-rolled).
+- Round 1 fixes: hero resized back down to v1 proportions, restored 4 categorized skill-chip groups, education "currently enrolled" badge moved right (mirrors project-status pattern), added Interests SVG icons, tightened widget spacing.
+- Round 2 fixes: moved "open to work" from a status-pill into a 5th `hc-pill` under the location pill (hero row nudged down via `padding-top`), removed project status text entirely, shortened Interests descriptions to one line each, expanded all 5 project descriptions to fuller 3-line versions sourced from `vishal_resume_library.md`, closed remaining widget gaps.
+- Round 3: stripped the glass-card widget treatment (`background`/`border`/`backdrop-filter`/`box-shadow`/`padding`) from every section including Projects — page is now fully flat, no card boxes anywhere.
+- Bumped font sizes ~10–15% across every section below the hero (s-label, education, languages, interests, skills, projects, work-exp, footer) to fill leftover whitespace at the page bottom — hero left untouched.
+- Added a dashed vertical divider down the middle of the left/right column gap (`.body::before`, positioned via `calc(62mm + 1.5mm)`, no markup change).
+- Added a new first Work Experience bullet (DE→EN translated from user-supplied German source: "Precise sorting, scanning, and organizing of packages by delivery route for efficient shipping operations.").
+- Fixed Education "Modules completed" chips — were abbreviated (`Algorithms & DS`, `OOP`, `Math for CS`, `Architecture`, `Networks`); expanded to full course names.
+- QA: Playwright overlap-detection script (`.hero.section, .col-left > .section, .col-right > .section` pairwise rect-intersection) confirmed zero widget overlaps at every stage; screenshots rendered at A4/1280/1920/380px for both themes and sent for sign-off after each round.
+
+**Decided:**
+- Checkpoint-before-edit pattern: each correction round's starting state gets `cp`'d to `resume-vN.html`/`resume-vN-dark.html` before continuing to edit the live `resume.html`/`resume-dark.html` in place.
+- Two physical files for light/dark (not one file + `prefers-color-scheme`) — established earlier in this branch's history, kept consistent throughout.
+
+**State:** All rounds complete, both theme files verified structurally identical (diff shows only theme-token/meta differences), content fits one A4 page (1128px vs 1123px page height), 0 widget overlaps. Committing this session per explicit go-ahead.
+
+**Next:** Open PR `feat/resume-redesign` → `dev` (not `main`, per branch convention).
+
+**Modified:** `prototypes/resume.html`, `prototypes/resume-dark.html`, `prototypes/resume-v1.html`, `prototypes/resume-v2.html`, `prototypes/resume-v2-dark.html`, `prototypes/resume-v3.html`, `prototypes/resume-v3-dark.html`, `tasks/DEVLOG.md`
+
+---
+
 ## [2026-06-30] Claude Code (local) — fix/og-banner-margin
 
 **Mode:** Builder

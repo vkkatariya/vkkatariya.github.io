@@ -8,6 +8,39 @@
 
 
 
+
+## L-071 — For A4-print PDFs, force `html, body { width: 210mm; height: 297mm; overflow: hidden }` in `@media print` to prevent sub-pixel overflow → 2nd page
+
+**What failed:** Rendered a 297mm-tall A4 resume to PDF via Playwright. Content was exactly A4 height but pdfinfo reported 2 pages, with page 2 essentially blank (just a few characters of whitespace). The visual preview showed 1 page of content + 30mm of empty space below it.
+
+**Root cause:** Three layered sources of sub-pixel overflow accumulated to 3.6mm of body overflow:
+1. `html, body { min-height: 297mm }` (sets body to exactly A4 height on screen; in print, browser may add a few extra pixels for the page border)
+2. `.resume { margin: 3mm }` (4-sided margin, adds 3mm to body's effective content area)
+3. Chrome's print bleed margin (typically 0.4-0.5mm)
+
+Total: 297 + 3.6 = 300.6mm content height, exceeds A4's 297mm. Result: 2nd page is born with empty content.
+
+**Prevention:** For A4 PDFs that need to be exactly 1 page, force the body to exact A4 dimensions in `@media print`:
+```css
+@media print {
+  @page { size: A4; margin: 0; }
+  html, body {
+    width: 210mm !important;
+    height: 297mm !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+  }
+}
+```
+
+The `overflow: hidden` is the safety net — if content does overflow, it gets clipped rather than pushed to page 2. The `width: 210mm; height: 297mm` locks the body to exact A4 dimensions. The `min-height: 0` overrides any earlier `min-height: 297mm` rule on the body.
+
+**When this rule applies:** Any A4 or US-Letter print PDF that must be exactly 1 page. Don't trust the design height alone — always test with `pdfinfo <file>.pdf | grep Pages` to confirm page count.
+
+**Audit catch (2026-07-01):** Spent 5+ iterations trying to reduce content to fit 1 page (reducing padding, font sizes, etc.) before realizing the overflow was just 3.6mm of sub-pixel bleed. The fix was 4 lines of CSS, not content reduction. Lesson: check `pdfinfo` page count FIRST when designing print layouts, before assuming you need to reduce content.
+
+---
+
 ## L-070 — Document the actual workflow, not the aspirational one — lineage branches were the wrong isolation mechanism for dual-session Claude Code
 
 **What failed:** Built v2 of SESSION-WORKFLOW.md around a "lineage branch" model: `claude/local` and `claude/cloud` as persistent branches that all sub-branches would branch off. Made CLAUDE.md files for 9 projects reference the model. Set up the branches. Documented one-time setup commands. Spent a full day on it. The pattern never got used — all actual work happened on `feat/*` sub-branches off `dev` directly, merged via PRs. The lineage branches sat frozen for 5+ hours while 30+ commits landed on dev. Then I deleted them as "orphan garbage" (per L-067 cleanup pattern), which was the correct call for the branches themselves but a sign the whole model was wrong.
