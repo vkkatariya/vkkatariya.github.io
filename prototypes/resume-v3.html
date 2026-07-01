@@ -77,8 +77,15 @@ body::before {
   flex-direction: column;
 }
 
+/* ── shared widget-block glass ── */
 .section {
-  margin-bottom: 3.5mm;
+  background: var(--sec-bg);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--sec-border);
+  border-radius: 4mm;
+  padding: 4mm 5mm;
+  box-shadow: 0 4px 20px rgba(0,0,0,.04);
+  margin-bottom: 2.5mm;
 }
 
 /* ── HERO ── */
@@ -160,7 +167,7 @@ body::before {
 .s-label {
   font-family: 'Syne', sans-serif;
   font-weight: 600;
-  font-size: 10px;
+  font-size: 9px;
   letter-spacing: 2.5px;
   color: var(--w30);
   text-transform: uppercase;
@@ -184,15 +191,6 @@ body::before {
   gap: 3mm;
   flex: 1;
   min-height: 0;
-  position: relative;
-}
-.body::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: calc(62mm + 1.5mm);
-  border-left: 1px dashed var(--w12);
 }
 .col-left { display: flex; flex-direction: column; min-width: 0; }
 .col-right { display: flex; flex-direction: column; min-width: 0; }
@@ -201,7 +199,7 @@ body::before {
 /* ── EDUCATION ── */
 .edu-inst {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 7.5px;
+  font-size: 6.5px;
   letter-spacing: 1px;
   color: var(--w30);
   text-transform: uppercase;
@@ -210,14 +208,14 @@ body::before {
 .edu-head { display: flex; justify-content: space-between; align-items: baseline; gap: 6px; }
 .edu-degree {
   font-family: 'Space Grotesk', sans-serif;
-  font-size: 13.5px;
+  font-size: 12px;
   font-weight: 600;
   color: var(--w);
   margin-bottom: 2px;
 }
 .edu-period {
   font-family: 'DM Mono', monospace;
-  font-size: 8.5px;
+  font-size: 7.5px;
   color: var(--w30);
   letter-spacing: .2px;
   margin-bottom: 4mm;
@@ -225,7 +223,7 @@ body::before {
 .edu-badge {
   display: inline-flex; align-items: center; gap: 5px;
   font-family: 'JetBrains Mono', monospace;
-  font-size: 7.5px; letter-spacing: .5px;
+  font-size: 6.5px; letter-spacing: .5px;
   color: var(--green);
   background: rgba(52,199,123,.07);
   border: 1px solid rgba(52,199,123,.25);
@@ -237,26 +235,26 @@ body::before {
 .edu-badge::before { content: ''; width: 4px; height: 4px; border-radius: 50%; background: var(--green); }
 .edu-mod-label {
   font-family: 'DM Mono', monospace;
-  font-size: 7px; letter-spacing: 2px;
+  font-size: 6px; letter-spacing: 2px;
   color: var(--w30); text-transform: uppercase;
   margin-bottom: 2mm;
 }
 .edu-mods { display: flex; flex-wrap: wrap; gap: 3px; }
 .edu-mod {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 7.5px;
+  font-size: 6.5px;
   color: var(--w30);
   border: 1px solid var(--w06);
   border-radius: 3px;
-  padding: 2px 5px;
+  padding: 1.5px 4px;
   letter-spacing: .2px;
 }
 
 /* ── LANGUAGES ── */
 .lang-rows { display: flex; flex-direction: column; gap: 3px; }
 .lang-row { display: grid; grid-template-columns: 1fr auto auto; align-items: center; gap: 6px; }
-.lang-name { font-family: 'Outfit', sans-serif; font-size: 10.5px; font-weight: 500; color: var(--w80); }
-.lang-lvl { font-family: 'DM Mono', monospace; font-size: 7.5px; color: var(--w30); letter-spacing: .3px; }
+.lang-name { font-family: 'Outfit', sans-serif; font-size: 9.5px; font-weight: 500; color: var(--w80); }
+.lang-lvl { font-family: 'DM Mono', monospace; font-size: 6.5px; color: var(--w30); letter-spacing: .3px; }
 .lang-dots { display: flex; gap: 2.5px; }
 .ld { width: 5px; height: 5px; border-radius: 50%; background: var(--w06); border: 1px solid var(--w12); }
 .ld.on { background: var(--blue); border-color: var(--blue); }
@@ -271,30 +269,30 @@ body::before {
   display: flex; align-items: center; justify-content: center; flex-shrink: 0;
   color: var(--w); opacity: .6;
 }
-.int-title { font-family: 'Space Grotesk', sans-serif; font-size: 9.5px; font-weight: 600; color: var(--w); margin-bottom: 1px; }
-.int-desc { font-family: 'Outfit', sans-serif; font-size: 7.8px; color: var(--w30); line-height: 1.5; }
+.int-title { font-family: 'Space Grotesk', sans-serif; font-size: 8.5px; font-weight: 600; color: var(--w); margin-bottom: 1px; }
+.int-desc { font-family: 'Outfit', sans-serif; font-size: 6.8px; color: var(--w30); line-height: 1.5; }
 
 /* ── SKILLS ── */
 .skill-bars { display: flex; flex-direction: column; gap: 2.5px; margin-bottom: 3.5mm; }
 .skb-row { display: flex; align-items: center; gap: 6px; }
-.skb-n { font-family: 'DM Mono', monospace; font-size: 8.5px; color: var(--w60); width: 62px; flex-shrink: 0; }
+.skb-n { font-family: 'DM Mono', monospace; font-size: 7.5px; color: var(--w60); width: 62px; flex-shrink: 0; }
 .skb-track { flex: 1; height: 3px; background: var(--w06); border-radius: 2px; overflow: hidden; }
 .skb-fill { height: 100%; border-radius: 2px; }
 .skb-fill.g { background: var(--green); }
 .skb-fill.b { background: var(--amber); }
-.skb-v { font-family: 'DM Mono', monospace; font-size: 8px; color: var(--w30); width: 16px; text-align: right; flex-shrink: 0; }
+.skb-v { font-family: 'DM Mono', monospace; font-size: 7px; color: var(--w30); width: 16px; text-align: right; flex-shrink: 0; }
 
 .skills-cats { display: flex; flex-direction: column; gap: 3px; margin-bottom: 3.5mm; }
 .sk-cat-label {
   font-family: 'DM Mono', monospace;
-  font-size: 7.5px; color: var(--w30);
+  font-size: 6.5px; color: var(--w30);
   letter-spacing: 1.5px; text-transform: uppercase;
   margin-bottom: 3px;
 }
 .sk-chips { display: flex; flex-wrap: wrap; gap: 2px; }
 .sk {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 7.5px; padding: 2px 6px;
+  font-size: 6.5px; padding: 1.5px 5px;
   border-radius: 3px; border: 1px solid var(--w12); color: var(--w30);
 }
 .sk.hi { color: var(--green); border-color: rgba(52,199,123,.28); }
@@ -318,35 +316,35 @@ body::before {
 .proj-icon { width: 13px; height: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; opacity: .55; }
 .proj-title {
   font-family: 'Space Grotesk', sans-serif;
-  font-size: 10.5px; font-weight: 600; color: var(--w);
+  font-size: 9.5px; font-weight: 600; color: var(--w);
 }
 .proj-desc {
   font-family: 'Outfit', sans-serif;
-  font-size: 8px; color: var(--w60); line-height: 1.45;
+  font-size: 7px; color: var(--w60); line-height: 1.45;
 }
 .proj-stack { display: flex; align-items: center; flex-wrap: wrap; gap: 5px; margin-top: 1px; }
 .proj-stack-label {
   display: flex; align-items: center; gap: 4px;
   font-family: 'JetBrains Mono', monospace;
-  font-size: 7px; letter-spacing: 1.5px; text-transform: uppercase;
+  font-size: 6px; letter-spacing: 1.5px; text-transform: uppercase;
   color: var(--w30); flex-shrink: 0;
 }
 .proj-stack-label svg { opacity: .5; }
 .proj-tags { display: flex; flex-wrap: wrap; gap: 2px; }
 .proj-tag {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 7px; color: var(--w30);
+  font-size: 6px; color: var(--w30);
   border: 1px solid var(--w06); border-radius: 3px; padding: 1px 4px;
 }
 
 /* ── WORK EXPERIENCE ── */
 .work-header { display: flex; justify-content: space-between; align-items: baseline; gap: 6px; margin-bottom: 1px; flex-wrap: wrap; }
-.work-role { font-family: 'Space Grotesk', sans-serif; font-size: 11.5px; font-weight: 600; color: var(--w); }
-.work-timeline { font-family: 'DM Mono', monospace; font-size: 8px; color: var(--w30); letter-spacing: .2px; white-space: nowrap; }
-.work-meta { font-family: 'JetBrains Mono', monospace; font-size: 8px; color: var(--w30); margin-bottom: 2.5mm; }
+.work-role { font-family: 'Space Grotesk', sans-serif; font-size: 10.5px; font-weight: 600; color: var(--w); }
+.work-timeline { font-family: 'DM Mono', monospace; font-size: 7px; color: var(--w30); letter-spacing: .2px; white-space: nowrap; }
+.work-meta { font-family: 'JetBrains Mono', monospace; font-size: 7px; color: var(--w30); margin-bottom: 2.5mm; }
 .work-bullets { list-style: none; display: flex; flex-direction: column; gap: 2px; }
 .work-bullets li {
-  font-family: 'Outfit', sans-serif; font-size: 8.5px; color: var(--w60); line-height: 1.5;
+  font-family: 'Outfit', sans-serif; font-size: 7.5px; color: var(--w60); line-height: 1.5;
   padding-left: 10px; position: relative;
 }
 .work-bullets li::before { content: ''; position: absolute; left: 0; top: 6px; width: 3px; height: 3px; border-radius: 50%; background: var(--w30); }
@@ -362,7 +360,7 @@ body::before {
 }
 .rf-left, .rf-right {
   font-family: 'DM Mono', monospace;
-  font-size: 7.5px; color: var(--w30); letter-spacing: 1px;
+  font-size: 6.5px; color: var(--w30); letter-spacing: 1px;
 }
 
 /* ── PRINT ── */
@@ -370,6 +368,12 @@ body::before {
   @page { size: A4; margin: 0; }
   html, body { background: #fff !important; color: #000 !important; }
   body::before { display: none !important; }
+  .section {
+    background: #fff !important;
+    border-color: rgba(0,0,0,.15) !important;
+    backdrop-filter: none !important;
+    box-shadow: none !important;
+  }
   .hero-photo, .hc-pill, .proj-row, .edu-mod, .sk, .status-pill { box-shadow: none !important; }
   .hero-name, .edu-degree, .work-role, .proj-title, .int-title { color: #000 !important; }
   .s-label, .skb-n, .lang-name { color: #333 !important; }
@@ -557,14 +561,14 @@ body::before {
         <div class="edu-period">Oct 2024 – Expected 2028</div>
         <div class="edu-mod-label">Modules completed</div>
         <div class="edu-mods">
-          <span class="edu-mod">Algorithms &amp; Data Structures</span>
-          <span class="edu-mod">Object-Oriented Programming</span>
-          <span class="edu-mod">Mathematics for CS</span>
-          <span class="edu-mod">Computer Architecture</span>
+          <span class="edu-mod">Algorithms &amp; DS</span>
+          <span class="edu-mod">OOP</span>
+          <span class="edu-mod">Math for CS</span>
+          <span class="edu-mod">Architecture</span>
           <span class="edu-mod">Database Systems</span>
           <span class="edu-mod">Operating Systems</span>
           <span class="edu-mod">Software Engineering</span>
-          <span class="edu-mod">Computer Networks</span>
+          <span class="edu-mod">Networks</span>
         </div>
       </div>
 
@@ -654,7 +658,6 @@ body::before {
         </div>
         <div class="work-meta">Amazon DNW4 · Duisburg, Germany</div>
         <ul class="work-bullets">
-          <li>Precise sorting, scanning, and organizing of packages by delivery route for efficient shipping operations.</li>
           <li>High-throughput logistics operations in a fully German-language environment.</li>
           <li>Package tracking and inventory management using warehouse systems.</li>
           <li>Cross-shift coordination; independent fault identification and resolution.</li>

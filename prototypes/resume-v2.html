@@ -77,7 +77,14 @@ body::before {
   flex-direction: column;
 }
 
+/* ── shared widget-block glass ── */
 .section {
+  background: var(--sec-bg);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--sec-border);
+  border-radius: 4mm;
+  padding: 4mm 5mm;
+  box-shadow: 0 4px 20px rgba(0,0,0,.04);
   margin-bottom: 3.5mm;
 }
 
@@ -87,7 +94,7 @@ body::before {
   grid-template-columns: auto 1fr auto;
   align-items: center;
   gap: 6mm;
-  margin-bottom: 2.5mm;
+  margin-bottom: 3.5mm;
 }
 .hero-photo {
   width: 32mm; height: 38mm;
@@ -99,7 +106,7 @@ body::before {
   box-shadow: 4px 4px 16px var(--sd), -1px -1px 5px var(--sl);
 }
 .hero-photo img { width: 100%; height: 100%; object-fit: cover; object-position: top center; display: block; }
-.hero-main { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3.5mm; text-align: center; padding-top: 4mm; }
+.hero-main { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3.5mm; text-align: center; }
 .hero-name {
   font-family: 'Space Grotesk', sans-serif;
   font-weight: 800;
@@ -127,23 +134,6 @@ body::before {
   color: var(--w80);
   white-space: nowrap;
 }
-.hc-pill.avail {
-  border-color: rgba(52,199,123,.3);
-  background: rgba(52,199,123,.07);
-}
-.hc-pill.avail span {
-  font-family: 'Syne', sans-serif;
-  font-weight: 600;
-  letter-spacing: .4px;
-  color: var(--green);
-}
-.hc-pill.avail .dot {
-  width: 5px; height: 5px;
-  border-radius: 50%;
-  background: var(--green);
-  flex-shrink: 0;
-  box-shadow: 0 0 6px var(--green);
-}
 .status-pills { display: flex; gap: 2.5mm; flex-wrap: wrap; justify-content: center; }
 .status-pill {
   font-family: 'DM Mono', monospace;
@@ -156,11 +146,29 @@ body::before {
   padding: 2mm 4.5mm;
   background: var(--bg2);
 }
+.status-pill.avail {
+  font-family: 'Syne', sans-serif;
+  font-weight: 600;
+  letter-spacing: .8px;
+  color: var(--green);
+  border-color: rgba(52,199,123,.3);
+  background: rgba(52,199,123,.07);
+  text-transform: none;
+}
+.status-pill.avail .dot {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--green);
+  display: inline-block;
+  margin-right: 5px;
+  box-shadow: 0 0 6px var(--green);
+}
+
 /* ── SECTION LABEL ── */
 .s-label {
   font-family: 'Syne', sans-serif;
   font-weight: 600;
-  font-size: 10px;
+  font-size: 9px;
   letter-spacing: 2.5px;
   color: var(--w30);
   text-transform: uppercase;
@@ -181,18 +189,9 @@ body::before {
 .body {
   display: grid;
   grid-template-columns: 62mm 1fr;
-  gap: 3mm;
+  gap: 4.5mm;
   flex: 1;
   min-height: 0;
-  position: relative;
-}
-.body::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: calc(62mm + 1.5mm);
-  border-left: 1px dashed var(--w12);
 }
 .col-left { display: flex; flex-direction: column; min-width: 0; }
 .col-right { display: flex; flex-direction: column; min-width: 0; }
@@ -201,7 +200,7 @@ body::before {
 /* ── EDUCATION ── */
 .edu-inst {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 7.5px;
+  font-size: 6.5px;
   letter-spacing: 1px;
   color: var(--w30);
   text-transform: uppercase;
@@ -210,14 +209,14 @@ body::before {
 .edu-head { display: flex; justify-content: space-between; align-items: baseline; gap: 6px; }
 .edu-degree {
   font-family: 'Space Grotesk', sans-serif;
-  font-size: 13.5px;
+  font-size: 12px;
   font-weight: 600;
   color: var(--w);
   margin-bottom: 2px;
 }
 .edu-period {
   font-family: 'DM Mono', monospace;
-  font-size: 8.5px;
+  font-size: 7.5px;
   color: var(--w30);
   letter-spacing: .2px;
   margin-bottom: 4mm;
@@ -225,7 +224,7 @@ body::before {
 .edu-badge {
   display: inline-flex; align-items: center; gap: 5px;
   font-family: 'JetBrains Mono', monospace;
-  font-size: 7.5px; letter-spacing: .5px;
+  font-size: 6.5px; letter-spacing: .5px;
   color: var(--green);
   background: rgba(52,199,123,.07);
   border: 1px solid rgba(52,199,123,.25);
@@ -237,26 +236,26 @@ body::before {
 .edu-badge::before { content: ''; width: 4px; height: 4px; border-radius: 50%; background: var(--green); }
 .edu-mod-label {
   font-family: 'DM Mono', monospace;
-  font-size: 7px; letter-spacing: 2px;
+  font-size: 6px; letter-spacing: 2px;
   color: var(--w30); text-transform: uppercase;
   margin-bottom: 2mm;
 }
 .edu-mods { display: flex; flex-wrap: wrap; gap: 3px; }
 .edu-mod {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 7.5px;
+  font-size: 6.5px;
   color: var(--w30);
   border: 1px solid var(--w06);
   border-radius: 3px;
-  padding: 2px 5px;
+  padding: 1.5px 4px;
   letter-spacing: .2px;
 }
 
 /* ── LANGUAGES ── */
 .lang-rows { display: flex; flex-direction: column; gap: 3px; }
 .lang-row { display: grid; grid-template-columns: 1fr auto auto; align-items: center; gap: 6px; }
-.lang-name { font-family: 'Outfit', sans-serif; font-size: 10.5px; font-weight: 500; color: var(--w80); }
-.lang-lvl { font-family: 'DM Mono', monospace; font-size: 7.5px; color: var(--w30); letter-spacing: .3px; }
+.lang-name { font-family: 'Outfit', sans-serif; font-size: 9.5px; font-weight: 500; color: var(--w80); }
+.lang-lvl { font-family: 'DM Mono', monospace; font-size: 6.5px; color: var(--w30); letter-spacing: .3px; }
 .lang-dots { display: flex; gap: 2.5px; }
 .ld { width: 5px; height: 5px; border-radius: 50%; background: var(--w06); border: 1px solid var(--w12); }
 .ld.on { background: var(--blue); border-color: var(--blue); }
@@ -271,30 +270,30 @@ body::before {
   display: flex; align-items: center; justify-content: center; flex-shrink: 0;
   color: var(--w); opacity: .6;
 }
-.int-title { font-family: 'Space Grotesk', sans-serif; font-size: 9.5px; font-weight: 600; color: var(--w); margin-bottom: 1px; }
-.int-desc { font-family: 'Outfit', sans-serif; font-size: 7.8px; color: var(--w30); line-height: 1.5; }
+.int-title { font-family: 'Space Grotesk', sans-serif; font-size: 8.5px; font-weight: 600; color: var(--w); margin-bottom: 1px; }
+.int-desc { font-family: 'Outfit', sans-serif; font-size: 6.8px; color: var(--w30); line-height: 1.5; }
 
 /* ── SKILLS ── */
 .skill-bars { display: flex; flex-direction: column; gap: 2.5px; margin-bottom: 3.5mm; }
 .skb-row { display: flex; align-items: center; gap: 6px; }
-.skb-n { font-family: 'DM Mono', monospace; font-size: 8.5px; color: var(--w60); width: 62px; flex-shrink: 0; }
+.skb-n { font-family: 'DM Mono', monospace; font-size: 7.5px; color: var(--w60); width: 62px; flex-shrink: 0; }
 .skb-track { flex: 1; height: 3px; background: var(--w06); border-radius: 2px; overflow: hidden; }
 .skb-fill { height: 100%; border-radius: 2px; }
 .skb-fill.g { background: var(--green); }
 .skb-fill.b { background: var(--amber); }
-.skb-v { font-family: 'DM Mono', monospace; font-size: 8px; color: var(--w30); width: 16px; text-align: right; flex-shrink: 0; }
+.skb-v { font-family: 'DM Mono', monospace; font-size: 7px; color: var(--w30); width: 16px; text-align: right; flex-shrink: 0; }
 
 .skills-cats { display: flex; flex-direction: column; gap: 3px; margin-bottom: 3.5mm; }
 .sk-cat-label {
   font-family: 'DM Mono', monospace;
-  font-size: 7.5px; color: var(--w30);
+  font-size: 6.5px; color: var(--w30);
   letter-spacing: 1.5px; text-transform: uppercase;
   margin-bottom: 3px;
 }
 .sk-chips { display: flex; flex-wrap: wrap; gap: 2px; }
 .sk {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 7.5px; padding: 2px 6px;
+  font-size: 6.5px; padding: 1.5px 5px;
   border-radius: 3px; border: 1px solid var(--w12); color: var(--w30);
 }
 .sk.hi { color: var(--green); border-color: rgba(52,199,123,.28); }
@@ -318,43 +317,55 @@ body::before {
 .proj-icon { width: 13px; height: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; opacity: .55; }
 .proj-title {
   font-family: 'Space Grotesk', sans-serif;
-  font-size: 10.5px; font-weight: 600; color: var(--w);
+  font-size: 9.5px; font-weight: 600; color: var(--w);
 }
+.proj-mid { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
 .proj-desc {
   font-family: 'Outfit', sans-serif;
-  font-size: 8px; color: var(--w60); line-height: 1.45;
+  font-size: 7px; color: var(--w60); line-height: 1.45;
 }
 .proj-stack { display: flex; align-items: center; flex-wrap: wrap; gap: 5px; margin-top: 1px; }
 .proj-stack-label {
   display: flex; align-items: center; gap: 4px;
   font-family: 'JetBrains Mono', monospace;
-  font-size: 7px; letter-spacing: 1.5px; text-transform: uppercase;
+  font-size: 6px; letter-spacing: 1.5px; text-transform: uppercase;
   color: var(--w30); flex-shrink: 0;
 }
 .proj-stack-label svg { opacity: .5; }
 .proj-tags { display: flex; flex-wrap: wrap; gap: 2px; }
 .proj-tag {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 7px; color: var(--w30);
+  font-size: 6px; color: var(--w30);
   border: 1px solid var(--w06); border-radius: 3px; padding: 1px 4px;
 }
+.proj-status {
+  font-family: 'DM Mono', monospace;
+  font-size: 6.5px;
+  display: flex; align-items: center; gap: 3px;
+  white-space: nowrap;
+}
+.proj-status::before { content: ''; width: 4px; height: 4px; border-radius: 50%; flex-shrink: 0; }
+.s-done { color: var(--green); }
+.s-done::before { background: var(--green); }
+.s-wip  { color: var(--amber); }
+.s-wip::before  { background: var(--amber); }
 
 /* ── WORK EXPERIENCE ── */
 .work-header { display: flex; justify-content: space-between; align-items: baseline; gap: 6px; margin-bottom: 1px; flex-wrap: wrap; }
-.work-role { font-family: 'Space Grotesk', sans-serif; font-size: 11.5px; font-weight: 600; color: var(--w); }
-.work-timeline { font-family: 'DM Mono', monospace; font-size: 8px; color: var(--w30); letter-spacing: .2px; white-space: nowrap; }
-.work-meta { font-family: 'JetBrains Mono', monospace; font-size: 8px; color: var(--w30); margin-bottom: 2.5mm; }
+.work-role { font-family: 'Space Grotesk', sans-serif; font-size: 10.5px; font-weight: 600; color: var(--w); }
+.work-timeline { font-family: 'DM Mono', monospace; font-size: 7px; color: var(--w30); letter-spacing: .2px; white-space: nowrap; }
+.work-meta { font-family: 'JetBrains Mono', monospace; font-size: 7px; color: var(--w30); margin-bottom: 2.5mm; }
 .work-bullets { list-style: none; display: flex; flex-direction: column; gap: 2px; }
 .work-bullets li {
-  font-family: 'Outfit', sans-serif; font-size: 8.5px; color: var(--w60); line-height: 1.5;
+  font-family: 'Outfit', sans-serif; font-size: 7.5px; color: var(--w60); line-height: 1.5;
   padding-left: 10px; position: relative;
 }
 .work-bullets li::before { content: ''; position: absolute; left: 0; top: 6px; width: 3px; height: 3px; border-radius: 50%; background: var(--w30); }
 
 /* ── FOOTER ── */
 .resume-footer {
-  margin-top: 2.5mm;
-  padding-top: 2.5mm;
+  margin-top: 3.5mm;
+  padding-top: 3.5mm;
   border-top: 1px solid var(--w06);
   display: flex;
   align-items: center;
@@ -362,7 +373,7 @@ body::before {
 }
 .rf-left, .rf-right {
   font-family: 'DM Mono', monospace;
-  font-size: 7.5px; color: var(--w30); letter-spacing: 1px;
+  font-size: 6.5px; color: var(--w30); letter-spacing: 1px;
 }
 
 /* ── PRINT ── */
@@ -370,6 +381,12 @@ body::before {
   @page { size: A4; margin: 0; }
   html, body { background: #fff !important; color: #000 !important; }
   body::before { display: none !important; }
+  .section {
+    background: #fff !important;
+    border-color: rgba(0,0,0,.15) !important;
+    backdrop-filter: none !important;
+    box-shadow: none !important;
+  }
   .hero-photo, .hc-pill, .proj-row, .edu-mod, .sk, .status-pill { box-shadow: none !important; }
   .hero-name, .edu-degree, .work-role, .proj-title, .int-title { color: #000 !important; }
   .s-label, .skb-n, .lang-name { color: #333 !important; }
@@ -390,6 +407,7 @@ body::before {
         <span class="status-pill">AI / ML</span>
         <span class="status-pill">Full Stack</span>
         <span class="status-pill">DevOps / Infra</span>
+        <span class="status-pill avail"><span class="dot"></span>Open to work</span>
       </div>
     </div>
     <div class="hero-contacts">
@@ -409,7 +427,6 @@ body::before {
         <svg width="11" height="11" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="5.5" stroke="currentColor" stroke-width="1"/><circle cx="6.5" cy="4" r=".9" fill="currentColor"/><line x1="6.5" y1="6" x2="6.5" y2="9.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
         <span>Darmstadt, Germany</span>
       </div>
-      <div class="hc-pill avail"><span class="dot"></span><span>Open to work</span></div>
     </div>
   </div>
 
@@ -514,28 +531,28 @@ body::before {
             <span class="int-icon"><svg width="14" height="14" viewBox="0 0 13 13" fill="none"><path d="M4.5 3L1.5 6.5L4.5 10" stroke="currentColor" stroke-width="1.2" fill="none"/><path d="M8.5 3L11.5 6.5L8.5 10" stroke="currentColor" stroke-width="1.2" fill="none"/></svg></span>
             <div>
               <div class="int-title">Programming</div>
-              <div class="int-desc">Coding since 10th grade — now building production systems.</div>
+              <div class="int-desc">Started coding in 10th grade — before I knew it was a career path. Now building production systems, self-hosted infrastructure, and ML pipelines across whatever stack fits the problem.</div>
             </div>
           </div>
           <div class="int-card">
             <span class="int-icon"><svg width="14" height="14" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="4" r="2.5" stroke="currentColor" stroke-width="1" fill="none"/><path d="M3 9c0-2 1.5-3 3.5-3s3.5 1 3.5 3" stroke="currentColor" stroke-width="1" fill="none"/><line x1="6.5" y1="10" x2="6.5" y2="12" stroke="currentColor" stroke-width="1"/></svg></span>
             <div>
               <div class="int-title">Artificial Intelligence</div>
-              <div class="int-desc">Fine-tuning LLMs and running inference on edge NPUs.</div>
+              <div class="int-desc">Not just using AI tools — understanding how they work under the hood. Fine-tuning LLMs with QLoRA, running inference on edge NPUs, building multi-agent systems on self-hosted hardware.</div>
             </div>
           </div>
           <div class="int-card">
             <span class="int-icon"><svg width="14" height="14" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="5" r="3" stroke="currentColor" stroke-width="1" fill="none"/><line x1="6.5" y1="8" x2="6.5" y2="12" stroke="currentColor" stroke-width="1.2"/></svg></span>
             <div>
               <div class="int-title">Cricket</div>
-              <div class="int-desc">Played since childhood — strategy, patience, team dynamics.</div>
+              <div class="int-desc">Played since childhood — always been a big part of life. The strategy, the patience, the team dynamics. Grew up watching and playing in India and still follow it closely.</div>
             </div>
           </div>
           <div class="int-card">
             <span class="int-icon"><svg width="14" height="14" viewBox="0 0 13 13" fill="none"><path d="M3 10L6.5 2L10 10" stroke="currentColor" stroke-width="1" fill="none"/><line x1="4.3" y1="7" x2="8.7" y2="7" stroke="currentColor" stroke-width="1"/></svg></span>
             <div>
               <div class="int-title">Entrepreneurship</div>
-              <div class="int-desc">Studying how companies scale — building toward orlon.</div>
+              <div class="int-desc">Reading business books and studying how companies are built — not just the tech, but the strategy, the product thinking, and what makes a system scale. Building toward something called orlon.</div>
             </div>
           </div>
         </div>
@@ -557,14 +574,14 @@ body::before {
         <div class="edu-period">Oct 2024 – Expected 2028</div>
         <div class="edu-mod-label">Modules completed</div>
         <div class="edu-mods">
-          <span class="edu-mod">Algorithms &amp; Data Structures</span>
-          <span class="edu-mod">Object-Oriented Programming</span>
-          <span class="edu-mod">Mathematics for CS</span>
-          <span class="edu-mod">Computer Architecture</span>
+          <span class="edu-mod">Algorithms &amp; DS</span>
+          <span class="edu-mod">OOP</span>
+          <span class="edu-mod">Math for CS</span>
+          <span class="edu-mod">Architecture</span>
           <span class="edu-mod">Database Systems</span>
           <span class="edu-mod">Operating Systems</span>
           <span class="edu-mod">Software Engineering</span>
-          <span class="edu-mod">Computer Networks</span>
+          <span class="edu-mod">Networks</span>
         </div>
       </div>
 
@@ -577,7 +594,10 @@ body::before {
               <span class="proj-icon"><svg width="13" height="13" viewBox="0 0 13 13" fill="none"><rect x="1" y="8" width="2.5" height="4" fill="currentColor"/><rect x="5.25" y="5" width="2.5" height="7" fill="currentColor"/><rect x="9.5" y="2" width="2.5" height="10" fill="currentColor"/></svg></span>
               <div class="proj-title">Finance Buddy</div>
             </div>
-            <div class="proj-desc">Self-hosted 7-tab finance tracker built from 993 real transactions across 44 months. Waste audit identified €3,656 in avoidable spend across 13 categories; savings plan runs 3 projection scenarios — status quo, budget, and aggressive.</div>
+            <div class="proj-mid">
+              <div class="proj-desc">Self-hosted 7-tab finance tracker built from 993 real transactions across 44 months. Waste audit identified €3,656 in avoidable spend; savings plan runs 3 projection scenarios.</div>
+              <div class="proj-status s-done">complete · private</div>
+            </div>
             <div class="proj-stack">
               <span class="proj-stack-label"><svg width="11" height="11" viewBox="0 0 13 13" fill="none"><path d="M6.5 1 L12 3.8 L6.5 6.5 L1 3.8Z" stroke="currentColor" stroke-width="1" stroke-linejoin="round" fill="none"/><path d="M1 7 L6.5 9.7 L12 7" stroke="currentColor" stroke-width="1" stroke-linecap="round" fill="none"/><path d="M1 10 L6.5 12.7 L12 10" stroke="currentColor" stroke-width="1" stroke-linecap="round" fill="none"/></svg>Stack</span>
               <div class="proj-tags">
@@ -591,7 +611,10 @@ body::before {
               <span class="proj-icon"><svg width="13" height="13" viewBox="0 0 13 13" fill="none"><rect x="1" y="1" width="4.5" height="5" rx="1" stroke="currentColor" stroke-width="1" fill="none"/><rect x="7.5" y="1" width="4.5" height="3" rx="1" stroke="currentColor" stroke-width="1" fill="none"/><rect x="1" y="8" width="4.5" height="4" rx="1" stroke="currentColor" stroke-width="1" fill="none"/><rect x="7.5" y="6" width="4.5" height="6" rx="1" stroke="currentColor" stroke-width="1" fill="none"/></svg></span>
               <div class="proj-title">Homelab Dashboard</div>
             </div>
-            <div class="proj-desc">Real-time ops dashboard for a 2-node Proxmox cluster (48GB RAM, ARM64 + x86_64) with live CPU/RAM/network metrics via WebSocket. Debugged Docker bridge network isolation — replaced localhost with host.docker.internal to restore reachability.</div>
+            <div class="proj-mid">
+              <div class="proj-desc">Real-time ops dashboard for a 2-node Proxmox cluster (48GB RAM, ARM64 + x86_64). Live CPU/RAM/network via WebSocket; debugged Docker bridge network isolation.</div>
+              <div class="proj-status s-done">complete · private</div>
+            </div>
             <div class="proj-stack">
               <span class="proj-stack-label"><svg width="11" height="11" viewBox="0 0 13 13" fill="none"><path d="M6.5 1 L12 3.8 L6.5 6.5 L1 3.8Z" stroke="currentColor" stroke-width="1" stroke-linejoin="round" fill="none"/><path d="M1 7 L6.5 9.7 L12 7" stroke="currentColor" stroke-width="1" stroke-linecap="round" fill="none"/><path d="M1 10 L6.5 12.7 L12 10" stroke="currentColor" stroke-width="1" stroke-linecap="round" fill="none"/></svg>Stack</span>
               <div class="proj-tags">
@@ -605,7 +628,10 @@ body::before {
               <span class="proj-icon"><svg width="13" height="13" viewBox="0 0 13 13" fill="none"><rect x="3" y="4" width="7" height="6" rx="1" stroke="currentColor" stroke-width="1" fill="none"/><circle cx="5" cy="7" r=".8" fill="currentColor"/><circle cx="8" cy="7" r=".8" fill="currentColor"/><line x1="6.5" y1="1.5" x2="6.5" y2="4" stroke="currentColor" stroke-width="1"/><circle cx="6.5" cy="1.5" r=".8" fill="currentColor"/></svg></span>
               <div class="proj-title">orlon-bot</div>
             </div>
-            <div class="proj-desc">Telegram bot powered by a custom QLoRA fine-tuned LLM (Llama 3.2 3B). Built a privacy-aware Discord→JSONL data pipeline with PII scrubbing, trained on Kaggle T4 via Unsloth, and deployed to an ARM NPU for on-device inference.</div>
+            <div class="proj-mid">
+              <div class="proj-desc">Telegram bot powered by a custom QLoRA fine-tuned LLM (Llama 3.2 3B). Full train-to-inference pipeline: Discord data pipeline → Kaggle T4 training → ARM NPU deployment.</div>
+              <div class="proj-status s-wip">in progress</div>
+            </div>
             <div class="proj-stack">
               <span class="proj-stack-label"><svg width="11" height="11" viewBox="0 0 13 13" fill="none"><path d="M6.5 1 L12 3.8 L6.5 6.5 L1 3.8Z" stroke="currentColor" stroke-width="1" stroke-linejoin="round" fill="none"/><path d="M1 7 L6.5 9.7 L12 7" stroke="currentColor" stroke-width="1" stroke-linecap="round" fill="none"/><path d="M1 10 L6.5 12.7 L12 10" stroke="currentColor" stroke-width="1" stroke-linecap="round" fill="none"/></svg>Stack</span>
               <div class="proj-tags">
@@ -619,7 +645,10 @@ body::before {
               <span class="proj-icon"><svg width="13" height="13" viewBox="0 0 13 13" fill="none"><rect x="1.5" y="2" width="10" height="9" rx="1" stroke="currentColor" stroke-width="1" fill="none"/><line x1="1.5" y1="5" x2="11.5" y2="5" stroke="currentColor" stroke-width="1"/><circle cx="3.5" cy="3.5" r=".6" fill="currentColor"/><circle cx="5.5" cy="3.5" r=".6" fill="currentColor"/></svg></span>
               <div class="proj-title">Portfolio Website</div>
             </div>
-            <div class="proj-desc">Hybrid-hosted SPA — public routes on Vercel's CDN edge, private /me/* routes behind Tailscale + Caddy IP allowlist on a self-hosted ARM64 node. Multi-stage GitHub Actions CI runs HTML lint and Playwright E2E before every deploy.</div>
+            <div class="proj-mid">
+              <div class="proj-desc">Hybrid-hosted SPA — public routes on Vercel CDN edge, private /me/* routes behind Tailscale + Caddy IP allowlist. Multi-stage GitHub Actions CI with Playwright E2E.</div>
+              <div class="proj-status s-done">live · vishal-katariya.com</div>
+            </div>
             <div class="proj-stack">
               <span class="proj-stack-label"><svg width="11" height="11" viewBox="0 0 13 13" fill="none"><path d="M6.5 1 L12 3.8 L6.5 6.5 L1 3.8Z" stroke="currentColor" stroke-width="1" stroke-linejoin="round" fill="none"/><path d="M1 7 L6.5 9.7 L12 7" stroke="currentColor" stroke-width="1" stroke-linecap="round" fill="none"/><path d="M1 10 L6.5 12.7 L12 10" stroke="currentColor" stroke-width="1" stroke-linecap="round" fill="none"/></svg>Stack</span>
               <div class="proj-tags">
@@ -633,7 +662,10 @@ body::before {
               <span class="proj-icon"><svg width="13" height="13" viewBox="0 0 13 13" fill="none"><rect x="3" y="6" width="7" height="5.5" rx="1" stroke="currentColor" stroke-width="1" fill="none"/><path d="M4.5 6V4.5a2 2 0 0 1 4 0V6" stroke="currentColor" stroke-width="1" fill="none"/><circle cx="6.5" cy="9" r=".8" fill="currentColor"/></svg></span>
               <div class="proj-title">Hermes One OAuth Fork</div>
             </div>
-            <div class="proj-desc">Patch project adding Nous Portal OAuth and single-use WebSocket ticket minting to a community Electron client. Diagnosed a cross-process cookie isolation bug causing silent auth failures; shipped across 13 merged PRs with 38/38 tests passing.</div>
+            <div class="proj-mid">
+              <div class="proj-desc">Patch project adding Nous Portal OAuth + single-use WebSocket ticket minting to a community Electron client. Diagnosed cross-process cookie isolation bug; 13 PRs merged, 38/38 tests passing.</div>
+              <div class="proj-status s-wip">in progress</div>
+            </div>
             <div class="proj-stack">
               <span class="proj-stack-label"><svg width="11" height="11" viewBox="0 0 13 13" fill="none"><path d="M6.5 1 L12 3.8 L6.5 6.5 L1 3.8Z" stroke="currentColor" stroke-width="1" stroke-linejoin="round" fill="none"/><path d="M1 7 L6.5 9.7 L12 7" stroke="currentColor" stroke-width="1" stroke-linecap="round" fill="none"/><path d="M1 10 L6.5 12.7 L12 10" stroke="currentColor" stroke-width="1" stroke-linecap="round" fill="none"/></svg>Stack</span>
               <div class="proj-tags">
@@ -654,7 +686,6 @@ body::before {
         </div>
         <div class="work-meta">Amazon DNW4 · Duisburg, Germany</div>
         <ul class="work-bullets">
-          <li>Precise sorting, scanning, and organizing of packages by delivery route for efficient shipping operations.</li>
           <li>High-throughput logistics operations in a fully German-language environment.</li>
           <li>Package tracking and inventory management using warehouse systems.</li>
           <li>Cross-shift coordination; independent fault identification and resolution.</li>

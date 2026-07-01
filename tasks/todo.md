@@ -130,6 +130,51 @@ la-Cormorant Bold Italic wordmark redo (all 5 occurrences) and Roadmap title res
 - [ ] **Sub-place 6: Resume page header — add logo mark to `resume.html`** — Resume page (`prototypes/resume.html`) has its own header structure. Add the logo mark to the header for visual brand consistency with the main site.
 - [ ] **Sub-place 7: `/me` private page — add logo mark to heading area** — The Tailscale-only `/me` private section has its own heading markup. Add the logo mark for branding consistency, matching the rest of the site's identity treatment.
 
+### Resume redesign (new — 2026-06-30, aesthetic version for the site, NOT the job-application CV)
+
+**Goal:** rebuild `prototypes/resume.html` from scratch using the portfolio's design system (Light Grey + Dark themes, widget-block glass effect, SVG icons, 4-font stack). Hero: photo top-left, VISHAL KATARIYA name centered, 4 status pills below name (AI/ML · Full Stack · DevOps/Infra · Open to work with green dot). Left column: 4 contact pills (email · github · website · location) + Skills (Technical + Soft) + Languages + Interests. Right column: Education (about-page layout, modules completed only) + Projects (5) + Work Experience (1 Amazon DNW4). Single file, light + dark themes via `prefers-color-scheme`. A4 print stylesheet.
+
+- [ ] **Sub-task 1: Font stack** — Drop Cormorant Garamond. Use: **Outfit** (body), **Space Grotesk** (display headers, name), **Syne** (accent fonts), **JetBrains Mono** (contact details, monospaced), **DM Mono** (small labels). Add JetBrains Mono + Syne to the Google Fonts `<link>` (currently only has DM Mono + Space Grotesk + Outfit). Hero name stays in Space Grotesk 800, no calligraphic initials.
+- [ ] **Sub-task 2: Hero restructure** — Remove the small `logo-128.png` from the hero. Move "VISHAL KATARIYA" name to the center. Photo (`assets/image.png`, 680×761) goes top-left, sized to fit inline with the status pills on the right (proportional to A4 — agent picks size that looks balanced, not literal 170px).
+- [ ] **Sub-task 3: Remove old role text** — Delete `.hdr-role` line "AI · ML · SWE / CS Student at h_da" (current `resume.html:382`). Replace with the new 4 status pills (sub-task 5).
+- [ ] **Sub-task 4: Photo on top-left** — Reuse `assets/image.png` (already on disk, 659KB). Same border-radius 20px, same neomorphism shadow as about page's `.photo-frame`. Sized to be balanced with the contact pills in the hero row.
+- [ ] **Sub-task 5: 4 status pills (AI/ML · Full Stack · DevOps/Infra · Open to work with green dot)** — Replace the 3 old meta chips (`DIEBURG · GERMANY`, `AVAILABLE FOR INTERNSHIPS`, `ML ENGINEERING · FULL-STACK · INFRASTRUCTURE`). Pills go in the hero, below the name. "Open to work" gets a green dot (CSS-only, like `.s-done` pattern in the current resume). Location is moved to the contact pills (sub-task 6).
+- [ ] **Sub-task 6: 4 contact pills in left column (email · github · website · location) with SVG icons (OG banner style)** — Remove the top-right `linkedin.com/in/vkkatariya` contact. Each contact is its own pill with inline SVG icon (extract from `portfolio-combined.html` — they have ~146 inline SVGs total, the right ones for email/github/globe/pin). Layout: vertical stack in the left column at the top. Click each = `mailto:` / GitHub / website / `gmaps:` or static link.
+- [ ] **Sub-task 7: Move Education to right column (was left) + use about-page layout** — Remove the current left-column education block. Add a new education widget in the RIGHT column (above projects) using the about-page's `edu-card` pattern (institution with graduation cap SVG icon, degree, period, "currently enrolled" badge, modules list). The label is "MODULES COMPLETED" (drop "/ IN PROGRESS" from the about page's "MODULES COMPLETED / IN PROGRESS").
+- [ ] **Sub-task 8: Split skills into Technical (left column) + Soft (left column)** — Replace the current left-column education slot. Technical skills: keep the 7-bar layout (Python, Docker·Linux, ML/AI, TypeScript, Proxmox·ARM, SvelteKit, C++) + add `Git` as a 8th bar. Add the 4 skill categories from current resume (Backend & Infra, AI & ML, Frontend, [add Git/Footer category]). Soft skills: 5 chips from library (Problem-solving, Technical writing, Systems thinking, Research and analysis, Teamwork).
+- [ ] **Sub-task 9: Interests with details from about page (4 cards with icon + title + 1-2 sentence description)** — Replace current 4-chip list. Each interest is a small card with: icon (emoji or SVG), title, 1-2 sentence description. Copy descriptions from `prototypes/portfolio-combined.html:5990-6022` (Programming, AI, Cricket, Entrepreneurship).
+- [ ] **Sub-task 10: Languages stays the same** — No change to the 4-language list (Deutsch, English, Hindi, Gujarati) with dots + levels.
+- [ ] **Sub-task 11: Add Portfolio Website + Hermes One OAuth Fork to projects (was 3, now 5)** — Current projects (Finance Buddy, Homelab Dashboard, orlon-bot). Add 2 more: Portfolio Website + Hermes One OAuth Fork. Each project: SVG icon + title, >description (2-line, from `resume-references/`), >Stack chips, status badge (live/wip). All content from `~/dev-shared/projects/resume-references/vishal_resume_library.md` lines 147-303.
+- [ ] **Sub-task 12: New Work Experience section below Projects** — Layout: Role + timeline (top row), >company + location, >Description bullets. One entry: **Fulfillment Associate — Amazon DNW4, Duisburg** (Jul 2024 – Dec 2024, 6 months). Use the EN bullets from `resume-references/vishal_resume_library.md` lines 63-66 (3 bullets). SVG briefcase icon.
+- [ ] **Sub-task 13: SVG icons across all sections** — Each section gets appropriate icons. Extract inline SVGs from `prototypes/portfolio-combined.html` (the file has 146 inline SVGs, scan for the right shapes):
+  - **Contact pills:** 📧 email (envelope), 🐙 github (octocat), 🌐 website (globe), 📍 location (pin)
+  - **Status pills:** 🟢 open to work (CSS dot only, no SVG)
+  - **Education:** 🎓 graduation cap
+  - **Projects:** 5 different icons — 💰 finance, 📊 dashboard, 🤖 bot, 🌐 portfolio, 🔐 oauth
+  - **Skills:** 💻 technical, 🤝 soft
+  - **Languages:** 🌐 globe
+  - **Interests:** 4 from about page — 💻 code, 🤖 AI, 🏏 cricket, 📚 book
+  - **Work exp:** 💼 briefcase
+- [ ] **Sub-task 14: Light grey background + widget style + dark/light themes** — Background: light grey matching `html.light` mode on vishal-katariya.com (the `#f0f0f0` or `#ececec` used on the site). All sections use the widget-block glass treatment (`backdrop-filter: blur()`, semi-transparent, rounded corners 16-24px, subtle border). Generate dark + light via `prefers-color-scheme: dark/light` media queries (NO separate HTML files). Theme toggle: optional UI button like the portfolio has. A4 print: white background regardless of theme (saves toner).
+- [ ] **Sub-task 15: Content source** — All project descriptions, work exp bullets, skills, education, interests come from `~/dev-shared/projects/resume-references/vishal_resume_library.md` (17KB, 387 lines, master source for all resume variants). Read this file FIRST before writing any content.
+- [ ] **Visual QA at A4 print + screen** — Per L-068, the agent must render the resume at A4 (210mm×297mm) via Playwright + at screen (1280px) + at print preview before commit. Send screenshots to Vishal for sign-off.
+- [ ] **Mandatory: keep `resume.html` working as the current print version until visual QA passes** — Don't break the existing resume until the new one is approved.
+
+**Decisions confirmed (2026-06-30):**
+- Fonts: Outfit (body) + Space Grotesk (display) + Syne (accent) + JetBrains Mono (contacts) + DM Mono (labels). No Cormorant Garamond.
+- Hero: photo (left) + VISHAL KATARIYA (center) + 4 status pills (AI/ML · Full Stack · DevOps/Infra · Open to work) below name
+- Contacts: 4 pills (email, github, website, location) in **left column at top** (NOT in hero)
+- Photo size: agent picks, balanced with the hero layout
+- Light + dark via `prefers-color-scheme`, single file
+- Projects: 5 (Finance Buddy, Homelab Dashboard, orlon-bot, **Portfolio Website**, **Hermes One OAuth Fork**)
+- Work exp: 1 entry (Amazon DNW4)
+- Content source: `~/dev-shared/projects/resume-references/vishal_resume_library.md`
+- A4 print, single file, no separate HTML
+
+**Kickoff (Hermes-authored 2026-06-30, awaiting dispatch):** `tasks/kickoff-resume-redesign.md`
+
+**Branch:** `feat/resume-redesign` off dev
+
 ### New widgets
 - [x] Add FEATURED: Hermes One OAuth Fork widget on homepage — **completed 2026-06-26 by Claude**. Added `s11` (1×1, 168px) widget between PROJECTS STAT and ABOUT via HTML order auto-placement (col4 row5, no explicit grid needed). Uses Ndot dot-matrix font for title with `var(--green)` glow, stats in blue/neutral/green tier. VIEW → navigates to `showPage('projects')` + `scrollIntoView('hermes-desktop-oauth')`, GITHUB → `https://github.com/vkkatariya/hermes-desktop-oauth`. Also fixed Contact widget `align-self:start` → `align-self:stretch` so Contact bottom flushes with About bottom (both at y=1342). Sub-items below.
   - [x] Map exact grid coordinates before touching anything (Playwright DOM audit)
