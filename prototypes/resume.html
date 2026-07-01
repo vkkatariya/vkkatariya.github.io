@@ -71,10 +71,22 @@ body::before {
 
 .resume {
   position: relative; z-index: 1;
-  padding: 9mm 12mm 9mm;
-  min-height: 297mm;
+  padding: 0;
   display: flex;
   flex-direction: column;
+  background: var(--sec-bg);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--sec-border);
+  border-radius: 5mm;
+  box-shadow: 0 4px 20px rgba(0,0,0,.04);
+  margin: 3mm;
+  overflow: hidden;
+}
+.resume-inner {
+  padding: 9mm 12mm 9mm;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 }
 
 .section {
@@ -138,11 +150,10 @@ body::before {
   color: var(--green);
 }
 .hc-pill.avail .dot {
-  width: 5px; height: 5px;
+  width: 4px; height: 4px;
   border-radius: 50%;
   background: var(--green);
   flex-shrink: 0;
-  box-shadow: 0 0 6px var(--green);
 }
 .status-pills { display: flex; gap: 2.5mm; flex-wrap: wrap; justify-content: center; }
 .status-pill {
@@ -351,33 +362,61 @@ body::before {
 }
 .work-bullets li::before { content: ''; position: absolute; left: 0; top: 6px; width: 3px; height: 3px; border-radius: 50%; background: var(--w30); }
 
-/* ── FOOTER ── */
+/* ── FOOTER (divider + footer text below) ── */
 .resume-footer {
-  margin-top: 2.5mm;
-  padding-top: 2.5mm;
+  margin-top: 10mm;
+  padding-top: 5mm;
   border-top: 1px solid var(--w06);
+  flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 .rf-left, .rf-right {
   font-family: 'DM Mono', monospace;
-  font-size: 7.5px; color: var(--w30); letter-spacing: 1px;
+  font-size: 6.5px; color: var(--w30); letter-spacing: 1px;
 }
 
 /* ── PRINT ── */
 @media print {
   @page { size: A4; margin: 0; }
-  html, body { background: #fff !important; color: #000 !important; }
+  html, body {
+    background: #fff !important;
+    color: #000 !important;
+    width: 210mm !important;
+    height: 297mm !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+  }
   body::before { display: none !important; }
+  .resume {
+    background: #fff !important;
+    border: 1px solid rgba(0,0,0,.18) !important;
+    border-radius: 4mm !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    margin: 3mm !important;
+  }
+  /* Compress content to fit 1 page with breathing room */
+  .resume-inner { padding: 7mm 10mm 7mm !important; }
+  .section { margin-bottom: 2.8mm !important; }
+  .hero { margin-bottom: 2mm !important; }
+  .contact-pill { padding: 1.5mm 3mm !important; }
+  .edu-mod { padding: 1px 3.5px !important; }
+  .proj-row { padding: 2mm 2.5mm !important; }
+  .int-icon { width: 6mm !important; height: 6mm !important; }
+  .work-bullets li { font-size: 8px !important; line-height: 1.4 !important; }
   .hero-photo, .hc-pill, .proj-row, .edu-mod, .sk, .status-pill { box-shadow: none !important; }
   .hero-name, .edu-degree, .work-role, .proj-title, .int-title { color: #000 !important; }
   .s-label, .skb-n, .lang-name { color: #333 !important; }
+  .resume-footer { border-top-color: rgba(0,0,0,.18) !important; padding-top: 6mm !important; }
 }
 </style>
 </head>
 <body>
 <div class="resume">
+
+<div class="resume-inner">
 
   <!-- HERO -->
   <div class="hero section">
@@ -664,12 +703,10 @@ body::before {
     </div>
   </div>
 
-  <!-- FOOTER -->
-  <div class="resume-footer">
-    <span class="rf-left">VISHAL KATARIYA · RESUME · 2026</span>
-    <span class="rf-right">vishal-katariya.com</span>
-  </div>
+  <!-- DIVIDER (no footer text) -->
+  <div class="resume-footer"></div>
 
+</div>
 </div>
 </body>
 </html>
