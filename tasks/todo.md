@@ -175,6 +175,16 @@ la-Cormorant Bold Italic wordmark redo (all 5 occurrences) and Roadmap title res
 
 **Branch:** `feat/resume-redesign` off dev
 
+**Resume redesign status (2026-07-01):** All 15 sub-tasks complete. PR #15 merged to dev. Resume renders as 1-page A4 with:
+- Photo (32×38mm) + VISHAL KATARIYA + 4 status pills in hero
+- 4 contact pills (email · github · website · location) + green-dot "Open to work" pill
+- Left col: contacts + Skills (Technical with 8 bars including Git + 4 categories + Soft Skills) + Languages + Interests
+- Right col: Education (about-page layout, 8 modules completed) + Projects (5 total) + Work Experience (1 Amazon DNW4)
+- Single corner-to-corner widget wrapper (`.resume` rounded card with `var(--sec-bg)` background, `border: 1px solid var(--sec-border)`, `border-radius: 5mm`)
+- Bottom divider line (no footer text per user instruction)
+
+**cv.pdf regeneration (2026-07-01, Hermes-authored):** Replaced `prototypes/assets/cv.pdf` (148KB → 974KB, 1 page A4) rendered from the new `resume.html`. Lessons applied: L-068 (visual verify), L-071 (force `height: 297mm; overflow: hidden` in @media print to prevent sub-pixel overflow). **Per user instruction: original `resume.html` stays intact** — the print-only CSS in `@media print` does the 1-page compression.
+
 ### New widgets
 - [x] Add FEATURED: Hermes One OAuth Fork widget on homepage — **completed 2026-06-26 by Claude**. Added `s11` (1×1, 168px) widget between PROJECTS STAT and ABOUT via HTML order auto-placement (col4 row5, no explicit grid needed). Uses Ndot dot-matrix font for title with `var(--green)` glow, stats in blue/neutral/green tier. VIEW → navigates to `showPage('projects')` + `scrollIntoView('hermes-desktop-oauth')`, GITHUB → `https://github.com/vkkatariya/hermes-desktop-oauth`. Also fixed Contact widget `align-self:start` → `align-self:stretch` so Contact bottom flushes with About bottom (both at y=1342). Sub-items below.
   - [x] Map exact grid coordinates before touching anything (Playwright DOM audit)
