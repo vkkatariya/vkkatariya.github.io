@@ -1166,7 +1166,8 @@ main {
   .grid {
     /* minmax(0,…): plain 1fr has an `auto` min, so wide tile content (Skills) squeezed the 2nd column to ~85px */
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    grid-auto-rows: 160px;
+    /* rows grow to fit content: the About bio (16px) and Hermes tile no longer clip on phones */
+    grid-auto-rows: minmax(160px, auto);
     gap: 10px;
   }
 
@@ -1225,7 +1226,7 @@ main {
 
 /* ── Very small phones ── */
 @media (max-width: 380px) {
-  .grid { grid-template-columns: 1fr; grid-auto-rows: 148px; gap: 9px; }
+  .grid { grid-template-columns: 1fr; grid-auto-rows: minmax(148px, auto); gap: 9px; }
   .s22, .s21, .s12, .s11, .s32, .s41 { grid-column: span 1; grid-row: span 1; }
   .clock-h, .clock-m { font-size: 46px; letter-spacing: -2px; }
   .w { padding: 14px; }
