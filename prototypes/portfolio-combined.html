@@ -9,7 +9,7 @@
   }
   /* theme-color follows the site theme (not the OS): both metas get the same value */
   document.addEventListener('DOMContentLoaded', function(){
-    document.querySelectorAll('meta[name="theme-color"]').forEach(function(m){ m.content = light ? '#FAFAFA' : '#1B1C1D'; });
+    document.querySelectorAll('meta[name="theme-color"]').forEach(function(m){ m.content = light ? '#ECECEC' : '#1B1C1D'; });
   });
 })();
 </script>
@@ -30,7 +30,7 @@ window.va = window.va || function () { (window.vaq = window.vaq || []).push(argu
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 <link rel="manifest" href="assets/site.webmanifest">
 <meta name="theme-color" content="#1B1C1D">
-<meta name="theme-color" content="#FAFAFA" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#ECECEC" media="(prefers-color-scheme: light)">
 <meta property="og:image" content="assets/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -72,7 +72,7 @@ window.va = window.va || function () { (window.vaq = window.vaq || []).push(argu
 }
 @media (prefers-color-scheme: light) {
   :root[data-theme="auto"] {
-    --bg:#FAFAFA; --bg2:#FFFFFF; --bg3:#F0F0F1; --bg4:#E6E6E8;
+    --bg:#ECECEC; --bg2:#FFFFFF; --bg3:#F0F0F1; --bg4:#E6E6E8;
     --w:#0D0D0F; --w80:#2B2D30; --w60:#54575B; --w30:#A3A6AA;
     --w12:rgba(13,13,15,.12); --w06:rgba(13,13,15,.06);
     --acc:#007860; --acc-dim:rgba(0,120,96,.10);
@@ -96,7 +96,7 @@ window.va = window.va || function () { (window.vaq = window.vaq || []).push(argu
 }
 html.light,
 :root[data-theme="light"] {
-  --bg:#FAFAFA; --bg2:#FFFFFF; --bg3:#F0F0F1; --bg4:#E6E6E8;
+  --bg:#ECECEC; --bg2:#FFFFFF; --bg3:#F0F0F1; --bg4:#E6E6E8;
   --w:#0D0D0F; --w80:#2B2D30; --w60:#54575B; --w30:#A3A6AA;
   --w12:rgba(13,13,15,.12); --w06:rgba(13,13,15,.06);
   --acc:#007860; --acc-dim:rgba(0,120,96,.10);
@@ -5969,7 +5969,7 @@ function toggleTheme() {
   const html = document.documentElement;
   const isLight = html.classList.toggle('light');
   localStorage.setItem('vk-theme', isLight ? 'light' : 'dark');
-  document.querySelectorAll('meta[name="theme-color"]').forEach(m => { m.content = isLight ? '#FAFAFA' : '#1B1C1D'; });
+  document.querySelectorAll('meta[name="theme-color"]').forEach(m => { m.content = isLight ? '#ECECEC' : '#1B1C1D'; });
   const ico = document.getElementById('theme-ico');
   if (ico) ico.setAttribute('href', isLight ? '#ic-sun' : '#ic-moon');
 }

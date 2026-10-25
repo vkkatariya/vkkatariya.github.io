@@ -23,7 +23,8 @@
   - JS `COPY` object (`EN.avail: 'Not available'`, `DE.avail: 'Nicht verfügbar'`)
   - Updated `toggleLang()` so switching language updates all status indicators to German ("Nicht verfügbar") and restores English ("Not available").
 - Updated Playwright test expectations in `tests/e2e/spa.spec.js` to assert "Nicht verfügbar" in DE and "Not available" in EN.
-- Preserved light mode tokens (`html.light`, `[data-theme="light"]`) matching Germany Tax Chat reference values.
+- Preserved light mode tokens (`html.light`, `[data-theme="light"]`) matching Germany Tax Chat reference values, with `--bg` updated to `#ECECEC` (Cool Grey) per user direction.
+- Updated `<meta name="theme-color">` values and `toggleTheme()` light-mode target to `#ECECEC` in both `portfolio-combined.html` and `index.html`.
 - Verified visual output across 1920/860/560/390 in both dark and light modes with rendered screenshots.
 
 **State:** Clean, passing all verification gates.
@@ -34,10 +35,11 @@
 **Decided:**
 - Grouped pills using `max-width: fit-content; margin: 0 auto; justify-content: center; gap: 8px;` on `.tb` with `flex: 0 1 auto` on `.links`, allowing the pills to hug their contents compactly while preserving the centered layout and the roadmap nav morph slot.
 - Retained the pulsing green dot for status badges while changing the label text to "Not available" (and "Nicht verfügbar" in DE) per kickoff specifications.
+- Set light mode background to `#ECECEC` (Cool Grey) with crisp `#FFFFFF` widget surfaces, providing WCAG AAA body contrast (16.44:1) and distinct surface depth.
 
 **Blocked / Next:** Work on `feat/post-design-system-topbar-status` is complete and ready for PR / merge.
 
-**Modified:** `prototypes/portfolio-combined.html`, `tests/e2e/spa.spec.js`, `tasks/DEVLOG.md`
+**Modified:** `prototypes/portfolio-combined.html`, `index.html`, `tests/e2e/spa.spec.js`, `tasks/DEVLOG.md`
 
 ---
 
