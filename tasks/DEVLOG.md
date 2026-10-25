@@ -6,6 +6,28 @@
 
 ---
 
+## [2026-10-25] Claude Code (local) — fix/roadmap-nav-icons · fix/roadmap-nav-overlap · fix/search-focus-ring · roadmap nav + search polish
+
+**Mode:** Execution
+
+**Did:** Repaired the CS-roadmap topbar after the SVG-icon commit `ef9f0fb` (pushed straight to `main`) shipped broken, then two follow-up polish fixes. All three merged to `dev`.
+
+- **PR #25 — icons rendered as 300×150 black blobs.** Root cause: no CSS targeted `svg.i` inside `#roadmap-internal-nav` (icon rules are scoped to `#pg-*` and the shared `.links` nav). Added the shared-nav icon recipe (hue stroke, `fill:none`, 1.8 stroke) + `aria-label` on all four links; ≤559px the bar goes icon-only (label on `.active`) because "RESOURCES" clipped at 390px.
+- **PR #26 — nav overlapped the brand and tools pills.** Root cause: the roadmap nav is parked over the 300px `.links` slot; only ~517px is free between the pills, and with icons it was 597px. Desktop rules only: link font 14.5→13px, letter-spacing .06→.03em, link padding 9/14→8/10, logo padding 14→8, icons 18→16px, gap 6px. Measured clearance now 10–11px each side at 1001/1100/1200/1440/1920px, top and scrolled (was −40px).
+- **PR #27 — focused search showed a box inside the pill.** Root cause: global `input:focus-visible` (0,1,1) out-specified `.nav-search-input{outline:none}` (0,1,0). Added `.tbtn.srch .nav-search-input:focus-visible{outline:none}`; pill `:focus-within` ring lowered to `color-mix(accent 35%, transparent)`. Ring is intentionally subtle (below the usual 3:1 focus-indicator contrast) per request.
+- **Stale branches:** deleted the 7 merged `fix/*` branches (local + remote): `ci-runner`, `ci-workflow`, `code-review`, `dev-css-merge-artifact`, `roadmap-nav-icons`, `roadmap-nav-overlap`, `search-focus-ring`. Kept `dev`, `main`.
+- **Release:** `dev` → `main` PR (see state).
+
+**Verification:** each fix measured with Playwright (`getBoundingClientRect` / computed styles, dark + light) and screenshotted; `npm run lint:html` 0 errors; `npm test` 40/40 on every branch.
+
+**State:** `dev` and `main` in sync after the release PR. The kickoff `tasks/kickoff-fix-design-system-migration.md` Box 2 ("27/27 Playwright tests pass") is deliberately unticked (suite is now 40) — local-only file, awaiting the user's call to tick or reword.
+
+**Modified:** `prototypes/portfolio-combined.html`, `tasks/DEVLOG.md`, `tasks/todo.md`.
+
+**Lessons (candidate L-0NN):** (1) a new icon in a new container needs its own `svg.i` sizing rule — page-scoped icon CSS does not follow it; check computed size, not just markup. (2) When a component is positioned over a fixed slot (here the roadmap nav over `.links`), any size change must be re-measured against its neighbours at every width. (3) A global `:focus-visible` rule beats component `outline:none`; override it with a matching `:focus-visible` selector.
+
+---
+
 ## [2026-10-25] Hermes — feat/design-system-migration-final-fixes · final batch: roadmap icons, title sizes, accent bars, search icon
 
 **Mode:** Execution
