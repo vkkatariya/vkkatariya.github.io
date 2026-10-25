@@ -281,12 +281,12 @@ test.describe('final fixes', () => {
     expect(new Set(colours).size).toBe(4);
   });
 
-  test('search pill is an icon until the page scrolls or it gets focus', async ({ page }) => {
+  test('search pill is an icon until the page scrolls or it gets keyboard focus', async ({ page }) => {
     await page.goto(SPA);
     const box = page.locator('#shared-nav .tbtn.srch');
     expect((await box.boundingBox()).width).toBeLessThanOrEqual(44);
-    await box.click();
-    await expect(page.locator('#navSearchInput')).toBeFocused();
+    await box.focus();
+    await page.keyboard.press('Shift+Tab'); await page.keyboard.press('Tab'); // force :focus-visible
     await expect.poll(async () => (await box.boundingBox()).width).toBeGreaterThan(100); // width eases open over .3s
   });
 
@@ -336,5 +336,97 @@ test.describe('final fixes', () => {
     await expect(page.locator('#mindmap-root .mapcards')).toBeVisible();
     await expect(page.locator('#mindmap-root .mapsvg')).toBeHidden();
     await expect(page.locator('#mindmap-root .mapbox')).toBeHidden(); // no empty frame above the cards
+  });
+});
+
+// ─── Site search (Ctrl K dialog) ─────────────────────────────────────────────
+
+test.describe('site search', () => {
+  test.beforeEach(async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 800 });
+    await page.goto(SPA);
+  });
+  const open = async (page) => { await page.keyboard.press('Control+k'); await expect(page.locator('#sxOv')).toBeVisible(); };
+
+  test('pill click and Ctrl K open the dialog; Esc closes it and returns focus', async ({ page }) => {
+    await page.locator('#sbtn').click();
+    await expect(page.locator('#sxOv')).toBeVisible();
+    await expect(page.locator('#sxQ')).toBeFocused();
+    await page.keyboard.press('Escape');
+    await expect(page.locator('#sxOv')).toBeHidden();
+    await expect(page.locator('#sbtn')).toBeFocused();
+    await open(page);
+    await page.keyboard.press('Control+k');
+    await expect(page.locator('#sxOv')).toBeHidden();
+  });
+
+  test('empty query lists pages, suggestions and the index size', async ({ page }) => {
+    await open(page);
+    await expect(page.locator('.sx-item')).toHaveCount(4);
+    await expect(page.locator('.sx-sug .sx-chip').first()).toBeVisible();
+    await expect(page.locator('#sxCount')).toContainText('entries indexed');
+  });
+
+  test('ranks, highlights and tolerates a typo', async ({ page }) => {
+    await open(page);
+    await page.fill('#sxQ', 'c++');
+    await expect(page.locator('.sx-item').first().locator('.sx-rt')).toHaveText('Programming Fundamentals');
+    await expect(page.locator('.sx-item mark').first()).toBeVisible();
+    await page.fill('#sxQ', 'fynance');
+    await expect(page.locator('.sx-item .sx-rt', { hasText: 'Finance Buddy' })).toBeVisible();
+  });
+
+  test('no-match state, and the page filter narrows results', async ({ page }) => {
+    await open(page);
+    await page.fill('#sxQ', 'xyzzyq');
+    await expect(page.locator('.sx-empty')).toContainText('No match');
+    await page.fill('#sxQ', 'pointers');
+    await page.locator('.sx-chip[data-f="about"]').click();
+    await expect(page.locator('.sx-item')).toHaveCount(0);
+    await page.locator('.sx-chip[data-f="roadmap"]').click();
+    expect(await page.locator('.sx-item').count()).toBeGreaterThan(0);
+  });
+
+  test('arrow keys move the selection; Enter on a topic switches page and opens its modal', async ({ page }) => {
+    await open(page);
+    await page.fill('#sxQ', 'c++');
+    await expect(page.locator('.sx-item').first()).toHaveAttribute('aria-selected', 'true');
+    await page.keyboard.press('ArrowDown');
+    await expect(page.locator('.sx-item').nth(1)).toHaveAttribute('aria-selected', 'true');
+    await page.keyboard.press('ArrowUp');
+    await page.keyboard.press('Enter');
+    await expect(page.locator('#sxOv')).toBeHidden();
+    await expect(page.locator('#pg-roadmap')).toHaveClass(/active/);
+    await expect(page.locator('#modal-overlay')).toHaveClass(/open/);
+    await expect(page.locator('#modal-body')).toContainText('Programming Fundamentals');
+  });
+
+  test('clicking a project result switches page and flashes the case study', async ({ page }) => {
+    await open(page);
+    await page.fill('#sxQ', 'hermes');
+    await page.locator('.sx-item', { hasText: 'Hermes One OAuth Fork' }).click();
+    await expect(page.locator('#pg-projects')).toHaveClass(/active/);
+    await expect(page.locator('#pg-projects .cs-section.sx-flash')).toHaveCount(1);
+  });
+
+  test('the private /me page is never indexed', async ({ page }) => {
+    await open(page);
+    // project case studies are public and name the tailnet suffix, but the /me gate hostname and copy live only in #pg-me
+    for (const q of ['me.auxois', 'Connect to Tailscale and open the private site']) {
+      await page.fill('#sxQ', q);
+      await expect(page.locator('.sx-item')).toHaveCount(0);
+    }
+  });
+
+  test('recent searches are remembered, and corrupt storage does not break it', async ({ page }) => {
+    await open(page);
+    await page.fill('#sxQ', 'darmstadt');
+    await page.keyboard.press('Enter');
+    await open(page);
+    await expect(page.locator('.sx-sug .sx-chip', { hasText: 'darmstadt' })).toHaveCount(1);
+    await page.evaluate(() => localStorage.setItem('pf-search-recent', '{not json'));
+    await page.keyboard.press('Escape');
+    await open(page);
+    await expect(page.locator('.sx-item')).toHaveCount(4);
   });
 });
