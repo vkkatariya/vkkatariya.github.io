@@ -48,6 +48,29 @@
 ---
 
 
+## [2026-10-25] Claude Code (local) — feat/design-system-migration-final-fixes · final fixes from `tasks/kickoff-fix-design-system-migration.md`
+
+**Mode:** Execution
+
+**Did:** All changes in `prototypes/portfolio-combined.html` (+ tests), branch cut from `dev` (dfcf3e3).
+- **1 Page titles:** `.ph-title` on Projects / Roadmap / About / /me → `clamp(24px, 3.5vw, 36px)`. Home has no `.ph-title`.
+- **2.1 Nav hues:** links carry `hue-blue / teal / indigo / purple` (home / projects / roadmap / about); icon and active pill follow `--h`.
+- **2.2 Search:** the pill is an icon (≤42px) until the page scrolls past 80px (same `.scrolled` trigger as the brand swap) or the input is focused; a click on the icon focuses the input, Ctrl+K still works. The roadmap-nav alignment keeps tracking during the width transition.
+- **2.3 Home widgets:** neutral `--bg2` surface with the `--w12` border; the hue now shows on the label/icon and a 2px accent bar along the top edge (`::before`). Deviation: the `hue-*` classes stay on the `.w` elements (they supply `--h` to the label and the bar) instead of moving to `.wlbl-row`.
+- **3 Projects:** `.pi` cards lose `.glass-card` and the outline (only the 4px hue edge remains), lift with the home-widget spring (`translateY(-3px) scale(1.015)`) and a hue-tinted shadow; `.cs-title` and the page title use Space Grotesk. `.pi-title` was already Space Grotesk 17px, so 3.1/3.2 changed nothing there (the kickoff's "DM Mono, large" matches the legacy rules that were showing while `dev` had the unbalanced-CSS bug fixed in #18).
+- **4.2 Roadmap pop-up:** `.tl-header:hover` and `.resource-item:hover` use the `.w:hover` lift + spring.
+- **4.1 Mind map:** new "mind map" section under the timeline (`#mindmap-root`, built from `TOPICS`): radial SVG ≥900px (centre → 4 phase nodes → 11 topic nodes in the phase hue, keyboard-operable, opens the topic modal), phase cards (`.mapcards`) below 900px. Each topic's expanded modal also gets a "Mind map" tree (topic → learn categories → items). Interpretation note: the kickoff says "under the timeline and when expanding 11 core topics"; I read the second part as the topic modal.
+- **5 About:** the bio is plain text beside the photo; the `.intro` card wrapper/outline is gone.
+
+**Verification:** `npm run lint:html` 0 errors; `npm test` 39/39 (7 new: nav hues, search collapse, neutral home widgets, free `.pi`, About intro, mind map wide + narrow); overflow/clip pass on 5 pages × 4 widths × 2 themes (only the three known home-tile clips, no horizontal overflow); contrast 0 failures; radii clean; focus-ring audit 0 missing (mind-map leaves got a real focus outline).
+
+**State:** branch `feat/design-system-migration-final-fixes`, PR to `dev`.
+
+**Modified:** `prototypes/portfolio-combined.html`, `tests/e2e/spa.spec.js`, `tasks/DEVLOG.md`
+
+---
+
+
 ## [2026-10-25] Claude Code (local) — fix/ci-runner · first real CI run failed on the runner image
 
 **Mode:** Execution

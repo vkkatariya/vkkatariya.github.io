@@ -3203,6 +3203,50 @@ html.light #pg-projects .pi:hover { box-shadow: 8px 14px 36px rgba(13,13,15,.2),
 #pg-roadmap .tl-header:hover, #pg-roadmap .resource-item:hover { transform: translateY(-3px) scale(1.015); box-shadow: var(--shadow); }
 @media (prefers-reduced-motion: reduce) { #pg-roadmap .tl-header:hover, #pg-roadmap .resource-item:hover { transform: none; } }
 
+/* mind map (reference .mapsec / .mapbox / .mapsvg / .mapcards): radial SVG >=900px, phase cards below */
+#pg-roadmap .mapsec { margin-top: 56px; }
+#pg-roadmap .mapsec-lead { font-family: var(--read); font-size: 18px; line-height: 1.6; color: var(--w80); max-width: 66ch; margin: 0 0 20px; }
+#pg-roadmap .mapbox { background: var(--bg2); border: 1px solid var(--w12); border-radius: 20px; padding: 12px; overflow: hidden; }
+#pg-roadmap .mapsvg { display: none; width: 100%; height: auto; }
+#pg-roadmap .mapsvg text { font-family: var(--sans); }
+#pg-roadmap .mm-link { fill: none; stroke: color-mix(in srgb, var(--h) 55%, transparent); stroke-width: 2; }
+#pg-roadmap .mm-center circle { fill: color-mix(in srgb, var(--acc) 14%, var(--bg3)); stroke: var(--acc); stroke-width: 2; }
+#pg-roadmap .mm-center text { fill: var(--w); font-weight: 700; font-size: 17px; text-anchor: middle; }
+#pg-roadmap .mm-phase rect { fill: color-mix(in srgb, var(--h) 22%, var(--bg3)); stroke: var(--h); stroke-width: 2; }
+#pg-roadmap .mm-phase text { fill: var(--w); font-weight: 700; font-size: 15px; text-anchor: middle; }
+#pg-roadmap .mm-leaf { cursor: pointer; }
+#pg-roadmap .mm-leaf:focus-visible { outline: 2px solid var(--acc); outline-offset: 3px; }
+#pg-roadmap .mm-leaf rect { fill: var(--bg3); stroke: color-mix(in srgb, var(--h) 55%, transparent); stroke-width: 2; transition: fill .24s cubic-bezier(.2,.7,.2,1), stroke .24s cubic-bezier(.2,.7,.2,1); }
+#pg-roadmap .mm-leaf:hover rect { fill: var(--bg4); stroke: var(--h); }
+#pg-roadmap .mm-leaf:focus-visible rect { stroke: var(--acc); stroke-width: 3; }
+#pg-roadmap .mm-leaf text { fill: var(--w); font-weight: 500; font-size: 13px; text-anchor: middle; pointer-events: none; }
+#pg-roadmap .mm-leaf .mm-num { fill: var(--h); font-family: var(--data); font-size: 10.5px; font-weight: 400; }
+#pg-roadmap .mapcards { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 12px; }
+#pg-roadmap .mcard { background: var(--bg3); border: 1px solid var(--w12); border-left: 4px solid var(--h); border-radius: 14px; padding: 16px; min-width: 0; }
+#pg-roadmap .mcard h3 { display: flex; align-items: center; gap: 10px; margin: 0 0 10px; font-family: var(--sans); font-weight: 700; font-size: 17px; color: var(--w); }
+#pg-roadmap .mcard h3::before { content: ""; width: 10px; height: 10px; border-radius: 50%; background: var(--h); flex: none; }
+#pg-roadmap .mcard ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+#pg-roadmap .mcard button { width: 100%; text-align: left; cursor: pointer; padding: 8px 12px; border-radius: 10px;
+  font-family: var(--sans); font-size: 15px; font-weight: 500; line-height: 1.35; color: var(--w);
+  background: color-mix(in srgb, var(--h) 13%, transparent); border: 1px solid color-mix(in srgb, var(--h) 42%, transparent);
+  transition: background .24s cubic-bezier(.2,.7,.2,1), border-color .24s cubic-bezier(.2,.7,.2,1); }
+#pg-roadmap .mcard button:hover { background: color-mix(in srgb, var(--h) 22%, transparent); border-color: var(--h); }
+@media (min-width: 900px) { #pg-roadmap .mapsvg { display: block; } #pg-roadmap .mapcards { display: none; } }
+
+/* tree inside the topic modal (reference .tree / .node) */
+.modal .tree, .modal .tree ul { list-style: none; margin: 0; padding: 0; }
+.modal .tree ul { padding-left: 22px; }
+.modal .tree li { position: relative; padding: 5px 0 5px 22px; }
+.modal .tree li::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; border-left: 2px solid color-mix(in srgb, var(--h) 45%, transparent); }
+.modal .tree li::after { content: ""; position: absolute; left: 0; top: 20px; width: 16px; border-top: 2px solid color-mix(in srgb, var(--h) 45%, transparent); }
+.modal .tree li:last-child::before { bottom: auto; height: 20px; }
+.modal .tree > li { padding-left: 0; }
+.modal .tree > li::before, .modal .tree > li::after { display: none; }
+.modal .node { display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px; border-radius: 10px; font-family: var(--sans); font-weight: 500; font-size: 15px; line-height: 1.35; color: var(--w);
+  background: color-mix(in srgb, var(--h) 13%, transparent); border: 1px solid color-mix(in srgb, var(--h) 42%, transparent); }
+.modal .node.root { font-weight: 700; font-size: 16px; background: var(--h); color: var(--bg); border-color: var(--h); }
+.modal .node.leaf { background: transparent; border-color: var(--w12); color: var(--w80); font-weight: 400; }
+
 /* footer */
 #pg-roadmap .footer-logo { font-size: 12.5px; letter-spacing: .08em; color: var(--w60); }
 #pg-roadmap .footer-links a { font-size: 12.5px; letter-spacing: .04em; color: var(--w60); }
@@ -5382,6 +5426,15 @@ html.light #pg-projects .pi:hover { box-shadow: 8px 14px 36px rgba(13,13,15,.2),
     </div>
   </section>
 
+  <!-- ═══════════ MIND MAP ═══════════ -->
+  <section class="mapsec hue-sand" aria-labelledby="mindmap-heading">
+    <div class="sec-head">
+      <h2 id="mindmap-heading">mind map</h2>
+    </div>
+    <p class="mapsec-lead">The 11 core topics grouped into the four phases. Pick any topic to open its plan.</p>
+    <div id="mindmap-root"></div>
+  </section>
+
   <!-- ═══════════ 11 CORE TOPICS ═══════════ -->
   <section id="topics" class="hue-teal" aria-labelledby="topics-heading">
     <div class="sec-head">
@@ -6441,6 +6494,72 @@ function updateProgressWidget(saved) {
   });
 }
 
+
+// ═══════════════════════════════════════════
+// MIND MAP (radial SVG on wide screens, phase cards on narrow ones; built from TOPICS)
+// ═══════════════════════════════════════════
+const PHASES = [
+  { key: 'foundation', label: 'Foundation', hue: 'var(--blue)', angle: 205 },
+  { key: 'core', label: 'Core Skills', hue: 'var(--teal)', angle: -50 },
+  { key: 'system', label: 'System Core', hue: 'var(--indigo)', angle: 40, step: 30 },
+  { key: 'advanced', label: 'Advanced', hue: 'var(--purple)', angle: 145 }
+];
+function wrapLabel(name, max) {
+  const words = name.split(' '), lines = [''];
+  words.forEach(w => { const l = lines[lines.length - 1]; if (l && (l + ' ' + w).length > max) lines.push(w); else lines[lines.length - 1] = l ? l + ' ' + w : w; });
+  return lines;
+}
+function buildMindMap() {
+  const root = document.getElementById('mindmap-root');
+  if (!root) return;
+  const NS = 'http://www.w3.org/2000/svg';
+  const W = 1000, H = 640, cx = 500, cy = 320;
+  const pos = (deg, rx, ry) => [cx + rx * Math.cos(deg * Math.PI / 180), cy + ry * Math.sin(deg * Math.PI / 180)];
+  const el = (tag, attrs, parent) => { const n = document.createElementNS(NS, tag); Object.entries(attrs || {}).forEach(([k, v]) => n.setAttribute(k, v)); if (parent) parent.appendChild(n); return n; };
+  const svg = el('svg', { class: 'mapsvg', viewBox: `0 0 ${W} ${H}`, role: 'group', 'aria-label': 'Mind map of the 11 topics grouped into four phases' });
+  const links = el('g', {}, svg), nodes = el('g', {}, svg);
+  const c = el('g', { class: 'mm-center' }, nodes);
+  el('circle', { cx, cy, r: 56 }, c);
+  el('text', { x: cx, y: cy - 2 }, c).textContent = 'CS';
+  el('text', { x: cx, y: cy + 18, style: 'font-size:13px;font-weight:500' }, c).textContent = 'roadmap';
+
+  PHASES.forEach(ph => {
+    const topics = TOPICS.filter(t => t.phase === ph.key);
+    const [px, py] = pos(ph.angle, 215, 120);
+    const g = el('g', { style: '--h:' + ph.hue }, links);
+    el('path', { class: 'mm-link', d: `M${cx},${cy} L${px},${py}` }, g);
+    const ng = el('g', { class: 'mm-phase', style: '--h:' + ph.hue }, nodes);
+    el('rect', { x: px - 62, y: py - 19, width: 124, height: 38, rx: 12 }, ng);
+    el('text', { x: px, y: py + 5 }, ng).textContent = ph.label;
+    topics.forEach((t, i) => {
+      const [lx, ly] = pos(ph.angle + (i - (topics.length - 1) / 2) * (ph.step || 30), 375, 255);
+      el('path', { class: 'mm-link', style: '--h:' + ph.hue, d: `M${px},${py} Q${(px + lx) / 2},${(py + ly) / 2 - 10} ${lx},${ly}` }, g);
+      const leaf = el('g', { class: 'mm-leaf', style: '--h:' + ph.hue, role: 'button', tabindex: '0', 'aria-label': `${t.name}, open topic ${t.id} of 11` }, nodes);
+      el('rect', { x: lx - 88, y: ly - 27, width: 176, height: 54, rx: 10 }, leaf);
+      el('text', { class: 'mm-num', x: lx, y: ly - 12 }, leaf).textContent = String(t.id).padStart(2, '0');
+      const lines = wrapLabel(t.name, 24).slice(0, 2);
+      lines.forEach((ln, k) => { el('text', { x: lx, y: ly + (lines.length === 1 ? 8 : 4) + k * 14 }, leaf).textContent = ln; });
+      leaf.addEventListener('click', () => openModal(t.id));
+      leaf.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openModal(t.id); } });
+    });
+  });
+
+  const box = document.createElement('div'); box.className = 'mapbox'; box.appendChild(svg);
+  const cards = document.createElement('div'); cards.className = 'mapcards';
+  PHASES.forEach(ph => {
+    const card = document.createElement('div'); card.className = 'mcard'; card.style.setProperty('--h', ph.hue);
+    const h = document.createElement('h3'); h.textContent = ph.label; card.appendChild(h);
+    const ul = document.createElement('ul');
+    TOPICS.filter(t => t.phase === ph.key).forEach(t => {
+      const li = document.createElement('li'), b = document.createElement('button');
+      b.type = 'button'; b.textContent = String(t.id).padStart(2, '0') + ' · ' + t.name;
+      b.addEventListener('click', () => openModal(t.id)); li.appendChild(b); ul.appendChild(li);
+    });
+    card.appendChild(ul); cards.appendChild(card);
+  });
+  root.appendChild(box); root.appendChild(cards);
+}
+
 // ═══════════════════════════════════════════
 // MODAL
 // ═══════════════════════════════════════════
@@ -6488,6 +6607,11 @@ function openModal(id) {
     <div class="modal-section">
       <div class="modal-section-label">Why it matters</div>
       <ul>${t.why.map(w => `<li>${esc(w)}</li>`).join('')}</ul>
+    </div>
+
+    <div class="modal-section">
+      <div class="modal-section-label">Mind map</div>
+      <ul class="tree"><li><span class="node root">${esc(t.name)}</span><ul>${t.learn.map(cat => `<li><span class="node">${esc(cat.cat)}</span><ul>${cat.items.map(i => `<li><span class="node leaf">${esc(i)}</span></li>`).join('')}</ul></li>`).join('')}</ul></li></ul>
     </div>
 
     <div class="modal-section">
@@ -6661,6 +6785,7 @@ const barObserver = new IntersectionObserver((entries) => {
 // ═══════════════════════════════════════════
 renderTopics();
 renderCareers();
+buildMindMap();
 
 // observe career cards for bar animation
 document.querySelectorAll('.career-card').forEach(c => barObserver.observe(c));
