@@ -38,7 +38,6 @@ la-Cormorant Bold Italic wordmark redo (all 5 occurrences) and Roadmap title res
 
 
 ### Design System Migration — Final Fixes (2026-10-25) ✅ COMPLETE
-### Design System Migration — Final Fixes (2026-10-25) ✅ COMPLETE
 - [x] Page titles legacy font size — `.ph-title` on Projects/Roadmap/About/Me: `clamp(28px, 4.4vw, 46px)`; homepage hero `clamp(48px, 8vw, 96px)`
 - [x] Homepage topbar icons — nav links now have distinct hues (home=blue, projects=teal, roadmap=indigo, about=purple); SVG icons + active pill follow `--h`
 - [x] Search collapsed by default — collapses to icon (≤42px) on load; expands on scroll (>80px) or focus/click; Ctrl+K works
@@ -51,6 +50,21 @@ la-Cormorant Bold Italic wordmark redo (all 5 occurrences) and Roadmap title res
 - [x] Remove widget outline around about description — `.intro` loses card wrapper/outline → clean text block beside photo
 
 **Verification:** `npm test` 40/40 (27 original + 13 new); `npm run lint:html` 0 errors; 40/40 visual audit PASS; production deployed.
+
+### Post-migration polish (2026-10-25) ✅ COMPLETE
+- [x] Roadmap internal nav SVG icons sized + hue-styled (PR #25) — icons were 300×150 black blobs: no `svg.i` rule existed in `#roadmap-internal-nav`; icon-only on phones with `aria-label`s
+- [x] Roadmap internal nav no longer overlaps the brand/tools pills (PR #26) — smaller type/padding/icons; 10–11px clearance at 1001–1920px
+- [x] Search focus: inner box removed, ring softened to 35% accent (PR #27)
+- [x] Stale merged `fix/*` branches deleted (7, local + remote)
+
+### Follow-ups (open, optional)
+- [ ] Kickoff `tasks/kickoff-fix-design-system-migration.md` Box 2 says "27/27 Playwright tests pass" but the suite is 40 — tick or reword to "all tests pass" (local-only file; needs Vishal's call)
+- [ ] 860px home grid leaves an empty third column (pre-existing, same on `3f8e1ce`)
+- [ ] Skills tile: "TypeScript" label touches its bar (pre-existing)
+- [ ] Implement the search stub `runSearch()` (input is wired, no results UI)
+- [ ] Legacy standalone prototypes still reference undefined handlers; `resume*.html` still carry "Open to work" pills
+- [ ] Remove unused `@vercel/speed-insights` dependency
+- [ ] Consider raising the search focus ring above 35% if keyboard-focus visibility becomes a concern
 
 ---
 
