@@ -270,3 +270,71 @@ test.describe('robustness', () => {
     await expect(page.locator('.filter-btn[data-filter="all"]')).toHaveAttribute('aria-pressed', 'false');
   });
 });
+
+// ─── Final design-system fixes ───────────────────────────────────────────────
+
+test.describe('final fixes', () => {
+  test('nav links carry their own hue', async ({ page }) => {
+    await page.goto(SPA);
+    const hue = (pg) => page.locator(`#shared-nav .links a[href="#${pg}"]`).evaluate(e => getComputedStyle(e.querySelector('svg')).color);
+    const colours = await Promise.all(['home', 'projects', 'roadmap', 'about'].map(hue));
+    expect(new Set(colours).size).toBe(4);
+  });
+
+  test('search pill is an icon until the page scrolls or it gets focus', async ({ page }) => {
+    await page.goto(SPA);
+    const box = page.locator('#shared-nav .tbtn.srch');
+    expect((await box.boundingBox()).width).toBeLessThanOrEqual(44);
+    await box.click();
+    await expect(page.locator('#navSearchInput')).toBeFocused();
+    await expect.poll(async () => (await box.boundingBox()).width).toBeGreaterThan(100); // width eases open over .3s
+  });
+
+  test('home widgets are neutral with a hue accent bar', async ({ page }) => {
+    await page.goto(SPA);
+    const bg = await page.locator('#pg-home .w.hue-blue').first().evaluate(e => getComputedStyle(e).backgroundImage);
+    expect(bg).toBe('none');
+    const bar = await page.locator('#pg-home .w.hue-blue').first().evaluate(e => getComputedStyle(e, '::before').height);
+    expect(bar).toBe('2px');
+  });
+
+  test('project index cards are free-floating (no glass card)', async ({ page }) => {
+    await page.goto(SPA);
+    await expect(page.locator('#pg-projects .pi.glass-card')).toHaveCount(0);
+  });
+
+  test('roadmap scroll-progress strip is cleared when leaving the roadmap', async ({ page }) => {
+    await page.goto(SPA);
+    await page.locator('#shared-nav .links a[href="#roadmap"]').click();
+    await page.evaluate(() => window.scrollTo(0, 1200));
+    await expect.poll(() => page.evaluate(() => document.getElementById('progress-bar').style.width)).not.toBe('0px');
+    await page.evaluate(() => showPage('about'));
+    await expect.poll(() => page.evaluate(() => Math.round(parseFloat(getComputedStyle(document.getElementById('progress-bar')).width)))).toBe(0); // width eases to 0
+  });
+
+  test('about intro has no card wrapper', async ({ page }) => {
+    await page.goto(SPA);
+    await page.locator('#shared-nav .links a[href="#about"]').click();
+    const border = await page.locator('#pg-about .intro').evaluate(e => getComputedStyle(e).borderTopWidth);
+    expect(border).toBe('0px');
+  });
+
+  test('roadmap mind map lists all 11 topics and opens the topic modal', async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 900 });
+    await page.goto(SPA);
+    await page.locator('#shared-nav .links a[href="#roadmap"]').click();
+    await expect(page.locator('#mindmap-root .mm-leaf')).toHaveCount(11);
+    await page.locator('#mindmap-root .mm-leaf').first().click();
+    await expect(page.locator('#modal-overlay')).toHaveClass(/open/);
+    await expect(page.locator('#modal-body .tree .node.root')).toBeVisible();
+  });
+
+  test('mind map falls back to phase cards on narrow screens', async ({ page }) => {
+    await page.setViewportSize({ width: 600, height: 900 });
+    await page.goto(SPA);
+    await page.locator('#shared-nav .links a[href="#roadmap"]').click();
+    await expect(page.locator('#mindmap-root .mapcards')).toBeVisible();
+    await expect(page.locator('#mindmap-root .mapsvg')).toBeHidden();
+    await expect(page.locator('#mindmap-root .mapbox')).toBeHidden(); // no empty frame above the cards
+  });
+});
