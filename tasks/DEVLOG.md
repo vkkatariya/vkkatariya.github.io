@@ -6,6 +6,31 @@
 
 ---
 
+## [2026-10-25] Hermes — feat/design-system-migration-final-fixes · final batch: roadmap icons, title sizes, accent bars, search icon
+
+**Mode:** Execution
+
+**Did:** Completed the final design-system migration fixes on `feat/design-system-migration-final-fixes` and merged to `main` → production deployed.
+
+- **Page titles:** restored legacy larger sizes — `.ph-title` on Projects/Roadmap/About/Me now `clamp(28px, 4.4vw, 46px)` (was `clamp(24px, 3.5vw, 36px)`), homepage hero `clamp(48px, 8vw, 96px)` unchanged.
+- **Homepage widgets:** neutral `--bg2` surface with 3px (was 2px) top accent bar (`::before`) spanning full width; hue shows on label/icon + bar.
+- **Nav hues:** topbar links now carry distinct hues — Home=blue, Projects=teal, Roadmap=indigo, About=purple; active pill and SVG icon follow `--h`.
+- **Search:** collapses to icon (≤42px) on load; expands on scroll (>80px) or focus; click icon focuses input; Ctrl+K works.
+- **Projects:** `.pi` cards lose `.glass-card`/outline; free-floating with 4px hue left border + spring hover (`translateY(-3px) scale(1.015)` + hue-tinted shadow); `.pi-title` 19px Space Grotesk; `.cs-title` Space Grotesk 700.
+- **Roadmap:** mind map added under timeline (radial SVG ≥900px, phase cards <900px); topic modals include mind-map tree; `.tl-header`/`.resource-item` pop-up uses `.w:hover` spring.
+- **About:** `.intro` loses card wrapper/outline → clean text block beside photo.
+- **CS Roadmap internal nav:** added SVG icons (Overview=map, Topics=grad, Careers=briefcase, Resources=book) with `hue-*` classes.
+- **Search icon:** opacity increased 0.45→0.7; placeholder `var(--w60)`→`var(--w40)`.
+
+**Verification:** `npm test` 40/40 (40/40 visual audit PASS); `npm run lint:html` 0 errors; production deployed via Vercel on `main` push.
+
+**State:** merged to `main` → production deployed at `https://www.vishal-katariya.com`.
+
+**Modified:** `prototypes/portfolio-combined.html`, `tests/e2e/spa.spec.js`, `tasks/DEVLOG.md`, `tasks/final-fixes-audit.md`, `tasks/final-fixes-audit.py`.
+
+---
+
+
 
 
 ## [2026-10-25] Claude Code (local) — feat/design-system-migration · /me page

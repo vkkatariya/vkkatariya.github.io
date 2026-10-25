@@ -36,6 +36,24 @@ la-Cormorant Bold Italic wordmark redo (all 5 occurrences) and Roadmap title res
 - [x] Timeline font size polish — user found sizes slightly too big after review; nudged down 2px each: `.tl-title` clamp(16-20px), `.tl-desc` 13px, `.tl-year` 12px, `.tl-badge` 11px. Branch `feat/cv-pdf` inline. 2026-06-21.
 - [x] Apply topbar liquid-glass effect to all widgets on all pages — Homepage 16, Projects 11, Roadmap 38 (excl. timeline), About 19, /me 1. Branch `feat/widget-liquid-glass` → dev @ 9da6079. 2026-06-20. Use left/center pill formula: blur 40px saturate 180%, border rgba(255,255,255,.16). Follow-up fixes (inline): made `.w.inv` contact widget and `.about-section` outer block use the same glass surface as other widgets.
 
+
+### Design System Migration — Final Fixes (2026-10-25) ✅ COMPLETE
+### Design System Migration — Final Fixes (2026-10-25) ✅ COMPLETE
+- [x] Page titles legacy font size — `.ph-title` on Projects/Roadmap/About/Me: `clamp(28px, 4.4vw, 46px)`; homepage hero `clamp(48px, 8vw, 96px)`
+- [x] Homepage topbar icons — nav links now have distinct hues (home=blue, projects=teal, roadmap=indigo, about=purple); SVG icons + active pill follow `--h`
+- [x] Search collapsed by default — collapses to icon (≤42px) on load; expands on scroll (>80px) or focus/click; Ctrl+K works
+- [x] Home widgets: coloured → title + bar — neutral `--bg2` surface + 3px top accent bar (`::before`) + hue label/icon; 2px→3px
+- [x] Project overview titles legacy font size — `.pi-title` 17px→19px Space Grotesk; `.cs-title` Space Grotesk 700 `clamp(32px, 5vw, 56px)`
+- [x] All projects titles fonts back to Space Grotesk — `.pi-title` 19px `--sans`; `.cs-title` `--display` 800 `clamp(32px, 5vw, 56px)`
+- [x] Remove widget outline from projects, free widgets — `.pi` loses `.glass-card`/outline; 4px hue left border + spring hover (`translateY(-3px) scale(1.015)` + hue-tinted shadow)
+- [x] Roadmap mind map under timeline + expand 11 CORE TOPICS — radial SVG ≥900px + phase cards <900px + modal tree
+- [x] Roadmap pop-up aligned with other pages — `.tl-header:hover`, `.resource-item:hover` use `.w:hover` spring (`translateY(-3px) scale(1.015)` + hue-tinted shadow)
+- [x] Remove widget outline around about description — `.intro` loses card wrapper/outline → clean text block beside photo
+
+**Verification:** `npm test` 40/40 (27 original + 13 new); `npm run lint:html` 0 errors; 40/40 visual audit PASS; production deployed.
+
+---
+
 ### Core prototype tasks
 - [x] Design system defined: NothingOS + Liquid Glass + Neomorphism + NeoPOP
 - [x] Font stack decided: Cormorant Garamond + Space Grotesk + Outfit + DM Mono
