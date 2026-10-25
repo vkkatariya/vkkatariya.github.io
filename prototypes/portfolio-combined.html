@@ -287,7 +287,7 @@ html.light body::before {
   font-family: var(--mono); font-size: 12px; letter-spacing: .3px; color: var(--w);
 }
 .nav-search-input:focus { width: 140px; }
-.nav-search-input::placeholder { color: var(--w60); }
+.nav-search-input::placeholder { color: var(--w40); }
 .nav-lang { font-family: var(--mono); font-size: 12px; letter-spacing: 1.5px; }
 .tbtn.nav-profile { padding: 0; width: 42px; overflow: hidden; box-shadow: 0 0 0 1.5px var(--w30); }
 .tbtn.nav-profile:hover { transform: scale(1.07); box-shadow: 0 0 0 3px color-mix(in srgb, var(--acc) 25%, transparent); }
@@ -2771,7 +2771,7 @@ html.light footer.roadmap-footer a { color: var(--w); }
   border-color: var(--w12);
 }
 #pg-home .w[class*="hue-"]::before {
-  content: ""; position: absolute; left: 0; right: 0; top: 0; height: 2px; z-index: 1; pointer-events: none;
+  content: ""; position: absolute; left: 0; right: 0; top: 0; height: 3px; z-index: 1; pointer-events: none;
   background: var(--h);
 }
 #pg-home .w[class*="hue-"] .wlbl-row { color: var(--h); }
@@ -2913,7 +2913,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
 /* page header: lab kicker + h2.big-style title + lead */
 #pg-projects .ph-label { font-family: var(--mono); font-size: 13px; letter-spacing: .03em; text-transform: none; color: var(--h); }
 #pg-projects .ph-label::after { background: color-mix(in srgb, var(--h) 45%, transparent); }
-#pg-projects .ph-title { font-family: var(--sans); font-weight: 700; font-size: clamp(24px, 3.5vw, 36px);
+#pg-projects .ph-title { font-family: var(--display); font-weight: 800; font-size: clamp(28px, 4.4vw, 46px);
   line-height: 1.04; letter-spacing: -.03em; color: var(--w); margin-bottom: 14px; }
 #pg-projects .ph-sub { font-family: var(--read); font-size: 18px; letter-spacing: 0; line-height: 1.6; color: var(--w80); max-width: 66ch; }
 
@@ -2939,7 +2939,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
 html.light #pg-projects .pi:hover { box-shadow: 8px 14px 36px rgba(13,13,15,.2), 0 0 0 1px color-mix(in srgb, var(--h) 30%, transparent); }
 @media (prefers-reduced-motion: reduce) { #pg-projects .pi:hover { transform: none; } }
 #pg-projects .pi-num { font-family: var(--data); font-size: 12px; letter-spacing: .06em; color: var(--w60); margin-bottom: 12px; }
-#pg-projects .pi-title { display: flex; align-items: center; gap: 10px; font-family: var(--sans); font-weight: 700; font-size: 17px;
+#pg-projects .pi-title { display: flex; align-items: center; gap: 10px; font-family: var(--sans); font-weight: 700; font-size: 19px;
   letter-spacing: 0; line-height: 1.25; color: var(--w); margin-bottom: 6px; }
 #pg-projects .pi-title svg.ico { width: 22px; height: 22px; flex: none; color: var(--product, var(--h)); }
 #pg-projects .pi-sub { font-family: var(--read); font-size: 15.5px; letter-spacing: 0; line-height: 1.5; color: var(--w80); margin-bottom: 14px; }
@@ -2957,7 +2957,7 @@ html.light #pg-projects .pi:hover { box-shadow: 8px 14px 36px rgba(13,13,15,.2),
 }
 @media (max-width: 700px) { #pg-projects .cs-section, #pg-projects .cs-section:first-child { padding: 22px 18px; } }
 #pg-projects .cs-number { font-family: var(--data); font-size: 13px; letter-spacing: .08em; color: var(--h); }
-#pg-projects .cs-title { font-family: var(--sans); font-weight: 700; font-size: clamp(32px, 5vw, 56px); letter-spacing: -.03em; line-height: 1; color: var(--w); }
+#pg-projects .cs-title { font-family: var(--display); font-weight: 800; font-size: clamp(32px, 5vw, 56px); letter-spacing: -.03em; line-height: 1; color: var(--w); }
 #pg-projects .cs-title svg.ico { width: 40px; height: 40px; color: var(--product, var(--h)); }
 #pg-projects .cs-tagline { font-family: var(--read); font-size: 17px; line-height: 1.6; color: var(--w80); max-width: 62ch; }
 #pg-projects .cs-stats { background: var(--w12); border-radius: 14px; }
@@ -3065,7 +3065,7 @@ html.light #pg-projects .pi:hover { box-shadow: 8px 14px 36px rgba(13,13,15,.2),
 /* page header */
 #pg-roadmap .ph-label { font-family: var(--mono); font-size: 13px; letter-spacing: .03em; text-transform: none; color: var(--h); }
 #pg-roadmap .ph-label::after { background: color-mix(in srgb, var(--h) 45%, transparent); }
-#pg-roadmap .ph-title { font-family: var(--display); font-weight: 800; font-size: clamp(24px, 3.5vw, 36px);
+#pg-roadmap .ph-title { font-family: var(--display); font-weight: 800; font-size: clamp(28px, 4.4vw, 46px);
   line-height: 1.04; letter-spacing: -.03em; color: var(--w); margin-bottom: 14px; }
 #pg-roadmap .ph-sub { font-family: var(--read); font-size: 18px; letter-spacing: 0; line-height: 1.6; color: var(--w80); max-width: 66ch; }
 
@@ -3323,7 +3323,7 @@ html.light #pg-projects .pi:hover { box-shadow: 8px 14px 36px rgba(13,13,15,.2),
 /* page header */
 #pg-about .ph-label { font-family: var(--mono); font-size: 13px; letter-spacing: .03em; text-transform: none; color: var(--h); }
 #pg-about .ph-label::after { background: color-mix(in srgb, var(--h) 45%, transparent); }
-#pg-about .ph-title { font-family: var(--display); font-weight: 800; font-size: clamp(24px, 3.5vw, 36px);
+#pg-about .ph-title { font-family: var(--display); font-weight: 800; font-size: clamp(28px, 4.4vw, 46px);
   line-height: 1.04; letter-spacing: -.03em; color: var(--w); margin-bottom: 36px; }
 
 /* section heads: mono label in the hue, hue rule, DM Mono number */
@@ -3435,7 +3435,7 @@ html.light #pg-projects .pi:hover { box-shadow: 8px 14px 36px rgba(13,13,15,.2),
 #pg-me .ph { padding: 0 0 32px; max-width: none; }
 #pg-me .ph-label { font-family: var(--mono); font-size: 13px; letter-spacing: .03em; text-transform: none; color: var(--h); }
 #pg-me .ph-label::after { background: color-mix(in srgb, var(--h) 45%, transparent); }
-#pg-me .ph-title { font-family: var(--display); font-weight: 800; font-size: clamp(24px, 3.5vw, 36px);
+#pg-me .ph-title { font-family: var(--display); font-weight: 800; font-size: clamp(28px, 4.4vw, 46px);
   line-height: 1.04; letter-spacing: -.03em; color: var(--w); margin-bottom: 14px; }
 #pg-me .ph-sub { font-family: var(--read); font-size: 18px; letter-spacing: 0; line-height: 1.6; color: var(--w80); max-width: 66ch; }
 #pg-me svg.i { width: 22px; height: 22px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
