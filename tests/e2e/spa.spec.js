@@ -1,5 +1,6 @@
 // @ts-check
 import { test, expect } from '@playwright/test';
+import { readFileSync } from 'node:fs';
 
 const SPA = '/prototypes/portfolio-combined.html';
 
@@ -214,5 +215,58 @@ test.describe('roadmap modal', () => {
     await buttons.nth(1).click();
     const secondTitle = await page.locator('#modal-title-text').textContent();
     expect(firstTitle).not.toBe(secondTitle);
+  });
+});
+
+// ─── Robustness (code review) ────────────────────────────────────────────────
+
+test.describe('robustness', () => {
+  test('stylesheet braces balance (htmlhint does not parse CSS)', () => {
+    const html = readFileSync('prototypes/portfolio-combined.html', 'utf8');
+    for (const m of html.matchAll(/<style[^>]*>([\s\S]*?)<\/style>/g)) {
+      const css = m[1].replace(/\/\*[\s\S]*?\*\//g, '');
+      expect(css.split('{').length).toBe(css.split('}').length);
+    }
+  });
+
+  test('corrupt saved progress does not break the page', async ({ page }) => {
+    await page.addInitScript(() => localStorage.setItem('cs-roadmap-progress', '{not json'));
+    const errors = [];
+    page.on('pageerror', e => errors.push(String(e)));
+    await page.goto(SPA);
+    await page.locator('#shared-nav .links a[href="#roadmap"]').click();
+    await expect(page.locator('#pg-roadmap .topic-card')).toHaveCount(11);
+    expect(errors).toEqual([]);
+  });
+
+  test('blocked localStorage does not break the page', async ({ page }) => {
+    await page.addInitScript(() => {
+      Object.defineProperty(window, 'localStorage', { get() { throw new Error('blocked'); } });
+    });
+    const errors = [];
+    page.on('pageerror', e => errors.push(String(e)));
+    await page.goto(SPA);
+    await page.locator('#shared-nav .links a[href="#projects"]').click();
+    await expect(page.locator('#pg-projects')).toHaveClass(/active/);
+    expect(errors).toEqual([]);
+  });
+
+  test('roadmap modal moves focus in and gives it back', async ({ page }) => {
+    await page.goto(SPA);
+    await page.locator('#shared-nav .links a[href="#roadmap"]').click();
+    const opener = page.locator('#pg-roadmap [data-expand="1"]');
+    await opener.click();
+    await expect(page.locator('#modal-close')).toBeFocused();
+    await page.keyboard.press('Escape');
+    await expect(opener).toBeFocused();
+  });
+
+  test('topic filter buttons expose aria-pressed', async ({ page }) => {
+    await page.goto(SPA);
+    await page.locator('#shared-nav .links a[href="#roadmap"]').click();
+    const core = page.locator('.filter-btn[data-filter="core"]');
+    await core.click();
+    await expect(core).toHaveAttribute('aria-pressed', 'true');
+    await expect(page.locator('.filter-btn[data-filter="all"]')).toHaveAttribute('aria-pressed', 'false');
   });
 });
