@@ -7,6 +7,25 @@
 ---
 
 
+## [2026-10-25] Claude Code (local) — feat/post-design-system-topbar-status · took over from Antigravity: remove availability text
+
+**Mode:** Execution
+
+**Did:** Antigravity hit its usage limit mid-task (its last instruction: remove the "Not available" text from all pages). Picked up its uncommitted diff, finished it and brought the branch up to date with `feat/design-system-migration` (238d72b).
+- **Status text removed everywhere in `portfolio-combined.html`:** nav dot + text, clock-tile badge, contact-tile badge, About photo status, `COPY.avail` (EN/DE) and the `toggleLang()` writes; two availability e2e tests removed (29 → 27). Dead CSS deleted: `.nav-avail-*`, `.sbadge`, `.avail-badge`, `.photo-status`, `.avail-block`/`.ab-*`, `avail-pulse`, `glow-pulse`, `gp` keyframes. Left alone on purpose: the standalone legacy prototypes and the `resume*.html` CV sources ("Open to work" pills; a different text, not part of the site SPA) and unrelated prose ("not available on free Kaggle T4s", "/me is only available on the Tailnet").
+- **Merge:** conflicted with the design-system branch's own topbar centring (238d72b, brand left / tools right). Kept this branch's grouped-pills layout (`.tb` fit-content, centred), which is what the kickoff asks for, and dropped the absolute-centred links rule.
+- **Roadmap nav collision (new with the grouped layout):** the roadmap internal nav is centred at 50% but the links slot is not, so it overlapped the tools pill. It is now parked over the links slot via `alignRoadmapNav()` (on show, resize, and for 450ms after the brand pill's scroll-swap); at ≤1000px (no free slot) it is the bottom pill, and the progress-widget lift moved to the same breakpoint.
+- **Light-mode contrast:** the `#ECECEC` background left `.pfoot-type.ai/.app` and `.pcard-num` at 4.19–4.46:1; stepped them darker in light mode only. Contrast audit (dark + light, 1920/1440/860/560/390): 0 failures.
+
+**Verification:** `npm run lint:html` 0 errors; `npm test` 27/27; overflow/clip pass on all five pages (1920/860/560/390 × dark/light): no horizontal overflow, only the three pre-existing home-tile clip flags; radii and focus-ring audits clean.
+
+**State:** branch `feat/post-design-system-topbar-status` — ready for PR. It is based on `feat/design-system-migration`, not `dev`; merge that first.
+
+**Modified:** `prototypes/portfolio-combined.html`, `tests/e2e/spa.spec.js`, `tasks/DEVLOG.md`
+
+---
+
+
 ## [2026-10-25] Antigravity — feat/post-design-system-topbar-status · topbar centered grouping + status text to "Not available"
 
 **Mode:** Execution

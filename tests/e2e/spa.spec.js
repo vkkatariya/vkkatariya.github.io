@@ -121,16 +121,6 @@ test.describe('language toggle', () => {
     await expect(page.locator('#langBtn')).toHaveText('EN');
   });
 
-  test('switching to DE updates availability badge', async ({ page }) => {
-    await page.locator('#langBtn').click();
-    await expect(page.locator('.avail-badge')).toHaveText('Nicht verfügbar');
-  });
-
-  test('switching back to EN restores availability badge', async ({ page }) => {
-    await page.locator('#langBtn').click();
-    await page.locator('#langBtn').click();
-    await expect(page.locator('.avail-badge')).toHaveText('Not available');
-  });
 });
 
 // ─── Mobile nav ──────────────────────────────────────────────────────────────
