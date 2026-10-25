@@ -41,40 +41,6 @@ jobs:
           path: playwright-report/
           retention-days: 7
 
-  # Placeholder jobs for Phase 1 (SvelteKit scaffold — not yet started)
-  frontend:
-    name: Frontend — Typecheck · Lint · Build
-    runs-on: ubuntu-latest
-    if: ${{ hashFiles('web/package.json') != '' }}
-    defaults:
-      run:
-        working-directory: ./web
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: 'pnpm'
-          cache-dependency-path: web/pnpm-lock.yaml
-      - run: pnpm install
-      - run: pnpm run check
-      - run: pnpm run lint
-      - run: pnpm run build
-
-  backend:
-    name: Backend — Typecheck · Build
-    runs-on: ubuntu-latest
-    if: ${{ hashFiles('api/package.json') != '' }}
-    defaults:
-      run:
-        working-directory: ./api
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: 'pnpm'
-          cache-dependency-path: api/pnpm-lock.yaml
-      - run: pnpm install
-      - run: pnpm run check
-      - run: pnpm run build
+  # Phase 1 (SvelteKit scaffold in web/, API in api/) is not started. Add its typecheck/lint/build jobs
+  # when the scaffold lands. They were removed because `hashFiles()` is not allowed in a job-level `if:`,
+  # which made GitHub reject this whole file ("workflow file issue") so no CI ran at all.
