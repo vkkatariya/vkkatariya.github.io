@@ -7,6 +7,264 @@
 ---
 
 
+
+## [2026-10-25] Claude Code (local) — feat/design-system-migration · /me page
+
+**Mode:** Execution
+
+**Did:** Executed `tasks/kickoff-design-system-me-page.md` (`#pg-me` only, `prototypes/portfolio-combined.html`).
+- **Markup:** `.page-wrap` (960px, same padding as the other pages, `hue-sand` page accent) holds a `.ph` header (mono kicker "vkkatariya · private", Syne 800 `h1` "Me", Outfit 18px lead) and one `.me-card.glass-card` (20px, glass tokens, `--shadow`): 56px logo tile on an accent→green gradient with a glass border, `h2` "Private section" (Syne 800) with the sprite `i-lock` icon in the page hue, Outfit 16px/w80 description (max 66ch), the Tailnet URL as a real link to `https://me.auxois-wyrm.ts.net` (JetBrains Mono 11px, w60), and the NeoPOP `.np` "Back home" button calling `showPage('home')`. All inline styles are gone.
+- **CSS:** new `PAGE-WRAP` / `#pg-me` block after the About block. The legacy `.me-auth-card` rules, `#pg-me .cta-btn` rules, the "POP-OUT HOVER (/me Page)" block, the light-mode `#pg-me button` override and the `.me-auth-card` entries in two shared selector lists were removed.
+- **Copy:** "only available on the Tailnet" reworded to "reachable only from the Tailnet" (the kickoff bans "available" on this page); no status text anywhere in `#pg-me`.
+- **Also:** the light-mode contrast fix for `.pfoot-type.ai/.app` and `.pcard-num` (home) that the 1920px light audit flagged (4.3:1); same lines as on `feat/post-design-system-topbar-status`, so the two branches merge cleanly.
+
+**Verification:** `npm run lint:html` 0 errors; `npm test` 29/29; `/me` screenshots at 1920/860/560/390 in dark and light with no horizontal overflow (scrollWidth = viewport); contrast audit (dark + light, 1920/860/560/390) 0 failures; focus-ring audit 0 missing; radii audit clean. The site remains Tailscale-gated: this is still only the placeholder gate, no private content added.
+
+**State:** branch `feat/design-system-migration`.
+
+**Modified:** `prototypes/portfolio-combined.html`, `tasks/DEVLOG.md`
+
+---
+
+## [2026-10-25] Claude Code (local) — feat/post-design-system-topbar-status · took over from Antigravity: remove availability text
+
+**Mode:** Execution
+
+**Did:** Antigravity hit its usage limit mid-task (its last instruction: remove the "Not available" text from all pages). Picked up its uncommitted diff, finished it and brought the branch up to date with `feat/design-system-migration` (238d72b).
+- **Status text removed everywhere in `portfolio-combined.html`:** nav dot + text, clock-tile badge, contact-tile badge, About photo status, `COPY.avail` (EN/DE) and the `toggleLang()` writes; two availability e2e tests removed (29 → 27). Dead CSS deleted: `.nav-avail-*`, `.sbadge`, `.avail-badge`, `.photo-status`, `.avail-block`/`.ab-*`, `avail-pulse`, `glow-pulse`, `gp` keyframes. Left alone on purpose: the standalone legacy prototypes and the `resume*.html` CV sources ("Open to work" pills; a different text, not part of the site SPA) and unrelated prose ("not available on free Kaggle T4s", "/me is only available on the Tailnet").
+- **Merge:** conflicted with the design-system branch's own topbar centring (238d72b, brand left / tools right). Kept this branch's grouped-pills layout (`.tb` fit-content, centred), which is what the kickoff asks for, and dropped the absolute-centred links rule.
+- **Roadmap nav collision (new with the grouped layout):** the roadmap internal nav is centred at 50% but the links slot is not, so it overlapped the tools pill. It is now parked over the links slot via `alignRoadmapNav()` (on show, resize, and for 450ms after the brand pill's scroll-swap); at ≤1000px (no free slot) it is the bottom pill, and the progress-widget lift moved to the same breakpoint.
+- **Light-mode contrast:** the `#ECECEC` background left `.pfoot-type.ai/.app` and `.pcard-num` at 4.19–4.46:1; stepped them darker in light mode only. Contrast audit (dark + light, 1920/1440/860/560/390): 0 failures.
+
+**Verification:** `npm run lint:html` 0 errors; `npm test` 27/27; overflow/clip pass on all five pages (1920/860/560/390 × dark/light): no horizontal overflow, only the three pre-existing home-tile clip flags; radii and focus-ring audits clean.
+
+**State:** branch `feat/post-design-system-topbar-status` — ready for PR. It is based on `feat/design-system-migration`, not `dev`; merge that first.
+
+**Modified:** `prototypes/portfolio-combined.html`, `tests/e2e/spa.spec.js`, `tasks/DEVLOG.md`
+
+---
+
+
+---
+
+
+## [2026-10-25] Claude Code (local) — fix/dev-css-merge-artifact · home lost its colours on dev
+
+**Mode:** Analytical + Execution
+
+**Did:** The user reported the homepage on the Vercel preview had no colours. Verified the deployed HTML was byte-identical to `origin/dev`, then compared the hue tint on `#pg-home .w.hue-blue` across commits: present on `920d604` and `dadd6bc`, absent on `origin/dev` (`2813ca9`). The cause is a merge artifact in the `.w` transition selector list: the two merges into `dev` left a duplicated `#pg-about .avail-block, #pg-me .me-auth-card {` fragment after the list's opening brace. CSS nesting parses that as a nested rule, so the outer rule never closes (1229 `{` vs 1228 `}`) and every rule after it (home hue tints, Phase 2–4 page blocks, `/me`) is nested under the selector list and stops matching. Fix: close the list at `#pg-about .contact-card {` (also drops the dead `.avail-block` / `.me-auth-card` selectors). Braces balance again (1228/1228), hue tint computes (`color-mix` 13% fill / 42% border) and the home tiles are coloured again.
+
+**Verification:** `npm run lint:html` 0 errors (htmlhint does not parse CSS, so it never flagged this); `npm test` 27/27; computed hue tint on `#pg-home .w.hue-blue` restored; screenshot of home (dark).
+
+**State:** branch `fix/dev-css-merge-artifact`, one commit on top of `origin/dev`; PR to `dev`.
+
+**Next:** merge the PR; production currently serves a CLI deployment built from the broken `dev`, so it needs a redeploy after the merge.
+
+**Modified:** `prototypes/portfolio-combined.html`, `tasks/DEVLOG.md`
+
+---
+
+
+## [2026-10-25] Claude Code (local) — feat/design-system-migration · Phase 6 alignment
+
+**Mode:** Execution + Analytical
+
+**Did:** Executed `tasks/kickoff-phase6-alignment.md`. Most items overlapped Phases 1–5, so each was audited against the file first (computed-style diff of every element on all five pages, pre vs post, both themes) and only the real gaps were changed. `prototypes/portfolio-combined.html` only.
+- **6A NavPill:** rebuilt to the reference structure: `<header class="top" id="shared-nav">` > `.tb` > three `.pill`s: `.brand` (V/K wordmark kept, swaps to the logo mark once scrolled and at ≤700px), `.links` (scroll-spy `<a aria-current="true">` with line icons, hue-tinted active pill, flex:1, scrolls sideways with a fade mask, availability dot last) and `.tools` (search + Ctrl K, language, theme, profile as `.tbtn`). It is sticky (`top: safe-area + 14px`, `pointer-events: none` on the bar, `auto` on the pills); a negative bottom margin (14 + 54 - 68 = 0; -64 at ≤700 where pills are 50px) keeps every page's 76px top padding. The hamburger button, `#navMenuOverlay`, `openMenu/closeMenu/toggleMenu` and their CSS are gone. Responsive: ≤1000px links show icons + the active label; ≤700px brand = mark only, search/lang dropped; ≤560px links are icon-only (aria-labelled) so all four stay in view at 375/390px. `showPage` now sets `aria-current` and scrolls the active link into view. The roadmap internal nav is untouched (still `#roadmap-internal-nav`). e2e: shared-nav selectors moved from `.nav-links` to `.links`; the 5 hamburger tests were replaced by 5 mobile-nav tests (no hamburger, no horizontal scroll, all four links icon-only and in view, tap navigates + moves `aria-current`, bar stays pinned when scrolled). Approved by the user on 2026-10-25 ("Full reference nav").
+- **6B Widget (user approved keeping `var(--shadow)` + inset, 2026-10-25):** `.w` base is now bg2 + w12 border + `var(--shadow)` + inset highlight, hover lift with the single overshoot spring. `--sd`/`--sl` and the glass aliases (`--glass-bg/-shadow/-hover-shadow`, `--glass`, `--glass-b`, `--w03`) are gone: every dual shadow became `var(--shadow)`; the dead `.w.glass`/`.w.inv` rules, the duplicate `.w` block, the light-mode `.w.glass/.inv` rules and the `glass` class on the roadmap guide card were removed. `/me` auth card moved onto the Phase 0 glass tokens (small visible change: 28px blur, token gradient and shadow). Deviation: the kickoff's `5px 5px 16px var(--shadow)` is invalid CSS because `--shadow` is a full shadow value, not a colour.
+- **6C GlassCard:** new `.glass-card` (glass tokens, 20px, `--shadow`) applied to the 8 case studies and the About intro / education / core-skills / language / contact cards; the page blocks keep only padding and hue accents. Mini-cards (project index, skill groups, interests, roadmap steps/topics) stay 14px bg3 with the 4px hue edge, as the Phase 2–4 kickoffs and the reference specify; a 20px glass-card hover (`border-color: w30`) would erase those hue edges again.
+- **6D Hue:** the tone-on-tone white fills baked into the inline project icons now take the project hue (`color-mix(--h 14%)`); a computed audit finds no other legacy white-alpha colours on Projects/Roadmap/About.
+- **6E StatusBadge:** `.vb` renamed `.status-badge` (20 uses) with `.sm` and `.v-unv` added; dead `.s-done/.s-wip` removed; the roadmap done check is now 24px like the badge. Its checkmark glyph is still written by JS (left untouched).
+- **6F SkillBar:** new shared `.skill-bar` / `-label` / `-track` / `-rail` / `-fill` / `-value` (reference `.crow/.bline/.fill`: 12px bar, 0 5px 5px 0 radius, DM Mono value, hue fill via `--h`, stacks below 560px) replaces `.cs-skills-row` (38 rows on Projects) and `.skb-row` (7 rows on About); all legacy `.cs-skills-*` / `.skb-*` CSS and the light-mode overrides were removed. Value column is 36px (`--sb-val`) for 2-digit scores instead of 78px.
+- **6G-6K:** re-audited, nothing left to change: computed radii all on scale, transitions standard (spring on `.w` only), contrast audit 0 failures (dark + light, 1440/390), focus ring on every focusable, reduced-motion clean. Last stray emoji (📍 on the home contact tile) replaced with an `i-pin` sprite icon.
+
+**Verification:** `npm run lint:html` 0 errors; `npm test` 29/29 (5 tests rewritten, see 6A); focus-ring, radii, contrast (dark + light, 1440/860/390) and overflow audits re-run after the nav rebuild with no new findings; computed-style diff pre/post (1440 + 560, dark + light): Roadmap identical, Home identical apart from the new pin icon and random contribution-graph cells, `/me` differs only in the auth card (intended), Projects/About identical when diffed before the skill-bar conversion (that conversion changes their DOM, so it was checked with screenshots instead: project skills dark/light/390, About skills dark/light/390, home scrolled with the sticky nav); overflow/clip pass on all five pages at 1920/860/560/390 × dark + light: no horizontal overflow, only the three pre-existing home-tile clip flags (System Time, Identity, Stack).
+
+**State:** branch `feat/design-system-migration` — Phases 0–6 complete; no PR opened.
+
+**Next:** open a PR to `dev` when the user asks; SvelteKit scaffold + token port.
+
+**Modified:** `prototypes/portfolio-combined.html`, `tasks/DEVLOG.md`
+
+---
+
+
+## [2026-10-25] Claude Code (local) — feat/design-system-migration · Phase 5 polish
+
+**Mode:** Analytical + Execution
+
+**Did:** Executed `tasks/kickoff-phase5-polish.md` across all five pages (`prototypes/portfolio-combined.html`, `index.html` meta only). Audited with Playwright (computed styles / contrast per text node) rather than only grepping.
+- **Radii:** every off-scale `border-radius` in the file snapped to the scale (4/6/7 → 5 chips or 3 bars, 6 logo tiles → 8, 12 → 14 mini-cards/steps or 11 icon tiles, 12 CTA button → 10, 16 → 14, 22 → 20, modal panel → 20). A computed-radius audit of all five pages (+ nav) at 1440 now reports no off-scale value.
+- **Easing:** 47 transition declarations normalised to `.24s cubic-bezier(.2,.7,.2,1)` (bare `.13/.18/.2/.25/.3s` and `ease` removed). Widget transform spring kept (`.34,1.46,.64,1`). Left as-is on purpose: SPA page fade, nav morph, bar/progress width fills, max-height accordion, NeoPOP button press (.1s), modal enter, `widget-enter` entrance animations.
+- **Hover rule:** the global `.widget/.pcard/.skill-group/.lang-card/.edu-card/.panel/.w:hover` `!important` rule (translateY(-2px) scale(1.012) + `border-color: w06 !important`) erased the hue edges added in Phases 2–4 on hover. Cards now lift `translateY(-3px)` only; `.w` gets `translateY(-3px) scale(1.015)`; no box-shadow / border-colour override. Home about/contact tiles, `.pcard` and the /me card follow.
+- **Contrast:** all 105 text uses of `var(--w30)` → `var(--w60)` (w30 stays for borders/dividers/dots only); light-mode nav language/theme/search colours and placeholder → `--w60`; "planned" infra items opacity .5 → .85 + italic. Computed contrast (text vs resolved background, 4.5:1 normal / 3:1 large) over all five pages at 1920/1440/860/560/390 × dark + light: 0 failures. Text under 10px raised to 10px.
+- **Focus / motion:** every focusable element on all five pages computes a ≥2px outline on `:focus-visible` (global 2px acc ring, 3px offset); with `prefers-reduced-motion: reduce` no element keeps a transition/animation over 0.01ms.
+- **theme-color:** metas were still `#080808`/`#f0f0f0` (kickoff said Phase 0 had done it): now `#1B1C1D` dark / `#FAFAFA` light in `index.html` and the SPA; the SPA also sets both metas from the saved/toggled site theme (the OS-light media meta would otherwise win over a dark site).
+- **Tablet grid:** `grid-auto-rows` at ≤860px is `minmax(152px, auto)` so the Hermes tile no longer clips after the label size bump.
+
+**Not done:** "Port tokens to Phase 1 SvelteKit" — no scaffold exists yet (`web/` not started); the `:root` block in `portfolio-combined.html` is the source to copy. The `.nav-search-input` has `outline:none` with the focus ring on its wrapper (`:focus-within`), left as designed.
+
+**Verification:** `npm run lint:html` 0 errors; `npm test` 29/29; overflow/clip pass on all five pages at 1920/860/560/390 × dark + light (the remaining flags — System Time, Identity, Stack tiles — are identical before this phase); home, roadmap, about, projects, /me screenshots reviewed.
+
+**State:** branch `feat/design-system-migration` — Phases 0–5 complete; no PR opened.
+
+**Next:** open a PR to `dev` when the user asks; start the SvelteKit scaffold with the Phase 0 tokens.
+
+**Modified:** `prototypes/portfolio-combined.html`, `index.html`, `tasks/DEVLOG.md`
+
+---
+
+
+## [2026-10-25] Claude Code (local) — feat/design-system-migration · Phase 4 about
+
+**Mode:** Builder
+
+**Did:** Executed `tasks/kickoff-phase4-about.md` (`#pg-about`). `prototypes/portfolio-combined.html` only. The legacy About colour rules (per-row green/amber/blue skill bars, `.sk.hi/mid/lo` colours, tinted education/language/contact borders and their `html.light` copies, the old glass list entries and the old About pop-out hover block) were removed in place; everything new lives in a `PHASE 4 · ABOUT` block at the end of the stylesheet.
+- **Hues (reading order, never reused):** bio blue, education teal, skills cyan, languages indigo, interests pink, contact orange; header sand. Applied as `.hue-*` on `.intro` and each `.section`.
+- **Header:** `ph-title` Syne 800 clamp(28–46px) (script "A" kept), sand mono kicker. No lead paragraph added (content unchanged).
+- **Bio:** GlassCard (glass tokens, 20px, blur 28/saturate 1.6) wrapping photo + text; photo frame 20px with `--shadow`; text Outfit 16.5px w80; "open to werkstudent jobs" keeps the green dot (real status) with neutral text; resume pill = bg2 chip with sprite download icon.
+- **Education:** GlassCard; grad-cap sprite icon, Space Grotesk 700 24px degree, DM Mono period, neutral pill tags/modules, "currently enrolled" = green dot + neutral text on a 14% green pill (real status), mono "MODULES COMPLETED / IN PROGRESS" label in w60.
+- **Skills:** the 7 core bars = SkillBar (cyan fill, 10px / 5px radius track, DM Mono values; replaces green/amber/blue by value) in a GlassCard; the 4 chip groups are mini-cards (bg3, 14px, 4px cyan edge), all chips neutral pills (the hi/mid/lo colour coding was decoration; `hi` keeps full-white text).
+- **Languages:** 4 GlassCards, sprite globe + name, dots in the indigo hue (no green native highlight), mono level label, Outfit note. Flag emoji (decorative, 25% opacity) removed.
+- **Interests:** 4 mini-cards (bg3, 14px, 4px pink edge) with a 44px tinted icon tile; emoji 💻🤖🏏📚 → sprite `i-laptop`, `i-cpu`, new `i-cricket`, `i-book`; the small duplicate title icons removed.
+- **Contact:** 2 GlassCards (Email, GitHub, orange tiles) with sprite `i-mail` / `i-github` (page sprite gained `i-mail`, `i-github`, `i-download`, `i-grad`, `i-cricket`). Markup already had only these two.
+- **Typography:** paragraphs/descriptions/notes → Outfit; labels/chips mono 12.5–13px; data DM Mono; w30 text raised to w60/w80; inline styles on the core-skills card removed (classes).
+- Grids are `auto-fit minmax(min(100%, 400px), 1fr)` (2×2 for the 4-item grids) instead of fixed columns.
+
+**Decided / not done:**
+- Kickoff's skill categories (Backend blue / AI teal / Frontend cyan / Hosting indigo, 5 bars each) conflict with "content unchanged" (the page has 7 core bars + 4 chip groups, no Hosting) and with the no-reuse hue rule against the section hues. Kept the content; all skill UI uses the section hue (cyan). Soft skills stay chips (there are 8, not 5).
+- `#pg-me` is a sibling of `#pg-about` (not nested) — verified.
+- The homepage `.about-*` widgets and `#pg-me` are untouched.
+
+**Verification:** `npm run lint:html` 0 errors; `npm test` 29/29; automated overflow/clip/truncation pass at 1920, 1440, 860, 560, 390 × dark + light = 0 issues; full-page screenshots reviewed at 1440 (dark + light), 860 and 390 (dark + light).
+
+**State:** branch `feat/design-system-migration`, no PR opened.
+
+**Next:** Phase 5 polish (`tasks/kickoff-phase5-polish.md`).
+
+**Modified:** `prototypes/portfolio-combined.html`, `tasks/DEVLOG.md`, `tasks/kickoff-phase4-about.md`
+
+---
+
+
+## [2026-10-25] Claude Code (local) — feat/design-system-migration · Phase 3 roadmap
+
+**Mode:** Builder
+
+**Did:** Executed `tasks/kickoff-phase3-roadmap.md` (`#pg-roadmap`, its internal nav, topic modal and progress widget). `prototypes/portfolio-combined.html` only. The kickoff's reference structure (9 `.th` topic sections, `.tree` mind maps, `.duo`/`.flow` panels, verdict inline) does not exist on this page, so the design-system components were mapped onto the real sections: overview phase cards, getting-started guide, month-by-month timeline, 11 topic cards, 10 career cards, 3 resource groups. The legacy Roadmap glass overrides (the "Roadmap page widgets" block + their `html.light` entries) were removed in place; everything new lives in a `PHASE 3 · ROADMAP` block at the end of the stylesheet.
+- **Hues (nav = section, never reused except by phase):** overview blue, topics teal, careers indigo, resources purple (replaces the old blue/amber/red/green status numerals); getting started cyan, timeline pink, header sand. Phase cards 01–04 take blue/teal/indigo/purple and each topic card (and the modal + filter chip) inherits its phase's hue via `data-phase`, so hue = phase there (deliberate reuse; no JS change needed beyond one `dataset.phase` line in `openModal`).
+- **Internal nav:** morph from the shared centre pill kept; surface/type retuned like the Phase 1 NavPill (54px, glass tokens, Space Grotesk 500 14.5px uppercase, active link = hue 16% fill / 50% border via `.hue-*` on each link). Dropped the old `html.light` overrides (tokens flip with the theme). The old ≤860/≤559 bottom-bar rules sat before the base rule and were silently overridden; moved after it (tablet bottom pill, phone full-width 4-up bar).
+- **Header/hero:** Syne 800 clamp(28–46px) title (script "R" kept), sand mono kicker, Outfit 18px lead; stat badges are neutral chips with sprite icons (the 3 emoji 📋 ⏱ 🤖 replaced; `i-clock`/`i-book` added to the page sprite).
+- **Overview:** 4 phase cards = bg2 panel, 3px hue top edge, DM Mono hue numeral, hue icon. **Getting started:** two mini-cards (bg3, 14px, 4px hue edge), Outfit 15.5px list, hue markers.
+- **Timeline = tree:** 2px spine + elbow per item at `--h` 45% (reference `.tree` pattern), hue dots (filled when open), header/body on bg2/bg3, Outfit 15.5px bullets, open max-height 400→640px (longer Outfit lists). Fixed a pre-existing leak: the homepage's global `.tl-item{display:contents}` and `.tl-body` 3-column grid applied to this timeline (only one dot rendered, open body was half width).
+- **Topics:** 11 mini-cards (bg3, 14px, 4px phase-hue edge), Space Grotesk 700 title, Outfit 15px description, neutral pill badges (Essential/Core/Critical/… are not status). "Done" is a StatusBadge: 22px circle, green dot + check (status colour marks status only). Filter buttons are chips; active = phase-hue tint. **Careers:** 10 panels with hue top edge, DM Mono % + 10px hue bar (JS writes inline status colours; `!important` hue wins). **Resources:** mini-cards with purple edge; level (Beginner/Intermediate/Advanced) is a neutral chip.
+- **Progress widget** = SkillBar (teal fill, DM Mono count), lifted above the fixed bottom nav ≤860 (it covered the nav links at 390). **Modal:** bg2 20px panel, hue from `data-phase`, Syne title, mono labels, Outfit body, hue-edged sub-cards.
+- **Typography:** the page's descriptions moved from JetBrains Mono to Outfit (`--read`); labels stay mono; w30 text on this page raised to w60/w80 (colour-meaningful text only), small 10–11px labels raised to 12–13px.
+- Grids now `auto-fit minmax(min(100%,300px),1fr)` (phases 230px) instead of fixed 3/4 columns plus the 768/480 breakpoint overrides.
+
+**Decided / not done:**
+- The kickoff's "mind-map trees / `.node` / flow steps / `.duo` / verdict inline" components have no content on this page; not invented. The timeline took the tree-connector treatment; verdict badges are used for the topic "done" state only.
+- Replaced inline `font-size:10px;padding:6px 12px` on the JS-rendered ghost buttons (and the hero "back to portfolio") with a CSS rule (cosmetic template change, behaviour untouched).
+- Filter buttons have no `aria-pressed` (would need JS); left for Phase 5.
+
+**Verification:** `npm run lint:html` 0 errors; `npm test` 29/29; automated overflow/clip/truncation pass at 1920, 1440, 860, 560, 390 × dark + light: no page overflow, no clipped or truncated text (the only flags are the 12 timeline dots, which sit on the spine outside their item by design). Visually reviewed (full page and states: timeline open, topics with 2 marked done, careers with bars filled, topic modal, mobile bar + progress widget) at 1440, 860, 390 in both themes.
+
+**State:** branch `feat/design-system-migration`, no PR opened.
+
+**Next:** Phase 4 (`tasks/kickoff-phase4-about.md`).
+
+**Modified:** `prototypes/portfolio-combined.html`, `tasks/DEVLOG.md`, `tasks/kickoff-phase3-roadmap.md`
+
+---
+
+
+## [2026-10-25] Claude Code (local) — feat/design-system-migration · Phase 2 projects
+
+**Mode:** Builder
+
+**Did:** Executed `tasks/kickoff-phase2-projects.md` (`#pg-projects` + one small shared addition). `prototypes/portfolio-combined.html` only. The old Projects glass overrides (the "Projects page widgets" block + their `html.light` entries) were removed in place; all new rules live in one scoped `PHASE 2 · PROJECTS` block at the end of the stylesheet.
+- **Hues (reading order, never reused):** Finance Buddy blue, Homelab teal, TypeShift cyan, orlon-bot indigo, Portfolio purple, Hermes pink, OpenClaw orange, Unilox lime; page accent (header) sand. Applied as `.hue-*` on each `.pi` card and `.cs-section`; everything below reads `--h`, so no per-element rgba tints remain (removed 5 inline `border-color:rgba(...)` node tints, the amber pending-stage style, and the purple ML/AI badge).
+- **Header:** `h1.ph-title` Syne 800 clamp(28–46px) (script "P" kept), mono kicker in sand, Outfit 18px w80 lead.
+- **Index cards (8):** bg2, `w12` border, 20px radius, 4px hue left edge, Space Grotesk 700 17px title, Outfit 15.5px description, neutral pill chips, 4px lift on hover (off under reduced motion).
+- **Case studies (8):** GlassCard (glass tokens, 20px, blur 28/saturate 1.6); hero number/labels in `--h`, stats in `--data`, body in Outfit 15.5px w80, feature rows on bg3 with hue icon tiles; SkillBar = 5 hue fills + DM Mono values (replaces green/amber/acc by score).
+- **Artifacts:** node-diagram (13% fill / 42% border / 10px radius, hue dots + icons), pipeline (separate step cards, bg3, 14px, hue left edge, hue icon/number), platform-grid (mini-cards, 14px, hue left edge), bar-chart (hue bars, 12px / 5px radius; JS sets an inline colour so `.bar-fill` uses `!important`).
+- **Status:** new global `.vb`/`.v-ok`/`.v-near` StatusBadge (24px circle, status colour + icon) with `i-check`/`i-bang` symbols added to the page's inline sprite (the external `assets/icons.svg` can't be used from `file://`). Index-card status, case-study badges and the pipeline "✓ N PRs merged / pending" lines use it; non-status tags (Private · Tailscale only, 2026, Open source, AI · ML…) are neutral chips.
+- **Icons:** inline SVG icons recolour to `currentColor` (hue; product accent on the title icon). The legacy `html.light .ico` rules (L-061) are `!important`, so the project rules are too (the `#pg-projects` id out-ranks them) — plain SVGs without `.ico` (OpenClaw views) are covered by the same rule.
+
+**Decided:**
+- **Product accents:** the kickoff's hue map and "Finance Buddy/Portfolio = acc, Homelab = nothing-red" conflict if both mean the card hue. Implemented as: hue map drives edges/artifacts/bars; the product accent recolours only that project's title icon (`.p-acc`, `.p-red`, `--nothing-red: #D71921`). Revisit if you want the accent to win.
+- **Index cards use `bg2` + w12 border** per the Done-When line (not the glass tokens); case studies use the glass tokens.
+- **Emoji (user-approved: replace now):** all 29 Projects-page emoji (23 `.feat-icon` + 3 TypeShift `.plat-icon`, plus the earlier ✓/⬡ status marks) replaced by line icons from the sprite in the project hue (symbols copied from `assets/icons.svg` into the page's inline sprite: pie, trend, target, briefcase, funnel, wallet, list, server, layers, file, split, box, lock, gate, search, checklist, repeat, bulb, terminal, figure, cpu, globe, laptop). The `⬡` text mark on "planned" services is a plain glyph and stays.
+- **Product-accent interpretation (user-approved: keep):** accent recolours only the project's title icon.
+- **Responsive fixes found in review:** `.platform-grid` is now `repeat(auto-fit, minmax(170px,1fr))` (3 fixed columns overflowed the panel at 560px); node-diagrams stack ≤700px with the connector between nodes; mobile skill rows use `minmax(0,1.5fr) minmax(0,1fr) 28px` so names stop truncating.
+
+**Final verification (after the emoji → sprite change, commit below):** automated overflow/truncation/clipping pass at 1920, 1440, 860, 560, 390 × dark + light = 0 issues; all 8 sections reviewed side by side dark/light at 1440 (all new icons), icons re-checked at 860 and 390; 1920/860/560/390 section-by-section review from the earlier pass still applies to the unchanged layout.
+
+**Verification (earlier, redone after the first pass was found incomplete):** on the final code, every case study (8) and the page header + 8 index cards were reviewed section-by-section, dark and light side by side, at 1920, 860, 560 and 390px (1440 spot-checked earlier). An automated pass over the same 8 widths/themes checks escapes-card, beyond-viewport, text truncation and clipped heights. It found and I fixed: skill names still truncated at 390 (now wrap), orlon-bot's first pipeline card stretched to ~400px (fixed 200px step cards), Unilox's 3-node diagram wrapped unevenly at 860 (stacks ≤1000px). Result: 0 issues at all widths in both themes.
+
+**State:** 29/29 e2e, htmlhint 0 errors. Console shows 3× 404 on every page load (`/_vercel/speed-insights/script.js`, `/_vercel/insights/script.js`, `lib/speed-insights.min.js`): these only exist on Vercel / the deleted `lib/` dir, identical at the pre-Phase-2 commit, not caused by this work. No JS errors. Pipelines still scroll horizontally inside their panel on phones (existing pattern).
+
+**Next:** Phase 3 (`tasks/kickoff-phase3-roadmap.md`).
+
+**Modified:** `prototypes/portfolio-combined.html`, `tasks/DEVLOG.md`
+
+---
+
+
+## [2026-10-25] Claude Code (local) — feat/design-system-migration · Phase 1 homepage
+
+**Mode:** Builder
+
+**Did:** Executed `tasks/kickoff-phase1-homepage.md` on top of Phase 0. `prototypes/portfolio-combined.html` only (+ kickoff ticks). Baseline for comparison: 29/29 e2e, htmlhint 0, before/after screenshots at 1440 (dark + light), overflow sweep at 1440/860/390.
+- **NavPill (retuned in place):** the three pills (`.nav-logo`, `.nav-links`, `.nav-right`) + hamburger + mobile overlay now use `linear-gradient(180deg, var(--glass-top), var(--glass-bottom))`, `blur(28px) saturate(1.6)`, `var(--glass-border)`, `var(--shadow)`; 54px tall (50px ≤560). Links: Space Grotesk 500 14.5px uppercase, active page = 16% fill / 50% border tint from `--h` (default `--acc`). Search got `aria-label="Search the whole page"`, a `Ctrl K` kbd hint (hidden ≤1100px) and a real Ctrl/Cmd+K → focus handler; focus ring on the search pill. Labels (lang, available) moved to `--mono`; hard-coded `rgba(241,240,246,…)` colours replaced with tokens; `html.light` nav overrides deleted (tokens drive both themes).
+- **Widgets (neumorphic):** the 12 `#pg-home .w` tiles: `bg2` fill, `var(--shadow)` + inset highlight, `w12` border, 28px radius, no blur. Spring hover `translateY(-3px) scale(1.015)`, `.24s cubic-bezier(.34,1.46,.64,1)`, wrapped in `prefers-reduced-motion: no-preference`; beats the global `.w:hover … !important` via the `#pg-home` id. Project cards (`.pcard`), timeline and `.about-section` are GlassCards on the glass tokens. Dropped the inert `glass` class from the 3 home tiles that carried it; removed the three `html.light #pg-home …` glass overrides.
+- **Hues (9, reading order, none reused):** System Time blue, Identity teal, GitHub cyan, Skills indigo, Now purple, Homelab pink, Stack orange, Featured project lime, Projects stat sand; Hermes, About, Contact neutral. Applied as 13% fill / 42% border / 100% label + icon via `--h`.
+- **Type roles on `#pg-home`:** labels/chips/sub in `--mono`; numbers/clock/stat in `--data` (inline `'DM Mono'`/`'JetBrains Mono'` in the home markup → `var(--data)`/`var(--mono)`); project title `--display` 800; card/timeline titles `--sans` 700; descriptions and the About bio in `--read` (Outfit), About at 16px/1.6; chip/label/skill/tl text raised from w30 to w60 (w30 is decoration only).
+
+**Decided (user, via AskUserQuestion):** NavPill **retuned in place** (stays `position:fixed`, no sticky conversion — `#shared-nav` is global: roadmap morph, hamburger, e2e) and the **V/K Cormorant + Syne wordmark stays** (kickoff's logo tile + Space Grotesk 700 not applied).
+- Moved the "flex-flow" nav tier boundary from ≤860px to ≤1000px. The absolutely-centred pill overlapped the logo/right pill from 861–1000px **before** this phase (baseline measured); now no overlap from 1100px down to 390px. 1001–1100px hides only the "available" text.
+- Kept `.w { line-height: normal }` from Phase 0 (tile heights are fixed).
+
+**Visual verification (kickoff step):** full-page captures at 1920/860/560/390, dark + light, reviewed one by one (reduced-motion emulation to avoid mid-animation frames); no horizontal overflow at any width; tile geometry at 860/560/390 identical to the Phase 0 baseline (empty grid cells at 860/560 and the hidden System Time tile on mobile are pre-existing). Found and fixed one pre-existing defect at 390: `.grid` used `repeat(2, 1fr)`, whose implicit `auto` min let the Skills tile squeeze column 2 to ~85px (Now/Homelab/Hermes labels clipped); now `repeat(2, minmax(0,1fr))`, two equal 178px columns, Hermes content contained. Re-checked 390px dark **and** light after the fix and found the About tile (fixed 2 rows) cut its 3rd paragraph at 16px Outfit (clipped at baseline too, worse with my bump); mobile `grid-auto-rows` is now `minmax(160px, auto)` (`minmax(148px, auto)` ≤380px) so rows grow to fit — verified no clipped `.w` at 560/390/375 in both themes, no horizontal scroll, all three About paragraphs visible.
+
+**State:** 29/29 e2e, htmlhint 0 errors. Verified in the live page: hover transform matrix(1.015,0,0,1.015,0,-3), no backdrop-filter on `.w`, radius 28px, nav 54px with blur(28px) saturate(1.6), 9 hue classes in order, Ctrl+K focuses `#navSearchInput`. Tile overflow metrics match baseline or better (About widget now fits at 1440). Playwright `full_page` screenshots can catch the entry animation mid-flight (System Time looks blank); viewport screenshots and computed opacity confirm it renders.
+Known/left: `runSearch()` is still a `console.log` stub (the aria-label/hint describe intent; no search yet). Hermes widget stats labels are tiny (7.5px, pre-existing). Roadmap's internal nav shares the `.nav-links`/`.nav-logo` classes but its ID-scoped overrides keep it unchanged (checked).
+
+**Next:** Phase 2 (`tasks/kickoff-phase2-projects.md`). Untracked planning docs and `tasks/todo.md` still intentionally not committed.
+
+**Modified:** `prototypes/portfolio-combined.html`, `tasks/DEVLOG.md`
+
+---
+
+
+## [2026-10-25] Claude Code (local) — feat/design-system-migration · Phase 0 foundation
+
+**Mode:** Builder
+
+**Did:** Executed `tasks/kickoff-phase0-foundation.md` (tokens/foundation only, no visual redesign). Reference: `tasks/germany-tax-map.html` (untracked locally). Baseline first: 29/29 e2e, htmlhint 0 errors, 10 before-screenshots (5 pages × dark/light).
+- `prototypes/portfolio-combined.html`: replaced the `:root` + `html.light` token blocks with the design-system values (verbatim from the reference). Dark default; light via `html.light` + `[data-theme="light"]`; `[data-theme="dark"]` block added; `color-scheme` set per theme. New tokens: teal/cyan/indigo/pink/orange/lime/sand, bar-ref, acc-dim, shadow, scrim, glass-top/bottom/border. Ink ladder is now solid (`--w80/60/30`), `bg3` is now darker than `bg`.
+- Semantic font vars `--display/--sans/--read/--mono/--data`; `body` is now `var(--sans)` 16px / 1.6 / `var(--w80)`. `--font-ndot` alias left in place (removal is Phase 1 per the migration doc).
+- Global `:focus-visible` (2px acc ring, 3px offset) and `prefers-reduced-motion: reduce` (durations collapse to .001ms, not `none`, so end states and transitionend still land). The existing `.widget/.pcard/.w…` hover rule has `transition … !important` and out-ranks the global reset, so a companion reduced-motion override sits right after it.
+- `.hue-blue` … `.hue-sand` set `--h`. Dot matrix now uses `var(--w06)`.
+- New `prototypes/assets/icons.svg`: 59 symbols (51 from the reference + github, lock, server, terminal, cpu, mail, download, external-link), `currentColor`, stroke 1.6, verified rendering via `<use>`.
+
+**Decided:**
+- **Kickoff says 52 symbols; the reference has 51.** Shipped 51 + 8 portfolio = 59.
+- **OS-driven light block is opt-in** (`:root[data-theme="auto"]`), not automatic. The site is dark-by-default with an `html.light` toggle (e2e + the migration doc's pending decision "stay dark by default"); an automatic `prefers-color-scheme: light` block would flip tokens for OS-light visitors while `html.light` overrides stay off (half-themed page). Values are identical to the reference; flip the selector if auto-light is wanted.
+- **Dropped the second `--glass-border: rgba(255,255,255,.16)`** (a later `:root` block was overriding the new token; L-023/L-024). Dark glass border is now .14 per the system.
+- **Legacy aliases kept** (`--w03 --sd --sl --glass --glass-b --np-off`, per-theme) — 31 rules still use them; retire when the surfaces are rebuilt.
+- **`.w { line-height: normal }`**: the new body line-height 1.6 pushed fixed-height home tiles to overflow more (GitHub widget, Hermes at 860/390px). Pinned tiles to old line-height; overflow metrics match baseline within 1px at 1440/860/390. Phase 3 rebuilds these.
+
+**State:** 29/29 e2e pass, htmlhint 0 errors, tokens/focus ring/hue/reduced-motion verified in the live page (computed styles, dark + light, OS-light default stays dark). Page heights grew ~1–4% from 1.6 line-height outside `.w`. Visible changes: teal accent, dot grid slightly stronger (.04→.06), `w30`/chip text darker than before (solid `#5C5E62`) — the planned w30 contrast audit is Phase 4.
+Not done / out of scope here: docs-first items from the migration doc (CONTEXT.md/CLAUDE.md palette, L-072, cs-roadmap frozen note) and sprite *use* in the page (sprite file only; emoji replacement is Phase 3).
+
+**Next:** Phase 1 (`tasks/kickoff-phase1-homepage.md`). Untracked planning docs (`kickoff-phase*.md`, `kickoff-master-index.md`, `portfolio-design-system-migration.md`, `germany-tax-map.html`) and `tasks/todo.md` edits were intentionally left out of this commit.
+
+**Modified:** `prototypes/portfolio-combined.html`, `prototypes/assets/icons.svg` (new), `tasks/DEVLOG.md`
+
+---
+
+
 ## [2026-07-01] Hermes — feat/resume-redesign · cv.pdf regen + corner-to-corner widget
 
 **Mode:** Builder (scripted)

@@ -15,18 +15,18 @@ test.describe('SPA navigation', () => {
   });
 
   test('nav link shows projects page', async ({ page }) => {
-    await page.locator('#shared-nav .nav-links a[href="#projects"]').click();
+    await page.locator('#shared-nav .links a[href="#projects"]').click();
     await expect(page.locator('#pg-projects')).toHaveClass(/active/);
     await expect(page.locator('#pg-home')).not.toHaveClass(/active/);
   });
 
   test('nav link shows roadmap page', async ({ page }) => {
-    await page.locator('#shared-nav .nav-links a[href="#roadmap"]').click();
+    await page.locator('#shared-nav .links a[href="#roadmap"]').click();
     await expect(page.locator('#pg-roadmap')).toHaveClass(/active/);
   });
 
   test('nav link shows about page', async ({ page }) => {
-    await page.locator('#shared-nav .nav-links a[href="#about"]').click();
+    await page.locator('#shared-nav .links a[href="#about"]').click();
     await expect(page.locator('#pg-about')).toHaveClass(/active/);
   });
 
@@ -42,7 +42,7 @@ test.describe('SPA navigation', () => {
   });
 
   test('roadmap page reveals roadmap nav and hides shared nav', async ({ page }) => {
-    await page.locator('#shared-nav .nav-links a[href="#roadmap"]').click();
+    await page.locator('#shared-nav .links a[href="#roadmap"]').click();
     await expect(page.locator('#shared-nav')).toHaveClass(/nav-hidden/);
     await expect(page.locator('#roadmap-internal-nav')).toHaveClass(/nav-visible/);
   });
@@ -121,54 +121,51 @@ test.describe('language toggle', () => {
     await expect(page.locator('#langBtn')).toHaveText('EN');
   });
 
-  test('switching to DE updates availability badge', async ({ page }) => {
-    await page.locator('#langBtn').click();
-    await expect(page.locator('.avail-badge')).toHaveText('offen für Praktikumsplätze');
-  });
-
-  test('switching back to EN restores availability badge', async ({ page }) => {
-    await page.locator('#langBtn').click();
-    await page.locator('#langBtn').click();
-    await expect(page.locator('.avail-badge')).toHaveText('available for internships');
-  });
 });
 
-// ─── Mobile Menu ─────────────────────────────────────────────────────────────
+// ─── Mobile nav ──────────────────────────────────────────────────────────────
+// The reference NavPill has no hamburger: the links pill shows icons (plus the active label at
+// <=1000px), and is icon-only at <=560px so all four links stay in view.
 
-test.describe('mobile menu', () => {
+test.describe('mobile nav', () => {
   test.use({ viewport: { width: 375, height: 812 } });
 
   test.beforeEach(async ({ page }) => {
     await page.goto(SPA);
   });
 
-  test('menu overlay is closed on load', async ({ page }) => {
-    await expect(page.locator('#navMenuOverlay')).not.toHaveClass(/open/);
+  test('there is no hamburger menu', async ({ page }) => {
+    await expect(page.locator('#navMenuBtn')).toHaveCount(0);
+    await expect(page.locator('#navMenuOverlay')).toHaveCount(0);
   });
 
-  test('hamburger button opens the menu', async ({ page }) => {
-    await page.locator('#navMenuBtn').click();
-    await expect(page.locator('#navMenuOverlay')).toHaveClass(/open/);
+  test('topbar fits the viewport without horizontal page scroll', async ({ page }) => {
+    const sw = await page.evaluate(() => document.documentElement.scrollWidth);
+    expect(sw).toBeLessThanOrEqual(375);
+    await expect(page.locator('#shared-nav .tools')).toBeInViewport();
   });
 
-  test('hamburger button toggles menu closed', async ({ page }) => {
-    await page.locator('#navMenuBtn').click();
-    await page.locator('#navMenuBtn').click();
-    await expect(page.locator('#navMenuOverlay')).not.toHaveClass(/open/);
+  test('all four links are icon-only and in view', async ({ page }) => {
+    for (const pg of ['home', 'projects', 'roadmap', 'about']) {
+      const link = page.locator(`#shared-nav .links a[href="#${pg}"]`);
+      await expect(link).toBeInViewport();
+      await expect(link).toHaveAttribute('aria-label', pg);
+      await expect(link.locator('span')).toBeHidden();
+    }
   });
 
-  test('pressing Escape closes open menu', async ({ page }) => {
-    await page.locator('#navMenuBtn').click();
-    await expect(page.locator('#navMenuOverlay')).toHaveClass(/open/);
-    await page.keyboard.press('Escape');
-    await expect(page.locator('#navMenuOverlay')).not.toHaveClass(/open/);
-  });
-
-  test('clicking a menu link navigates and closes menu', async ({ page }) => {
-    await page.locator('#navMenuBtn').click();
-    await page.locator('#navMenuOverlay a[href="#projects"]').click();
-    await expect(page.locator('#navMenuOverlay')).not.toHaveClass(/open/);
+  test('tapping a link navigates and moves aria-current', async ({ page }) => {
+    await page.locator('#shared-nav .links a[href="#projects"]').click();
     await expect(page.locator('#pg-projects')).toHaveClass(/active/);
+    await expect(page.locator('#shared-nav .links a[href="#projects"]')).toHaveAttribute('aria-current', 'true');
+    await expect(page.locator('#shared-nav .links a[href="#home"]')).not.toHaveAttribute('aria-current', 'true');
+  });
+
+  test('topbar stays pinned while scrolling', async ({ page }) => {
+    await page.evaluate(() => window.scrollTo(0, 600));
+    const top = await page.locator('#shared-nav .tools').evaluate(e => Math.round(e.getBoundingClientRect().top));
+    expect(top).toBeLessThanOrEqual(20);
+    expect(top).toBeGreaterThanOrEqual(0);
   });
 });
 
@@ -177,7 +174,7 @@ test.describe('mobile menu', () => {
 test.describe('roadmap modal', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto(SPA);
-    await page.locator('#shared-nav .nav-links a[href="#roadmap"]').click();
+    await page.locator('#shared-nav .links a[href="#roadmap"]').click();
     await expect(page.locator('#pg-roadmap')).toHaveClass(/active/);
   });
 

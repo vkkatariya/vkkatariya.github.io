@@ -97,6 +97,11 @@ la-Cormorant Bold Italic wordmark redo (all 5 occurrences) and Roadmap title res
 - [x] **Contact widget cleanup** — homepage `avail-badge` + about-page `photo-status` → `open to werkstudent jobs`. /about page: kept only EMAIL + GITHUB contact cards (removed LinkedIn + Website); removed avail-block; removed 3 redundant bio chips. Commits `4c74d52` + `d6cf504` + `b3c2184` merged to dev as `a1f6a3c`.
 - [x] **Projects stat fix** — homepage PROJECTS widget `12 shipped` → `8 shipped` to match the actual 8 cs-sections on /projects. Commit `1925643` merged to dev as `d4b1307`.
 - [x] **Photo widget swap** — replaced `VK` initials placeholder in /about photo-block with a real photo. Image is `prototypes/assets/image.png` (user-provided, pre-cropped 680×761 portrait, black background). CSS: `.photo-img { object-fit:cover; object-position:top center }`. Commits `4b401d1` + `fe4c3e1` + `602e27b` on `feat/content-cleanup` (in-progress, will merge with this batch).
+- [x] **Topbar centered grouping + status text to "Not available"** — completed in `feat/post-design-system-topbar-status`:
+  - [x] Topbar pills grouped near center: `.tb` (`display: flex; align-items: center; justify-content: center; gap: 8px; max-width: fit-content; margin: 0 auto;`), `.links` (`flex: 0 1 auto; min-width: 0;`).
+  - [x] Status text updated to "Not available" across homepage nav `.nav-avail-txt`, clock `.sbadge`, contact `.avail-badge`, about photo `.photo-status`.
+  - [x] Language toggle `COPY` object updated (EN: "Not available", DE: "Nicht verfügbar") and `toggleLang()` synced for all status elements.
+  - [x] Playwright tests (29/29) passing, htmlhint clean (0 errors), zero horizontal scroll across 320px–1920px.
 
 ### Theme + color
 - [x] Dark/light mode toggle with `localStorage` persistence (standalone pages: `html.light` + `vk-theme`)
