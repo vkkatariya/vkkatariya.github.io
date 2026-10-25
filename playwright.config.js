@@ -21,7 +21,7 @@ module.exports = defineConfig({
     },
   ],
   webServer: {
-    command: 'node_modules/.bin/http-server . -p 3000 -c-1 --silent',
+    command: 'node_modules/.bin/http-server . -a 127.0.0.1 -p 3000 -c-1 --silent',
     port: 3000,
     reuseExistingServer: !process.env.CI,
     timeout: 30_000,
