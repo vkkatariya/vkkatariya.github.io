@@ -295,7 +295,7 @@ test.describe('final fixes', () => {
     const bg = await page.locator('#pg-home .w.hue-blue').first().evaluate(e => getComputedStyle(e).backgroundImage);
     expect(bg).toBe('none');
     const bar = await page.locator('#pg-home .w.hue-blue').first().evaluate(e => getComputedStyle(e, '::before').height);
-    expect(bar).toBe('2px');
+    expect(bar).toBe('3px');
   });
 
   test('project index cards are free-floating (no glass card)', async ({ page }) => {
