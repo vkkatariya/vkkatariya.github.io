@@ -48,6 +48,21 @@
 ---
 
 
+## [2026-10-25] Claude Code (local) — fix/ci-workflow · ci.yml never ran
+
+**Mode:** Analytical + Execution
+
+**Did:** After PR #19 reached `main`, `Deploy GitHub Pages` failed its smoke test ("Missing mobile menu button", fixed on `dev` by #20) and `ci.yml` showed "This run likely failed because of a workflow file issue". `ci.yml` has failed on every push for as long as the history goes (no success in the last 30 runs): the placeholder `frontend` / `backend` jobs use `if: ${{ hashFiles(...) != '' }}` at job level, where `hashFiles()` is not allowed, so GitHub rejected the whole file and neither `lint-html` nor the Playwright job ever ran in CI. Removed the two placeholder jobs (Phase 1 scaffold not started) and left a comment saying why.
+
+**Verification:** `hashFiles` no longer appears in `.github/workflows`; confirmation is the `ci.yml` run on the `dev` push after merge (see the PR).
+
+**Next:** `main` still needs #20 and this fix (`dev` → `main` PR) so the Pages smoke test and CI go green there.
+
+**Modified:** `.github/workflows/ci.yml`, `tasks/DEVLOG.md`
+
+---
+
+
 ## [2026-10-25] Claude Code (local) — fix/code-review · whole-codebase review
 
 **Mode:** Analytical + Execution
