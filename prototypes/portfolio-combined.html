@@ -271,7 +271,12 @@ html.light body::before {
   transition: color .24s cubic-bezier(.2,.7,.2,1), background .24s cubic-bezier(.2,.7,.2,1), transform .24s cubic-bezier(.2,.7,.2,1), box-shadow .24s cubic-bezier(.2,.7,.2,1);
 }
 .tbtn:hover { background: var(--w06); color: var(--w); }
-.tbtn.srch { border-color: var(--w12); background: var(--w06); padding: 0 14px 0 13px; gap: 7px; cursor: text; }
+.tbtn.srch { border-color: var(--w12); background: var(--w06); padding: 0 14px 0 13px; gap: 7px; cursor: text; max-width: 260px; overflow: hidden;
+  transition: max-width .3s cubic-bezier(.2,.7,.2,1), padding .3s cubic-bezier(.2,.7,.2,1), background .24s cubic-bezier(.2,.7,.2,1), border-color .24s cubic-bezier(.2,.7,.2,1); }
+/* collapsed to the icon until the page scrolls (same trigger as the brand's wordmark -> mark swap); focus re-expands it */
+#shared-nav:not(.scrolled) .tbtn.srch:not(:focus-within) { max-width: 42px; padding: 0; gap: 0; justify-content: center; border-color: transparent; background: transparent; cursor: pointer; }
+#shared-nav:not(.scrolled) .tbtn.srch:not(:focus-within) .nav-search-input { width: 0; opacity: 0; }
+#shared-nav:not(.scrolled) .tbtn.srch:not(:focus-within) kbd { display: none; }
 .tbtn.srch:focus-within { outline: 2px solid var(--acc); outline-offset: 3px; }
 .tbtn.srch kbd {
   font-family: var(--mono); font-size: 11px; line-height: 1; letter-spacing: 0; white-space: nowrap;
@@ -2759,14 +2764,16 @@ html.light footer.roadmap-footer a { color: var(--w); }
 }
 
 /* --- Homepage: topic hues (reading order, none reused; Hermes/About/Contact stay neutral) ---
-   13% fill, 42% border, 100% label + icon, all read from --h. */
+   neutral surface; label + icon + 2px top bar read the hue from --h. */
 #pg-home .w[class*="hue-"] {
-  background:
-    linear-gradient(color-mix(in srgb, var(--h) 13%, transparent), color-mix(in srgb, var(--h) 13%, transparent)),
-    var(--bg2);
-  border-color: color-mix(in srgb, var(--h) 42%, transparent);
+  /* neutral Widget surface; the hue shows only on the label/icon and a 2px accent bar along the top edge */
+  background: var(--bg2);
+  border-color: var(--w12);
 }
-#pg-home .w[class*="hue-"]:hover { border-color: color-mix(in srgb, var(--h) 60%, transparent) !important; }
+#pg-home .w[class*="hue-"]::before {
+  content: ""; position: absolute; left: 0; right: 0; top: 0; height: 2px; z-index: 1; pointer-events: none;
+  background: var(--h);
+}
 #pg-home .w[class*="hue-"] .wlbl-row { color: var(--h); }
 #pg-home .w[class*="hue-"] .wlbl-row svg * { stroke: var(--h); }
 
@@ -2906,7 +2913,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
 /* page header: lab kicker + h2.big-style title + lead */
 #pg-projects .ph-label { font-family: var(--mono); font-size: 13px; letter-spacing: .03em; text-transform: none; color: var(--h); }
 #pg-projects .ph-label::after { background: color-mix(in srgb, var(--h) 45%, transparent); }
-#pg-projects .ph-title { font-family: var(--display); font-weight: 800; font-size: clamp(28px, 4.4vw, 46px);
+#pg-projects .ph-title { font-family: var(--sans); font-weight: 700; font-size: clamp(24px, 3.5vw, 36px);
   line-height: 1.04; letter-spacing: -.03em; color: var(--w); margin-bottom: 14px; }
 #pg-projects .ph-sub { font-family: var(--read); font-size: 18px; letter-spacing: 0; line-height: 1.6; color: var(--w80); max-width: 66ch; }
 
@@ -2923,11 +2930,13 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
 
 /* index cards (8) */
 #pg-projects .pi {
-  background: var(--bg2); border: 1px solid var(--w12); border-left: 4px solid var(--h); border-radius: 20px;
-  box-shadow: none; backdrop-filter: none; -webkit-backdrop-filter: none;
-  transition: transform .24s cubic-bezier(.2,.7,.2,1), background .24s cubic-bezier(.2,.7,.2,1), border-color .24s cubic-bezier(.2,.7,.2,1);
+  /* free-floating widget: no glass, no outline (only the 4px hue edge), lifts on hover like the home widgets */
+  background: var(--bg2); border: 0; border-left: 4px solid var(--h); border-radius: 20px;
+  box-shadow: var(--shadow); backdrop-filter: none; -webkit-backdrop-filter: none;
+  transition: transform .24s cubic-bezier(.34,1.46,.64,1), box-shadow .24s cubic-bezier(.2,.7,.2,1), background .24s cubic-bezier(.2,.7,.2,1);
 }
-#pg-projects .pi:hover { transform: translateY(-4px); background: var(--bg3); box-shadow: none; border-color: var(--w12); border-left-color: var(--h); }
+#pg-projects .pi:hover { transform: translateY(-3px) scale(1.015); background: var(--bg2); box-shadow: 8px 14px 36px rgba(0,0,0,.5), 0 0 0 1px color-mix(in srgb, var(--h) 30%, transparent); border-left-color: var(--h); }
+html.light #pg-projects .pi:hover { box-shadow: 8px 14px 36px rgba(13,13,15,.2), 0 0 0 1px color-mix(in srgb, var(--h) 30%, transparent); }
 @media (prefers-reduced-motion: reduce) { #pg-projects .pi:hover { transform: none; } }
 #pg-projects .pi-num { font-family: var(--data); font-size: 12px; letter-spacing: .06em; color: var(--w60); margin-bottom: 12px; }
 #pg-projects .pi-title { display: flex; align-items: center; gap: 10px; font-family: var(--sans); font-weight: 700; font-size: 17px;
@@ -2948,7 +2957,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
 }
 @media (max-width: 700px) { #pg-projects .cs-section, #pg-projects .cs-section:first-child { padding: 22px 18px; } }
 #pg-projects .cs-number { font-family: var(--data); font-size: 13px; letter-spacing: .08em; color: var(--h); }
-#pg-projects .cs-title { font-family: var(--display); font-weight: 800; font-size: clamp(32px, 5vw, 56px); letter-spacing: -.03em; line-height: 1; color: var(--w); }
+#pg-projects .cs-title { font-family: var(--sans); font-weight: 700; font-size: clamp(32px, 5vw, 56px); letter-spacing: -.03em; line-height: 1; color: var(--w); }
 #pg-projects .cs-title svg.ico { width: 40px; height: 40px; color: var(--product, var(--h)); }
 #pg-projects .cs-tagline { font-family: var(--read); font-size: 17px; line-height: 1.6; color: var(--w80); max-width: 62ch; }
 #pg-projects .cs-stats { background: var(--w12); border-radius: 14px; }
@@ -3056,7 +3065,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
 /* page header */
 #pg-roadmap .ph-label { font-family: var(--mono); font-size: 13px; letter-spacing: .03em; text-transform: none; color: var(--h); }
 #pg-roadmap .ph-label::after { background: color-mix(in srgb, var(--h) 45%, transparent); }
-#pg-roadmap .ph-title { font-family: var(--display); font-weight: 800; font-size: clamp(28px, 4.4vw, 46px);
+#pg-roadmap .ph-title { font-family: var(--display); font-weight: 800; font-size: clamp(24px, 3.5vw, 36px);
   line-height: 1.04; letter-spacing: -.03em; color: var(--w); margin-bottom: 14px; }
 #pg-roadmap .ph-sub { font-family: var(--read); font-size: 18px; letter-spacing: 0; line-height: 1.6; color: var(--w80); max-width: 66ch; }
 
@@ -3187,6 +3196,56 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
 #pg-roadmap .resource-level { font-family: var(--mono); font-size: 12px; letter-spacing: 0; color: var(--w80); background: var(--bg2); border: 1px solid var(--w12); border-radius: 100px; padding: 2px 10px; }
 #pg-roadmap .resource-arrow { color: var(--w60); font-size: 14px; }
 #pg-roadmap .resource-item:hover .resource-arrow { color: var(--h); }
+/* pop-up: same lift + spring as the home widgets (.w:hover) */
+#pg-roadmap .tl-header, #pg-roadmap .resource-item {
+  transition: transform .24s cubic-bezier(.34,1.46,.64,1), box-shadow .24s cubic-bezier(.2,.7,.2,1), border-color .24s cubic-bezier(.2,.7,.2,1), background .24s cubic-bezier(.2,.7,.2,1);
+}
+#pg-roadmap .tl-header:hover, #pg-roadmap .resource-item:hover { transform: translateY(-3px) scale(1.015); box-shadow: var(--shadow); }
+@media (prefers-reduced-motion: reduce) { #pg-roadmap .tl-header:hover, #pg-roadmap .resource-item:hover { transform: none; } }
+
+/* mind map (reference .mapsec / .mapbox / .mapsvg / .mapcards): radial SVG >=900px, phase cards below */
+#pg-roadmap .mapsec { margin-top: 56px; }
+#pg-roadmap .mapsec-lead { font-family: var(--read); font-size: 18px; line-height: 1.6; color: var(--w80); max-width: 66ch; margin: 0 0 20px; }
+#pg-roadmap .mapbox { display: none; background: var(--bg2); border: 1px solid var(--w12); border-radius: 20px; padding: 12px; overflow: hidden; }
+#pg-roadmap .mapsvg { display: none; width: 100%; height: auto; }
+#pg-roadmap .mapsvg text { font-family: var(--sans); }
+#pg-roadmap .mm-link { fill: none; stroke: color-mix(in srgb, var(--h) 55%, transparent); stroke-width: 2; }
+#pg-roadmap .mm-center circle { fill: color-mix(in srgb, var(--acc) 14%, var(--bg3)); stroke: var(--acc); stroke-width: 2; }
+#pg-roadmap .mm-center text { fill: var(--w); font-weight: 700; font-size: 17px; text-anchor: middle; }
+#pg-roadmap .mm-phase rect { fill: color-mix(in srgb, var(--h) 22%, var(--bg3)); stroke: var(--h); stroke-width: 2; }
+#pg-roadmap .mm-phase text { fill: var(--w); font-weight: 700; font-size: 15px; text-anchor: middle; }
+#pg-roadmap .mm-leaf { cursor: pointer; }
+#pg-roadmap .mm-leaf:focus-visible { outline: 2px solid var(--acc); outline-offset: 3px; }
+#pg-roadmap .mm-leaf rect { fill: var(--bg3); stroke: color-mix(in srgb, var(--h) 55%, transparent); stroke-width: 2; transition: fill .24s cubic-bezier(.2,.7,.2,1), stroke .24s cubic-bezier(.2,.7,.2,1); }
+#pg-roadmap .mm-leaf:hover rect { fill: var(--bg4); stroke: var(--h); }
+#pg-roadmap .mm-leaf:focus-visible rect { stroke: var(--acc); stroke-width: 3; }
+#pg-roadmap .mm-leaf text { fill: var(--w); font-weight: 500; font-size: 13px; text-anchor: middle; pointer-events: none; }
+#pg-roadmap .mm-leaf .mm-num { fill: var(--h); font-family: var(--data); font-size: 10.5px; font-weight: 400; }
+#pg-roadmap .mapcards { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 12px; }
+#pg-roadmap .mcard { background: var(--bg3); border: 1px solid var(--w12); border-left: 4px solid var(--h); border-radius: 14px; padding: 16px; min-width: 0; }
+#pg-roadmap .mcard h3 { display: flex; align-items: center; gap: 10px; margin: 0 0 10px; font-family: var(--sans); font-weight: 700; font-size: 17px; color: var(--w); }
+#pg-roadmap .mcard h3::before { content: ""; width: 10px; height: 10px; border-radius: 50%; background: var(--h); flex: none; }
+#pg-roadmap .mcard ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+#pg-roadmap .mcard button { width: 100%; text-align: left; cursor: pointer; padding: 8px 12px; border-radius: 10px;
+  font-family: var(--sans); font-size: 15px; font-weight: 500; line-height: 1.35; color: var(--w);
+  background: color-mix(in srgb, var(--h) 13%, transparent); border: 1px solid color-mix(in srgb, var(--h) 42%, transparent);
+  transition: background .24s cubic-bezier(.2,.7,.2,1), border-color .24s cubic-bezier(.2,.7,.2,1); }
+#pg-roadmap .mcard button:hover { background: color-mix(in srgb, var(--h) 22%, transparent); border-color: var(--h); }
+@media (min-width: 900px) { #pg-roadmap .mapbox { display: block; } #pg-roadmap .mapsvg { display: block; } #pg-roadmap .mapcards { display: none; } }
+
+/* tree inside the topic modal (reference .tree / .node) */
+.modal .tree, .modal .tree ul { list-style: none; margin: 0; padding: 0; }
+.modal .tree ul { padding-left: 22px; }
+.modal .tree li { position: relative; padding: 5px 0 5px 22px; }
+.modal .tree li::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; border-left: 2px solid color-mix(in srgb, var(--h) 45%, transparent); }
+.modal .tree li::after { content: ""; position: absolute; left: 0; top: 20px; width: 16px; border-top: 2px solid color-mix(in srgb, var(--h) 45%, transparent); }
+.modal .tree li:last-child::before { bottom: auto; height: 20px; }
+.modal .tree > li { padding-left: 0; }
+.modal .tree > li::before, .modal .tree > li::after { display: none; }
+.modal .node { display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px; border-radius: 10px; font-family: var(--sans); font-weight: 500; font-size: 15px; line-height: 1.35; color: var(--w);
+  background: color-mix(in srgb, var(--h) 13%, transparent); border: 1px solid color-mix(in srgb, var(--h) 42%, transparent); }
+.modal .node.root { font-weight: 700; font-size: 16px; background: var(--h); color: var(--bg); border-color: var(--h); }
+.modal .node.leaf { background: transparent; border-color: var(--w12); color: var(--w80); font-weight: 400; }
 
 /* footer */
 #pg-roadmap .footer-logo { font-size: 12.5px; letter-spacing: .08em; color: var(--w60); }
@@ -3264,7 +3323,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
 /* page header */
 #pg-about .ph-label { font-family: var(--mono); font-size: 13px; letter-spacing: .03em; text-transform: none; color: var(--h); }
 #pg-about .ph-label::after { background: color-mix(in srgb, var(--h) 45%, transparent); }
-#pg-about .ph-title { font-family: var(--display); font-weight: 800; font-size: clamp(28px, 4.4vw, 46px);
+#pg-about .ph-title { font-family: var(--display); font-weight: 800; font-size: clamp(24px, 3.5vw, 36px);
   line-height: 1.04; letter-spacing: -.03em; color: var(--w); margin-bottom: 36px; }
 
 /* section heads: mono label in the hue, hue rule, DM Mono number */
@@ -3281,8 +3340,11 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
 #pg-about .int-card:hover { border-color: var(--w12); border-left-color: var(--h); }
 
 /* bio */
-#pg-about .intro { padding: 36px; gap: 40px; margin-bottom: 56px; }
-@media (max-width: 680px) { #pg-about .intro { padding: 24px 20px; gap: 24px; } }
+/* clean intro: photo + plain text block, no card wrapper or outline around the description */
+#pg-about .intro { padding: 0; gap: 40px; margin-bottom: 56px; background: none; border: 0; box-shadow: none; border-radius: 0;
+  backdrop-filter: none; -webkit-backdrop-filter: none; }
+#pg-about .intro:hover { transform: none; box-shadow: none; border-color: transparent; }
+@media (max-width: 680px) { #pg-about .intro { padding: 0; gap: 24px; } }
 #pg-about .photo-frame { border: 1px solid var(--w12); border-radius: 20px; background: var(--bg2); box-shadow: var(--shadow); }
 #pg-about .photo-frame:hover { transform: translateY(-3px); box-shadow: var(--shadow); }
 #pg-about .cv-dl { gap: 10px; padding: 10px 16px; background: var(--bg2); backdrop-filter: none; -webkit-backdrop-filter: none;
@@ -3373,7 +3435,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
 #pg-me .ph { padding: 0 0 32px; max-width: none; }
 #pg-me .ph-label { font-family: var(--mono); font-size: 13px; letter-spacing: .03em; text-transform: none; color: var(--h); }
 #pg-me .ph-label::after { background: color-mix(in srgb, var(--h) 45%, transparent); }
-#pg-me .ph-title { font-family: var(--display); font-weight: 800; font-size: clamp(28px, 4.4vw, 46px);
+#pg-me .ph-title { font-family: var(--display); font-weight: 800; font-size: clamp(24px, 3.5vw, 36px);
   line-height: 1.04; letter-spacing: -.03em; color: var(--w); margin-bottom: 14px; }
 #pg-me .ph-sub { font-family: var(--read); font-size: 18px; letter-spacing: 0; line-height: 1.6; color: var(--w80); max-width: 66ch; }
 #pg-me svg.i { width: 22px; height: 22px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
@@ -3453,10 +3515,10 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
     </a>
 
     <nav class="pill links" aria-label="Sections">
-      <a href="#home" aria-label="home" aria-current="true" onclick="showPage('home')"><svg class="i" aria-hidden="true"><use href="#i-home"/></svg><span>home</span></a>
-      <a href="#projects" aria-label="projects" onclick="showPage('projects')"><svg class="i" aria-hidden="true"><use href="#i-box"/></svg><span>projects</span></a>
-      <a href="#roadmap" aria-label="roadmap" onclick="showPage('roadmap')"><svg class="i" aria-hidden="true"><use href="#i-map"/></svg><span>roadmap</span></a>
-      <a href="#about" aria-label="about" onclick="showPage('about')"><svg class="i" aria-hidden="true"><use href="#i-figure"/></svg><span>about</span></a>
+      <a class="hue-blue" href="#home" aria-label="home" aria-current="true" onclick="showPage('home')"><svg class="i" aria-hidden="true"><use href="#i-home"/></svg><span>home</span></a>
+      <a class="hue-teal" href="#projects" aria-label="projects" onclick="showPage('projects')"><svg class="i" aria-hidden="true"><use href="#i-box"/></svg><span>projects</span></a>
+      <a class="hue-indigo" href="#roadmap" aria-label="roadmap" onclick="showPage('roadmap')"><svg class="i" aria-hidden="true"><use href="#i-map"/></svg><span>roadmap</span></a>
+      <a class="hue-purple" href="#about" aria-label="about" onclick="showPage('about')"><svg class="i" aria-hidden="true"><use href="#i-figure"/></svg><span>about</span></a>
     </nav>
 
     <div class="pill tools">
@@ -3936,7 +3998,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
 <!-- PROJECT INDEX GRID -->
 <section style="position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:0 20px 80px">
   <div class="proj-index">
-    <a href="javascript:void(0)" class="pi hue-blue p-acc glass-card" style="text-decoration:none;color:inherit;padding:22px 24px" onclick="scrollToAnchor('finance-buddy')">
+    <a href="javascript:void(0)" class="pi hue-blue p-acc" style="text-decoration:none;color:inherit;padding:22px 24px" onclick="scrollToAnchor('finance-buddy')">
       <div class="pi-num">01 / 08</div>
       <div class="pi-title"><svg class="ico" width="28" height="28" viewBox="0 0 13 13" fill="none"><rect x="1" y="8" width="2.5" height="4" fill="rgba(255,255,255,.5)"/><rect x="5.25" y="5" width="2.5" height="7" fill="rgba(255,255,255,.5)"/><rect x="9.5" y="2" width="2.5" height="10" fill="rgba(255,255,255,.5)"/></svg>Finance Buddy</div>
       <div class="pi-sub">Personal finance tracker</div>
@@ -3948,7 +4010,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
       <div class="pi-status"><span class="status-badge v-ok" aria-hidden="true"><svg><use href="#i-check"/></svg></span>Prototype complete</div>
       <div class="pi-arrow">↗</div>
     </a>
-    <a href="javascript:void(0)" class="pi hue-teal p-red glass-card" style="text-decoration:none;color:inherit;padding:22px 24px" onclick="scrollToAnchor('homelab')">
+    <a href="javascript:void(0)" class="pi hue-teal p-red" style="text-decoration:none;color:inherit;padding:22px 24px" onclick="scrollToAnchor('homelab')">
       <div class="pi-num">02 / 08</div>
       <div class="pi-title"><svg class="ico" width="28" height="28" viewBox="0 0 13 13" fill="none"><rect x="1" y="1" width="4.5" height="5" rx="1" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="none"/><rect x="7.5" y="1" width="4.5" height="3" rx="1" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="none"/><rect x="1" y="8" width="4.5" height="4" rx="1" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="none"/><rect x="7.5" y="6" width="4.5" height="6" rx="1" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="none"/></svg>Homelab Dashboard</div>
       <div class="pi-sub">Realtime ops · 2-node cluster</div>
@@ -3960,7 +4022,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
       <div class="pi-status"><span class="status-badge v-ok" aria-hidden="true"><svg><use href="#i-check"/></svg></span>Prototype complete</div>
       <div class="pi-arrow">↗</div>
     </a>
-    <a href="javascript:void(0)" class="pi hue-cyan glass-card" style="text-decoration:none;color:inherit;padding:22px 24px" onclick="scrollToAnchor('typeshift')">
+    <a href="javascript:void(0)" class="pi hue-cyan" style="text-decoration:none;color:inherit;padding:22px 24px" onclick="scrollToAnchor('typeshift')">
       <div class="pi-num">03 / 08</div>
       <div class="pi-title"><svg class="ico" width="28" height="28" viewBox="0 0 13 13" fill="none"><rect x="1" y="3" width="11" height="7" rx="1.5" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="none"/><line x1="3.5" y1="5.5" x2="5" y2="5.5" stroke="rgba(255,255,255,.5)" stroke-width="1"/><line x1="8" y1="5.5" x2="9.5" y2="5.5" stroke="rgba(255,255,255,.5)" stroke-width="1"/><line x1="4" y1="8" x2="9" y2="8" stroke="rgba(255,255,255,.5)" stroke-width="1"/></svg>TypeShift</div>
       <div class="pi-sub">Cross-platform AI · collab</div>
@@ -3972,7 +4034,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
       <div class="pi-status"><span class="status-badge v-near" aria-hidden="true"><svg><use href="#i-bang"/></svg></span>In progress</div>
       <div class="pi-arrow">↗</div>
     </a>
-    <a href="javascript:void(0)" class="pi hue-indigo glass-card" style="text-decoration:none;color:inherit;padding:22px 24px" onclick="scrollToAnchor('orlon-bot')">
+    <a href="javascript:void(0)" class="pi hue-indigo" style="text-decoration:none;color:inherit;padding:22px 24px" onclick="scrollToAnchor('orlon-bot')">
       <div class="pi-num">04 / 08</div>
       <div class="pi-title"><svg class="ico" width="28" height="28" viewBox="0 0 13 13" fill="none"><rect x="3" y="4" width="7" height="6" rx="1" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="none"/><circle cx="5" cy="7" r=".8" fill="rgba(255,255,255,.5)"/><circle cx="8" cy="7" r=".8" fill="rgba(255,255,255,.5)"/><line x1="6.5" y1="1.5" x2="6.5" y2="4" stroke="rgba(255,255,255,.5)" stroke-width="1"/><circle cx="6.5" cy="1.5" r=".8" fill="rgba(255,255,255,.5)"/></svg>orlon-bot</div>
       <div class="pi-sub">QLoRA fine-tune · Telegram</div>
@@ -3984,7 +4046,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
       <div class="pi-status"><span class="status-badge v-near" aria-hidden="true"><svg><use href="#i-bang"/></svg></span>In progress</div>
       <div class="pi-arrow">↗</div>
     </a>
-    <a href="javascript:void(0)" class="pi hue-purple p-acc glass-card" style="text-decoration:none;color:inherit;padding:22px 24px" onclick="scrollToAnchor('portfolio-website')">
+    <a href="javascript:void(0)" class="pi hue-purple p-acc" style="text-decoration:none;color:inherit;padding:22px 24px" onclick="scrollToAnchor('portfolio-website')">
       <div class="pi-num">05 / 08</div>
       <div class="pi-title"><svg class="ico" width="28" height="28" viewBox="0 0 13 13" fill="none"><rect x="1.5" y="2" width="10" height="9" rx="1" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="none"/><line x1="1.5" y1="5" x2="11.5" y2="5" stroke="rgba(255,255,255,.5)" stroke-width="1"/><circle cx="3.5" cy="3.5" r=".6" fill="rgba(255,255,255,.5)"/><circle cx="5.5" cy="3.5" r=".6" fill="rgba(255,255,255,.5)"/></svg>Portfolio Website</div>
       <div class="pi-sub">This site · Vercel + Tailscale</div>
@@ -3997,7 +4059,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
       <div class="pi-status"><span class="status-badge v-ok" aria-hidden="true"><svg><use href="#i-check"/></svg></span>Live</div>
       <div class="pi-arrow">↗</div>
     </a>
-    <a href="javascript:void(0)" class="pi hue-pink glass-card" style="text-decoration:none;color:inherit;padding:22px 24px" onclick="scrollToAnchor('hermes-desktop-oauth')">
+    <a href="javascript:void(0)" class="pi hue-pink" style="text-decoration:none;color:inherit;padding:22px 24px" onclick="scrollToAnchor('hermes-desktop-oauth')">
       <div class="pi-num">06 / 08</div>
       <div class="pi-title"><svg class="ico" width="28" height="28" viewBox="0 0 13 13" fill="none"><rect x="3" y="6" width="7" height="5.5" rx="1" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="none"/><path d="M4.5 6V4.5a2 2 0 0 1 4 0V6" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="none"/><circle cx="6.5" cy="9" r=".8" fill="rgba(255,255,255,.5)"/></svg>Hermes One (OAuth fork)</div>
       <div class="pi-sub">Hermes One · OAuth for gated dashboards</div>
@@ -4012,7 +4074,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
       <div class="pi-status"><span class="status-badge v-ok" aria-hidden="true"><svg><use href="#i-check"/></svg></span>13 PRs merged</div>
       <div class="pi-arrow">↗</div>
     </a>
-    <a href="javascript:void(0)" class="pi hue-orange glass-card" style="text-decoration:none;color:inherit;padding:22px 24px" onclick="scrollToAnchor('openclaw-dashboard')">
+    <a href="javascript:void(0)" class="pi hue-orange" style="text-decoration:none;color:inherit;padding:22px 24px" onclick="scrollToAnchor('openclaw-dashboard')">
       <div class="pi-num">07 / 08</div>
       <div class="pi-title"><svg class="ico" width="28" height="28" viewBox="0 0 13 13" fill="none"><rect x="1" y="1" width="4.5" height="5" rx="1" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="none"/><rect x="7.5" y="1" width="4.5" height="3" rx="1" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="none"/><rect x="1" y="8" width="4.5" height="4" rx="1" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="none"/><rect x="7.5" y="6" width="4.5" height="6" rx="1" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="none"/></svg>OpenClaw Dashboard</div>
       <div class="pi-sub">Control UI for OpenClaw gateway</div>
@@ -4025,7 +4087,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
       <div class="pi-status"><span class="status-badge v-near" aria-hidden="true"><svg><use href="#i-bang"/></svg></span>Active dev</div>
       <div class="pi-arrow">↗</div>
     </a>
-    <a href="javascript:void(0)" class="pi hue-lime glass-card" style="text-decoration:none;color:inherit;padding:22px 24px" onclick="scrollToAnchor('unilox-fitness-ai')">
+    <a href="javascript:void(0)" class="pi hue-lime" style="text-decoration:none;color:inherit;padding:22px 24px" onclick="scrollToAnchor('unilox-fitness-ai')">
       <div class="pi-num">08 / 08</div>
       <div class="pi-title"><svg class="ico" width="28" height="28" viewBox="0 0 13 13" fill="none"><path d="M1 6.5H3.5L5 3L6.5 10L8 4L9.5 6.5H12" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="none"/></svg>UNILOX Fitness AI</div>
       <div class="pi-sub">AI Gym & Fitness Assistant · 7 modules</div>
@@ -5364,6 +5426,15 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
     </div>
   </section>
 
+  <!-- ═══════════ MIND MAP ═══════════ -->
+  <section class="mapsec hue-sand" aria-labelledby="mindmap-heading">
+    <div class="sec-head">
+      <h2 id="mindmap-heading">mind map</h2>
+    </div>
+    <p class="mapsec-lead">The 11 core topics grouped into the four phases. Pick any topic to open its plan.</p>
+    <div id="mindmap-root"></div>
+  </section>
+
   <!-- ═══════════ 11 CORE TOPICS ═══════════ -->
   <section id="topics" class="hue-teal" aria-labelledby="topics-heading">
     <div class="sec-head">
@@ -5518,7 +5589,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
   <h1 class="ph-title"><span class="hn-script">A</span>bout</h1>
 
   <!-- ── INTRO ── -->
-  <div class="intro hue-blue glass-card">
+  <div class="intro hue-blue">
     <!-- Photo placeholder -->
     <div class="photo-block">
       <div class="photo-frame">
@@ -6423,6 +6494,72 @@ function updateProgressWidget(saved) {
   });
 }
 
+
+// ═══════════════════════════════════════════
+// MIND MAP (radial SVG on wide screens, phase cards on narrow ones; built from TOPICS)
+// ═══════════════════════════════════════════
+const PHASES = [
+  { key: 'foundation', label: 'Foundation', hue: 'var(--blue)', angle: 205 },
+  { key: 'core', label: 'Core Skills', hue: 'var(--teal)', angle: -50 },
+  { key: 'system', label: 'System Core', hue: 'var(--indigo)', angle: 40, step: 30 },
+  { key: 'advanced', label: 'Advanced', hue: 'var(--purple)', angle: 145 }
+];
+function wrapLabel(name, max) {
+  const words = name.split(' '), lines = [''];
+  words.forEach(w => { const l = lines[lines.length - 1]; if (l && (l + ' ' + w).length > max) lines.push(w); else lines[lines.length - 1] = l ? l + ' ' + w : w; });
+  return lines;
+}
+function buildMindMap() {
+  const root = document.getElementById('mindmap-root');
+  if (!root) return;
+  const NS = 'http://www.w3.org/2000/svg';
+  const W = 1000, H = 640, cx = 500, cy = 320;
+  const pos = (deg, rx, ry) => [cx + rx * Math.cos(deg * Math.PI / 180), cy + ry * Math.sin(deg * Math.PI / 180)];
+  const el = (tag, attrs, parent) => { const n = document.createElementNS(NS, tag); Object.entries(attrs || {}).forEach(([k, v]) => n.setAttribute(k, v)); if (parent) parent.appendChild(n); return n; };
+  const svg = el('svg', { class: 'mapsvg', viewBox: `0 0 ${W} ${H}`, role: 'group', 'aria-label': 'Mind map of the 11 topics grouped into four phases' });
+  const links = el('g', {}, svg), nodes = el('g', {}, svg);
+  const c = el('g', { class: 'mm-center' }, nodes);
+  el('circle', { cx, cy, r: 56 }, c);
+  el('text', { x: cx, y: cy - 2 }, c).textContent = 'CS';
+  el('text', { x: cx, y: cy + 18, style: 'font-size:13px;font-weight:500' }, c).textContent = 'roadmap';
+
+  PHASES.forEach(ph => {
+    const topics = TOPICS.filter(t => t.phase === ph.key);
+    const [px, py] = pos(ph.angle, 215, 120);
+    const g = el('g', { style: '--h:' + ph.hue }, links);
+    el('path', { class: 'mm-link', d: `M${cx},${cy} L${px},${py}` }, g);
+    const ng = el('g', { class: 'mm-phase', style: '--h:' + ph.hue }, nodes);
+    el('rect', { x: px - 62, y: py - 19, width: 124, height: 38, rx: 12 }, ng);
+    el('text', { x: px, y: py + 5 }, ng).textContent = ph.label;
+    topics.forEach((t, i) => {
+      const [lx, ly] = pos(ph.angle + (i - (topics.length - 1) / 2) * (ph.step || 30), 375, 255);
+      el('path', { class: 'mm-link', style: '--h:' + ph.hue, d: `M${px},${py} Q${(px + lx) / 2},${(py + ly) / 2 - 10} ${lx},${ly}` }, g);
+      const leaf = el('g', { class: 'mm-leaf', style: '--h:' + ph.hue, role: 'button', tabindex: '0', 'aria-label': `${t.name}, open topic ${t.id} of 11` }, nodes);
+      el('rect', { x: lx - 88, y: ly - 27, width: 176, height: 54, rx: 10 }, leaf);
+      el('text', { class: 'mm-num', x: lx, y: ly - 12 }, leaf).textContent = String(t.id).padStart(2, '0');
+      const lines = wrapLabel(t.name, 21).slice(0, 2);
+      lines.forEach((ln, k) => { el('text', { x: lx, y: ly + (lines.length === 1 ? 8 : 4) + k * 14 }, leaf).textContent = ln; });
+      leaf.addEventListener('click', () => openModal(t.id));
+      leaf.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openModal(t.id); } });
+    });
+  });
+
+  const box = document.createElement('div'); box.className = 'mapbox'; box.appendChild(svg);
+  const cards = document.createElement('div'); cards.className = 'mapcards';
+  PHASES.forEach(ph => {
+    const card = document.createElement('div'); card.className = 'mcard'; card.style.setProperty('--h', ph.hue);
+    const h = document.createElement('h3'); h.textContent = ph.label; card.appendChild(h);
+    const ul = document.createElement('ul');
+    TOPICS.filter(t => t.phase === ph.key).forEach(t => {
+      const li = document.createElement('li'), b = document.createElement('button');
+      b.type = 'button'; b.textContent = String(t.id).padStart(2, '0') + ' · ' + t.name;
+      b.addEventListener('click', () => openModal(t.id)); li.appendChild(b); ul.appendChild(li);
+    });
+    card.appendChild(ul); cards.appendChild(card);
+  });
+  root.appendChild(box); root.appendChild(cards);
+}
+
 // ═══════════════════════════════════════════
 // MODAL
 // ═══════════════════════════════════════════
@@ -6470,6 +6607,11 @@ function openModal(id) {
     <div class="modal-section">
       <div class="modal-section-label">Why it matters</div>
       <ul>${t.why.map(w => `<li>${esc(w)}</li>`).join('')}</ul>
+    </div>
+
+    <div class="modal-section">
+      <div class="modal-section-label">Mind map</div>
+      <ul class="tree"><li><span class="node root">${esc(t.name)}</span><ul>${t.learn.map(cat => `<li><span class="node">${esc(cat.cat)}</span><ul>${cat.items.map(i => `<li><span class="node leaf">${esc(i)}</span></li>`).join('')}</ul></li>`).join('')}</ul></li></ul>
     </div>
 
     <div class="modal-section">
@@ -6643,6 +6785,7 @@ const barObserver = new IntersectionObserver((entries) => {
 // ═══════════════════════════════════════════
 renderTopics();
 renderCareers();
+buildMindMap();
 
 // observe career cards for bar animation
 document.querySelectorAll('.career-card').forEach(c => barObserver.observe(c));
@@ -6760,6 +6903,9 @@ function showPage(id, opts) {
     const strip = navLink.parentElement;
     strip.scrollLeft = Math.max(0, navLink.offsetLeft - (strip.clientWidth - navLink.offsetWidth) / 2);
   }
+  // the scroll-progress strip belongs to the roadmap: clear it when leaving, or it lingers on every other page
+  const progressBar = document.getElementById('progress-bar');
+  if (progressBar && id !== 'roadmap') progressBar.style.width = '0';
   const progressWidget = document.getElementById('progress-widget');
   if (progressWidget) {
     progressWidget.style.display = id === 'roadmap' && progressWidget.classList.contains('show') ? 'block' : 'none';
@@ -6776,6 +6922,9 @@ document.addEventListener('keydown', (e) => {
     if (input && input.offsetParent !== null) { e.preventDefault(); input.focus(); input.select(); }
   }
 });
+// the collapsed search pill is just an icon: clicking it focuses the input, which expands it
+(function(){ const box = document.querySelector('#shared-nav .tbtn.srch'), input = document.getElementById('navSearchInput');
+  if (box && input) box.addEventListener('click', () => input.focus()); })();
 function routeFromHash() {
   const hash = location.hash.replace('#','') || 'home';
   const valid = ['home','projects','roadmap','about','me'];
