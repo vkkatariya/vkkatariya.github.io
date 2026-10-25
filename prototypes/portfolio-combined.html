@@ -3206,7 +3206,7 @@ html.light #pg-projects .pi:hover { box-shadow: 8px 14px 36px rgba(13,13,15,.2),
 /* mind map (reference .mapsec / .mapbox / .mapsvg / .mapcards): radial SVG >=900px, phase cards below */
 #pg-roadmap .mapsec { margin-top: 56px; }
 #pg-roadmap .mapsec-lead { font-family: var(--read); font-size: 18px; line-height: 1.6; color: var(--w80); max-width: 66ch; margin: 0 0 20px; }
-#pg-roadmap .mapbox { background: var(--bg2); border: 1px solid var(--w12); border-radius: 20px; padding: 12px; overflow: hidden; }
+#pg-roadmap .mapbox { display: none; background: var(--bg2); border: 1px solid var(--w12); border-radius: 20px; padding: 12px; overflow: hidden; }
 #pg-roadmap .mapsvg { display: none; width: 100%; height: auto; }
 #pg-roadmap .mapsvg text { font-family: var(--sans); }
 #pg-roadmap .mm-link { fill: none; stroke: color-mix(in srgb, var(--h) 55%, transparent); stroke-width: 2; }
@@ -3231,7 +3231,7 @@ html.light #pg-projects .pi:hover { box-shadow: 8px 14px 36px rgba(13,13,15,.2),
   background: color-mix(in srgb, var(--h) 13%, transparent); border: 1px solid color-mix(in srgb, var(--h) 42%, transparent);
   transition: background .24s cubic-bezier(.2,.7,.2,1), border-color .24s cubic-bezier(.2,.7,.2,1); }
 #pg-roadmap .mcard button:hover { background: color-mix(in srgb, var(--h) 22%, transparent); border-color: var(--h); }
-@media (min-width: 900px) { #pg-roadmap .mapsvg { display: block; } #pg-roadmap .mapcards { display: none; } }
+@media (min-width: 900px) { #pg-roadmap .mapbox { display: block; } #pg-roadmap .mapsvg { display: block; } #pg-roadmap .mapcards { display: none; } }
 
 /* tree inside the topic modal (reference .tree / .node) */
 .modal .tree, .modal .tree ul { list-style: none; margin: 0; padding: 0; }
@@ -6903,6 +6903,9 @@ function showPage(id, opts) {
     const strip = navLink.parentElement;
     strip.scrollLeft = Math.max(0, navLink.offsetLeft - (strip.clientWidth - navLink.offsetWidth) / 2);
   }
+  // the scroll-progress strip belongs to the roadmap: clear it when leaving, or it lingers on every other page
+  const progressBar = document.getElementById('progress-bar');
+  if (progressBar && id !== 'roadmap') progressBar.style.width = '0';
   const progressWidget = document.getElementById('progress-widget');
   if (progressWidget) {
     progressWidget.style.display = id === 'roadmap' && progressWidget.classList.contains('show') ? 'block' : 'none';

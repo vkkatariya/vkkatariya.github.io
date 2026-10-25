@@ -303,6 +303,15 @@ test.describe('final fixes', () => {
     await expect(page.locator('#pg-projects .pi.glass-card')).toHaveCount(0);
   });
 
+  test('roadmap scroll-progress strip is cleared when leaving the roadmap', async ({ page }) => {
+    await page.goto(SPA);
+    await page.locator('#shared-nav .links a[href="#roadmap"]').click();
+    await page.evaluate(() => window.scrollTo(0, 1200));
+    await expect.poll(() => page.evaluate(() => document.getElementById('progress-bar').style.width)).not.toBe('0px');
+    await page.evaluate(() => showPage('about'));
+    await expect.poll(() => page.evaluate(() => Math.round(parseFloat(getComputedStyle(document.getElementById('progress-bar')).width)))).toBe(0); // width eases to 0
+  });
+
   test('about intro has no card wrapper', async ({ page }) => {
     await page.goto(SPA);
     await page.locator('#shared-nav .links a[href="#about"]').click();
@@ -326,5 +335,6 @@ test.describe('final fixes', () => {
     await page.locator('#shared-nav .links a[href="#roadmap"]').click();
     await expect(page.locator('#mindmap-root .mapcards')).toBeVisible();
     await expect(page.locator('#mindmap-root .mapsvg')).toBeHidden();
+    await expect(page.locator('#mindmap-root .mapbox')).toBeHidden(); // no empty frame above the cards
   });
 });
