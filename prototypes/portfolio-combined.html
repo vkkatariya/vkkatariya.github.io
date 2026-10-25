@@ -68,13 +68,7 @@ window.va = window.va || function () { (window.vaq = window.vaq || []).push(argu
   --mono:'JetBrains Mono',ui-monospace,'SFMono-Regular',Menlo,monospace;
   --data:'DM Mono',ui-monospace,'SFMono-Regular',Menlo,monospace;
   color-scheme:dark;
-  /* legacy aliases still referenced by existing rules — retire in later phases */
-  --w03: rgba(255,255,255,.03);
-  --sd: rgba(0,0,0,.7);
-  --sl: rgba(255,255,255,.07);
-  --glass: rgba(27,28,29,.78);
-  --glass-b: rgba(255,255,255,.13);
-  --np-off: 4px;
+  --np-off: 4px; /* NeoPOP press offset */
 }
 @media (prefers-color-scheme: light) {
   :root[data-theme="auto"] {
@@ -111,11 +105,6 @@ html.light,
   --bar-ref:#8A8E94; --shadow:0 12px 32px rgba(13,13,15,.16); --scrim:rgba(13,13,15,.38);
   --glass-top:rgba(255,255,255,.92); --glass-bottom:rgba(250,250,250,.86); --glass-border:rgba(13,13,15,.12);
   color-scheme:light;
-  --w03: rgba(13,13,15,.03);
-  --sd: rgba(0,0,0,.1);
-  --sl: rgba(255,255,255,.8);
-  --glass: rgba(255,255,255,.72);
-  --glass-b: rgba(13,13,15,.1);
 }
 
 /* hue classes: set --h; components read it for 13-16% fill, 42-50% border, 100% icon */
@@ -130,18 +119,6 @@ html.light,
    were dropped so the cascade skips Ndot entirely. ── */
 :root {
   --font-ndot: 'DM Mono', monospace;
-}
-
-:root {
-  --glass-bg: linear-gradient(135deg, rgba(255,255,255,.10) 0%, rgba(255,255,255,.04) 100%);
-  --glass-shadow: 0 4px 28px rgba(0,0,0,.55), 0 1px 0 rgba(255,255,255,.12) inset;
-  --glass-hover-shadow: 8px 10px 24px rgba(0,0,0,.55), 0 1px 0 rgba(255,255,255,.12) inset;
-}
-html.light {
-  --glass-bg: linear-gradient(135deg, rgba(255,255,255,.72) 0%, rgba(255,255,255,.60) 100%);
-  --glass-border: rgba(13,13,15,.12);
-  --glass-shadow: 0 4px 28px rgba(0,0,0,.10), 0 1px 0 rgba(255,255,255,.8) inset;
-  --glass-hover-shadow: 8px 10px 24px rgba(0,0,0,.10), 0 1px 0 rgba(255,255,255,.8) inset;
 }
 
 html { scroll-behavior: smooth }
@@ -209,8 +186,11 @@ html.light body::before {
    LIQUID GLASS NAVBAR
 ══════════════════════════════════════════ */
 #shared-nav {
-  position: fixed;
-  top: 14px; left: 0; right: 0;
+  /* NavPill: sticky topbar (reference .top). The negative bottom margin cancels its in-flow height
+     (14 + 54 - 68 = 0) so every page keeps the 76px top padding it was laid out against. */
+  position: sticky;
+  top: calc(env(safe-area-inset-top, 0px) + 14px);
+  margin: 14px 0 -68px;
   z-index: 200;
   display: flex;
   align-items: center;
@@ -220,8 +200,10 @@ html.light body::before {
   border: none;
   box-shadow: none;
   height: auto;
+  pointer-events: none; /* only the pills catch clicks, not the gutters between them */
   transition: transform .4s ease, opacity .4s ease;
 }
+#shared-nav > * { pointer-events: auto; }
 /* Roadmap active: shared center links pill fully collapses so the roadmap
    internal nav owns the same center slot. Logo (left) and status (right)
    stay visible. */
@@ -561,7 +543,7 @@ html.light body::before {
 /* ── Tier 2: ≤560px — Collapse center pill to hamburger ── */
 @media (max-width: 560px) {
   .nav-logo { display: none; }
-  #shared-nav { padding-left: 8px; padding-right: 8px; }
+  #shared-nav { padding-left: 8px; padding-right: 8px; margin-bottom: -64px; } /* 14 + 50 - 64 = 0 */
   .nav-menu-btn { display: flex; }
   #shared-nav .nav-links { display: none; }
   .nav-search-input { display: none; }
@@ -614,50 +596,16 @@ main {
   padding: 20px;
   overflow: hidden;
   cursor: default;
-  transition: transform .24s cubic-bezier(.34,1.46,.64,1), box-shadow .24s cubic-bezier(.2,.7,.2,1);
-  /* neomorphism: dual shadow — dark bottom-right, faint light top-left */
+  /* Widget zone: bg2 surface, system shadow + inset highlight. No glass, no blur. */
   background: var(--bg2);
-  box-shadow:
-    5px 5px 16px var(--sd),
-    -2px -2px 7px var(--sl),
-    inset 0 1px 0 rgba(255,255,255,.035),
-    inset 0 -1px 0 rgba(0,0,0,.4);
-  border: 1px solid rgba(255,255,255,.055);
+  border: 1px solid var(--w12);
+  box-shadow: var(--shadow), inset 0 1px 0 var(--w06);
+  /* the one overshoot spring on the site; shadow uses the standard curve */
+  transition: transform .24s cubic-bezier(.34,1.46,.64,1), box-shadow .24s cubic-bezier(.2,.7,.2,1), border-color .24s cubic-bezier(.2,.7,.2,1);
 }
 .w:hover {
   transform: translateY(-3px) scale(1.015);
-  box-shadow:
-    8px 10px 28px var(--sd),
-    -3px -3px 10px var(--sl),
-    inset 0 1px 0 rgba(255,255,255,.05),
-    inset 0 -1px 0 rgba(0,0,0,.4);
-}
-
-/* Liquid glass variant */
-.w.glass {
-  background: rgba(15,15,15,.6);
-  backdrop-filter: blur(32px) saturate(180%);
-  -webkit-backdrop-filter: blur(32px) saturate(180%);
-  border-color: rgba(255,255,255,.1);
-  box-shadow:
-    0 0 0 .5px rgba(255,255,255,.04) inset,
-    0 1.5px 0 rgba(255,255,255,.08) inset,
-    0 -1px 0 rgba(0,0,0,.35) inset,
-    5px 8px 24px rgba(0,0,0,.7),
-    0 2px 8px rgba(0,0,0,.4);
-}
-
-/* Inverted widget (white bg) */
-.w.inv {
-  background: #efefef;
-  color: #080808;
-  box-shadow:
-    5px 5px 16px rgba(0,0,0,.8),
-    -1px -1px 4px rgba(255,255,255,.04),
-    inset 0 1px 0 rgba(255,255,255,.9);
-}
-.w.inv:hover {
-  background: #f5f5f5;
+  box-shadow: var(--shadow), inset 0 1px 0 var(--w12);
 }
 
 /* ── Nothing-OS label ── */
@@ -1025,7 +973,7 @@ main {
   border-radius: 20px;
   background: var(--bg2);
   border: 1px solid var(--w06);
-  box-shadow: 3px 3px 12px var(--sd), -1px -1px 5px var(--sl);
+  box-shadow: var(--shadow);
   transition: transform .24s cubic-bezier(.2,.7,.2,1), border-color .24s cubic-bezier(.2,.7,.2,1);
   animation: widget-enter .6s cubic-bezier(.4,0,.2,1) both;
 }
@@ -1349,7 +1297,7 @@ footer {
   background:var(--bg2);
   border-radius:20px;
   border:1px solid var(--w10);
-  box-shadow:6px 6px 16px var(--sd),-2px -2px 8px var(--sl), inset 0 1px 0 var(--sl);
+  box-shadow: var(--shadow), inset 0 1px 0 var(--w06);
   padding:24px 8px 16px;
 }
 
@@ -1379,7 +1327,7 @@ footer {
   padding:20px;border-radius:28px;
   background:var(--bg2);
   border:1px solid rgba(255,255,255,.055);
-  box-shadow:5px 5px 16px var(--sd),-2px -2px 7px var(--sl),inset 0 1px 0 rgba(255,255,255,.035),inset 0 -1px 0 rgba(0,0,0,.4);
+  box-shadow: var(--shadow), inset 0 1px 0 var(--w06);
   display:flex;flex-direction:column;gap:14px;
 }
 .cw-row{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid var(--w06);text-decoration:none;color:inherit;transition:background .24s cubic-bezier(.2,.7,.2,1), border-color .24s cubic-bezier(.2,.7,.2,1)}
@@ -1411,10 +1359,12 @@ footer {
   animation:glow-pulse 2.4s ease-in-out infinite;
 }
 .loc-label{
+  display:inline-flex;align-items:center;gap:6px;
   font-family:'JetBrains Mono',monospace;
   font-size: 11px;color:var(--w60);
   letter-spacing:1px;
 }
+.loc-label svg.i{width:13px;height:13px;flex:none;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 
 /* responsive additions */
 @media(max-width:700px){
@@ -1521,10 +1471,6 @@ footer {
 .pi-status::before{
   content:'';width:5px;height:5px;border-radius:50%;flex-shrink:0;
 }
-.s-done::before{background:var(--green);box-shadow:0 0 5px var(--green)}
-.s-done{color:var(--green)}
-.s-wip::before{background:var(--amber)}
-.s-wip{color:var(--amber)}
 .pi-arrow{
   position:absolute;right:32px;bottom:32px;
   font-size:20px;color:var(--w12);transition:all .24s cubic-bezier(.2,.7,.2,1);
@@ -1641,37 +1587,6 @@ footer {
   transform:translateY(-3px) scale(1.015);
   box-shadow:0 6px 32px rgba(0,0,0,.65),0 1px 0 rgba(255,255,255,.16) inset;
 }
-.cs-skills-row{
-  display:grid;
-  grid-template-columns:160px 200px 32px;
-  gap:14px;align-items:center;
-  font-size:11px;
-}
-.cs-skills-name{
-  font-family:'JetBrains Mono',monospace;
-  color:var(--w60);
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-}
-.cs-skills-bar{
-  height:5px;border-radius:3px;
-  background:var(--w06);
-  overflow:hidden;
-}
-.cs-skills-fill{
-  height:100%;border-radius:3px;
-  transition:width .4s ease;
-}
-.cs-skills-fill.s-high{background:var(--green)}
-.cs-skills-fill.s-mid{background:var(--acc)}
-.cs-skills-fill.s-low{background:var(--amber)}
-.cs-skills-score{
-  font-family:'JetBrains Mono',monospace;
-  font-size:10px;color:var(--w60);
-  text-align:right;
-}
-@media(max-width:700px){
-  .cs-skills-row{grid-template-columns:100px 140px 28px;gap:8px}
-}
 
 /* feature list */
 .feat-list{
@@ -1697,7 +1612,7 @@ footer {
   border-radius:14px;background:var(--bg2);
   border:1px solid var(--w06);padding:24px;
   margin-bottom:56px;
-  box-shadow:4px 4px 16px var(--sd),-1px -1px 5px var(--sl);
+  box-shadow: var(--shadow);
 }
 .vis-title{
   font-family:'JetBrains Mono',monospace;font-size: 11px;letter-spacing:3px;
@@ -1903,7 +1818,7 @@ footer {
   background:var(--bg2);border:1px solid var(--w06);
   display:flex;align-items:center;justify-content:center;
   position:relative;overflow:hidden;
-  box-shadow:4px 4px 16px var(--sd),-1px -1px 5px var(--sl);
+  box-shadow: var(--shadow);
 }
 .photo-initials{
   font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:700;
@@ -1945,7 +1860,7 @@ footer {
 .edu-card{
   padding:28px 32px;border-radius:20px;
   background:var(--bg2);border:1px solid var(--w06);
-  box-shadow:4px 4px 14px var(--sd),-1px -1px 5px var(--sl),inset 0 1px 0 var(--sl);
+  box-shadow: var(--shadow), inset 0 1px 0 var(--w06);
   display:grid;grid-template-columns:1fr auto;gap:20px;align-items:start;
 }
 @media(max-width:560px){.edu-card{grid-template-columns:1fr}}
@@ -1972,7 +1887,7 @@ footer {
 /* ── SKILLS ── */
 .skills-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
 @media(max-width:600px){.skills-grid{grid-template-columns:1fr}}
-.skill-group{padding:22px 24px;border-radius:14px;background:var(--bg2);border:1px solid var(--w06);box-shadow:3px 3px 10px var(--sd),-1px -1px 4px var(--sl)}
+.skill-group{padding:22px 24px;border-radius:14px;background:var(--bg2);border:1px solid var(--w06);box-shadow: var(--shadow)}
 .sg-label{font-family:'JetBrains Mono',monospace;font-size: 11px;letter-spacing:3px;color:var(--w60);text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:7px}
 .sg-label::before{content:'';width:3px;height:3px;border-radius:50%;background:currentColor}
 .sg-chips{display:flex;flex-wrap:wrap;gap:6px}
@@ -1991,12 +1906,6 @@ footer {
 
 /* skill bar rows for key skills */
 .skill-bars{display:flex;flex-direction:column;gap:10px;margin-top:20px;padding-top:20px;border-top:1px solid var(--w06)}
-.skb-row{display:flex;align-items:center;gap:10px}
-.skb-n{font-family:'JetBrains Mono',monospace;font-size: 11px; letter-spacing: 0.4px;color:var(--w60);width:80px;flex-shrink:0;letter-spacing:.3px}
-.skb-track{flex:1;height:2px;border-radius:1px;background:rgba(0,0,0,.5);box-shadow:inset 1px 1px 2px rgba(0,0,0,.6);overflow:hidden}
-.skb-fill{height:100%;border-radius:1px;background:var(--w);animation:grow 1.4s cubic-bezier(.4,0,.2,1) both}
-@keyframes grow{from{transform:scaleX(0);opacity:0}to{transform:scaleX(1);opacity:1}}
-.skb-v{font-family:'JetBrains Mono',monospace;font-size: 11px; letter-spacing: 0.4px;color:var(--w12);width:30px;text-align:right}
 
 /* ── LANGUAGES ── */
 .lang-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
@@ -2004,7 +1913,7 @@ footer {
 .lang-card{
   padding:22px 22px;border-radius:14px;
   background:var(--bg2);border:1px solid var(--w06);
-  box-shadow:3px 3px 10px var(--sd),-1px -1px 4px var(--sl);
+  box-shadow: var(--shadow);
   position:relative;overflow:hidden;
 }
 .lang-name{font-size:20px;font-weight:700;letter-spacing:-.4px;color:var(--w);margin-bottom:3px}
@@ -2032,7 +1941,7 @@ footer {
   padding:20px 22px;border-radius:14px;
   background:var(--bg2);border:1px solid var(--w06);
   display:flex;gap:14px;align-items:flex-start;
-  box-shadow:3px 3px 10px var(--sd),-1px -1px 4px var(--sl);
+  box-shadow: var(--shadow);
   transition:border-color .24s cubic-bezier(.2,.7,.2,1);
 }
 .int-card:hover{border-color:var(--w12)}
@@ -2052,7 +1961,7 @@ footer {
   background:var(--bg2);border:1px solid var(--w06);
   display:flex;align-items:center;gap:14px;
   text-decoration:none;color:inherit;
-  box-shadow:3px 3px 10px var(--sd),-1px -1px 4px var(--sl);
+  box-shadow: var(--shadow);
   transition:border-color .24s cubic-bezier(.2,.7,.2,1), background .24s cubic-bezier(.2,.7,.2,1);
 }
 .contact-card:hover{border-color:var(--w12);background:var(--bg3)}
@@ -2220,29 +2129,12 @@ footer {
   padding: 76px 20px 80px;
 }
 
-/* ── base card .w ── */
-.w {
-  position: relative; border-radius: 28px; padding: 20px; overflow: hidden;
-  background: var(--bg2);
-  box-shadow: 5px 5px 16px var(--sd), -2px -2px 7px var(--sl),
-    inset 0 1px 0 rgba(255,255,255,.035), inset 0 -1px 0 rgba(0,0,0,.4);
-  border: 1px solid rgba(255,255,255,.055);
-  transition: transform .24s cubic-bezier(.34,1.46,.64,1), box-shadow .24s cubic-bezier(.2,.7,.2,1);
-}
-.w:hover { transform: translateY(-3px) scale(1.015); }
-.w.glass {
-  background: rgba(15,15,15,.6); backdrop-filter: blur(32px) saturate(180%);
-  -webkit-backdrop-filter: blur(32px) saturate(180%);
-  border-color: rgba(255,255,255,.1);
-  box-shadow: 0 0 0 .5px rgba(255,255,255,.04) inset, 0 1.5px 0 rgba(255,255,255,.08) inset,
-    0 -1px 0 rgba(0,0,0,.35) inset, 5px 8px 24px rgba(0,0,0,.7), 0 2px 8px rgba(0,0,0,.4);
-}
 
 /* ── pcard ── */
 .pcard {
   padding: 22px; border-radius: 20px; background: var(--bg2);
   border: 1px solid var(--w06);
-  box-shadow: 3px 3px 12px var(--sd), -1px -1px 5px var(--sl);
+  box-shadow: var(--shadow);
   transition: transform .24s cubic-bezier(.2,.7,.2,1), border-color .24s cubic-bezier(.2,.7,.2,1);
 }
 .pcard:hover { transform: translateY(-3px); border-color: var(--w12); }
@@ -2769,7 +2661,7 @@ footer {
   position: fixed; bottom: 24px; left: 24px; z-index: 300;
   background: var(--bg2); border: 1px solid var(--w12); border-radius: 20px;
   padding: 14px 18px; min-width: 200px;
-  box-shadow: 4px 4px 20px var(--sd); display: none;
+  box-shadow: var(--shadow); display: none;
   animation: widget-enter .4s cubic-bezier(.34,1.46,.64,1) forwards;
 }
 #progress-widget.show { display: block; }
@@ -2867,8 +2759,6 @@ html.light .nav-avail-dot { background: var(--green); }
 html.light .nav-avail-txt { color: var(--green); }
 html.light .skill-track { background: rgba(0,0,0,.08); }
 html.light .skill-fill { background: var(--w30); }
-html.light .skb-track { background: rgba(0,0,0,.08); }
-html.light .skb-fill { background: var(--w30); }
 html.light .cc { background: rgba(0,0,0,.08); }
 html.light .cc.l1 { background: rgba(0,0,0,.15); }
 html.light .cc.l2 { background: rgba(0,0,0,.28); }
@@ -2876,9 +2766,6 @@ html.light .cc.l3 { background: rgba(0,0,0,.45); }
 html.light .cc.l4 { background: rgba(0,0,0,.72); }
 html.light .modal-overlay { background: rgba(255,255,255,.72); backdrop-filter: blur(12px); }
 html.light .modal-card { background: var(--bg2); color: var(--w); border-color: rgba(0,0,0,.08); }
-html.light .w { background: var(--bg2); border-color: rgba(0,0,0,.08); box-shadow: 0 4px 28px rgba(0,0,0,.08); }
-html.light .w.glass { background: linear-gradient(135deg, rgba(255,255,255,.85) 0%, rgba(245,245,245,.75) 100%); }
-html.light .w.inv { background: var(--bg3); color: var(--w); box-shadow: 0 4px 28px rgba(0,0,0,.08); }
 html.light .lbl { background: rgba(0,0,0,.05); color: var(--w60); border-color: rgba(0,0,0,.08); }
 html.light .chip { background: rgba(0,0,0,.04); border-color: rgba(0,0,0,.08); color: var(--w60); }
 html.light .sbadge { background: rgba(0,0,0,.04); border-color: rgba(0,0,0,.08); color: var(--w60); }
@@ -2907,9 +2794,7 @@ html.light #pg-me .cta-btn:hover {
   background: var(--w60) !important;
 }
 
-html.light .w,
-html.light .w.glass,
-html.light .w.inv { color: var(--w); }
+html.light .w { color: var(--w); }
 html.light .w .sub { color: var(--w60); }
 html.light .w [style*="color:rgba(240,240,240,.85)"],
 html.light .w [style*="color: rgba(240,240,240,.85)"] { color: var(--w) !important; }
@@ -2936,9 +2821,6 @@ html.light .tl-badge.proj { background: rgba(52,199,123,.08); border-color: rgba
 html.light .tl-badge.collab { background: rgba(167,139,250,.1); border-color: rgba(167,139,250,.25); color: var(--purple); }
 html.light .tl-badge.ai { background: rgba(52,199,123,.08); border-color: rgba(52,199,123,.2); color: var(--green); }
 html.light .tl-badge.goal { background: rgba(0,212,170,.1); border-color: rgba(0,212,170,.25); color: var(--acc); }
-html.light .skb-track { background: rgba(0,0,0,.08) !important; box-shadow: inset 1px 1px 2px rgba(0,0,0,.1) !important; }
-html.light .skb-fill { background: var(--w30) !important; }
-html.light .skb-v { color: var(--w60); }
 
 html.light .dp span { background: rgba(0,0,0,.12); }
 html.light .dp span.on { background: var(--w); }
@@ -3153,11 +3035,8 @@ html.light footer.roadmap-footer a { color: var(--w); }
 
 /* --- Homepage: Widget zone (neumorphic dashboard tiles) ---
    The 12 .w tiles use the Widget surface: bg2 fill, dual shadow (--shadow + inset highlight), 28px radius.
-   No glass, no blur (Widget card: never mix glass and widget on one tile). The .glass class on a few
-   tiles is inert on this page. Project cards + timeline are GlassCards on the glass tokens. --- */
+   No glass, no blur (Widget card: never mix glass and widget on one tile). Project cards + timeline are GlassCards on the glass tokens. --- */
 #pg-home .w,
-#pg-home .w.glass,
-#pg-home .w.inv,
 #pg-home .about-contact {
   background: var(--bg2);
   backdrop-filter: none;
@@ -3166,7 +3045,6 @@ html.light footer.roadmap-footer a { color: var(--w); }
   border-radius: 28px;
   box-shadow: var(--shadow), inset 0 1px 0 var(--w06);
 }
-#pg-home .w.inv { color: var(--w80); }
 
 #pg-home .pcard,
 #pg-home .timeline {
@@ -3241,30 +3119,22 @@ html.light footer.roadmap-footer a { color: var(--w); }
 
 /* --- /me page widget --- */
 #pg-me .me-auth-card {
-  background: var(--glass-bg);
-  backdrop-filter: blur(40px) saturate(180%);
-  -webkit-backdrop-filter: blur(40px) saturate(180%);
+  background: linear-gradient(180deg, var(--glass-top), var(--glass-bottom));
+  backdrop-filter: blur(28px) saturate(1.6);
+  -webkit-backdrop-filter: blur(28px) saturate(1.6);
   border: 1px solid var(--glass-border);
-  box-shadow: var(--glass-shadow);
+  box-shadow: var(--shadow);
 }
 
 #pg-me .me-auth-card:hover {
   transform: translateY(-3px);
-  box-shadow: var(--glass-hover-shadow);
+  box-shadow: var(--shadow), 0 0 0 1px var(--w12);
   border-color: var(--glass-border);
 }
 
 /* --- Light mode overrides for glass readability --- */
 html.light #pg-me .me-auth-card {
-  background: var(--glass-bg);
-  border: 1px solid var(--glass-border);
-  box-shadow: var(--glass-shadow);
   color: var(--w);
-}
-
-html.light #pg-home .w.inv {
-  background: linear-gradient(135deg, rgba(255,255,255,.95) 0%, rgba(245,245,245,.92) 100%);
-  color: #080808;
 }
 
 /* Make sure chips/badges/text inside glass widgets stay opaque and readable */
@@ -3285,7 +3155,6 @@ html.light #pg-home .w.inv {
 /* Keep inner data surfaces opaque for readability on glass */
 #pg-about .cc-icon,
 #pg-about .int-icon,
-#pg-about .skill-bars .skb-track,
 #pg-roadmap .career-bar-track,
 #pg-projects .bar-track,
 #pg-projects .donut-wrap .donut-legend .dl-dot {
@@ -3293,13 +3162,50 @@ html.light #pg-home .w.inv {
 }
 html.light #pg-about .cc-icon,
 html.light #pg-about .int-icon,
-html.light #pg-about .skill-bars .skb-track,
 html.light #pg-roadmap .career-bar-track,
 html.light #pg-projects .bar-track,
 html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
   background: rgba(0,0,0,.08);
 }
 
+
+/* ══════════════════════════════════════════
+   SKILLBAR — chart row (reference .crow/.bline/.fill): label | hue bar + DM Mono value
+   Hue comes from the nearest .hue-* ancestor via --h. --sb-val = value column width.
+══════════════════════════════════════════ */
+.skill-bar {
+  display: grid;
+  grid-template-columns: minmax(0, 190px) minmax(0, 1fr);
+  gap: 6px 16px;
+  align-items: center;
+  padding: 10px 0;
+  border-top: 1px solid var(--w12);
+}
+.skill-bar-label { font-family: var(--read); font-size: 15px; color: var(--w80); line-height: 1.3; }
+.skill-bar-track { display: grid; grid-template-columns: minmax(0, 1fr) var(--sb-val, 78px); gap: 8px; align-items: center; }
+.skill-bar-rail { display: block; height: 12px; border-radius: 0 5px 5px 0; background: var(--w06); overflow: hidden; }
+.skill-bar-fill {
+  display: block; height: 100%; min-width: 2px; border-radius: 0 5px 5px 0;
+  background: var(--h, var(--acc));
+  transform-origin: left center;
+  animation: grow 1.4s cubic-bezier(.4,0,.2,1) both;
+}
+.skill-bar-fill.ref { background: var(--bar-ref); }
+.skill-bar-value { font-family: var(--data); font-size: 14px; color: var(--w80); font-variant-numeric: tabular-nums; }
+.skill-bar:first-child, .wlbl-row + .skill-bar { border-top: 0; }
+@media (max-width: 560px) { .skill-bar { grid-template-columns: minmax(0, 1fr); } }
+@media (prefers-reduced-motion: reduce) { .skill-bar-fill { animation: none; } }
+
+/* ══════════════════════════════════════════
+   GLASSCARD — portfolio content card (Projects case studies, About sections)
+   20px radius on the glass tokens. Page blocks below only add padding and hue accents.
+══════════════════════════════════════════ */
+.glass-card {
+  min-width: 0;
+  background: linear-gradient(180deg, var(--glass-top), var(--glass-bottom));
+  backdrop-filter: blur(28px) saturate(1.6); -webkit-backdrop-filter: blur(28px) saturate(1.6);
+  border: 1px solid var(--glass-border); border-radius: 20px; box-shadow: var(--shadow);
+}
 
 /* ══════════════════════════════════════════════════════════════════════
    PHASE 2 · PROJECTS (design system) — scoped to #pg-projects
@@ -3328,10 +3234,13 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
 #pg-projects .plat-icon svg.i { width: 32px; height: 32px; stroke-width: 1.6; }
 
 /* StatusBadge (verdict badge): 24px circle, status colour + icon. Status colours mark status only. */
-.vb { width: 24px; height: 24px; border-radius: 50%; display: inline-grid; place-items: center; flex: none;
+/* StatusBadge: 24px circle, status colour in ring + icon. Real status only (verified / in progress / failed / unknown). */
+.status-badge { width: 24px; height: 24px; border-radius: 50%; display: inline-grid; place-items: center; flex: none;
   border: 1px solid currentColor; background: color-mix(in srgb, currentColor 14%, transparent); }
-.vb svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
-.v-ok { color: var(--green); } .v-near { color: var(--amber); } .v-wrong { color: var(--red); }
+.status-badge svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+.status-badge.sm { width: 20px; height: 20px; }
+.status-badge.sm svg { width: 12px; height: 12px; }
+.v-ok { color: var(--green); } .v-near { color: var(--amber); } .v-wrong { color: var(--red); } .v-unv { color: var(--w60); }
 
 /* page header: lab kicker + h2.big-style title + lead */
 #pg-projects .ph-label { font-family: var(--mono); font-size: 13px; letter-spacing: .03em; text-transform: none; color: var(--h); }
@@ -3374,9 +3283,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
 #pg-projects .cs { padding-bottom: 60px; }
 #pg-projects .cs-section, #pg-projects .cs-section:first-child {
   padding: 40px; margin-bottom: 28px;
-  background: linear-gradient(180deg, var(--glass-top), var(--glass-bottom));
-  backdrop-filter: blur(28px) saturate(1.6); -webkit-backdrop-filter: blur(28px) saturate(1.6);
-  border: 1px solid var(--glass-border); border-radius: 20px; box-shadow: var(--shadow);
+  border: 1px solid var(--glass-border); /* re-stated: legacy .cs-section:first-child drops the top border */
 }
 @media (max-width: 700px) { #pg-projects .cs-section, #pg-projects .cs-section:first-child { padding: 22px 18px; } }
 #pg-projects .cs-number { font-family: var(--data); font-size: 13px; letter-spacing: .08em; color: var(--h); }
@@ -3395,14 +3302,14 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
 #pg-projects .feat-title { font-family: var(--sans); font-weight: 700; font-size: 15px; letter-spacing: 0; color: var(--w); }
 #pg-projects .feat-desc { font-family: var(--read); font-size: 14px; letter-spacing: 0; line-height: 1.55; color: var(--w80); }
 
-/* SkillBar: 5 bars, hue fill, DM Mono values */
+/* icon bodies: the tone-on-tone white fills baked into the inline SVG icons take the project hue */
+#pg-projects svg [fill^="rgba(255,255,255"] { fill: color-mix(in srgb, var(--h, var(--acc)) 14%, transparent); }
+
+/* SkillBar: container only; rows are the shared .skill-bar component (2-digit values -> narrow value column) */
+#pg-projects .cs-skills { gap: 0; --sb-val: 36px; }
 #pg-projects .cs-skills { background: var(--bg2); border: 1px solid var(--w12); border-radius: 14px; box-shadow: none;
   backdrop-filter: none; -webkit-backdrop-filter: none; }
 #pg-projects .cs-skills:hover { transform: none; box-shadow: none; }
-#pg-projects .cs-skills-name { font-family: var(--mono); font-size: 12px; color: var(--w80); }
-#pg-projects .cs-skills-bar { background: var(--w12); }
-#pg-projects .cs-skills-fill { background: var(--h); }
-#pg-projects .cs-skills-score { font-family: var(--data); font-size: 12px; color: var(--w80); }
 
 /* artifacts: panel + hue-based parts */
 #pg-projects .vis-wrap { background: var(--bg2); border: 1px solid var(--w12); border-radius: 20px; box-shadow: none;
@@ -3452,8 +3359,6 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
 @media (max-width: 700px) {
   #pg-projects .node-diagram { flex-direction: column; align-items: stretch; gap: 10px; padding: 12px 0; }
   #pg-projects .nd-node { min-width: 0; }
-  #pg-projects .cs-skills-row { grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr) 28px; gap: 10px; }
-  #pg-projects .cs-skills-name { white-space: normal; overflow: visible; text-overflow: clip; line-height: 1.3; }
 }
 
 /* pipelines without inline sizing (orlon-bot): fixed-width step cards so text wraps instead of one 400px card */
@@ -3584,14 +3489,14 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
   background: var(--bg2); border: 1px solid var(--w12); border-radius: 100px; padding: 3px 10px; }
 #pg-roadmap .nd .line { background: var(--w12); }
 #pg-roadmap .topic-check-label { font-family: var(--mono); font-size: 13px; letter-spacing: 0; color: var(--w80); gap: 8px; }
-/* done = StatusBadge: 22px circle, green dot + check (status colour marks status only) */
-#pg-roadmap .checkmark { width: 22px; height: 22px; border-radius: 50%; border: 1px solid var(--w30); }
+/* done = StatusBadge: 24px circle, green dot + check (status colour marks status only) */
+#pg-roadmap .checkmark { width: 24px; height: 24px; border-radius: 50%; border: 1px solid var(--w30); }
 #pg-roadmap .topic-check-label:hover .checkmark { border-color: var(--h); }
 #pg-roadmap .topic-check-label input:checked ~ .checkmark { color: var(--green); border-color: var(--green); background: color-mix(in srgb, var(--green) 14%, transparent); }
 #pg-roadmap .topic-check-label input:checked ~ .checkmark::after { content: none; }
 #pg-roadmap .topic-check-label input:checked ~ .checkmark { font-size: 13px; font-weight: 700; line-height: 1; }
 #pg-roadmap .topic-check-label input:focus-visible ~ .checkmark { outline: 2px solid var(--acc); outline-offset: 3px; }
-#pg-roadmap .topic-check-label input { display: block; position: absolute; opacity: 0; width: 22px; height: 22px; margin: 0; cursor: pointer; }
+#pg-roadmap .topic-check-label input { display: block; position: absolute; opacity: 0; width: 24px; height: 24px; margin: 0; cursor: pointer; }
 #pg-roadmap .topic-check-label { position: relative; }
 
 /* careers (10): panel + hue top edge; % + bar in the hue */
@@ -3703,12 +3608,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
 #pg-about .sh-line { background: linear-gradient(to right, color-mix(in srgb, var(--h) 45%, transparent), transparent); }
 #pg-about .sh-num { font-family: var(--data); font-size: 12.5px; letter-spacing: .06em; color: var(--w60); }
 
-/* GlassCard surfaces */
-#pg-about .intro, #pg-about .edu-card, #pg-about .core-tech-card, #pg-about .lang-card, #pg-about .contact-card {
-  background: linear-gradient(180deg, var(--glass-top), var(--glass-bottom));
-  backdrop-filter: blur(28px) saturate(1.6); -webkit-backdrop-filter: blur(28px) saturate(1.6);
-  border: 1px solid var(--glass-border); border-radius: 20px; box-shadow: var(--shadow);
-}
+/* GlassCard surfaces: .glass-card (intro, edu-card, core-tech-card, lang-card, contact-card) */
 #pg-about .lang-card:hover, #pg-about .contact-card:hover, #pg-about .int-card:hover {
   transform: translateY(-3px); border-color: color-mix(in srgb, var(--h) 42%, var(--glass-border)); box-shadow: var(--shadow);
 }
@@ -3757,14 +3657,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
 @media (max-width: 560px) { #pg-about .core-tech-card { padding: 20px 18px; } }
 #pg-about .core-label { display: flex; align-items: center; gap: 8px; margin-bottom: 18px; font-family: var(--mono); font-size: 13px; letter-spacing: .06em; text-transform: none; color: var(--h); }
 #pg-about .core-label::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
-#pg-about .skill-bars { margin: 0; padding: 0; border: 0; gap: 12px; }
-#pg-about .skb-row { display: grid; grid-template-columns: minmax(0, 150px) minmax(0, 1fr) 34px; gap: 14px; align-items: center; }
-#pg-about .skb-n { width: auto; font-family: var(--mono); font-size: 13px; letter-spacing: 0; color: var(--w80); line-height: 1.3; }
-#pg-about .skb-track { flex: none; height: 10px; border-radius: 5px; background: var(--w12); box-shadow: none; }
-/* !important: the global html.light .skb-fill rule is !important */
-#pg-about .skb-fill { background: var(--h) !important; box-shadow: none !important; border-radius: 0 5px 5px 0; }
-#pg-about .skb-v { width: auto; font-family: var(--data); font-size: 13px; letter-spacing: 0; color: var(--w80) !important; }
-@media (max-width: 480px) { #pg-about .skb-row { grid-template-columns: minmax(0, 1fr) 34px; } #pg-about .skb-n { grid-column: 1 / -1; } #pg-about .skb-track { grid-column: 1; } #pg-about .skb-v { grid-column: 2; } }
+#pg-about .skill-bars { margin: 0; padding: 0; border: 0; gap: 0; --sb-val: 36px; }
 #pg-about .skills-grid { grid-template-columns: repeat(auto-fit, minmax(min(100%, 400px), 1fr)); gap: 12px; }
 #pg-about .skill-group { padding: 20px; background: var(--bg3); border: 1px solid var(--w12); border-left: 4px solid var(--h); border-radius: 14px;
   box-shadow: none; backdrop-filter: none; -webkit-backdrop-filter: none; min-width: 0; }
@@ -3822,6 +3715,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
   <symbol id="i-laptop" viewBox="0 0 24 24"><rect x="5" y="5" width="14" height="10" rx="1.5"/><path d="M2 19h20"/></symbol>
   <symbol id="i-layers" viewBox="0 0 24 24"><path d="m12 3 9 5-9 5-9-5zM3 13l9 5 9-5"/></symbol>
   <symbol id="i-list" viewBox="0 0 24 24"><path d="M8 6h12M8 12h12M8 18h12M4 6h.01M4 12h.01M4 18h.01"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s7-6 7-11a7 7 0 0 0-14 0c0 5 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></symbol>
   <symbol id="i-lock" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol>
   <symbol id="i-pie" viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 9 9h-9z"/><path d="M15 3.5A9 9 0 0 1 20.5 9H15z"/></symbol>
   <symbol id="i-repeat" viewBox="0 0 24 24"><path d="M4 12a8 8 0 0 1 14-5l2 2M20 4v5h-5M20 12a8 8 0 0 1-14 5l-2-2M4 20v-5h5"/></symbol>
@@ -4207,7 +4101,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
         </a>
       </div>
       <div style="display:flex;flex-direction:column;gap:8px">
-        <div class="loc-label">📍 Darmstadt</div>
+        <div class="loc-label"><svg class="i" aria-hidden="true"><use href="#i-pin"/></svg>Darmstadt</div>
         <div class="avail-badge">open to werkstudent jobs</div>
         <a href="assets/cv.pdf" download="Vishal-Katariya-Resume.pdf" class="np" style="text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:6px;font-size:10px;padding:8px 14px;margin-top:2px">↓ download resume</a>
       </div>
@@ -4377,7 +4271,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
         <span class="pi-tag">PostgreSQL</span>
         <span class="pi-tag">Chart.js</span>
       </div>
-      <div class="pi-status"><span class="vb v-ok" aria-hidden="true"><svg><use href="#i-check"/></svg></span>Prototype complete</div>
+      <div class="pi-status"><span class="status-badge v-ok" aria-hidden="true"><svg><use href="#i-check"/></svg></span>Prototype complete</div>
       <div class="pi-arrow">↗</div>
     </a>
     <a href="javascript:void(0)" class="pi hue-teal p-red" style="text-decoration:none;color:inherit;padding:22px 24px" onclick="scrollToAnchor('homelab')">
@@ -4389,7 +4283,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
         <span class="pi-tag">WebSocket</span>
         <span class="pi-tag">Docker</span>
       </div>
-      <div class="pi-status"><span class="vb v-ok" aria-hidden="true"><svg><use href="#i-check"/></svg></span>Prototype complete</div>
+      <div class="pi-status"><span class="status-badge v-ok" aria-hidden="true"><svg><use href="#i-check"/></svg></span>Prototype complete</div>
       <div class="pi-arrow">↗</div>
     </a>
     <a href="javascript:void(0)" class="pi hue-cyan" style="text-decoration:none;color:inherit;padding:22px 24px" onclick="scrollToAnchor('typeshift')">
@@ -4401,7 +4295,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
         <span class="pi-tag">Swift</span>
         <span class="pi-tag">C#</span>
       </div>
-      <div class="pi-status"><span class="vb v-near" aria-hidden="true"><svg><use href="#i-bang"/></svg></span>In progress</div>
+      <div class="pi-status"><span class="status-badge v-near" aria-hidden="true"><svg><use href="#i-bang"/></svg></span>In progress</div>
       <div class="pi-arrow">↗</div>
     </a>
     <a href="javascript:void(0)" class="pi hue-indigo" style="text-decoration:none;color:inherit;padding:22px 24px" onclick="scrollToAnchor('orlon-bot')">
@@ -4413,7 +4307,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
         <span class="pi-tag">QLoRA</span>
         <span class="pi-tag">Unsloth</span>
       </div>
-      <div class="pi-status"><span class="vb v-near" aria-hidden="true"><svg><use href="#i-bang"/></svg></span>In progress</div>
+      <div class="pi-status"><span class="status-badge v-near" aria-hidden="true"><svg><use href="#i-bang"/></svg></span>In progress</div>
       <div class="pi-arrow">↗</div>
     </a>
     <a href="javascript:void(0)" class="pi hue-purple p-acc" style="text-decoration:none;color:inherit;padding:22px 24px" onclick="scrollToAnchor('portfolio-website')">
@@ -4426,7 +4320,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
         <span class="pi-tag">Tailscale</span>
         <span class="pi-tag">Liquid Glass</span>
       </div>
-      <div class="pi-status"><span class="vb v-ok" aria-hidden="true"><svg><use href="#i-check"/></svg></span>Live</div>
+      <div class="pi-status"><span class="status-badge v-ok" aria-hidden="true"><svg><use href="#i-check"/></svg></span>Live</div>
       <div class="pi-arrow">↗</div>
     </a>
     <a href="javascript:void(0)" class="pi hue-pink" style="text-decoration:none;color:inherit;padding:22px 24px" onclick="scrollToAnchor('hermes-desktop-oauth')">
@@ -4441,7 +4335,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
         <span class="pi-tag">Tailwind</span>
         <span class="pi-tag">better-sqlite3</span>
       </div>
-      <div class="pi-status"><span class="vb v-ok" aria-hidden="true"><svg><use href="#i-check"/></svg></span>13 PRs merged</div>
+      <div class="pi-status"><span class="status-badge v-ok" aria-hidden="true"><svg><use href="#i-check"/></svg></span>13 PRs merged</div>
       <div class="pi-arrow">↗</div>
     </a>
     <a href="javascript:void(0)" class="pi hue-orange" style="text-decoration:none;color:inherit;padding:22px 24px" onclick="scrollToAnchor('openclaw-dashboard')">
@@ -4454,7 +4348,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
         <span class="pi-tag">WebSocket</span>
         <span class="pi-tag">Neopop</span>
       </div>
-      <div class="pi-status"><span class="vb v-near" aria-hidden="true"><svg><use href="#i-bang"/></svg></span>Active dev</div>
+      <div class="pi-status"><span class="status-badge v-near" aria-hidden="true"><svg><use href="#i-bang"/></svg></span>Active dev</div>
       <div class="pi-arrow">↗</div>
     </a>
     <a href="javascript:void(0)" class="pi hue-lime" style="text-decoration:none;color:inherit;padding:22px 24px" onclick="scrollToAnchor('unilox-fitness-ai')">
@@ -4469,7 +4363,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
         <span class="pi-tag">PostgreSQL</span>
         <span class="pi-tag">MQTT</span>
       </div>
-      <div class="pi-status"><span class="vb v-near" aria-hidden="true"><svg><use href="#i-bang"/></svg></span>Phase 0 spec</div>
+      <div class="pi-status"><span class="status-badge v-near" aria-hidden="true"><svg><use href="#i-bang"/></svg></span>Phase 0 spec</div>
       <div class="pi-arrow">↗</div>
     </a>
   </div>
@@ -4481,14 +4375,14 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
 <div class="cs">
 
   <!-- ── 01: FINANCE BUDDY ── -->
-  <section class="cs-section hue-blue p-acc" id="finance-buddy">
+  <section class="cs-section hue-blue p-acc glass-card" id="finance-buddy">
     <div class="cs-hero">
       <div>
         <div class="cs-number">01 / 04</div>
         <h2 class="cs-title"><svg class="ico" width="28" height="28" viewBox="0 0 13 13" fill="none" style="vertical-align:middle;margin-right:12px"><rect x="1" y="8" width="2.5" height="4" fill="rgba(255,255,255,.5)"/><rect x="5.25" y="5" width="2.5" height="7" fill="rgba(255,255,255,.5)"/><rect x="9.5" y="2" width="2.5" height="10" fill="rgba(255,255,255,.5)"/></svg>Finance Buddy</h2>
         <p class="cs-tagline">Personal finance tracker built from real transaction data — 993 entries across 44 months of actual spending and income.</p>
         <div class="cs-badges">
-          <span class="cs-badge cs-status"><span class="vb v-ok" aria-hidden="true"><svg><use href="#i-check"/></svg></span>Prototype complete</span>
+          <span class="cs-badge cs-status"><span class="status-badge v-ok" aria-hidden="true"><svg><use href="#i-check"/></svg></span>Prototype complete</span>
           <span class="cs-badge">Private · Tailscale only</span>
           <span class="cs-badge">2026</span>
         </div>
@@ -4591,31 +4485,11 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
 
     <!-- Tech stack (label is inside the widget via wlbl-row) -->
     <div class="cs-skills">
-      <div class="wlbl-row"><svg class="ico" width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M6.5 1 L12 3.8 L6.5 6.5 L1 3.8Z" stroke="rgba(255,255,255,.5)" stroke-width="1" stroke-linejoin="round" fill="rgba(255,255,255,.07)"/><path d="M1 7 L6.5 9.7 L12 7" stroke="rgba(255,255,255,.3)" stroke-width="1" stroke-linecap="round" fill="none"/><path d="M1 10 L6.5 12.7 L12 10" stroke="rgba(255,255,255,.18)" stroke-width="1" stroke-linecap="round" fill="none"/></svg>stack</div>      <div class="cs-skills-row">
-        <span class="cs-skills-name">SvelteKit + TypeScript</span>
-        <div class="cs-skills-bar"><div class="cs-skills-fill s-high" style="width:90%"></div></div>
-        <span class="cs-skills-score">90</span>
-      </div>
-      <div class="cs-skills-row">
-        <span class="cs-skills-name">Fastify (REST API)</span>
-        <div class="cs-skills-bar"><div class="cs-skills-fill s-high" style="width:88%"></div></div>
-        <span class="cs-skills-score">88</span>
-      </div>
-      <div class="cs-skills-row">
-        <span class="cs-skills-name">PostgreSQL 16</span>
-        <div class="cs-skills-bar"><div class="cs-skills-fill s-high" style="width:85%"></div></div>
-        <span class="cs-skills-score">85</span>
-      </div>
-      <div class="cs-skills-row">
-        <span class="cs-skills-name">Chart.js 4.x</span>
-        <div class="cs-skills-bar"><div class="cs-skills-fill s-mid" style="width:75%"></div></div>
-        <span class="cs-skills-score">75</span>
-      </div>
-      <div class="cs-skills-row">
-        <span class="cs-skills-name">Docker + Caddy</span>
-        <div class="cs-skills-bar"><div class="cs-skills-fill s-mid" style="width:70%"></div></div>
-        <span class="cs-skills-score">70</span>
-      </div>
+      <div class="wlbl-row"><svg class="ico" width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M6.5 1 L12 3.8 L6.5 6.5 L1 3.8Z" stroke="rgba(255,255,255,.5)" stroke-width="1" stroke-linejoin="round" fill="rgba(255,255,255,.07)"/><path d="M1 7 L6.5 9.7 L12 7" stroke="rgba(255,255,255,.3)" stroke-width="1" stroke-linecap="round" fill="none"/><path d="M1 10 L6.5 12.7 L12 10" stroke="rgba(255,255,255,.18)" stroke-width="1" stroke-linecap="round" fill="none"/></svg>stack</div>      <div class="skill-bar"><span class="skill-bar-label">SvelteKit + TypeScript</span><div class="skill-bar-track"><span class="skill-bar-rail"><span class="skill-bar-fill" style="width:90%"></span></span><span class="skill-bar-value">90</span></div></div>
+      <div class="skill-bar"><span class="skill-bar-label">Fastify (REST API)</span><div class="skill-bar-track"><span class="skill-bar-rail"><span class="skill-bar-fill" style="width:88%"></span></span><span class="skill-bar-value">88</span></div></div>
+      <div class="skill-bar"><span class="skill-bar-label">PostgreSQL 16</span><div class="skill-bar-track"><span class="skill-bar-rail"><span class="skill-bar-fill" style="width:85%"></span></span><span class="skill-bar-value">85</span></div></div>
+      <div class="skill-bar"><span class="skill-bar-label">Chart.js 4.x</span><div class="skill-bar-track"><span class="skill-bar-rail"><span class="skill-bar-fill" style="width:75%"></span></span><span class="skill-bar-value">75</span></div></div>
+      <div class="skill-bar"><span class="skill-bar-label">Docker + Caddy</span><div class="skill-bar-track"><span class="skill-bar-rail"><span class="skill-bar-fill" style="width:70%"></span></span><span class="skill-bar-value">70</span></div></div>
     </div>
 
     <!-- Architecture note -->
@@ -4626,14 +4500,14 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
   </section>
 
   <!-- ── 02: HOMELAB DASHBOARD ── -->
-  <section class="cs-section hue-teal p-red" id="homelab">
+  <section class="cs-section hue-teal p-red glass-card" id="homelab">
     <div class="cs-hero">
       <div>
         <div class="cs-number">02 / 04</div>
         <h2 class="cs-title"><svg class="ico" width="28" height="28" viewBox="0 0 13 13" fill="none" style="vertical-align:middle;margin-right:12px"><rect x="1" y="1" width="11" height="3" rx="1.2" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="rgba(255,255,255,.07)"/><rect x="1" y="5" width="11" height="3" rx="1.2" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="rgba(255,255,255,.07)"/><rect x="1" y="9" width="11" height="3" rx="1.2" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="rgba(255,255,255,.07)"/><circle cx="10.5" cy="2.5" r=".9" fill="rgba(61,220,132,.8)"/><circle cx="10.5" cy="6.5" r=".9" fill="rgba(61,220,132,.8)"/><circle cx="10.5" cy="10.5" r=".9" fill="rgba(255,255,255,.3)"/></svg>Homelab Dashboard</h2>
         <p class="cs-tagline">Realtime ops dashboard for a self-hosted 2-node cluster — live metrics, service registry, and a Notion docs viewer.</p>
         <div class="cs-badges">
-          <span class="cs-badge cs-status"><span class="vb v-ok" aria-hidden="true"><svg><use href="#i-check"/></svg></span>Prototype complete</span>
+          <span class="cs-badge cs-status"><span class="status-badge v-ok" aria-hidden="true"><svg><use href="#i-check"/></svg></span>Prototype complete</span>
           <span class="cs-badge">Private · Tailscale only</span>
           <span class="cs-badge">2026</span>
         </div>
@@ -4731,43 +4605,23 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
 
 
     <div class="cs-skills">
-      <div class="wlbl-row"><svg class="ico" width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M6.5 1 L12 3.8 L6.5 6.5 L1 3.8Z" stroke="rgba(255,255,255,.5)" stroke-width="1" stroke-linejoin="round" fill="rgba(255,255,255,.07)"/><path d="M1 7 L6.5 9.7 L12 7" stroke="rgba(255,255,255,.3)" stroke-width="1" stroke-linecap="round" fill="none"/><path d="M1 10 L6.5 12.7 L12 10" stroke="rgba(255,255,255,.18)" stroke-width="1" stroke-linecap="round" fill="none"/></svg>stack</div>      <div class="cs-skills-row">
-        <span class="cs-skills-name">Fastify + TypeScript</span>
-        <div class="cs-skills-bar"><div class="cs-skills-fill s-high" style="width:90%"></div></div>
-        <span class="cs-skills-score">90</span>
-      </div>
-      <div class="cs-skills-row">
-        <span class="cs-skills-name">WebSocket (ws)</span>
-        <div class="cs-skills-bar"><div class="cs-skills-fill s-high" style="width:85%"></div></div>
-        <span class="cs-skills-score">85</span>
-      </div>
-      <div class="cs-skills-row">
-        <span class="cs-skills-name">Tailscale file-cert</span>
-        <div class="cs-skills-bar"><div class="cs-skills-fill s-high" style="width:85%"></div></div>
-        <span class="cs-skills-score">85</span>
-      </div>
-      <div class="cs-skills-row">
-        <span class="cs-skills-name">Docker + Caddy</span>
-        <div class="cs-skills-bar"><div class="cs-skills-fill s-high" style="width:80%"></div></div>
-        <span class="cs-skills-score">80</span>
-      </div>
-      <div class="cs-skills-row">
-        <span class="cs-skills-name">NothingOS CSS</span>
-        <div class="cs-skills-bar"><div class="cs-skills-fill s-mid" style="width:70%"></div></div>
-        <span class="cs-skills-score">70</span>
-      </div>
+      <div class="wlbl-row"><svg class="ico" width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M6.5 1 L12 3.8 L6.5 6.5 L1 3.8Z" stroke="rgba(255,255,255,.5)" stroke-width="1" stroke-linejoin="round" fill="rgba(255,255,255,.07)"/><path d="M1 7 L6.5 9.7 L12 7" stroke="rgba(255,255,255,.3)" stroke-width="1" stroke-linecap="round" fill="none"/><path d="M1 10 L6.5 12.7 L12 10" stroke="rgba(255,255,255,.18)" stroke-width="1" stroke-linecap="round" fill="none"/></svg>stack</div>      <div class="skill-bar"><span class="skill-bar-label">Fastify + TypeScript</span><div class="skill-bar-track"><span class="skill-bar-rail"><span class="skill-bar-fill" style="width:90%"></span></span><span class="skill-bar-value">90</span></div></div>
+      <div class="skill-bar"><span class="skill-bar-label">WebSocket (ws)</span><div class="skill-bar-track"><span class="skill-bar-rail"><span class="skill-bar-fill" style="width:85%"></span></span><span class="skill-bar-value">85</span></div></div>
+      <div class="skill-bar"><span class="skill-bar-label">Tailscale file-cert</span><div class="skill-bar-track"><span class="skill-bar-rail"><span class="skill-bar-fill" style="width:85%"></span></span><span class="skill-bar-value">85</span></div></div>
+      <div class="skill-bar"><span class="skill-bar-label">Docker + Caddy</span><div class="skill-bar-track"><span class="skill-bar-rail"><span class="skill-bar-fill" style="width:80%"></span></span><span class="skill-bar-value">80</span></div></div>
+      <div class="skill-bar"><span class="skill-bar-label">NothingOS CSS</span><div class="skill-bar-track"><span class="skill-bar-rail"><span class="skill-bar-fill" style="width:70%"></span></span><span class="skill-bar-value">70</span></div></div>
     </div>
   </section>
 
   <!-- ── 03: TYPESHIFT ── -->
-  <section class="cs-section hue-cyan" id="typeshift">
+  <section class="cs-section hue-cyan glass-card" id="typeshift">
     <div class="cs-hero">
       <div>
         <div class="cs-number">03 / 04</div>
         <h2 class="cs-title"><svg class="ico" width="28" height="28" viewBox="0 0 13 13" fill="none" style="vertical-align:middle;margin-right:12px"><rect x="0.5" y="2" width="12" height="9" rx="1.5" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="none"/><line x1="2.5" y1="5" x2="10.5" y2="5" stroke="rgba(255,255,255,.5)" stroke-width="1"/><line x1="2.5" y1="8" x2="8" y2="8" stroke="rgba(255,255,255,.3)" stroke-width="1"/></svg>TypeShift</h2>
         <p class="cs-tagline">Cross-platform AI writing assistant — same AI, three native apps. Built in collaboration with nayalambaliya.</p>
         <div class="cs-badges">
-          <span class="cs-badge cs-status"><span class="vb v-near" aria-hidden="true"><svg><use href="#i-bang"/></svg></span>In progress</span>
+          <span class="cs-badge cs-status"><span class="status-badge v-near" aria-hidden="true"><svg><use href="#i-bang"/></svg></span>In progress</span>
           <span class="cs-badge">Open source</span>
           <span class="cs-badge">Collaboration</span>
         </div>
@@ -4834,44 +4688,24 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
 
 
     <div class="cs-skills">
-      <div class="wlbl-row"><svg class="ico" width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M6.5 1 L12 3.8 L6.5 6.5 L1 3.8Z" stroke="rgba(255,255,255,.5)" stroke-width="1" stroke-linejoin="round" fill="rgba(255,255,255,.07)"/><path d="M1 7 L6.5 9.7 L12 7" stroke="rgba(255,255,255,.3)" stroke-width="1" stroke-linecap="round" fill="none"/><path d="M1 10 L6.5 12.7 L12 10" stroke="rgba(255,255,255,.18)" stroke-width="1" stroke-linecap="round" fill="none"/></svg>stack</div>      <div class="cs-skills-row">
-        <span class="cs-skills-name">Swift / SwiftUI</span>
-        <div class="cs-skills-bar"><div class="cs-skills-fill s-high" style="width:85%"></div></div>
-        <span class="cs-skills-score">85</span>
-      </div>
-      <div class="cs-skills-row">
-        <span class="cs-skills-name">Kotlin</span>
-        <div class="cs-skills-bar"><div class="cs-skills-fill s-high" style="width:80%"></div></div>
-        <span class="cs-skills-score">80</span>
-      </div>
-      <div class="cs-skills-row">
-        <span class="cs-skills-name">GitHub Actions</span>
-        <div class="cs-skills-bar"><div class="cs-skills-fill s-mid" style="width:75%"></div></div>
-        <span class="cs-skills-score">75</span>
-      </div>
-      <div class="cs-skills-row">
-        <span class="cs-skills-name">Shared AI API backend</span>
-        <div class="cs-skills-bar"><div class="cs-skills-fill s-mid" style="width:70%"></div></div>
-        <span class="cs-skills-score">70</span>
-      </div>
-      <div class="cs-skills-row">
-        <span class="cs-skills-name">C# / WinUI 3</span>
-        <div class="cs-skills-bar"><div class="cs-skills-fill s-mid" style="width:65%"></div></div>
-        <span class="cs-skills-score">65</span>
-      </div>
+      <div class="wlbl-row"><svg class="ico" width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M6.5 1 L12 3.8 L6.5 6.5 L1 3.8Z" stroke="rgba(255,255,255,.5)" stroke-width="1" stroke-linejoin="round" fill="rgba(255,255,255,.07)"/><path d="M1 7 L6.5 9.7 L12 7" stroke="rgba(255,255,255,.3)" stroke-width="1" stroke-linecap="round" fill="none"/><path d="M1 10 L6.5 12.7 L12 10" stroke="rgba(255,255,255,.18)" stroke-width="1" stroke-linecap="round" fill="none"/></svg>stack</div>      <div class="skill-bar"><span class="skill-bar-label">Swift / SwiftUI</span><div class="skill-bar-track"><span class="skill-bar-rail"><span class="skill-bar-fill" style="width:85%"></span></span><span class="skill-bar-value">85</span></div></div>
+      <div class="skill-bar"><span class="skill-bar-label">Kotlin</span><div class="skill-bar-track"><span class="skill-bar-rail"><span class="skill-bar-fill" style="width:80%"></span></span><span class="skill-bar-value">80</span></div></div>
+      <div class="skill-bar"><span class="skill-bar-label">GitHub Actions</span><div class="skill-bar-track"><span class="skill-bar-rail"><span class="skill-bar-fill" style="width:75%"></span></span><span class="skill-bar-value">75</span></div></div>
+      <div class="skill-bar"><span class="skill-bar-label">Shared AI API backend</span><div class="skill-bar-track"><span class="skill-bar-rail"><span class="skill-bar-fill" style="width:70%"></span></span><span class="skill-bar-value">70</span></div></div>
+      <div class="skill-bar"><span class="skill-bar-label">C# / WinUI 3</span><div class="skill-bar-track"><span class="skill-bar-rail"><span class="skill-bar-fill" style="width:65%"></span></span><span class="skill-bar-value">65</span></div></div>
     </div>
   </section>
 
   <!-- ── 04: ORLON-BOT ── -->
   <div class="feat-list" style="display:none"></div>
-  <section class="cs-section hue-indigo" id="orlon-bot">
+  <section class="cs-section hue-indigo glass-card" id="orlon-bot">
     <div class="cs-hero">
       <div>
         <div class="cs-number">04 / 04</div>
         <h2 class="cs-title"><svg class="ico" width="28" height="28" viewBox="0 0 13 13" fill="none" style="vertical-align:middle;margin-right:12px"><path d="M1.5 2.5h10v6h-10z M1.5 2.5l5 4 5-4" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="none"/><line x1="4" y1="11" x2="9" y2="11" stroke="rgba(255,255,255,.5)" stroke-width="1" stroke-linecap="round"/><circle cx="6.5" cy="8" r=".9" fill="rgba(61,220,132,.8)"/></svg>orlon-bot</h2>
         <p class="cs-tagline">A Telegram bot with a custom fine-tuned LLM — trained on Kaggle T4 GPUs using QLoRA and Unsloth, running inference on a Rock 5T NPU.</p>
         <div class="cs-badges">
-          <span class="cs-badge cs-status"><span class="vb v-near" aria-hidden="true"><svg><use href="#i-bang"/></svg></span>In progress</span>
+          <span class="cs-badge cs-status"><span class="status-badge v-near" aria-hidden="true"><svg><use href="#i-bang"/></svg></span>In progress</span>
           <span class="cs-badge">ML / AI</span>
           <span class="cs-badge">2026</span>
         </div>
@@ -4955,45 +4789,25 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
 
 
     <div class="cs-skills">
-      <div class="wlbl-row"><svg class="ico" width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M6.5 1 L12 3.8 L6.5 6.5 L1 3.8Z" stroke="rgba(255,255,255,.5)" stroke-width="1" stroke-linejoin="round" fill="rgba(255,255,255,.07)"/><path d="M1 7 L6.5 9.7 L12 7" stroke="rgba(255,255,255,.3)" stroke-width="1" stroke-linecap="round" fill="none"/><path d="M1 10 L6.5 12.7 L12 10" stroke="rgba(255,255,255,.18)" stroke-width="1" stroke-linecap="round" fill="none"/></svg>stack</div>      <div class="cs-skills-row">
-        <span class="cs-skills-name">Telegram Bot API</span>
-        <div class="cs-skills-bar"><div class="cs-skills-fill s-high" style="width:95%"></div></div>
-        <span class="cs-skills-score">95</span>
-      </div>
-      <div class="cs-skills-row">
-        <span class="cs-skills-name">Python</span>
-        <div class="cs-skills-bar"><div class="cs-skills-fill s-high" style="width:90%"></div></div>
-        <span class="cs-skills-score">90</span>
-      </div>
-      <div class="cs-skills-row">
-        <span class="cs-skills-name">Unsloth</span>
-        <div class="cs-skills-bar"><div class="cs-skills-fill s-high" style="width:85%"></div></div>
-        <span class="cs-skills-score">85</span>
-      </div>
-      <div class="cs-skills-row">
-        <span class="cs-skills-name">QLoRA (PEFT)</span>
-        <div class="cs-skills-bar"><div class="cs-skills-fill s-high" style="width:85%"></div></div>
-        <span class="cs-skills-score">85</span>
-      </div>
-      <div class="cs-skills-row">
-        <span class="cs-skills-name">Kaggle T4 GPU</span>
-        <div class="cs-skills-bar"><div class="cs-skills-fill s-high" style="width:80%"></div></div>
-        <span class="cs-skills-score">80</span>
-      </div>
+      <div class="wlbl-row"><svg class="ico" width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M6.5 1 L12 3.8 L6.5 6.5 L1 3.8Z" stroke="rgba(255,255,255,.5)" stroke-width="1" stroke-linejoin="round" fill="rgba(255,255,255,.07)"/><path d="M1 7 L6.5 9.7 L12 7" stroke="rgba(255,255,255,.3)" stroke-width="1" stroke-linecap="round" fill="none"/><path d="M1 10 L6.5 12.7 L12 10" stroke="rgba(255,255,255,.18)" stroke-width="1" stroke-linecap="round" fill="none"/></svg>stack</div>      <div class="skill-bar"><span class="skill-bar-label">Telegram Bot API</span><div class="skill-bar-track"><span class="skill-bar-rail"><span class="skill-bar-fill" style="width:95%"></span></span><span class="skill-bar-value">95</span></div></div>
+      <div class="skill-bar"><span class="skill-bar-label">Python</span><div class="skill-bar-track"><span class="skill-bar-rail"><span class="skill-bar-fill" style="width:90%"></span></span><span class="skill-bar-value">90</span></div></div>
+      <div class="skill-bar"><span class="skill-bar-label">Unsloth</span><div class="skill-bar-track"><span class="skill-bar-rail"><span class="skill-bar-fill" style="width:85%"></span></span><span class="skill-bar-value">85</span></div></div>
+      <div class="skill-bar"><span class="skill-bar-label">QLoRA (PEFT)</span><div class="skill-bar-track"><span class="skill-bar-rail"><span class="skill-bar-fill" style="width:85%"></span></span><span class="skill-bar-value">85</span></div></div>
+      <div class="skill-bar"><span class="skill-bar-label">Kaggle T4 GPU</span><div class="skill-bar-track"><span class="skill-bar-rail"><span class="skill-bar-fill" style="width:80%"></span></span><span class="skill-bar-value">80</span></div></div>
     </div>
 
   </section>
 
   <!-- ── 05: PORTFOLIO WEBSITE ── -->
   <div class="feat-list" style="display:none"></div>
-  <section class="cs-section hue-purple p-acc" id="portfolio-website">
+  <section class="cs-section hue-purple p-acc glass-card" id="portfolio-website">
     <div class="cs-hero">
       <div>
         <div class="cs-number">05 / 08</div>
         <h2 class="cs-title"><svg class="ico" width="28" height="28" viewBox="0 0 13 13" fill="none" style="vertical-align:middle;margin-right:12px"><rect x="0.5" y="1" width="12" height="11" rx="1.2" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="none"/><line x1="0.5" y1="3.5" x2="12.5" y2="3.5" stroke="rgba(255,255,255,.5)" stroke-width="1"/><circle cx="2" cy="2.25" r=".5" fill="rgba(255,255,255,.5)"/><circle cx="3.5" cy="2.25" r=".5" fill="rgba(255,255,255,.5)"/></svg>Portfolio Website</h2>
         <p class="cs-tagline">This site · Vercel + Tailscale</p>
         <div class="cs-badges">
-          <span class="cs-badge cs-status"><span class="vb v-ok" aria-hidden="true"><svg><use href="#i-check"/></svg></span>Live</span>
+          <span class="cs-badge cs-status"><span class="status-badge v-ok" aria-hidden="true"><svg><use href="#i-check"/></svg></span>Live</span>
           <span class="cs-badge">Hybrid · Vercel + Tailscale</span>
           <span class="cs-badge">2026</span>
         </div>
@@ -5090,39 +4904,23 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
     </div>
 
     <div class="cs-skills">
-      <div class="wlbl-row"><svg class="ico" width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M6.5 1 L12 3.8 L6.5 6.5 L1 3.8Z" stroke="rgba(255,255,255,.5)" stroke-width="1" stroke-linejoin="round" fill="rgba(255,255,255,.07)"/><path d="M1 7 L6.5 9.7 L12 7" stroke="rgba(255,255,255,.3)" stroke-width="1" stroke-linecap="round" fill="none"/><path d="M1 10 L6.5 12.7 L12 10" stroke="rgba(255,255,255,.18)" stroke-width="1" stroke-linecap="round" fill="none"/></svg>stack</div>      <div class="cs-skills-row">
-        <span class="cs-skills-name">Tailscale</span>
-        <div class="cs-skills-bar"><div class="cs-skills-fill s-high" style="width:95%"></div></div>
-        <span class="cs-skills-score">95</span>
-      </div>
-      <div class="cs-skills-row">
-        <span class="cs-skills-name">Vercel</span>
-        <div class="cs-skills-bar"><div class="cs-skills-fill s-high" style="width:85%"></div></div>
-        <span class="cs-skills-score">85</span>
-      </div>
-      <div class="cs-skills-row">
-        <span class="cs-skills-name">SvelteKit</span>
-        <div class="cs-skills-bar"><div class="cs-skills-fill s-high" style="width:85%"></div></div>
-        <span class="cs-skills-score">85</span>
-      </div>
-      <div class="cs-skills-row">
-        <span class="cs-skills-name">Liquid Glass</span>
-        <div class="cs-skills-bar"><div class="cs-skills-fill s-mid" style="width:75%"></div></div>
-        <span class="cs-skills-score">75</span>
-      </div>
+      <div class="wlbl-row"><svg class="ico" width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M6.5 1 L12 3.8 L6.5 6.5 L1 3.8Z" stroke="rgba(255,255,255,.5)" stroke-width="1" stroke-linejoin="round" fill="rgba(255,255,255,.07)"/><path d="M1 7 L6.5 9.7 L12 7" stroke="rgba(255,255,255,.3)" stroke-width="1" stroke-linecap="round" fill="none"/><path d="M1 10 L6.5 12.7 L12 10" stroke="rgba(255,255,255,.18)" stroke-width="1" stroke-linecap="round" fill="none"/></svg>stack</div>      <div class="skill-bar"><span class="skill-bar-label">Tailscale</span><div class="skill-bar-track"><span class="skill-bar-rail"><span class="skill-bar-fill" style="width:95%"></span></span><span class="skill-bar-value">95</span></div></div>
+      <div class="skill-bar"><span class="skill-bar-label">Vercel</span><div class="skill-bar-track"><span class="skill-bar-rail"><span class="skill-bar-fill" style="width:85%"></span></span><span class="skill-bar-value">85</span></div></div>
+      <div class="skill-bar"><span class="skill-bar-label">SvelteKit</span><div class="skill-bar-track"><span class="skill-bar-rail"><span class="skill-bar-fill" style="width:85%"></span></span><span class="skill-bar-value">85</span></div></div>
+      <div class="skill-bar"><span class="skill-bar-label">Liquid Glass</span><div class="skill-bar-track"><span class="skill-bar-rail"><span class="skill-bar-fill" style="width:75%"></span></span><span class="skill-bar-value">75</span></div></div>
     </div>
     
   </section>
 
   <!-- ── 06: HERMES DESKTOP OAUTH ── -->
-  <section class="cs-section hue-pink" id="hermes-desktop-oauth">
+  <section class="cs-section hue-pink glass-card" id="hermes-desktop-oauth">
     <div class="cs-hero">
       <div>
         <div class="cs-number">06 / 08</div>
         <h2 class="cs-title"><svg class="ico" width="28" height="28" viewBox="0 0 13 13" fill="none" style="vertical-align:middle;margin-right:12px"><rect x="3" y="6" width="7" height="5.5" rx="1" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="rgba(255,255,255,.07)"/><path d="M4.5 6V4.5C4.5 3.4 5.4 2.5 6.5 2.5C7.6 2.5 8.5 3.4 8.5 4.5V6" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="none"/><circle cx="6.5" cy="9" r=".9" fill="rgba(255,255,255,.7)"/></svg>Hermes One OAuth Fork</h2>
         <p class="cs-tagline">Hermes One · OAuth for gated dashboards</p>
         <div class="cs-badges">
-          <span class="cs-badge cs-status"><span class="vb v-ok" aria-hidden="true"><svg><use href="#i-check"/></svg></span>13 PRs merged</span>
+          <span class="cs-badge cs-status"><span class="status-badge v-ok" aria-hidden="true"><svg><use href="#i-check"/></svg></span>13 PRs merged</span>
           <span class="cs-badge">Open source · fork</span>
           <span class="cs-badge">Phase 4 pending</span>
           <span class="cs-badge">2026</span>
@@ -5150,7 +4948,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
             Audit
           </div>
           <div class="pipe-detail">Codebase review · dependency map · ?token= auth gap identified</div>
-          <div class="pipe-state"><span class="vb v-ok" aria-hidden="true"><svg><use href="#i-check"/></svg></span>3 PRs merged</div>
+          <div class="pipe-state"><span class="status-badge v-ok" aria-hidden="true"><svg><use href="#i-check"/></svg></span>3 PRs merged</div>
           <div class="pipe-arrow">›</div>
         </div>
         <!-- Phase 02: OAuth Flow -->
@@ -5161,7 +4959,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
             OAuth Flow
           </div>
           <div class="pipe-detail">Nous Portal OAuth · /api/status provider discovery · main-process cookies</div>
-          <div class="pipe-state"><span class="vb v-ok" aria-hidden="true"><svg><use href="#i-check"/></svg></span>5 PRs merged</div>
+          <div class="pipe-state"><span class="status-badge v-ok" aria-hidden="true"><svg><use href="#i-check"/></svg></span>5 PRs merged</div>
           <div class="pipe-arrow">›</div>
         </div>
         <!-- Phase 03: Mac E2E -->
@@ -5172,7 +4970,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
             Mac E2E
           </div>
           <div class="pipe-detail">Single-use WS ticket minting · Vitest suite · 38/38 tests pass</div>
-          <div class="pipe-state"><span class="vb v-ok" aria-hidden="true"><svg><use href="#i-check"/></svg></span>5 PRs merged</div>
+          <div class="pipe-state"><span class="status-badge v-ok" aria-hidden="true"><svg><use href="#i-check"/></svg></span>5 PRs merged</div>
           <div class="pipe-arrow">›</div>
         </div>
         <!-- Phase 04: Upstream PR — pending -->
@@ -5183,7 +4981,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
             Upstream PR
           </div>
           <div class="pipe-detail">fathah/hermes-desktop:main · community merge · cross-provider</div>
-          <div class="pipe-state"><span class="vb v-near" aria-hidden="true"><svg><use href="#i-bang"/></svg></span>pending</div>
+          <div class="pipe-state"><span class="status-badge v-near" aria-hidden="true"><svg><use href="#i-bang"/></svg></span>pending</div>
         </div>
       </div>
     </div>
@@ -5233,44 +5031,24 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
     </div>
 
     <div class="cs-skills">
-      <div class="wlbl-row"><svg class="ico" width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M6.5 1 L12 3.8 L6.5 6.5 L1 3.8Z" stroke="rgba(255,255,255,.5)" stroke-width="1" stroke-linejoin="round" fill="rgba(255,255,255,.07)"/><path d="M1 7 L6.5 9.7 L12 7" stroke="rgba(255,255,255,.3)" stroke-width="1" stroke-linecap="round" fill="none"/><path d="M1 10 L6.5 12.7 L12 10" stroke="rgba(255,255,255,.18)" stroke-width="1" stroke-linecap="round" fill="none"/></svg>stack</div>      <div class="cs-skills-row">
-        <span class="cs-skills-name">Electron</span>
-        <div class="cs-skills-bar"><div class="cs-skills-fill s-high" style="width:95%"></div></div>
-        <span class="cs-skills-score">95</span>
-      </div>
-      <div class="cs-skills-row">
-        <span class="cs-skills-name">React 18</span>
-        <div class="cs-skills-bar"><div class="cs-skills-fill s-high" style="width:85%"></div></div>
-        <span class="cs-skills-score">85</span>
-      </div>
-      <div class="cs-skills-row">
-        <span class="cs-skills-name">Vite</span>
-        <div class="cs-skills-bar"><div class="cs-skills-fill s-high" style="width:80%"></div></div>
-        <span class="cs-skills-score">80</span>
-      </div>
-      <div class="cs-skills-row">
-        <span class="cs-skills-name">Tailwind</span>
-        <div class="cs-skills-bar"><div class="cs-skills-fill s-mid" style="width:75%"></div></div>
-        <span class="cs-skills-score">75</span>
-      </div>
-      <div class="cs-skills-row">
-        <span class="cs-skills-name">better-sqlite3</span>
-        <div class="cs-skills-bar"><div class="cs-skills-fill s-mid" style="width:70%"></div></div>
-        <span class="cs-skills-score">70</span>
-      </div>
+      <div class="wlbl-row"><svg class="ico" width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M6.5 1 L12 3.8 L6.5 6.5 L1 3.8Z" stroke="rgba(255,255,255,.5)" stroke-width="1" stroke-linejoin="round" fill="rgba(255,255,255,.07)"/><path d="M1 7 L6.5 9.7 L12 7" stroke="rgba(255,255,255,.3)" stroke-width="1" stroke-linecap="round" fill="none"/><path d="M1 10 L6.5 12.7 L12 10" stroke="rgba(255,255,255,.18)" stroke-width="1" stroke-linecap="round" fill="none"/></svg>stack</div>      <div class="skill-bar"><span class="skill-bar-label">Electron</span><div class="skill-bar-track"><span class="skill-bar-rail"><span class="skill-bar-fill" style="width:95%"></span></span><span class="skill-bar-value">95</span></div></div>
+      <div class="skill-bar"><span class="skill-bar-label">React 18</span><div class="skill-bar-track"><span class="skill-bar-rail"><span class="skill-bar-fill" style="width:85%"></span></span><span class="skill-bar-value">85</span></div></div>
+      <div class="skill-bar"><span class="skill-bar-label">Vite</span><div class="skill-bar-track"><span class="skill-bar-rail"><span class="skill-bar-fill" style="width:80%"></span></span><span class="skill-bar-value">80</span></div></div>
+      <div class="skill-bar"><span class="skill-bar-label">Tailwind</span><div class="skill-bar-track"><span class="skill-bar-rail"><span class="skill-bar-fill" style="width:75%"></span></span><span class="skill-bar-value">75</span></div></div>
+      <div class="skill-bar"><span class="skill-bar-label">better-sqlite3</span><div class="skill-bar-track"><span class="skill-bar-rail"><span class="skill-bar-fill" style="width:70%"></span></span><span class="skill-bar-value">70</span></div></div>
     </div>
     
   </section>
 
   <!-- ── 07: OPENCLAW DASHBOARD ── -->
-  <section class="cs-section hue-orange" id="openclaw-dashboard">
+  <section class="cs-section hue-orange glass-card" id="openclaw-dashboard">
     <div class="cs-hero">
       <div>
         <div class="cs-number">07 / 08</div>
         <h2 class="cs-title"><svg class="ico" width="28" height="28" viewBox="0 0 13 13" fill="none" style="vertical-align:middle;margin-right:12px"><rect x="1" y="1" width="5" height="5" rx="1" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="rgba(255,255,255,.07)"/><rect x="7" y="1" width="5" height="5" rx="1" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="rgba(255,255,255,.07)"/><rect x="1" y="7" width="5" height="5" rx="1" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="rgba(255,255,255,.07)"/><rect x="7" y="7" width="5" height="5" rx="1" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="rgba(255,255,255,.07)"/></svg>OpenClaw Dashboard</h2>
         <p class="cs-tagline">Control UI for OpenClaw gateway</p>
         <div class="cs-badges">
-          <span class="cs-badge cs-status"><span class="vb v-near" aria-hidden="true"><svg><use href="#i-bang"/></svg></span>Active dev</span>
+          <span class="cs-badge cs-status"><span class="status-badge v-near" aria-hidden="true"><svg><use href="#i-bang"/></svg></span>Active dev</span>
           <span class="cs-badge">Private · homelab</span>
           <span class="cs-badge">2026</span>
         </div>
@@ -5356,39 +5134,23 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
     </div>
 
     <div class="cs-skills">
-      <div class="wlbl-row"><svg class="ico" width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M6.5 1 L12 3.8 L6.5 6.5 L1 3.8Z" stroke="rgba(255,255,255,.5)" stroke-width="1" stroke-linejoin="round" fill="rgba(255,255,255,.07)"/><path d="M1 7 L6.5 9.7 L12 7" stroke="rgba(255,255,255,.3)" stroke-width="1" stroke-linecap="round" fill="none"/><path d="M1 10 L6.5 12.7 L12 10" stroke="rgba(255,255,255,.18)" stroke-width="1" stroke-linecap="round" fill="none"/></svg>stack</div>      <div class="cs-skills-row">
-        <span class="cs-skills-name">React</span>
-        <div class="cs-skills-bar"><div class="cs-skills-fill s-high" style="width:95%"></div></div>
-        <span class="cs-skills-score">95</span>
-      </div>
-      <div class="cs-skills-row">
-        <span class="cs-skills-name">TypeScript</span>
-        <div class="cs-skills-bar"><div class="cs-skills-fill s-high" style="width:90%"></div></div>
-        <span class="cs-skills-score">90</span>
-      </div>
-      <div class="cs-skills-row">
-        <span class="cs-skills-name">WebSocket</span>
-        <div class="cs-skills-bar"><div class="cs-skills-fill s-high" style="width:85%"></div></div>
-        <span class="cs-skills-score">85</span>
-      </div>
-      <div class="cs-skills-row">
-        <span class="cs-skills-name">Neopop</span>
-        <div class="cs-skills-bar"><div class="cs-skills-fill s-mid" style="width:75%"></div></div>
-        <span class="cs-skills-score">75</span>
-      </div>
+      <div class="wlbl-row"><svg class="ico" width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M6.5 1 L12 3.8 L6.5 6.5 L1 3.8Z" stroke="rgba(255,255,255,.5)" stroke-width="1" stroke-linejoin="round" fill="rgba(255,255,255,.07)"/><path d="M1 7 L6.5 9.7 L12 7" stroke="rgba(255,255,255,.3)" stroke-width="1" stroke-linecap="round" fill="none"/><path d="M1 10 L6.5 12.7 L12 10" stroke="rgba(255,255,255,.18)" stroke-width="1" stroke-linecap="round" fill="none"/></svg>stack</div>      <div class="skill-bar"><span class="skill-bar-label">React</span><div class="skill-bar-track"><span class="skill-bar-rail"><span class="skill-bar-fill" style="width:95%"></span></span><span class="skill-bar-value">95</span></div></div>
+      <div class="skill-bar"><span class="skill-bar-label">TypeScript</span><div class="skill-bar-track"><span class="skill-bar-rail"><span class="skill-bar-fill" style="width:90%"></span></span><span class="skill-bar-value">90</span></div></div>
+      <div class="skill-bar"><span class="skill-bar-label">WebSocket</span><div class="skill-bar-track"><span class="skill-bar-rail"><span class="skill-bar-fill" style="width:85%"></span></span><span class="skill-bar-value">85</span></div></div>
+      <div class="skill-bar"><span class="skill-bar-label">Neopop</span><div class="skill-bar-track"><span class="skill-bar-rail"><span class="skill-bar-fill" style="width:75%"></span></span><span class="skill-bar-value">75</span></div></div>
     </div>
     
   </section>
 
   <!-- ── 08: UNILOX FITNESS AI ── -->
-  <section class="cs-section hue-lime" id="unilox-fitness-ai">
+  <section class="cs-section hue-lime glass-card" id="unilox-fitness-ai">
     <div class="cs-hero">
       <div>
         <div class="cs-number">08 / 08</div>
         <h2 class="cs-title"><svg class="ico" width="28" height="28" viewBox="0 0 13 13" fill="none" style="vertical-align:middle;margin-right:12px"><polyline points="1,7 3.5,7 5,3 6.5,11 8,7 10.5,7" stroke="rgba(255,255,255,.5)" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round" fill="none"/><circle cx="2" cy="9" r=".7" fill="rgba(61,220,132,.8)"/><circle cx="11" cy="9" r=".7" fill="rgba(61,220,132,.8)"/></svg>UNILOX Fitness AI</h2>
         <p class="cs-tagline">AI Gym & Fitness Assistant · 7 modules</p>
         <div class="cs-badges">
-          <span class="cs-badge cs-status"><span class="vb v-near" aria-hidden="true"><svg><use href="#i-bang"/></svg></span>Phase 0 spec</span>
+          <span class="cs-badge cs-status"><span class="status-badge v-near" aria-hidden="true"><svg><use href="#i-bang"/></svg></span>Phase 0 spec</span>
           <span class="cs-badge">Private · commercial</span>
           <span class="cs-badge">AI · ML</span>
           <span class="cs-badge">2026</span>
@@ -5505,31 +5267,11 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
     </div>
 
     <div class="cs-skills">
-      <div class="wlbl-row"><svg class="ico" width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M6.5 1 L12 3.8 L6.5 6.5 L1 3.8Z" stroke="rgba(255,255,255,.5)" stroke-width="1" stroke-linejoin="round" fill="rgba(255,255,255,.07)"/><path d="M1 7 L6.5 9.7 L12 7" stroke="rgba(255,255,255,.3)" stroke-width="1" stroke-linecap="round" fill="none"/><path d="M1 10 L6.5 12.7 L12 10" stroke="rgba(255,255,255,.18)" stroke-width="1" stroke-linecap="round" fill="none"/></svg>stack</div>      <div class="cs-skills-row">
-        <span class="cs-skills-name">MQTT</span>
-        <div class="cs-skills-bar"><div class="cs-skills-fill s-high" style="width:85%"></div></div>
-        <span class="cs-skills-score">85</span>
-      </div>
-      <div class="cs-skills-row">
-        <span class="cs-skills-name">Next.js 14</span>
-        <div class="cs-skills-bar"><div class="cs-skills-fill s-high" style="width:80%"></div></div>
-        <span class="cs-skills-score">80</span>
-      </div>
-      <div class="cs-skills-row">
-        <span class="cs-skills-name">FastAPI</span>
-        <div class="cs-skills-bar"><div class="cs-skills-fill s-high" style="width:80%"></div></div>
-        <span class="cs-skills-score">80</span>
-      </div>
-      <div class="cs-skills-row">
-        <span class="cs-skills-name">MediaPipe</span>
-        <div class="cs-skills-bar"><div class="cs-skills-fill s-mid" style="width:75%"></div></div>
-        <span class="cs-skills-score">75</span>
-      </div>
-      <div class="cs-skills-row">
-        <span class="cs-skills-name">PostgreSQL</span>
-        <div class="cs-skills-bar"><div class="cs-skills-fill s-mid" style="width:70%"></div></div>
-        <span class="cs-skills-score">70</span>
-      </div>
+      <div class="wlbl-row"><svg class="ico" width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M6.5 1 L12 3.8 L6.5 6.5 L1 3.8Z" stroke="rgba(255,255,255,.5)" stroke-width="1" stroke-linejoin="round" fill="rgba(255,255,255,.07)"/><path d="M1 7 L6.5 9.7 L12 7" stroke="rgba(255,255,255,.3)" stroke-width="1" stroke-linecap="round" fill="none"/><path d="M1 10 L6.5 12.7 L12 10" stroke="rgba(255,255,255,.18)" stroke-width="1" stroke-linecap="round" fill="none"/></svg>stack</div>      <div class="skill-bar"><span class="skill-bar-label">MQTT</span><div class="skill-bar-track"><span class="skill-bar-rail"><span class="skill-bar-fill" style="width:85%"></span></span><span class="skill-bar-value">85</span></div></div>
+      <div class="skill-bar"><span class="skill-bar-label">Next.js 14</span><div class="skill-bar-track"><span class="skill-bar-rail"><span class="skill-bar-fill" style="width:80%"></span></span><span class="skill-bar-value">80</span></div></div>
+      <div class="skill-bar"><span class="skill-bar-label">FastAPI</span><div class="skill-bar-track"><span class="skill-bar-rail"><span class="skill-bar-fill" style="width:80%"></span></span><span class="skill-bar-value">80</span></div></div>
+      <div class="skill-bar"><span class="skill-bar-label">MediaPipe</span><div class="skill-bar-track"><span class="skill-bar-rail"><span class="skill-bar-fill" style="width:75%"></span></span><span class="skill-bar-value">75</span></div></div>
+      <div class="skill-bar"><span class="skill-bar-label">PostgreSQL</span><div class="skill-bar-track"><span class="skill-bar-rail"><span class="skill-bar-fill" style="width:70%"></span></span><span class="skill-bar-value">70</span></div></div>
     </div>
     
   </section>
@@ -5626,7 +5368,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
     <div class="sec-head">
       <h2 id="getting-started-heading">getting started</h2>
     </div>
-    <div class="w glass guide-card" data-anim>
+    <div class="w guide-card" data-anim>
       <div class="guide-grid">
         <div class="guide-col">
           <h3>Where to Start</h3>
@@ -6102,7 +5844,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
   <h1 class="ph-title"><span class="hn-script">A</span>bout</h1>
 
   <!-- ── INTRO ── -->
-  <div class="intro hue-blue">
+  <div class="intro hue-blue glass-card">
     <!-- Photo placeholder -->
     <div class="photo-block">
       <div class="photo-frame">
@@ -6142,7 +5884,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
       <span class="sh-num">01</span>
     </div>
 
-    <div class="edu-card">
+    <div class="edu-card glass-card">
       <div>
         <div class="edu-inst"><svg class="i" aria-hidden="true"><use href="#i-grad"/></svg>HOCHSCHULE DARMSTADT · DARMSTADT, GERMANY</div>
         <div class="edu-degree">B.Sc. Computer Science</div>
@@ -6180,16 +5922,16 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
     </div>
 
     <!-- Key skill bars -->
-    <div class="core-tech-card">
+    <div class="core-tech-card glass-card">
       <div class="core-label">core technical</div>
       <div class="skill-bars">
-        <div class="skb-row"><span class="skb-n">Python</span><div class="skb-track"><div class="skb-fill" style="width:86%;animation-delay:.1s"></div></div><span class="skb-v">86</span></div>
-        <div class="skb-row"><span class="skb-n">Docker · Linux</span><div class="skb-track"><div class="skb-fill" style="width:82%;animation-delay:.2s"></div></div><span class="skb-v">82</span></div>
-        <div class="skb-row"><span class="skb-n">TypeScript</span><div class="skb-track"><div class="skb-fill" style="width:68%;animation-delay:.3s"></div></div><span class="skb-v">68</span></div>
-        <div class="skb-row"><span class="skb-n">ML / AI</span><div class="skb-track"><div class="skb-fill" style="width:72%;animation-delay:.4s"></div></div><span class="skb-v">72</span></div>
-        <div class="skb-row"><span class="skb-n">SvelteKit</span><div class="skb-track"><div class="skb-fill" style="width:60%;animation-delay:.5s"></div></div><span class="skb-v">60</span></div>
-        <div class="skb-row"><span class="skb-n">Proxmox · ARM</span><div class="skb-track"><div class="skb-fill" style="width:64%;animation-delay:.6s"></div></div><span class="skb-v">64</span></div>
-        <div class="skb-row"><span class="skb-n">C++</span><div class="skb-track"><div class="skb-fill" style="width:52%;animation-delay:.7s"></div></div><span class="skb-v">52</span></div>
+        <div class="skill-bar"><span class="skill-bar-label">Python</span><div class="skill-bar-track"><span class="skill-bar-rail"><span class="skill-bar-fill" style="width:86%;animation-delay:.1s"></span></span><span class="skill-bar-value">86</span></div></div>
+        <div class="skill-bar"><span class="skill-bar-label">Docker · Linux</span><div class="skill-bar-track"><span class="skill-bar-rail"><span class="skill-bar-fill" style="width:82%;animation-delay:.2s"></span></span><span class="skill-bar-value">82</span></div></div>
+        <div class="skill-bar"><span class="skill-bar-label">TypeScript</span><div class="skill-bar-track"><span class="skill-bar-rail"><span class="skill-bar-fill" style="width:68%;animation-delay:.3s"></span></span><span class="skill-bar-value">68</span></div></div>
+        <div class="skill-bar"><span class="skill-bar-label">ML / AI</span><div class="skill-bar-track"><span class="skill-bar-rail"><span class="skill-bar-fill" style="width:72%;animation-delay:.4s"></span></span><span class="skill-bar-value">72</span></div></div>
+        <div class="skill-bar"><span class="skill-bar-label">SvelteKit</span><div class="skill-bar-track"><span class="skill-bar-rail"><span class="skill-bar-fill" style="width:60%;animation-delay:.5s"></span></span><span class="skill-bar-value">60</span></div></div>
+        <div class="skill-bar"><span class="skill-bar-label">Proxmox · ARM</span><div class="skill-bar-track"><span class="skill-bar-rail"><span class="skill-bar-fill" style="width:64%;animation-delay:.6s"></span></span><span class="skill-bar-value">64</span></div></div>
+        <div class="skill-bar"><span class="skill-bar-label">C++</span><div class="skill-bar-track"><span class="skill-bar-rail"><span class="skill-bar-fill" style="width:52%;animation-delay:.7s"></span></span><span class="skill-bar-value">52</span></div></div>
       </div>
     </div>
 
@@ -6275,7 +6017,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
 
     <div class="lang-grid">
 
-      <div class="lang-card">
+      <div class="lang-card glass-card">
         <div class="lang-name"><svg class="i" aria-hidden="true"><use href="#i-globe"/></svg>Deutsch</div>
         <div class="lang-level">PROFESSIONAL WORKING PROFICIENCY · B2–C1</div>
         <div class="lang-dots">
@@ -6288,7 +6030,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
         <div class="lang-note">Working language in Germany · handle professional conversations, emails, and technical discussions · studying at a German-language institution</div>
       </div>
 
-      <div class="lang-card">
+      <div class="lang-card glass-card">
         <div class="lang-name"><svg class="i" aria-hidden="true"><use href="#i-globe"/></svg>English</div>
         <div class="lang-level">FULL PROFESSIONAL PROFICIENCY · C1–C2</div>
         <div class="lang-dots">
@@ -6301,7 +6043,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
         <div class="lang-note">Primary language for all technical work, documentation, code, and AI tooling · full professional fluency</div>
       </div>
 
-      <div class="lang-card native">
+      <div class="lang-card native glass-card">
         <div class="lang-name"><svg class="i" aria-hidden="true"><use href="#i-globe"/></svg>Hindi</div>
         <div class="lang-level lvl-green">FULL PROFESSIONAL PROFICIENCY · NATIVE</div>
         <div class="lang-dots">
@@ -6314,7 +6056,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
         <div class="lang-note">Native speaker · full fluency across formal and informal contexts</div>
       </div>
 
-      <div class="lang-card native">
+      <div class="lang-card native glass-card">
         <div class="lang-name"><svg class="i" aria-hidden="true"><use href="#i-globe"/></svg>Gujarati</div>
         <div class="lang-level lvl-green">FULL PROFESSIONAL PROFICIENCY · NATIVE</div>
         <div class="lang-dots">
@@ -6382,7 +6124,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
     </div>
 
     <div class="contact-grid">
-      <a class="contact-card" href="mailto:vishalkatariya404@gmail.com">
+      <a class="contact-card glass-card" href="mailto:vishalkatariya404@gmail.com">
         <div class="cc-icon"><svg class="i" aria-hidden="true"><use href="#i-mail"/></svg></div>
         <div>
           <div class="cc-label">EMAIL</div>
@@ -6390,7 +6132,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
         </div>
       </a>
 
-      <a class="contact-card" href="https://github.com/vkkatariya" target="_blank">
+      <a class="contact-card glass-card" href="https://github.com/vkkatariya" target="_blank">
         <div class="cc-icon"><svg class="i" aria-hidden="true"><use href="#i-github"/></svg></div>
         <div>
           <div class="cc-label">GITHUB</div>
