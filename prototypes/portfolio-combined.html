@@ -183,97 +183,155 @@ html.light body::before {
 }
 
 /* ══════════════════════════════════════════
-   LIQUID GLASS NAVBAR
+   NAVPILL — sticky topbar of three glass pills (reference .top / .tb / .pill / .brand / .links / .tools)
+   Sticky, but the negative bottom margin (14 + 54 - 68 = 0) leaves it zero-height in flow, so every
+   page keeps the 76px top padding it was laid out against.
 ══════════════════════════════════════════ */
-#shared-nav {
-  /* NavPill: sticky topbar (reference .top). The negative bottom margin cancels its in-flow height
-     (14 + 54 - 68 = 0) so every page keeps the 76px top padding it was laid out against. */
+.top {
   position: sticky;
   top: calc(env(safe-area-inset-top, 0px) + 14px);
   margin: 14px 0 -68px;
-  z-index: 200;
-  display: flex;
-  align-items: center;
   padding: 0 20px;
-  gap: 0;
-  background: transparent;
-  border: none;
-  box-shadow: none;
-  height: auto;
+  z-index: 200;
   pointer-events: none; /* only the pills catch clicks, not the gutters between them */
-  transition: transform .4s ease, opacity .4s ease;
 }
-#shared-nav > * { pointer-events: auto; }
-/* Roadmap active: shared center links pill fully collapses so the roadmap
-   internal nav owns the same center slot. Logo (left) and status (right)
-   stay visible. */
-#shared-nav.nav-hidden .nav-links {
-  opacity: 0;
-  transform: translateX(-50%) scale(0);
-  pointer-events: none;
-  visibility: hidden;
-  transition: transform .28s cubic-bezier(.4,0,.2,1), opacity .22s ease, visibility 0s linear .28s;
-}
-.nav-links {
-  transition: opacity .32s ease, transform .32s ease;
-  transform-origin: center center;
-}
-
-/* ═══ 3 FLOATING PILLS ═══ */
-
-/* LEFT — name logo pill */
-.nav-logo {
-  display: flex; align-items: center; flex-shrink: 0;
-  padding: 10px 20px;
+.tb { display: flex; align-items: center; gap: 10px; }
+.pill {
+  pointer-events: auto;
+  height: 54px; box-sizing: border-box; border-radius: 999px;
+  display: flex; align-items: center;
   background: linear-gradient(180deg, var(--glass-top), var(--glass-bottom));
   backdrop-filter: blur(28px) saturate(1.6); -webkit-backdrop-filter: blur(28px) saturate(1.6);
-  border: 1px solid var(--glass-border);
-  border-radius: 100px;
-  box-shadow: var(--shadow);
-  text-decoration: none; cursor: pointer;
-  transition: box-shadow .24s cubic-bezier(.2,.7,.2,1);
-}
-.nav-logo:hover { box-shadow: var(--shadow), 0 0 0 1px var(--w12); }
-.nav-logo-name {
-  font-family: 'Syne', sans-serif; font-size: 18px; line-height: 1; white-space: nowrap; letter-spacing: -.3px;
-}
-.nav-logo-name .hn-script {
-  font-family: 'Cormorant Garamond', serif;
-  font-style: italic; font-weight: 700;
-  font-size: 1.9em; letter-spacing: -1px;
-  line-height: 0.82;
-  display: inline-block;
-  margin-right: -.09em;
-  vertical-align: -.12em;
-}
-.nav-logo-name .hn-sans {
-  font-family: 'Syne', sans-serif;
-  font-weight: 800;
+  border: 1px solid var(--glass-border); box-shadow: var(--shadow);
 }
 
-/* ── Topbar scroll-swap: wordmark → logo mark ── */
-.nav-logo {
-  transition: box-shadow .2s, padding .35s cubic-bezier(.22,.61,.36,1);
-  overflow: hidden;
+/* brand: V/K wordmark (kept), swaps to the logo mark once scrolled and on small screens */
+.brand {
+  flex: none; padding: 0 20px; overflow: hidden;
+  color: var(--w); text-decoration: none; cursor: pointer;
+  transition: box-shadow .24s cubic-bezier(.2,.7,.2,1), padding .35s cubic-bezier(.22,.61,.36,1);
 }
+.brand:hover { box-shadow: var(--shadow), 0 0 0 1px var(--w12); }
 .nav-logo-name {
-  max-width: 200px;
-  overflow: hidden;
+  font-family: 'Syne', sans-serif; font-size: 18px; line-height: 1; white-space: nowrap; letter-spacing: -.3px;
+  max-width: 200px; overflow: hidden;
   transition: max-width .35s cubic-bezier(.22,.61,.36,1), opacity .3s ease;
 }
+.nav-logo-name .hn-script {
+  font-family: 'Cormorant Garamond', serif; font-style: italic; font-weight: 700;
+  font-size: 1.9em; letter-spacing: -1px; line-height: 0.82;
+  display: inline-block; margin-right: -.09em; vertical-align: -.12em;
+}
+.nav-logo-name .hn-sans { font-family: 'Syne', sans-serif; font-weight: 800; }
 .nav-logo-mark {
-  width: 28px; height: 28px; flex-shrink: 0;
-  border-radius: 8px; object-fit: cover;
+  width: 28px; height: 28px; flex-shrink: 0; border-radius: 8px; object-fit: cover;
   opacity: 0; max-width: 0; overflow: hidden;
   transition: max-width .35s cubic-bezier(.22,.61,.36,1), opacity .3s ease;
 }
 #shared-nav.scrolled .nav-logo-name { max-width: 0; opacity: 0; }
 #shared-nav.scrolled .nav-logo-mark { max-width: 28px; opacity: 1; }
-#shared-nav.scrolled .nav-logo { padding: 10px 12px; }
+#shared-nav.scrolled .brand { padding: 0 12px; }
 
-/* ── Profile icon: logo fills circle, glass border ── */
-.nav-profile { background: transparent !important; overflow: hidden; padding: 0 !important; box-shadow: 0 0 0 1.5px rgba(255,255,255,.22) !important; }
+/* links: scroll-spy pill; the active page is a hue-tinted pill (16% fill / 50% border) */
+.links {
+  flex: 1; min-width: 0; gap: 4px; padding: 0 8px; overflow-x: auto; scrollbar-width: none;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 14px, #000 calc(100% - 24px), transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0, #000 14px, #000 calc(100% - 24px), transparent 100%);
+  transition: opacity .32s ease, transform .32s ease;
+  transform-origin: center center;
+}
+.links::-webkit-scrollbar { display: none; }
+.links a {
+  display: flex; align-items: center; gap: 8px; padding: 10px 14px; border-radius: 999px;
+  font-family: var(--sans); font-weight: 500; font-size: 14.5px; line-height: 1; letter-spacing: .06em; text-transform: uppercase;
+  color: var(--w80); text-decoration: none; white-space: nowrap; border: 1px solid transparent;
+  transition: color .24s cubic-bezier(.2,.7,.2,1), background .24s cubic-bezier(.2,.7,.2,1), border-color .24s cubic-bezier(.2,.7,.2,1);
+}
+.links a svg { width: 18px; height: 18px; flex: none; color: var(--h, var(--acc)); fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.links a:hover { background: var(--w06); color: var(--w); }
+.links a[aria-current="true"] {
+  background: color-mix(in srgb, var(--h, var(--acc)) 16%, transparent);
+  border-color: color-mix(in srgb, var(--h, var(--acc)) 50%, transparent);
+  color: var(--w);
+}
+/* roadmap active: the links collapse so the roadmap internal nav owns the centre slot */
+#shared-nav.nav-hidden .links {
+  opacity: 0; transform: scale(.6); pointer-events: none; visibility: hidden;
+  transition: transform .28s cubic-bezier(.4,0,.2,1), opacity .22s ease, visibility 0s linear .28s;
+}
+
+/* tools: search (Ctrl K), language, theme, profile */
+.tools { flex: none; gap: 4px; padding: 0 6px; }
+.tbtn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 9px;
+  height: 42px; min-width: 42px; padding: 0 12px; border-radius: 999px;
+  border: 1px solid transparent; background: transparent; color: var(--w60);
+  font-family: var(--sans); font-weight: 500; font-size: 14.5px; cursor: pointer;
+  transition: color .24s cubic-bezier(.2,.7,.2,1), background .24s cubic-bezier(.2,.7,.2,1), transform .24s cubic-bezier(.2,.7,.2,1), box-shadow .24s cubic-bezier(.2,.7,.2,1);
+}
+.tbtn:hover { background: var(--w06); color: var(--w); }
+.tbtn.srch { border-color: var(--w12); background: var(--w06); padding: 0 14px 0 13px; gap: 7px; cursor: text; }
+.tbtn.srch:focus-within { outline: 2px solid var(--acc); outline-offset: 3px; }
+.tbtn.srch kbd {
+  font-family: var(--mono); font-size: 11px; line-height: 1; letter-spacing: 0; white-space: nowrap;
+  color: var(--w60); background: var(--bg3); border: 1px solid var(--w12); border-radius: 5px; padding: 3px 7px;
+}
+.nav-search-input {
+  background: none; border: none; outline: none; width: 90px; transition: width .25s ease;
+  font-family: var(--mono); font-size: 12px; letter-spacing: .3px; color: var(--w);
+}
+.nav-search-input:focus { width: 140px; }
+.nav-search-input::placeholder { color: var(--w60); }
+.nav-lang { font-family: var(--mono); font-size: 12px; letter-spacing: 1.5px; }
+.tbtn.nav-profile { padding: 0; width: 42px; overflow: hidden; box-shadow: 0 0 0 1.5px var(--w30); }
+.tbtn.nav-profile:hover { transform: scale(1.07); box-shadow: 0 0 0 3px color-mix(in srgb, var(--acc) 25%, transparent); }
 .nav-profile-mark { width: 34px; height: 34px; border-radius: 50%; object-fit: cover; display: block; }
+
+/* availability dot: last item of the links pill */
+.nav-avail-item { display: flex; align-items: center; gap: 5px; padding: 6px 14px 6px 10px; margin-left: auto; flex-shrink: 0; }
+.nav-avail-dot {
+  width: 5px; height: 5px; border-radius: 50%;
+  background: var(--green); box-shadow: 0 0 6px var(--green);
+  flex-shrink: 0; animation: avail-pulse 2.4s ease-in-out infinite;
+}
+@keyframes avail-pulse {
+  0%,100% { box-shadow: 0 0 6px var(--green); }
+  50% { box-shadow: 0 0 2px var(--green); }
+}
+.nav-avail-txt { font-family: var(--mono); font-size: 12px; letter-spacing: .04em; color: var(--green); }
+
+@media (max-width: 1100px) { .tbtn.srch kbd { display: none; } }
+@media (max-width: 1000px) {
+  .links a { padding: 10px 12px; }
+  .links a span { display: none; }
+  .links a[aria-current="true"] span { display: inline; }
+  .nav-avail-txt { display: none; }
+  .nav-avail-item { padding: 6px 8px; }
+  .nav-search-input { width: 60px; }
+  .nav-search-input:focus { width: 90px; }
+}
+/* ≤1000px the links show icons plus the active label; ≤700px brand = logo mark only, tools drop search/lang;
+   ≤560px all four links are icon-only so none scrolls out of view (they carry aria-labels) */
+@media (max-width: 700px) {
+  .top { padding: 0 8px; margin-bottom: -64px; } /* 14 + 50 - 64 = 0 */
+  .tb { gap: 8px; }
+  .pill { height: 50px; }
+  .brand { padding: 0 11px; }
+  .brand .nav-logo-name { display: none; }
+  .brand .nav-logo-mark { max-width: 28px; opacity: 1; }
+  .links a { padding: 10px 11px; }
+  .tbtn.srch { padding: 0; width: 42px; border-color: transparent; background: transparent; }
+  .nav-search-input, .tbtn.srch kbd { display: none; }
+  .nav-lang { display: none; }
+}
+@media (max-width: 560px) {
+  .tbtn.srch, .nav-avail-item { display: none; }
+  .links a[aria-current="true"] span { display: none; }
+}
+
+/* shared bases for the roadmap internal nav (#roadmap-internal-nav restyles everything it uses) */
+.nav-logo { display: flex; align-items: center; flex-shrink: 0; cursor: pointer; text-decoration: none; }
+.nav-links { display: flex; align-items: center; gap: 4px; list-style: none; }
 
 /* ── Hero identity mark ── */
 .home-identity-mark {
@@ -295,104 +353,6 @@ html.light body::before {
   letter-spacing: 0.04em;
 }
 
-/* CENTER — nav pill (home/projects/roadmap/about + available dot) */
-.nav-links {
-  position: absolute; left: 50%; transform: translateX(-50%);
-  display: flex; align-items: center; gap: 4px; list-style: none;
-  background: linear-gradient(180deg, var(--glass-top), var(--glass-bottom));
-  backdrop-filter: blur(28px) saturate(1.6); -webkit-backdrop-filter: blur(28px) saturate(1.6);
-  border: 1px solid var(--glass-border);
-  border-radius: 100px; padding: 5px 8px;
-  box-shadow: var(--shadow);
-}
-.nav-links a {
-  display: flex; align-items: center;
-  font-family: var(--sans); font-weight: 500; font-size: 14.5px; letter-spacing: .06em;
-  color: var(--w80); background: none;
-  border: 1px solid transparent; padding: 9px 14px; border-radius: 100px;
-  text-decoration: none; transition: color .24s cubic-bezier(.2,.7,.2,1), background .24s cubic-bezier(.2,.7,.2,1), border-color .24s cubic-bezier(.2,.7,.2,1); white-space: nowrap;
-  text-transform: uppercase;
-}
-.nav-links a:hover { color: var(--w); background: var(--w06); }
-/* active page = hue-tinted pill (16% fill / 50% border); defaults to --acc, hue classes may set --h */
-.nav-links a.act {
-  background: color-mix(in srgb, var(--h, var(--acc)) 16%, transparent);
-  border-color: color-mix(in srgb, var(--h, var(--acc)) 50%, transparent);
-  color: var(--w);
-}
-
-/* available dot — inside center pill */
-.nav-avail-item {
-  display: flex; align-items: center; gap: 5px;
-  padding: 6px 14px 6px 10px; border-radius: 100px;
-  margin-left: 4px; flex-shrink: 0;
-}
-.nav-avail-dot {
-  width: 5px; height: 5px; border-radius: 50%;
-  background: var(--green); box-shadow: 0 0 6px var(--green);
-  flex-shrink: 0; animation: avail-pulse 2.4s ease-in-out infinite;
-}
-@keyframes avail-pulse {
-  0%,100% { box-shadow: 0 0 6px var(--green); }
-  50% { box-shadow: 0 0 2px var(--green); }
-}
-.nav-avail-txt {
-  font-family: var(--mono); font-size: 12px; letter-spacing: .04em; color: var(--green);
-}
-
-/* RIGHT — controls pill (search + lang + theme + profile) */
-.nav-right {
-  display: flex; align-items: center; gap: 2px;
-  margin-left: auto;
-  background: linear-gradient(180deg, var(--glass-top), var(--glass-bottom));
-  backdrop-filter: blur(28px) saturate(1.6); -webkit-backdrop-filter: blur(28px) saturate(1.6);
-  border: 1px solid var(--glass-border);
-  border-radius: 100px; padding: 5px 6px 5px 8px;
-  box-shadow: var(--shadow);
-}
-.nav-search {
-  display: flex; align-items: center; gap: 7px;
-  padding: 4px 10px 4px 6px;
-  border-right: 1px solid var(--w12); margin-right: 4px;
-  color: var(--w60);
-}
-.nav-search:focus-within { outline: 2px solid var(--acc); outline-offset: 3px; border-radius: 100px; }
-.nav-search kbd {
-  font-family: var(--mono); font-size: 11px; line-height: 1; letter-spacing: 0;
-  color: var(--w60); background: var(--bg3);
-  border: 1px solid var(--w12); border-radius: 5px; padding: 3px 7px; white-space: nowrap;
-}
-@media (max-width: 1100px) { .nav-search kbd { display: none; } }
-.nav-search-input {
-  background: none; border: none; outline: none;
-  font-family: var(--mono); font-size: 12px; letter-spacing: 0.4px; color: var(--w);
-  width: 90px; transition: width .25s ease;
-  letter-spacing: .3px;
-}
-.nav-search-input:focus { width: 140px; }
-.nav-search-input::placeholder { color: var(--w60); }
-.nav-lang {
-  font-family: var(--mono); font-size: 12px; letter-spacing: 1.5px;
-  color: var(--w60); background: none; border: none; cursor: pointer;
-  padding: 6px 10px; border-radius: 100px; transition: all .24s cubic-bezier(.2,.7,.2,1); height: 32px;
-}
-.nav-lang:hover { background: var(--w06); color: var(--w); }
-.nav-theme {
-  width: 32px; height: 32px; border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  background: none; border: none; cursor: pointer;
-  color: var(--w60); transition: all .24s cubic-bezier(.2,.7,.2,1);
-}
-.nav-theme:hover { background: var(--w06); color: var(--w); }
-.nav-profile {
-  width: 34px; height: 34px; border-radius: 50%;
-  background: linear-gradient(135deg, var(--acc) 0%, var(--green) 100%);
-  display: flex; align-items: center; justify-content: center;
-  font-family: var(--font-ndot); font-size: 16px; font-weight: 800;
-  color: #050505; border: none; cursor: pointer; margin-left: 2px;
-  transition: transform .24s cubic-bezier(.2,.7,.2,1), box-shadow .24s cubic-bezier(.2,.7,.2,1); flex-shrink: 0;
-}
-.nav-profile:hover { transform: scale(1.07); box-shadow: 0 0 0 3px rgba(0,212,170,.25); }
 .hn-script {
   font-family: 'Cormorant Garamond', serif;
   font-style: italic; font-weight: 700;
@@ -403,163 +363,6 @@ html.light body::before {
   font-weight: 800; color: var(--w);
 }
 .hn-gap { display: inline-block; width: .18em; }
-
-/* ── right pill controls ── */
-.nav-right {
-  display: flex; align-items: center; gap: 4px;
-  background: linear-gradient(180deg, var(--glass-top), var(--glass-bottom));
-  backdrop-filter: blur(28px) saturate(1.6); -webkit-backdrop-filter: blur(28px) saturate(1.6);
-  border: 1px solid var(--glass-border); border-radius: 100px; padding: 5px 8px;
-  box-shadow: var(--shadow);
-}
-.nav-theme {
-  width: 32px; height: 32px; border-radius: 8px;
-  display: flex; align-items: center; justify-content: center;
-  background: none; border: none; cursor: pointer;
-  color: var(--w60); transition: all .24s cubic-bezier(.2,.7,.2,1);
-}
-.nav-theme:hover { background: var(--w06); color: var(--w); }
-.nav-profile {
-  width: 34px; height: 34px; border-radius: 50%;
-  background: linear-gradient(135deg, var(--acc) 0%, var(--green) 100%);
-  display: flex; align-items: center; justify-content: center;
-  font-family: var(--font-ndot); font-size: 16px; font-weight: 800;
-  color: #050505; border: none; cursor: pointer;
-  transition: transform .24s cubic-bezier(.2,.7,.2,1), box-shadow .24s cubic-bezier(.2,.7,.2,1);
-}
-.nav-profile:hover { transform: scale(1.06); box-shadow: 0 0 0 3px rgba(0,212,170,.2); }
-
-/* Note: a second .nav-lang rule existed below (was dead — no markup used it because the topbar lang button matches the .nav-lang rule at line ~236 which comes later in the stylesheet and wins the cascade). Removed in feat/ndot-topbar-rollout to prevent the duplicate from overriding the NDOT topbar rule. */
-
-/* ═══════════════════════════════════════════════
-   TOPBAR RESPONSIVE — Mobile-first overhaul
-   Breakpoints: ≤859px (shrink) / ≤559px (hamburger) / ≤380px (tiny)
-   Root cause: center pill used position:absolute, causing overlap.
-   Fix: switch to flex-flow centering at ≤859px.
-   Date: 2026-06-26 · Branch: feat/topbar-mobile-first
-   ═══════════════════════════════════════════════ */
-
-/* 1001–1100px: centre pill is absolutely centred and runs into the logo/right pill — drop the
-   "available" text (the dot stays), same as the ≤860 tier does */
-@media (min-width: 1001px) and (max-width: 1100px) {
-  .nav-avail-txt { display: none; }
-  .nav-avail-item { padding: 6px 8px; margin-left: 0; }
-}
-
-/* NavPill: 54px pills (50px on small screens), shared nav only */
-#shared-nav .nav-logo, #shared-nav .nav-links, #shared-nav .nav-right { height: 54px; box-sizing: border-box; }
-@media (max-width: 560px) {
-  #shared-nav .nav-right, #shared-nav .nav-menu-btn { height: 50px; }
-}
-
-/* ── Hamburger button — hidden by default, shown at ≤559px ── */
-.nav-menu-btn {
-  display: none;
-  align-items: center; justify-content: center;
-  width: 50px; height: 50px;
-  background: linear-gradient(180deg, var(--glass-top), var(--glass-bottom));
-  backdrop-filter: blur(28px) saturate(1.6); -webkit-backdrop-filter: blur(28px) saturate(1.6);
-  border: 1px solid var(--glass-border);
-  border-radius: 100px;
-  box-shadow: var(--shadow);
-  cursor: pointer; flex-shrink: 0;
-  color: var(--w60);
-  transition: color .24s cubic-bezier(.2,.7,.2,1), background .24s cubic-bezier(.2,.7,.2,1);
-}
-.nav-menu-btn:hover { color: var(--w); background: var(--w06); }
-.nav-menu-btn.act { background: color-mix(in srgb, var(--acc) 16%, transparent); border-color: color-mix(in srgb, var(--acc) 50%, transparent); color: var(--w); }
-
-/* ── Mobile nav overlay — glass panel below topbar ── */
-.nav-menu-overlay {
-  position: fixed;
-  top: 62px; left: 16px; right: 16px;
-  z-index: 199;
-  background: linear-gradient(180deg, var(--glass-top), var(--glass-bottom));
-  backdrop-filter: blur(28px) saturate(1.6); -webkit-backdrop-filter: blur(28px) saturate(1.6);
-  border: 1px solid var(--glass-border);
-  border-radius: 20px;
-  box-shadow: var(--shadow);
-  padding: 8px;
-  list-style: none; margin: 0;
-  opacity: 0; pointer-events: none;
-  transform: translateY(-10px);
-  transition: opacity .24s cubic-bezier(.2,.7,.2,1), transform .24s cubic-bezier(.2,.7,.2,1);
-}
-.nav-menu-overlay.open {
-  opacity: 1; pointer-events: auto;
-  transform: translateY(0);
-}
-.nav-menu-overlay a {
-  display: flex; align-items: center;
-  font-family: var(--sans); font-weight: 500; font-size: 15px; letter-spacing: .06em;
-  color: var(--w80);
-  padding: 14px 18px; border-radius: 14px;
-  text-decoration: none;
-  transition: color .24s cubic-bezier(.2,.7,.2,1), background .24s cubic-bezier(.2,.7,.2,1);
-  text-transform: uppercase;
-}
-.nav-menu-overlay a:hover { color: var(--w); background: var(--w06); }
-.nav-menu-overlay a.act { background: color-mix(in srgb, var(--acc) 16%, transparent); color: var(--w); }
-.nav-menu-overlay .nav-overlay-avail {
-  display: flex; align-items: center; gap: 6px;
-  padding: 10px 18px;
-  font-family: var(--mono); font-size: 12px; letter-spacing: .04em;
-  color: var(--green);
-}
-
-/* ── Tier 1: ≤1000px — Shrink all pills, switch center to flex flow ──
-   (was ≤860px; the absolutely-centred pill collided with the logo/right pill between 861 and 1000px) */
-@media (max-width: 1000px) {
-  #shared-nav .nav-links {
-    position: static;
-    transform: none;
-    margin: 0 auto;
-    flex-shrink: 1;
-    min-width: 0;
-  }
-  #shared-nav.nav-hidden .nav-links {
-    transform: scale(0);
-  }
-  .nav-logo {
-    padding: 8px 14px;
-  }
-  .nav-logo-name {
-    font-size: 18px;
-  }
-  #shared-nav .nav-links a {
-    padding: 6px 10px;
-    font-size: 12px;
-  }
-  .nav-avail-txt { display: none; }
-  .nav-avail-item { padding: 6px 8px 6px 8px; margin-left: 0; }
-  .nav-search-input { width: 60px; }
-  .nav-search-input:focus { width: 90px; }
-  .nav-right {
-    gap: 2px;
-    padding: 4px 6px;
-  }
-}
-
-/* ── Tier 2: ≤560px — Collapse center pill to hamburger ── */
-@media (max-width: 560px) {
-  .nav-logo { display: none; }
-  #shared-nav { padding-left: 8px; padding-right: 8px; margin-bottom: -64px; } /* 14 + 50 - 64 = 0 */
-  .nav-menu-btn { display: flex; }
-  #shared-nav .nav-links { display: none; }
-  .nav-search-input { display: none; }
-  .nav-search { padding: 4px 4px; border-right: none; margin-right: 0; }
-  .nav-lang { display: none; }
-  .nav-right { gap: 2px; padding: 4px 5px; }
-}
-
-/* ── Tier 3: ≤380px — Extra small phones ── */
-@media (max-width: 380px) {
-  .nav-logo { padding: 6px 10px; }
-  .nav-logo-name { font-size: 16px; }
-  .nav-search { display: none; }
-  .nav-right { padding: 3px 4px; }
-  .nav-menu-overlay { left: 8px; right: 8px; }
-}
 
 /* ── main no longer needs huge top padding — hero handles it ── */
 main {
@@ -1012,7 +815,6 @@ main {
 @media (max-width: 860px) {
   .hero { min-height: 80vh; }
   .hero-name { letter-spacing: -3px; }
-  .nav-avail { display: none; }
 
   main {
     padding: 32px 16px 100px;
@@ -1055,7 +857,6 @@ main {
 @media (max-width: 560px) {
   .hero { min-height: 75vh; padding: 70px 16px 0; }
   .hero-role { font-size: 10px; letter-spacing: 1.5px; gap: 8px 10px; }
-  .nav-lang { display: none; }
 
   /* ── Homepage: identity-first hero layout ── */
   #home-clock { display: none !important; }
@@ -2748,15 +2549,6 @@ footer {
 #pg-home main { padding-top: 76px; }
 #pg-projects main, #pg-about main { padding-top: 76px; }
 
-html.light .nav-search { color: var(--w60); border-right-color: rgba(13,13,15,.08); }
-html.light .nav-search-input { color: var(--w); }
-html.light .nav-search-input::placeholder { color: var(--w60); }
-html.light .nav-lang,
-html.light .nav-theme { color: var(--w60); }
-html.light .nav-lang:hover,
-html.light .nav-theme:hover { color: var(--w); background: rgba(0,0,0,.05); }
-html.light .nav-avail-dot { background: var(--green); }
-html.light .nav-avail-txt { color: var(--green); }
 html.light .skill-track { background: rgba(0,0,0,.08); }
 html.light .skill-fill { background: var(--w30); }
 html.light .cc { background: rgba(0,0,0,.08); }
@@ -3715,6 +3507,8 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
   <symbol id="i-laptop" viewBox="0 0 24 24"><rect x="5" y="5" width="14" height="10" rx="1.5"/><path d="M2 19h20"/></symbol>
   <symbol id="i-layers" viewBox="0 0 24 24"><path d="m12 3 9 5-9 5-9-5zM3 13l9 5 9-5"/></symbol>
   <symbol id="i-list" viewBox="0 0 24 24"><path d="M8 6h12M8 12h12M8 18h12M4 6h.01M4 12h.01M4 18h.01"/></symbol>
+  <symbol id="i-home" viewBox="0 0 24 24"><path d="M4 11 12 4l8 7v9H4z"/><path d="M10 20v-6h4v6"/></symbol>
+  <symbol id="i-map" viewBox="0 0 24 24"><path d="M9 4 3 6.5v13L9 17l6 3 6-2.5v-13L15 7z"/><path d="M9 4v13M15 7v13"/></symbol>
   <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s7-6 7-11a7 7 0 0 0-14 0c0 5 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></symbol>
   <symbol id="i-lock" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol>
   <symbol id="i-pie" viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 9 9h-9z"/><path d="M15 3.5A9 9 0 0 1 20.5 9H15z"/></symbol>
@@ -3744,62 +3538,44 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
     <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
   </symbol>
 </svg>
-<!-- 3 Floating Glass Pills -->
-<nav id="shared-nav">
-  <a href="#home" class="nav-logo" onclick="showPage('home')">
-    <div class="nav-logo-name">
-      <span class="hn-script">V</span><span class="hn-sans">ishal</span>&thinsp;<span class="hn-script">K</span><span class="hn-sans">atariya</span>
+<!-- NavPill: sticky topbar, three glass pills (brand · links · tools) -->
+<header class="top" id="shared-nav">
+  <div class="tb">
+    <a href="#home" class="pill brand" aria-label="Vishal Katariya, home" onclick="showPage('home')">
+      <span class="nav-logo-name">
+        <span class="hn-script">V</span><span class="hn-sans">ishal</span>&thinsp;<span class="hn-script">K</span><span class="hn-sans">atariya</span>
+      </span>
+      <img class="nav-logo-mark" src="assets/logo-128.png" alt="" width="28" height="28">
+    </a>
+
+    <nav class="pill links" aria-label="Sections">
+      <a href="#home" aria-label="home" aria-current="true" onclick="showPage('home')"><svg class="i" aria-hidden="true"><use href="#i-home"/></svg><span>home</span></a>
+      <a href="#projects" aria-label="projects" onclick="showPage('projects')"><svg class="i" aria-hidden="true"><use href="#i-box"/></svg><span>projects</span></a>
+      <a href="#roadmap" aria-label="roadmap" onclick="showPage('roadmap')"><svg class="i" aria-hidden="true"><use href="#i-map"/></svg><span>roadmap</span></a>
+      <a href="#about" aria-label="about" onclick="showPage('about')"><svg class="i" aria-hidden="true"><use href="#i-figure"/></svg><span>about</span></a>
+      <span class="nav-avail-item">
+        <span class="nav-avail-dot"></span>
+        <span class="nav-avail-txt">available</span>
+      </span>
+    </nav>
+
+    <div class="pill tools">
+      <div class="tbtn srch">
+        <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true" style="flex-shrink:0;opacity:.45">
+          <circle cx="5.2" cy="5.2" r="3.8" stroke="currentColor" stroke-width="1.2"/>
+          <line x1="8" y1="8" x2="11.5" y2="11.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+        </svg>
+        <input class="nav-search-input" placeholder="search…" id="navSearchInput" aria-label="Search the whole page" oninput="runSearch(this.value)">
+        <kbd aria-hidden="true">Ctrl K</kbd>
+      </div>
+      <button class="tbtn nav-lang" id="langBtn" onclick="toggleLang()">EN</button>
+      <button class="tbtn nav-theme" id="themeBtn" onclick="toggleTheme()" title="Toggle theme" aria-label="Toggle theme">
+        <svg width="16" height="16" aria-hidden="true"><use id="theme-ico" href="#ic-moon"></use></svg>
+      </button>
+      <button class="tbtn nav-profile" onclick="showPage('me')" title="Private section" aria-label="Private section"><img class="nav-profile-mark" src="assets/logo-128.png" alt="" width="26" height="26"></button>
     </div>
-    <img class="nav-logo-mark" src="assets/logo-128.png" alt="VK" width="28" height="28">
-  </a>
-
-  <button class="nav-menu-btn" id="navMenuBtn" aria-label="Menu" onclick="toggleMenu()">
-    <svg width="18" height="14" viewBox="0 0 18 14" fill="none" aria-hidden="true">
-      <line x1="1" y1="1" x2="17" y2="1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-      <line x1="1" y1="7" x2="17" y2="7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-      <line x1="1" y1="13" x2="17" y2="13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-    </svg>
-  </button>
-
-  <ul class="nav-links">
-    <li><a href="#home" class="act" onclick="showPage('home')">home</a></li>
-    <li><a href="#projects" onclick="showPage('projects')">projects</a></li>
-    <li><a href="#roadmap" onclick="showPage('roadmap')">roadmap</a></li>
-    <li><a href="#about" onclick="showPage('about')">about</a></li>
-    <li class="nav-avail-item">
-      <span class="nav-avail-dot"></span>
-      <span class="nav-avail-txt">available</span>
-    </li>
-  </ul>
-
-  <div class="nav-right">
-    <div class="nav-search">
-      <svg width="13" height="13" viewBox="0 0 13 13" fill="none" style="flex-shrink:0;opacity:.45">
-        <circle cx="5.2" cy="5.2" r="3.8" stroke="currentColor" stroke-width="1.2"/>
-        <line x1="8" y1="8" x2="11.5" y2="11.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
-      </svg>
-      <input class="nav-search-input" placeholder="search…" id="navSearchInput" aria-label="Search the whole page" oninput="runSearch(this.value)">
-      <kbd aria-hidden="true">Ctrl K</kbd>
-    </div>
-    <button class="nav-lang" id="langBtn" onclick="toggleLang()">EN</button>
-    <button class="nav-theme" id="themeBtn" onclick="toggleTheme()" title="Toggle theme">
-      <svg width="16" height="16" aria-hidden="true"><use id="theme-ico" href="#ic-moon"></use></svg>
-    </button>
-    <button class="nav-profile" onclick="showPage('me')" title="Private section"><img class="nav-profile-mark" src="assets/logo-128.png" alt="VK" width="26" height="26"></button>
   </div>
-</nav>
-
-<!-- Mobile hamburger nav overlay (shown at ≤559px when menu is open) -->
-<div id="navMenuOverlay" class="nav-menu-overlay" aria-hidden="true">
-  <a href="#home" class="act" onclick="showPage('home');closeMenu()">home</a>
-  <a href="#projects" onclick="showPage('projects');closeMenu()">projects</a>
-  <a href="#roadmap" onclick="showPage('roadmap');closeMenu()">roadmap</a>
-  <a href="#about" onclick="showPage('about');closeMenu()">about</a>
-  <div class="nav-overlay-avail">
-    <span class="nav-avail-dot"></span>
-    <span>available</span>
-  </div>
-</div>
+</header>
 
 <!-- Roadmap internal nav (slides in when roadmap page active) -->
 <nav id="roadmap-internal-nav">
@@ -6992,35 +6768,6 @@ const chartObserver = new IntersectionObserver((entries) => {
 const financeChartWrap = document.getElementById('finance-buddy');
 if (financeChartWrap) chartObserver.observe(financeChartWrap);
 
-/* ── Hamburger menu toggle (mobile topbar, ≤559px) ── */
-function openMenu() {
-  const overlay = document.getElementById('navMenuOverlay');
-  const btn = document.getElementById('navMenuBtn');
-  if (overlay) { overlay.classList.add('open'); overlay.setAttribute('aria-hidden', 'false'); }
-  if (btn) btn.classList.add('act');
-}
-function closeMenu() {
-  const overlay = document.getElementById('navMenuOverlay');
-  const btn = document.getElementById('navMenuBtn');
-  if (overlay) { overlay.classList.remove('open'); overlay.setAttribute('aria-hidden', 'true'); }
-  if (btn) btn.classList.remove('act');
-}
-function toggleMenu() {
-  const overlay = document.getElementById('navMenuOverlay');
-  if (overlay && overlay.classList.contains('open')) closeMenu();
-  else openMenu();
-}
-document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeMenu(); });
-// Close menu when clicking outside
-document.addEventListener('click', function(e) {
-  const overlay = document.getElementById('navMenuOverlay');
-  const btn = document.getElementById('navMenuBtn');
-  if (overlay && overlay.classList.contains('open') &&
-      !overlay.contains(e.target) && !btn.contains(e.target)) {
-    closeMenu();
-  }
-});
-
 function showPage(id, opts) {
   const options = opts || {};
   const valid = ['home','projects','roadmap','about','me'];
@@ -7053,14 +6800,14 @@ function showPage(id, opts) {
     roadmapNav.classList.remove('nav-visible');
   }
   // Update shared nav active link
-  document.querySelectorAll('#shared-nav .nav-links a').forEach(a => a.classList.remove('act'));
-  const navLink = document.querySelector('#shared-nav .nav-links a[href="#' + id + '"]');
-  if (navLink) navLink.classList.add('act');
-  // Sync mobile overlay active link
-  document.querySelectorAll('#navMenuOverlay a').forEach(a => a.classList.remove('act'));
-  const overlayLink = document.querySelector('#navMenuOverlay a[href="#' + id + '"]');
-  if (overlayLink) overlayLink.classList.add('act');
-  closeMenu();
+  document.querySelectorAll('#shared-nav .links a').forEach(a => a.removeAttribute('aria-current'));
+  const navLink = document.querySelector('#shared-nav .links a[href="#' + id + '"]');
+  if (navLink) {
+    navLink.setAttribute('aria-current', 'true');
+    // the links pill scrolls sideways on small screens: keep the active page in view
+    const strip = navLink.parentElement;
+    strip.scrollLeft = Math.max(0, navLink.offsetLeft - (strip.clientWidth - navLink.offsetWidth) / 2);
+  }
   const progressWidget = document.getElementById('progress-widget');
   if (progressWidget) {
     progressWidget.style.display = id === 'roadmap' && progressWidget.classList.contains('show') ? 'block' : 'none';
