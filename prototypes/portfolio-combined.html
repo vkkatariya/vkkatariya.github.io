@@ -6537,7 +6537,7 @@ function buildMindMap() {
       const leaf = el('g', { class: 'mm-leaf', style: '--h:' + ph.hue, role: 'button', tabindex: '0', 'aria-label': `${t.name}, open topic ${t.id} of 11` }, nodes);
       el('rect', { x: lx - 88, y: ly - 27, width: 176, height: 54, rx: 10 }, leaf);
       el('text', { class: 'mm-num', x: lx, y: ly - 12 }, leaf).textContent = String(t.id).padStart(2, '0');
-      const lines = wrapLabel(t.name, 24).slice(0, 2);
+      const lines = wrapLabel(t.name, 21).slice(0, 2);
       lines.forEach((ln, k) => { el('text', { x: lx, y: ly + (lines.length === 1 ? 8 : 4) + k * 14 }, leaf).textContent = ln; });
       leaf.addEventListener('click', () => openModal(t.id));
       leaf.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openModal(t.id); } });

@@ -62,7 +62,9 @@
 - **4.1 Mind map:** new "mind map" section under the timeline (`#mindmap-root`, built from `TOPICS`): radial SVG ≥900px (centre → 4 phase nodes → 11 topic nodes in the phase hue, keyboard-operable, opens the topic modal), phase cards (`.mapcards`) below 900px. Each topic's expanded modal also gets a "Mind map" tree (topic → learn categories → items). Interpretation note: the kickoff says "under the timeline and when expanding 11 core topics"; I read the second part as the topic modal.
 - **5 About:** the bio is plain text beside the photo; the `.intro` card wrapper/outline is gone.
 
-**Verification:** `npm run lint:html` 0 errors; `npm test` 39/39 (7 new: nav hues, search collapse, neutral home widgets, free `.pi`, About intro, mind map wide + narrow); overflow/clip pass on 5 pages × 4 widths × 2 themes (only the three known home-tile clips, no horizontal overflow); contrast 0 failures; radii clean; focus-ring audit 0 missing (mind-map leaves got a real focus outline).
+**Visual matrix:** screenshots of all 5 pages (plus the roadmap mind map) at 1920 / 860 / 560 / 390 in dark and light (40 + 8 frames, contact sheets reviewed); no page errors, no horizontal overflow. One polish fix from it: mind-map labels wrap at 21 characters so "Programming Fundamentals" no longer touches its box.
+
+**Verification:** `npm run lint:html` 0 errors; `npm test` 39/39 (the kickoff's 27 originals + the 5 review tests + 7 new: nav hues, search collapse, neutral home widgets, free `.pi`, About intro, mind map wide + narrow); overflow/clip pass on 5 pages × 4 widths × 2 themes (only the three known home-tile clips, no horizontal overflow); contrast 0 failures; radii clean; focus-ring audit 0 missing (mind-map leaves got a real focus outline).
 
 **State:** branch `feat/design-system-migration-final-fixes`, PR to `dev`.
 
