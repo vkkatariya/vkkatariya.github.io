@@ -238,15 +238,15 @@ html.light body::before {
 .nav-logo {
   display: flex; align-items: center; flex-shrink: 0;
   padding: 10px 20px;
-  background: linear-gradient(135deg, rgba(255,255,255,.10) 0%, rgba(255,255,255,.04) 100%);
-  backdrop-filter: blur(40px) saturate(180%); -webkit-backdrop-filter: blur(40px) saturate(180%);
-  border: 1px solid rgba(255,255,255,.16);
+  background: linear-gradient(180deg, var(--glass-top), var(--glass-bottom));
+  backdrop-filter: blur(28px) saturate(1.6); -webkit-backdrop-filter: blur(28px) saturate(1.6);
+  border: 1px solid var(--glass-border);
   border-radius: 100px;
-  box-shadow: 0 4px 28px rgba(0,0,0,.55), 0 1px 0 rgba(255,255,255,.12) inset;
+  box-shadow: var(--shadow);
   text-decoration: none; cursor: pointer;
   transition: box-shadow .2s;
 }
-.nav-logo:hover { box-shadow: 0 6px 32px rgba(0,0,0,.65), 0 1px 0 rgba(255,255,255,.16) inset; }
+.nav-logo:hover { box-shadow: var(--shadow), 0 0 0 1px var(--w12); }
 .nav-logo-name {
   font-family: 'Syne', sans-serif; font-size: 18px; line-height: 1; white-space: nowrap; letter-spacing: -.3px;
 }
@@ -311,23 +311,28 @@ html.light body::before {
 /* CENTER — nav pill (home/projects/roadmap/about + available dot) */
 .nav-links {
   position: absolute; left: 50%; transform: translateX(-50%);
-  display: flex; align-items: center; gap: 0; list-style: none;
-  background: linear-gradient(135deg, rgba(255,255,255,.10) 0%, rgba(255,255,255,.04) 100%);
-  backdrop-filter: blur(40px) saturate(180%); -webkit-backdrop-filter: blur(40px) saturate(180%);
-  border: 1px solid rgba(255,255,255,.16);
-  border-radius: 100px; padding: 5px 5px;
-  box-shadow: 0 4px 28px rgba(0,0,0,.55), 0 1px 0 rgba(255,255,255,.12) inset;
+  display: flex; align-items: center; gap: 4px; list-style: none;
+  background: linear-gradient(180deg, var(--glass-top), var(--glass-bottom));
+  backdrop-filter: blur(28px) saturate(1.6); -webkit-backdrop-filter: blur(28px) saturate(1.6);
+  border: 1px solid var(--glass-border);
+  border-radius: 100px; padding: 5px 8px;
+  box-shadow: var(--shadow);
 }
 .nav-links a {
   display: flex; align-items: center;
-  font-family: var(--font-ndot); font-size: 14px; letter-spacing: 1.2px;
-  color: rgba(241,240,246,.38); background: none;
-  border: none; padding: 7px 16px; border-radius: 100px;
-  text-decoration: none; transition: color .13s, background .13s; white-space: nowrap;
+  font-family: var(--sans); font-weight: 500; font-size: 14.5px; letter-spacing: .06em;
+  color: var(--w80); background: none;
+  border: 1px solid transparent; padding: 9px 14px; border-radius: 100px;
+  text-decoration: none; transition: color .24s cubic-bezier(.2,.7,.2,1), background .24s cubic-bezier(.2,.7,.2,1), border-color .24s cubic-bezier(.2,.7,.2,1); white-space: nowrap;
   text-transform: uppercase;
 }
-.nav-links a:hover { color: rgba(241,240,246,.8); background: rgba(255,255,255,.07); }
-.nav-links a.act { background: rgba(255,255,255,.12); color: var(--w); box-shadow: 0 1px 8px rgba(0,0,0,.4), 0 1px 0 rgba(255,255,255,.1) inset; }
+.nav-links a:hover { color: var(--w); background: var(--w06); }
+/* active page = hue-tinted pill (16% fill / 50% border); defaults to --acc, hue classes may set --h */
+.nav-links a.act {
+  background: color-mix(in srgb, var(--h, var(--acc)) 16%, transparent);
+  border-color: color-mix(in srgb, var(--h, var(--acc)) 50%, transparent);
+  color: var(--w);
+}
 
 /* available dot — inside center pill */
 .nav-avail-item {
@@ -345,46 +350,53 @@ html.light body::before {
   50% { box-shadow: 0 0 2px var(--green); }
 }
 .nav-avail-txt {
-  font-family: var(--font-ndot); font-size: 13px; letter-spacing: .5px; color: var(--green);
+  font-family: var(--mono); font-size: 12px; letter-spacing: .04em; color: var(--green);
 }
 
 /* RIGHT — controls pill (search + lang + theme + profile) */
 .nav-right {
   display: flex; align-items: center; gap: 2px;
   margin-left: auto;
-  background: linear-gradient(135deg, rgba(255,255,255,.13) 0%, rgba(255,255,255,.06) 100%);
-  backdrop-filter: blur(56px) saturate(200%); -webkit-backdrop-filter: blur(56px) saturate(200%);
-  border: 1px solid rgba(255,255,255,.18);
+  background: linear-gradient(180deg, var(--glass-top), var(--glass-bottom));
+  backdrop-filter: blur(28px) saturate(1.6); -webkit-backdrop-filter: blur(28px) saturate(1.6);
+  border: 1px solid var(--glass-border);
   border-radius: 100px; padding: 5px 6px 5px 8px;
-  box-shadow: 0 4px 28px rgba(0,0,0,.55), 0 1px 0 rgba(255,255,255,.14) inset, 0 0 0 1px rgba(255,255,255,.04);
+  box-shadow: var(--shadow);
 }
 .nav-search {
   display: flex; align-items: center; gap: 7px;
   padding: 4px 10px 4px 6px;
-  border-right: 1px solid rgba(255,255,255,.09); margin-right: 4px;
-  color: rgba(241,240,246,.45);
+  border-right: 1px solid var(--w12); margin-right: 4px;
+  color: var(--w60);
 }
+.nav-search:focus-within { outline: 2px solid var(--acc); outline-offset: 3px; border-radius: 100px; }
+.nav-search kbd {
+  font-family: var(--mono); font-size: 11px; line-height: 1; letter-spacing: 0;
+  color: var(--w60); background: var(--bg3);
+  border: 1px solid var(--w12); border-radius: 7px; padding: 3px 7px; white-space: nowrap;
+}
+@media (max-width: 1100px) { .nav-search kbd { display: none; } }
 .nav-search-input {
   background: none; border: none; outline: none;
-  font-family: var(--font-ndot); font-size: 13px; letter-spacing: 0.4px; color: var(--w);
+  font-family: var(--mono); font-size: 12px; letter-spacing: 0.4px; color: var(--w);
   width: 90px; transition: width .25s ease;
   letter-spacing: .3px;
 }
 .nav-search-input:focus { width: 140px; }
-.nav-search-input::placeholder { color: rgba(241,240,246,.28); }
+.nav-search-input::placeholder { color: var(--w30); }
 .nav-lang {
-  font-family: var(--font-ndot); font-size: 13px; letter-spacing: 1.5px;
-  color: rgba(241,240,246,.45); background: none; border: none; cursor: pointer;
+  font-family: var(--mono); font-size: 12px; letter-spacing: 1.5px;
+  color: var(--w60); background: none; border: none; cursor: pointer;
   padding: 6px 10px; border-radius: 100px; transition: all .13s; height: 32px;
 }
-.nav-lang:hover { background: rgba(255,255,255,.08); color: var(--w); }
+.nav-lang:hover { background: var(--w06); color: var(--w); }
 .nav-theme {
   width: 32px; height: 32px; border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
   background: none; border: none; cursor: pointer;
-  color: rgba(241,240,246,.45); transition: all .13s;
+  color: var(--w60); transition: all .13s;
 }
-.nav-theme:hover { background: rgba(255,255,255,.08); color: var(--w); }
+.nav-theme:hover { background: var(--w06); color: var(--w); }
 .nav-profile {
   width: 34px; height: 34px; border-radius: 50%;
   background: linear-gradient(135deg, var(--acc) 0%, var(--green) 100%);
@@ -408,18 +420,18 @@ html.light body::before {
 /* ── right pill controls ── */
 .nav-right {
   display: flex; align-items: center; gap: 4px;
-  background: linear-gradient(135deg, rgba(255,255,255,.13) 0%, rgba(255,255,255,.06) 100%);
-  backdrop-filter: blur(56px) saturate(200%); -webkit-backdrop-filter: blur(56px) saturate(200%);
-  border: 1px solid rgba(255,255,255,.18); border-radius: 100px; padding: 5px 8px;
-  box-shadow: 0 4px 28px rgba(0,0,0,.55), 0 1px 0 rgba(255,255,255,.14) inset, 0 0 0 1px rgba(255,255,255,.04);
+  background: linear-gradient(180deg, var(--glass-top), var(--glass-bottom));
+  backdrop-filter: blur(28px) saturate(1.6); -webkit-backdrop-filter: blur(28px) saturate(1.6);
+  border: 1px solid var(--glass-border); border-radius: 100px; padding: 5px 8px;
+  box-shadow: var(--shadow);
 }
 .nav-theme {
   width: 32px; height: 32px; border-radius: 8px;
   display: flex; align-items: center; justify-content: center;
   background: none; border: none; cursor: pointer;
-  color: rgba(241,240,246,.45); transition: all .13s;
+  color: var(--w60); transition: all .13s;
 }
-.nav-theme:hover { background: rgba(255,255,255,.08); color: var(--w); }
+.nav-theme:hover { background: var(--w06); color: var(--w); }
 .nav-profile {
   width: 34px; height: 34px; border-radius: 50%;
   background: linear-gradient(135deg, var(--acc) 0%, var(--green) 100%);
@@ -440,33 +452,46 @@ html.light body::before {
    Date: 2026-06-26 · Branch: feat/topbar-mobile-first
    ═══════════════════════════════════════════════ */
 
+/* 1001–1100px: centre pill is absolutely centred and runs into the logo/right pill — drop the
+   "available" text (the dot stays), same as the ≤860 tier does */
+@media (min-width: 1001px) and (max-width: 1100px) {
+  .nav-avail-txt { display: none; }
+  .nav-avail-item { padding: 6px 8px; margin-left: 0; }
+}
+
+/* NavPill: 54px pills (50px on small screens), shared nav only */
+#shared-nav .nav-logo, #shared-nav .nav-links, #shared-nav .nav-right { height: 54px; box-sizing: border-box; }
+@media (max-width: 560px) {
+  #shared-nav .nav-right, #shared-nav .nav-menu-btn { height: 50px; }
+}
+
 /* ── Hamburger button — hidden by default, shown at ≤559px ── */
 .nav-menu-btn {
   display: none;
   align-items: center; justify-content: center;
-  width: 40px; height: 40px;
-  background: linear-gradient(135deg, rgba(255,255,255,.10) 0%, rgba(255,255,255,.04) 100%);
-  backdrop-filter: blur(40px) saturate(180%); -webkit-backdrop-filter: blur(40px) saturate(180%);
-  border: 1px solid rgba(255,255,255,.16);
+  width: 50px; height: 50px;
+  background: linear-gradient(180deg, var(--glass-top), var(--glass-bottom));
+  backdrop-filter: blur(28px) saturate(1.6); -webkit-backdrop-filter: blur(28px) saturate(1.6);
+  border: 1px solid var(--glass-border);
   border-radius: 100px;
-  box-shadow: 0 4px 28px rgba(0,0,0,.55), 0 1px 0 rgba(255,255,255,.12) inset;
+  box-shadow: var(--shadow);
   cursor: pointer; flex-shrink: 0;
-  color: rgba(241,240,246,.45);
+  color: var(--w60);
   transition: color .13s, background .13s;
 }
-.nav-menu-btn:hover { color: var(--w); background: rgba(255,255,255,.07); }
-.nav-menu-btn.act { background: rgba(255,255,255,.12); color: var(--w); }
+.nav-menu-btn:hover { color: var(--w); background: var(--w06); }
+.nav-menu-btn.act { background: color-mix(in srgb, var(--acc) 16%, transparent); border-color: color-mix(in srgb, var(--acc) 50%, transparent); color: var(--w); }
 
 /* ── Mobile nav overlay — glass panel below topbar ── */
 .nav-menu-overlay {
   position: fixed;
   top: 62px; left: 16px; right: 16px;
   z-index: 199;
-  background: linear-gradient(135deg, rgba(255,255,255,.10) 0%, rgba(255,255,255,.04) 100%);
-  backdrop-filter: blur(40px) saturate(180%); -webkit-backdrop-filter: blur(40px) saturate(180%);
-  border: 1px solid rgba(255,255,255,.16);
+  background: linear-gradient(180deg, var(--glass-top), var(--glass-bottom));
+  backdrop-filter: blur(28px) saturate(1.6); -webkit-backdrop-filter: blur(28px) saturate(1.6);
+  border: 1px solid var(--glass-border);
   border-radius: 20px;
-  box-shadow: 0 8px 40px rgba(0,0,0,.6), 0 1px 0 rgba(255,255,255,.12) inset;
+  box-shadow: var(--shadow);
   padding: 8px;
   list-style: none; margin: 0;
   opacity: 0; pointer-events: none;
@@ -479,24 +504,25 @@ html.light body::before {
 }
 .nav-menu-overlay a {
   display: flex; align-items: center;
-  font-family: var(--font-ndot); font-size: 15px; letter-spacing: 1.2px;
-  color: rgba(241,240,246,.5);
+  font-family: var(--sans); font-weight: 500; font-size: 15px; letter-spacing: .06em;
+  color: var(--w80);
   padding: 14px 18px; border-radius: 14px;
   text-decoration: none;
   transition: color .13s, background .13s;
   text-transform: uppercase;
 }
-.nav-menu-overlay a:hover { color: rgba(241,240,246,.8); background: rgba(255,255,255,.07); }
-.nav-menu-overlay a.act { background: rgba(255,255,255,.12); color: var(--w); }
+.nav-menu-overlay a:hover { color: var(--w); background: var(--w06); }
+.nav-menu-overlay a.act { background: color-mix(in srgb, var(--acc) 16%, transparent); color: var(--w); }
 .nav-menu-overlay .nav-overlay-avail {
   display: flex; align-items: center; gap: 6px;
   padding: 10px 18px;
-  font-family: var(--font-ndot); font-size: 13px; letter-spacing: .5px;
+  font-family: var(--mono); font-size: 12px; letter-spacing: .04em;
   color: var(--green);
 }
 
-/* ── Tier 1: ≤860px — Shrink all pills, switch center to flex flow ── */
-@media (max-width: 860px) {
+/* ── Tier 1: ≤1000px — Shrink all pills, switch center to flex flow ──
+   (was ≤860px; the absolutely-centred pill collided with the logo/right pill between 861 and 1000px) */
+@media (max-width: 1000px) {
   #shared-nav .nav-links {
     position: static;
     transform: none;
@@ -547,24 +573,6 @@ html.light body::before {
   .nav-right { padding: 3px 4px; }
   .nav-menu-overlay { left: 8px; right: 8px; }
 }
-
-/* ── Light mode overrides for responsive topbar ── */
-html.light .nav-menu-btn {
-  background: linear-gradient(135deg, rgba(255,255,255,.78) 0%, rgba(245,245,245,.72) 100%);
-  border-color: rgba(13,13,15,.12);
-  box-shadow: 0 4px 24px rgba(0,0,0,.10), 0 1px 0 rgba(255,255,255,.95) inset;
-  color: rgba(13,13,15,.45);
-}
-html.light .nav-menu-btn:hover { color: var(--w); background: rgba(0,0,0,.05); }
-html.light .nav-menu-btn.act { background: rgba(0,0,0,.08); color: var(--w); }
-html.light .nav-menu-overlay {
-  background: linear-gradient(135deg, rgba(255,255,255,.85) 0%, rgba(245,245,245,.78) 100%);
-  border-color: rgba(13,13,15,.12);
-  box-shadow: 0 8px 40px rgba(0,0,0,.12), 0 1px 0 rgba(255,255,255,.95) inset;
-}
-html.light .nav-menu-overlay a { color: rgba(13,13,15,.45); }
-html.light .nav-menu-overlay a:hover { color: rgba(13,13,15,.8); background: rgba(0,0,0,.05); }
-html.light .nav-menu-overlay a.act { background: rgba(0,0,0,.08); color: var(--w); }
 
 /* ── main no longer needs huge top padding — hero handles it ── */
 main {
@@ -1386,11 +1394,11 @@ footer {
 }
 
 #pg-home .about-section {
-  background: var(--glass-bg);
-  backdrop-filter: blur(40px) saturate(180%);
-  -webkit-backdrop-filter: blur(40px) saturate(180%);
+  background: linear-gradient(180deg, var(--glass-top), var(--glass-bottom));
+  backdrop-filter: blur(28px) saturate(1.6);
+  -webkit-backdrop-filter: blur(28px) saturate(1.6);
   border: 1px solid var(--glass-border);
-  box-shadow: var(--glass-shadow);
+  box-shadow: var(--shadow);
 }
 
 .about-grid{
@@ -2997,20 +3005,10 @@ html.light #pg-about .contact-card:nth-of-type(4) .cc-icon { color: var(--acc); 
 #pg-home main { padding-top: 76px; }
 #pg-projects main, #pg-about main { padding-top: 76px; }
 
-html.light .nav-logo,
-html.light .nav-links,
-html.light .nav-right,
 html.light #roadmap-internal-nav {
   background: linear-gradient(135deg, rgba(255,255,255,.78) 0%, rgba(245,245,245,.72) 100%);
   border-color: rgba(13,13,15,.12);
   box-shadow: 0 4px 24px rgba(0,0,0,.10), 0 1px 0 rgba(255,255,255,.95) inset;
-}
-html.light .nav-right {
-  border-radius: 100px;
-  background: linear-gradient(135deg, rgba(255,255,255,.85) 0%, rgba(245,245,245,.78) 100%);
-  backdrop-filter: blur(56px) saturate(200%); -webkit-backdrop-filter: blur(56px) saturate(200%);
-  border-color: rgba(13,13,15,.14);
-  box-shadow: 0 4px 28px rgba(0,0,0,.12), 0 1px 0 rgba(255,255,255,.95) inset, 0 0 0 1px rgba(255,255,255,.20);
 }
 html.light #roadmap-internal-nav .nav-logo,
 html.light #roadmap-internal-nav .nav-links {
@@ -3024,9 +3022,6 @@ html.light #roadmap-internal-nav .nav-logo { color: var(--w); }
 html.light #roadmap-internal-nav .nav-links a { color: rgba(13,13,15,.45); }
 html.light #roadmap-internal-nav .nav-links a:hover { color: rgba(13,13,15,.8); background: rgba(0,0,0,.05); }
 html.light #roadmap-internal-nav .nav-links a.active { background: rgba(0,0,0,.08); color: var(--w); }
-html.light .nav-links a { color: rgba(13,13,15,.45); }
-html.light .nav-links a:hover { color: rgba(13,13,15,.8); background: rgba(0,0,0,.05); }
-html.light .nav-links a.act { background: rgba(0,0,0,.08); color: var(--w); }
 html.light .nav-search { color: rgba(13,13,15,.45); border-right-color: rgba(13,13,15,.08); }
 html.light .nav-search-input { color: var(--w); }
 html.light .nav-search-input::placeholder { color: rgba(13,13,15,.32); }
@@ -3325,49 +3320,83 @@ html.light footer.roadmap-footer a { color: var(--w); }
   transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
 }
 
-/* --- Homepage widgets --- */
+/* --- Homepage: Widget zone (neumorphic dashboard tiles) ---
+   The 12 .w tiles use the Widget surface: bg2 fill, dual shadow (--shadow + inset highlight), 28px radius.
+   No glass, no blur (Widget card: never mix glass and widget on one tile). The .glass class on a few
+   tiles is inert on this page. Project cards + timeline are GlassCards on the glass tokens. --- */
 #pg-home .w,
+#pg-home .w.glass,
+#pg-home .w.inv,
+#pg-home .about-contact {
+  background: var(--bg2);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border: 1px solid var(--w12);
+  border-radius: 28px;
+  box-shadow: var(--shadow), inset 0 1px 0 var(--w06);
+}
+#pg-home .w.inv { color: var(--w80); }
+
 #pg-home .pcard,
 #pg-home .timeline {
-  background: var(--glass-bg);
-  backdrop-filter: blur(40px) saturate(180%);
-  -webkit-backdrop-filter: blur(40px) saturate(180%);
+  background: linear-gradient(180deg, var(--glass-top), var(--glass-bottom));
+  backdrop-filter: blur(28px) saturate(1.6);
+  -webkit-backdrop-filter: blur(28px) saturate(1.6);
   border: 1px solid var(--glass-border);
-  box-shadow: var(--glass-shadow);
+  box-shadow: var(--shadow);
 }
 
-/* Inverted contact widget keeps dark text but uses the same glass surface as other widgets */
-#pg-home .w.inv {
-  background: var(--glass-bg);
-  color: #e8e8e8;
-  border: 1px solid var(--glass-border);
-  box-shadow: var(--glass-shadow);
+/* Widget hover: the one place the overshoot spring belongs (.34,1.46,.64,1). The global
+   `.w:hover { ... !important }` rule is out-ranked here by the #pg-home id. */
+#pg-home .w:hover {
+  transform: translateY(-3px) scale(1.015) !important;
+  box-shadow: var(--shadow), inset 0 1px 0 var(--w12) !important;
+  border-color: var(--w12) !important;
 }
-#pg-home .w.inv:hover { background: var(--glass-bg); box-shadow: var(--glass-hover-shadow, 0 8px 36px rgba(0,0,0,.55), 0 1px 0 rgba(255,255,255,.12) inset); }
-
-#pg-home .about-contact {
-  background: var(--glass-bg);
-  backdrop-filter: blur(40px) saturate(180%);
-  -webkit-backdrop-filter: blur(40px) saturate(180%);
-  border: 1px solid var(--glass-border);
-  box-shadow: var(--glass-shadow);
-}
-
-/* Homepage widgets already using .glass get the same formula; remove stronger .glass stack */
-#pg-home .w.glass {
-  background: var(--glass-bg);
-  border: 1px solid var(--glass-border);
-  box-shadow: var(--glass-shadow);
+@media (prefers-reduced-motion: no-preference) {
+  #pg-home .w {
+    transition: transform .24s cubic-bezier(.34,1.46,.64,1), box-shadow .24s cubic-bezier(.2,.7,.2,1), border-color .24s cubic-bezier(.2,.7,.2,1) !important;
+  }
 }
 
 /* Homepage all-projects cards hover */
 #pg-home .pcard:hover,
-#pg-home .w:hover,
 #pg-home .timeline:hover {
   transform: translateY(-2px) scale(1.012);
-  box-shadow: var(--glass-hover-shadow);
+  box-shadow: var(--shadow), 0 0 0 1px var(--w12);
   border-color: var(--glass-border);
 }
+
+/* --- Homepage: topic hues (reading order, none reused; Hermes/About/Contact stay neutral) ---
+   13% fill, 42% border, 100% label + icon, all read from --h. */
+#pg-home .w[class*="hue-"] {
+  background:
+    linear-gradient(color-mix(in srgb, var(--h) 13%, transparent), color-mix(in srgb, var(--h) 13%, transparent)),
+    var(--bg2);
+  border-color: color-mix(in srgb, var(--h) 42%, transparent);
+}
+#pg-home .w[class*="hue-"]:hover { border-color: color-mix(in srgb, var(--h) 60%, transparent) !important; }
+#pg-home .w[class*="hue-"] .wlbl-row { color: var(--h); }
+#pg-home .w[class*="hue-"] .wlbl-row svg * { stroke: var(--h); }
+
+/* --- Homepage: type roles. display = titles, mono = labels/chips, read = descriptions, data = numbers.
+   w80 for reading text, w for headings, w60 (not w30) for any text that carries meaning. --- */
+#pg-home .wlbl-row, #pg-home .lbl { font-family: var(--mono); color: var(--w60); }
+#pg-home .sub, #pg-home .chip, #pg-home .sbadge, #pg-home .tl-badge, #pg-home .clock-date { font-family: var(--mono); }
+#pg-home .sub, #pg-home .chip, #pg-home .tl-badge, #pg-home .clock-date, #pg-home .skill-n, #pg-home .si-tag, #pg-home .tl-year { color: var(--w60); }
+#pg-home .skill-n, #pg-home .si-name, #pg-home .si-tag { font-family: var(--mono); }
+#pg-home .clock-h, #pg-home .clock-colon, #pg-home .clock-m, #pg-home .skill-pct,
+#pg-home .proj-num, #pg-home .pcard-num, #pg-home .tl-year { font-family: var(--data); }
+#pg-home .proj-title { font-family: var(--display); font-weight: 800; color: var(--w); }
+#pg-home .pcard-title, #pg-home .tl-title { font-family: var(--sans); font-weight: 700; color: var(--w); }
+#pg-home .sec-head h2 { font-family: var(--mono); color: var(--w60); }
+#pg-home .proj-desc, #pg-home .pcard-desc, #pg-home .tl-desc { font-family: var(--read); color: var(--w80); }
+#pg-home .proj-desc { font-size: 13px; line-height: 1.55; }
+#pg-home .pcard-desc { font-size: 13px; }
+#pg-home .tl-desc { font-size: 14px; letter-spacing: 0; }
+#pg-home .about-bio { font-family: var(--read); font-size: 16px; line-height: 1.6; color: var(--w80); }
+#pg-home .about-bio p { margin-bottom: 12px; }
+#pg-home .about-bio p:last-child { margin-bottom: 0; }
 
 /* --- Projects page widgets --- */
 #pg-projects .pi,
@@ -3475,9 +3504,6 @@ html.light footer.roadmap-footer a { color: var(--w); }
 }
 
 /* --- Light mode overrides for glass readability --- */
-html.light #pg-home .w,
-html.light #pg-home .pcard,
-html.light #pg-home .timeline,
 html.light #pg-projects .pi,
 html.light #pg-projects .vis-wrap,
 html.light #pg-projects .chart-wrap,
@@ -3591,7 +3617,8 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
         <circle cx="5.2" cy="5.2" r="3.8" stroke="currentColor" stroke-width="1.2"/>
         <line x1="8" y1="8" x2="11.5" y2="11.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
       </svg>
-      <input class="nav-search-input" placeholder="search…" id="navSearchInput" oninput="runSearch(this.value)">
+      <input class="nav-search-input" placeholder="search…" id="navSearchInput" aria-label="Search the whole page" oninput="runSearch(this.value)">
+      <kbd aria-hidden="true">Ctrl K</kbd>
     </div>
     <button class="nav-lang" id="langBtn" onclick="toggleLang()">EN</button>
     <button class="nav-theme" id="themeBtn" onclick="toggleTheme()" title="Toggle theme">
@@ -3636,7 +3663,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
   <div class="grid">
 
     <!-- 1 · CLOCK — NothingOS ndot · 2×2 -->
-    <div class="w glass s22" id="home-clock" style="display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden">
+    <div class="w s22 hue-blue" id="home-clock" style="display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden">
       <!-- Animated background clock decoration -->
       <div style="position:absolute;right:-10px;bottom:-10px;pointer-events:none;opacity:.06">
         <svg class="ico-spin" width="140" height="140" viewBox="0 0 140 140" fill="none">
@@ -3671,7 +3698,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
     </div>
 
     <!-- 2 · IDENTITY · 2×1 -->
-    <a class="w s21" id="home-identity" href="#about" onclick="showPage('about');return false;" style="text-decoration:none;color:inherit;display:flex;flex-direction:column;justify-content:space-between;">
+    <a class="w s21 hue-teal" id="home-identity" href="#about" onclick="showPage('about');return false;" style="text-decoration:none;color:inherit;display:flex;flex-direction:column;justify-content:space-between;">
       <div class="wlbl-row">
         <svg class="ico" width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="5" r="2.8" stroke="rgba(255,255,255,.4)" stroke-width="1"/><path d="M2 13 C2 10 4.5 8.5 7 8.5 C9.5 8.5 12 10 12 13" stroke="rgba(255,255,255,.4)" stroke-width="1" stroke-linecap="round" fill="none"/></svg>
         identity
@@ -3692,7 +3719,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
     </a>
 
     <!-- 3 · GITHUB ACTIVITY · 2×1 -->
-    <div class="w glass s21">
+    <div class="w s21 hue-cyan">
       <div class="wlbl-row">
         <svg class="ico" width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="3.5" cy="3" r="1.8" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="none"/><circle cx="3.5" cy="11" r="1.8" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="none"/><circle cx="10.5" cy="5" r="1.8" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="none"/><line x1="3.5" y1="4.8" x2="3.5" y2="9.2" stroke="rgba(255,255,255,.3)" stroke-width="1"/><path d="M3.5 5 C3.5 5 10.5 5 10.5 5" fill="none" stroke="rgba(255,255,255,.3)" stroke-width="1"/></svg>
         github · vkkatariya
@@ -3700,12 +3727,12 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
       <div class="cg" id="cg"></div>
       <div style="display:flex;justify-content:space-between;align-items:baseline;margin-top:4px;">
         <span class="sub">contributions · 2026</span>
-        <span style="font-family:'DM Mono',monospace;font-size:22px;font-weight:500;letter-spacing:-1px;" id="cc">401</span>
+        <span style="font-family:var(--data);font-size:22px;font-weight:500;letter-spacing:-1px;" id="cc">401</span>
       </div>
     </div>
 
     <!-- 4 · SKILLS — neomorphic bars · 1×2 -->
-    <div class="w s12" style="display:flex;flex-direction:column;">
+    <div class="w s12 hue-indigo" style="display:flex;flex-direction:column;">
       <div class="wlbl-row">
         <svg class="ico ico-pulse" width="14" height="14" viewBox="0 0 14 14" fill="none"><polyline points="4.5,2.5 1,7 4.5,11.5" stroke="rgba(255,255,255,.55)" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" fill="none"/><polyline points="9.5,2.5 13,7 9.5,11.5" stroke="rgba(255,255,255,.55)" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" fill="none"/><line x1="8" y1="1.5" x2="6" y2="12.5" stroke="rgba(255,255,255,.25)" stroke-width="1" stroke-linecap="round"/></svg>
         skills
@@ -3723,12 +3750,12 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
     </div>
 
     <!-- 5 · CURRENTLY BUILDING · 1×1 -->
-    <a class="w s11" href="#projects" onclick="showPage('projects');setTimeout(()=>document.getElementById('orlon-bot')?.scrollIntoView({behavior:'smooth'}),500);return false;" style="text-decoration:none;color:inherit;display:flex;flex-direction:column;justify-content:space-between;">
+    <a class="w s11 hue-purple" href="#projects" onclick="showPage('projects');setTimeout(()=>document.getElementById('orlon-bot')?.scrollIntoView({behavior:'smooth'}),500);return false;" style="text-decoration:none;color:inherit;display:flex;flex-direction:column;justify-content:space-between;">
       <div class="wlbl-row">
         <svg class="ico ico-blink" width="13" height="13" viewBox="0 0 13 13" fill="none"><rect x="1" y="1.5" width="11" height="10" rx="2" stroke="rgba(255,255,255,.3)" stroke-width="1" fill="rgba(255,255,255,.03)"/><polyline points="3,6 5.5,8 3,10" stroke="rgba(255,255,255,.6)" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" fill="none"/><line x1="7" y1="10" x2="10.5" y2="10" stroke="rgba(255,255,255,.35)" stroke-width="1" stroke-linecap="round"/></svg>
         now
       </div>
-      <div style="font-size:14px;font-weight:600;line-height:1.4;color:rgba(240,240,240,.85);">orlon-bot<br><span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--w30);font-weight:400">QLoRA · training</span></div>
+      <div style="font-size:14px;font-weight:600;line-height:1.4;color:rgba(240,240,240,.85);">orlon-bot<br><span style="font-family:var(--data);font-size:11px;color:var(--w30);font-weight:400">QLoRA · training</span></div>
       <div class="dp">
         <span class="on"></span><span class="on"></span><span></span><span></span><span></span>
       </div>
@@ -3736,14 +3763,14 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
     </a>
 
     <!-- 6 · HOMELAB STATUS · 1×1 -->
-    <a class="w s11" href="#projects" onclick="showPage('projects');setTimeout(()=>document.getElementById('homelab')?.scrollIntoView({behavior:'smooth'}),500);return false;" style="text-decoration:none;color:inherit;display:flex;flex-direction:column;justify-content:space-between;">
+    <a class="w s11 hue-pink" href="#projects" onclick="showPage('projects');setTimeout(()=>document.getElementById('homelab')?.scrollIntoView({behavior:'smooth'}),500);return false;" style="text-decoration:none;color:inherit;display:flex;flex-direction:column;justify-content:space-between;">
       <div class="wlbl-row">
         <svg class="ico" width="13" height="13" viewBox="0 0 13 13" fill="none"><rect x="1" y="1" width="11" height="3" rx="1.2" stroke="rgba(255,255,255,.3)" stroke-width="1" fill="rgba(255,255,255,.05)"/><rect x="1" y="5" width="11" height="3" rx="1.2" stroke="rgba(255,255,255,.3)" stroke-width="1" fill="rgba(255,255,255,.05)"/><rect x="1" y="9" width="11" height="3" rx="1.2" stroke="rgba(255,255,255,.3)" stroke-width="1" fill="rgba(255,255,255,.05)"/><circle cx="10.5" cy="2.5" r=".9" fill="rgba(61,220,132,.8)" class="ico-blink2"/><circle cx="10.5" cy="6.5" r=".9" fill="rgba(61,220,132,.8)" class="ico-blink3"/></svg>
         homelab
       </div>
       <div style="display:flex;align-items:flex-end;justify-content:space-between">
         <div>
-          <div style="font-family:'DM Mono',monospace;font-size:28px;font-weight:500;color:var(--green);line-height:1;letter-spacing:-1px;">2/3</div>
+          <div style="font-family:var(--data);font-size:28px;font-weight:500;color:var(--green);line-height:1;letter-spacing:-1px;">2/3</div>
           <div class="sub" style="margin-top:4px;">nodes online</div>
         </div>
         <!-- 3D animated server icon -->
@@ -3771,7 +3798,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
     </a>
 
     <!-- 8 · TECH STACK · 1×2 -->
-    <div class="w s12">
+    <div class="w s12 hue-orange">
       <div class="wlbl-row">
         <svg class="ico" width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M6.5 1 L12 3.8 L6.5 6.5 L1 3.8Z" stroke="rgba(255,255,255,.5)" stroke-width="1" stroke-linejoin="round" fill="rgba(255,255,255,.07)"/><path d="M1 7 L6.5 9.7 L12 7" stroke="rgba(255,255,255,.3)" stroke-width="1" stroke-linecap="round" fill="none"/><path d="M1 10 L6.5 12.7 L12 10" stroke="rgba(255,255,255,.18)" stroke-width="1" stroke-linecap="round" fill="none"/></svg>
         stack
@@ -3788,7 +3815,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
     </div>
 
     <!-- 7 · FEATURED PROJECT — Finance Buddy NeoPOP · 2×2 -->
-    <div class="w s22" style="display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden">
+    <div class="w s22 hue-lime" style="display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden">
       <!-- Animated bar chart decoration -->
       <div style="position:absolute;right:14px;top:12px;pointer-events:none">
         <svg class="ico-float" width="44" height="44" viewBox="0 0 48 48" fill="none" style="filter:drop-shadow(0 4px 12px rgba(255,255,255,.08))">
@@ -3833,12 +3860,12 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
     </div>
 
     <!-- 10 · PROJECTS STAT · 1×1 -->
-    <div class="w s11" style="display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden">
+    <div class="w s11 hue-sand" style="display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden">
       <div class="wlbl-row">
         <svg class="ico ico-pulse" width="13" height="13" viewBox="0 0 13 13" fill="none"><rect x=".5" y=".5" width="5" height="5" rx="1.2" stroke="rgba(255,255,255,.4)" stroke-width="1" fill="rgba(255,255,255,.08)"/><rect x="7.5" y=".5" width="5" height="5" rx="1.2" stroke="rgba(255,255,255,.4)" stroke-width="1" fill="rgba(255,255,255,.08)"/><rect x=".5" y="7.5" width="5" height="5" rx="1.2" stroke="rgba(255,255,255,.4)" stroke-width="1" fill="rgba(255,255,255,.08)"/><rect x="7.5" y="7.5" width="5" height="5" rx="1.2" stroke="rgba(255,255,255,.4)" stroke-width="1" fill="rgba(255,255,255,.08)"/></svg>
         projects
       </div>
-      <div style="font-family:'DM Mono',monospace;font-size:58px;font-weight:400;line-height:1;letter-spacing:-3px;">8</div>
+      <div style="font-family:var(--data);font-size:58px;font-weight:400;line-height:1;letter-spacing:-3px;">8</div>
       <div class="sub">shipped</div>
     </div>
 
@@ -3850,20 +3877,20 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
         featured · hermes oauth
       </div>
       <!-- dot-matrix title -->
-      <div style="font-family:'DM Mono',monospace;font-size:17px;font-weight:500;color:var(--green);line-height:1.15;letter-spacing:.3px;text-shadow:0 0 10px rgba(52,199,123,.35)">HERMES ONE<br>OAUTH FORK</div>
+      <div style="font-family:var(--data);font-size:17px;font-weight:500;color:var(--green);line-height:1.15;letter-spacing:.3px;text-shadow:0 0 10px rgba(52,199,123,.35)">HERMES ONE<br>OAUTH FORK</div>
       <!-- stats -->
       <div style="display:flex;gap:10px;align-items:flex-end">
         <div>
-          <div style="font-family:'DM Mono',monospace;font-size:16px;font-weight:500;color:var(--blue);line-height:1">13</div>
-          <div style="font-family:'JetBrains Mono',monospace;font-size:7.5px;letter-spacing:1.2px;color:var(--w30);text-transform:uppercase;margin-top:2px">PRS MERGED</div>
+          <div style="font-family:var(--data);font-size:16px;font-weight:500;color:var(--blue);line-height:1">13</div>
+          <div style="font-family:var(--mono);font-size:7.5px;letter-spacing:1.2px;color:var(--w30);text-transform:uppercase;margin-top:2px">PRS MERGED</div>
         </div>
         <div>
-          <div style="font-family:'DM Mono',monospace;font-size:16px;font-weight:500;color:var(--w60);line-height:1">4</div>
-          <div style="font-family:'JetBrains Mono',monospace;font-size:7.5px;letter-spacing:1.2px;color:var(--w30);text-transform:uppercase;margin-top:2px">PHASES</div>
+          <div style="font-family:var(--data);font-size:16px;font-weight:500;color:var(--w60);line-height:1">4</div>
+          <div style="font-family:var(--mono);font-size:7.5px;letter-spacing:1.2px;color:var(--w30);text-transform:uppercase;margin-top:2px">PHASES</div>
         </div>
         <div>
-          <div style="font-family:'DM Mono',monospace;font-size:16px;font-weight:500;color:var(--green);line-height:1">38/38</div>
-          <div style="font-family:'JetBrains Mono',monospace;font-size:7.5px;letter-spacing:1.2px;color:var(--w30);text-transform:uppercase;margin-top:2px">TESTS PASS</div>
+          <div style="font-family:var(--data);font-size:16px;font-weight:500;color:var(--green);line-height:1">38/38</div>
+          <div style="font-family:var(--mono);font-size:7.5px;letter-spacing:1.2px;color:var(--w30);text-transform:uppercase;margin-top:2px">TESTS PASS</div>
         </div>
       </div>
       <!-- buttons -->
@@ -3874,7 +3901,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
     </div>
 
     <!-- 9 · ABOUT — liquid glass · 2×2 -->
-    <div class="w glass s32" style="display:flex;flex-direction:column;gap:12px;">
+    <div class="w s32" style="display:flex;flex-direction:column;gap:12px;">
       <div class="wlbl-row">
         <svg class="ico" width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="5.5" stroke="rgba(255,255,255,.28)" stroke-width="1"/><circle cx="6.5" cy="4" r=".9" fill="rgba(255,255,255,.6)"/><line x1="6.5" y1="6" x2="6.5" y2="9.5" stroke="rgba(255,255,255,.55)" stroke-width="1.3" stroke-linecap="round"/></svg>
         about
@@ -7040,6 +7067,13 @@ function runSearch(q) {
   // TODO: implement search or remove
   console.log('search', q);
 }
+// Ctrl/Cmd+K focuses the topbar search (the kbd hint in the pill)
+document.addEventListener('keydown', (e) => {
+  if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+    const input = document.getElementById('navSearchInput');
+    if (input && input.offsetParent !== null) { e.preventDefault(); input.focus(); input.select(); }
+  }
+});
 function routeFromHash() {
   const hash = location.hash.replace('#','') || 'home';
   const valid = ['home','projects','roadmap','about','me'];

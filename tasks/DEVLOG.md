@@ -7,6 +7,30 @@
 ---
 
 
+## [2026-10-25] Claude Code (local) — feat/design-system-migration · Phase 1 homepage
+
+**Mode:** Builder
+
+**Did:** Executed `tasks/kickoff-phase1-homepage.md` on top of Phase 0. `prototypes/portfolio-combined.html` only (+ kickoff ticks). Baseline for comparison: 29/29 e2e, htmlhint 0, before/after screenshots at 1440 (dark + light), overflow sweep at 1440/860/390.
+- **NavPill (retuned in place):** the three pills (`.nav-logo`, `.nav-links`, `.nav-right`) + hamburger + mobile overlay now use `linear-gradient(180deg, var(--glass-top), var(--glass-bottom))`, `blur(28px) saturate(1.6)`, `var(--glass-border)`, `var(--shadow)`; 54px tall (50px ≤560). Links: Space Grotesk 500 14.5px uppercase, active page = 16% fill / 50% border tint from `--h` (default `--acc`). Search got `aria-label="Search the whole page"`, a `Ctrl K` kbd hint (hidden ≤1100px) and a real Ctrl/Cmd+K → focus handler; focus ring on the search pill. Labels (lang, available) moved to `--mono`; hard-coded `rgba(241,240,246,…)` colours replaced with tokens; `html.light` nav overrides deleted (tokens drive both themes).
+- **Widgets (neumorphic):** the 12 `#pg-home .w` tiles: `bg2` fill, `var(--shadow)` + inset highlight, `w12` border, 28px radius, no blur. Spring hover `translateY(-3px) scale(1.015)`, `.24s cubic-bezier(.34,1.46,.64,1)`, wrapped in `prefers-reduced-motion: no-preference`; beats the global `.w:hover … !important` via the `#pg-home` id. Project cards (`.pcard`), timeline and `.about-section` are GlassCards on the glass tokens. Dropped the inert `glass` class from the 3 home tiles that carried it; removed the three `html.light #pg-home …` glass overrides.
+- **Hues (9, reading order, none reused):** System Time blue, Identity teal, GitHub cyan, Skills indigo, Now purple, Homelab pink, Stack orange, Featured project lime, Projects stat sand; Hermes, About, Contact neutral. Applied as 13% fill / 42% border / 100% label + icon via `--h`.
+- **Type roles on `#pg-home`:** labels/chips/sub in `--mono`; numbers/clock/stat in `--data` (inline `'DM Mono'`/`'JetBrains Mono'` in the home markup → `var(--data)`/`var(--mono)`); project title `--display` 800; card/timeline titles `--sans` 700; descriptions and the About bio in `--read` (Outfit), About at 16px/1.6; chip/label/skill/tl text raised from w30 to w60 (w30 is decoration only).
+
+**Decided (user, via AskUserQuestion):** NavPill **retuned in place** (stays `position:fixed`, no sticky conversion — `#shared-nav` is global: roadmap morph, hamburger, e2e) and the **V/K Cormorant + Syne wordmark stays** (kickoff's logo tile + Space Grotesk 700 not applied).
+- Moved the "flex-flow" nav tier boundary from ≤860px to ≤1000px. The absolutely-centred pill overlapped the logo/right pill from 861–1000px **before** this phase (baseline measured); now no overlap from 1100px down to 390px. 1001–1100px hides only the "available" text.
+- Kept `.w { line-height: normal }` from Phase 0 (tile heights are fixed).
+
+**State:** 29/29 e2e, htmlhint 0 errors. Verified in the live page: hover transform matrix(1.015,0,0,1.015,0,-3), no backdrop-filter on `.w`, radius 28px, nav 54px with blur(28px) saturate(1.6), 9 hue classes in order, Ctrl+K focuses `#navSearchInput`. Tile overflow metrics match baseline or better (About widget now fits at 1440). Playwright `full_page` screenshots can catch the entry animation mid-flight (System Time looks blank); viewport screenshots and computed opacity confirm it renders.
+Known/left: `runSearch()` is still a `console.log` stub (the aria-label/hint describe intent; no search yet). Hermes widget stats labels are tiny (7.5px, pre-existing). Roadmap's internal nav shares the `.nav-links`/`.nav-logo` classes but its ID-scoped overrides keep it unchanged (checked).
+
+**Next:** Phase 2 (`tasks/kickoff-phase2-projects.md`). Untracked planning docs and `tasks/todo.md` still intentionally not committed.
+
+**Modified:** `prototypes/portfolio-combined.html`, `tasks/DEVLOG.md`
+
+---
+
+
 ## [2026-10-25] Claude Code (local) — feat/design-system-migration · Phase 0 foundation
 
 **Mode:** Builder
