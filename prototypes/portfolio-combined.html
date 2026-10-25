@@ -3566,6 +3566,12 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
 #pg-projects svg [fill^="rgba(255,255,255,.8"], #pg-projects svg [fill^="rgba(255,255,255,.9"] { fill: currentColor !important; }
 #pg-projects .plat-icon, #pg-projects .vis-title, #pg-projects .cs-skills .wlbl-row { color: var(--h); }
 
+/* sprite icons (replace the emoji): line icons in the project hue */
+#pg-projects svg.i { width: 18px; height: 18px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+#pg-projects .feat-icon { color: var(--h); }
+#pg-projects .plat-icon { display: block; margin-bottom: 12px; line-height: 1; }
+#pg-projects .plat-icon svg.i { width: 32px; height: 32px; stroke-width: 1.6; }
+
 /* StatusBadge (verdict badge): 24px circle, status colour + icon. Status colours mark status only. */
 .vb { width: 24px; height: 24px; border-radius: 50%; display: inline-grid; place-items: center; flex: none;
   border: 1px solid currentColor; background: color-mix(in srgb, currentColor 14%, transparent); }
@@ -3713,6 +3719,29 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
 </head>
 <body>
 <svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
+  <symbol id="i-box" viewBox="0 0 24 24"><path d="M3 8 12 3l9 5v8l-9 5-9-5zM3 8l9 5 9-5M12 13v8"/></symbol>
+  <symbol id="i-briefcase" viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2M3 13h18"/></symbol>
+  <symbol id="i-bulb" viewBox="0 0 24 24"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-4 10.5c.7.7 1 1.5 1 2.5h6c0-1 .3-1.8 1-2.5A6 6 0 0 0 12 3z"/></symbol>
+  <symbol id="i-checklist" viewBox="0 0 24 24"><path d="m4 6 1.5 1.5L8 5M4 12l1.5 1.5L8 11M4 18l1.5 1.5L8 17M11 6h9M11 12h9M11 18h9"/></symbol>
+  <symbol id="i-cpu" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M9 2v2M15 2v2M9 20v2M15 20v2M2 9h2M2 15h2M20 9h2M20 15h2"/></symbol>
+  <symbol id="i-figure" viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-8M22 20H2"/></symbol>
+  <symbol id="i-file" viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></symbol>
+  <symbol id="i-funnel" viewBox="0 0 24 24"><path d="M3 5h18l-7 8v6l-4 2v-8z"/></symbol>
+  <symbol id="i-gate" viewBox="0 0 24 24"><path d="M4 20V8M20 20V8M4 8l8-4 8 4M8 20v-9M12 20v-9M16 20v-9"/></symbol>
+  <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/></symbol>
+  <symbol id="i-laptop" viewBox="0 0 24 24"><rect x="5" y="5" width="14" height="10" rx="1.5"/><path d="M2 19h20"/></symbol>
+  <symbol id="i-layers" viewBox="0 0 24 24"><path d="m12 3 9 5-9 5-9-5zM3 13l9 5 9-5"/></symbol>
+  <symbol id="i-list" viewBox="0 0 24 24"><path d="M8 6h12M8 12h12M8 18h12M4 6h.01M4 12h.01M4 18h.01"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol>
+  <symbol id="i-pie" viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 9 9h-9z"/><path d="M15 3.5A9 9 0 0 1 20.5 9H15z"/></symbol>
+  <symbol id="i-repeat" viewBox="0 0 24 24"><path d="M4 12a8 8 0 0 1 14-5l2 2M20 4v5h-5M20 12a8 8 0 0 1-14 5l-2-2M4 20v-5h5"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m21 21-5-5"/></symbol>
+  <symbol id="i-server" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/><path d="M6 6h.01M6 18h.01"/></symbol>
+  <symbol id="i-split" viewBox="0 0 24 24"><path d="M12 3v6M12 9 6 15v6M12 9l6 6v6"/></symbol>
+  <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></symbol>
+  <symbol id="i-terminal" viewBox="0 0 24 24"><path d="m4 17 6-6-6-6M12 19h8"/></symbol>
+  <symbol id="i-trend" viewBox="0 0 24 24"><path d="M3 3v18h18M7 15l4-4 3 3 5-6"/></symbol>
+  <symbol id="i-wallet" viewBox="0 0 24 24"><path d="M3 7a2 2 0 0 1 2-2h13v4"/><path d="M3 7v11a2 2 0 0 0 2 2h14a1 1 0 0 0 1-1V9a1 1 0 0 0-1-1H5a2 2 0 0 1-2-2"/><circle cx="16.5" cy="14" r="1"/></symbol>
   <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></symbol>
   <symbol id="i-bang" viewBox="0 0 24 24"><path d="M12 6v8M12 18h.01"/></symbol>
   <symbol id="ic-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></symbol>
@@ -4413,49 +4442,49 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
     <div class="cs-h">7 tabs · what each one does</div>
     <div class="feat-list" style="margin-bottom:40px">
       <div class="feat">
-        <div class="feat-icon">📊</div>
+        <div class="feat-icon"><svg class="i" aria-hidden="true"><use href="#i-pie"/></svg></div>
         <div>
           <div class="feat-title">Overview</div>
           <div class="feat-desc">KPI sparklines · monthly flow bar+line chart · category donut · My Tracker widget with live add-expense form</div>
         </div>
       </div>
       <div class="feat">
-        <div class="feat-icon">📈</div>
+        <div class="feat-icon"><svg class="i" aria-hidden="true"><use href="#i-trend"/></svg></div>
         <div>
           <div class="feat-title">Trends</div>
           <div class="feat-desc">44-month spending flow · year-by-year grouped bars · stacked category composition chart</div>
         </div>
       </div>
       <div class="feat">
-        <div class="feat-icon">🎯</div>
+        <div class="feat-icon"><svg class="i" aria-hidden="true"><use href="#i-target"/></svg></div>
         <div>
           <div class="feat-title">Budget</div>
           <div class="feat-desc">13 categories · avg monthly bars · over/under visual for each</div>
         </div>
       </div>
       <div class="feat">
-        <div class="feat-icon">💼</div>
+        <div class="feat-icon"><svg class="i" aria-hidden="true"><use href="#i-briefcase"/></svg></div>
         <div>
           <div class="feat-title">Income</div>
           <div class="feat-desc">7 income sources breakdown · employer cards · earned vs passive yearly chart</div>
         </div>
       </div>
       <div class="feat">
-        <div class="feat-icon">🗑️</div>
+        <div class="feat-icon"><svg class="i" aria-hidden="true"><use href="#i-funnel"/></svg></div>
         <div>
           <div class="feat-title">Waste Audit</div>
           <div class="feat-desc">€3,656 avoidable spend identified · category bars · 6 corner-cutting guide cards</div>
         </div>
       </div>
       <div class="feat">
-        <div class="feat-icon">💰</div>
+        <div class="feat-icon"><svg class="i" aria-hidden="true"><use href="#i-wallet"/></svg></div>
         <div>
           <div class="feat-title">Savings Plan</div>
           <div class="feat-desc">3 scenarios (status quo 2047 · budget 2031 · aggressive 2028) · 84-month trajectory chart</div>
         </div>
       </div>
       <div class="feat">
-        <div class="feat-icon">🔍</div>
+        <div class="feat-icon"><svg class="i" aria-hidden="true"><use href="#i-list"/></svg></div>
         <div>
           <div class="feat-title">Transactions</div>
           <div class="feat-desc">44 months navigable · day-grouped Buddy-style list · arc doughnut · live debounced search across all 993 entries</div>
@@ -4579,21 +4608,21 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
         <div class="cs-h">What's in each tab</div>
         <div class="feat-list">
           <div class="feat">
-            <div class="feat-icon">⚡</div>
+            <div class="feat-icon"><svg class="i" aria-hidden="true"><use href="#i-server"/></svg></div>
             <div>
               <div class="feat-title">Infrastructure</div>
               <div class="feat-desc">CPU pie meters · RAM bar · storage verticals · network sparkline · services grid · uptime rings</div>
             </div>
           </div>
           <div class="feat">
-            <div class="feat-icon">🔗</div>
+            <div class="feat-icon"><svg class="i" aria-hidden="true"><use href="#i-layers"/></svg></div>
             <div>
               <div class="feat-title">Services</div>
               <div class="feat-desc">Service registry with URLs, ports, node tags · filter by node · access URL list</div>
             </div>
           </div>
           <div class="feat">
-            <div class="feat-icon">📄</div>
+            <div class="feat-icon"><svg class="i" aria-hidden="true"><use href="#i-file"/></svg></div>
             <div>
               <div class="feat-title">Docs &amp; Blueprints</div>
               <div class="feat-desc">Notion homelab/DIY pages rendered as cards · slide-in detail panel with tabbed sections</div>
@@ -4673,19 +4702,19 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
       <div class="vis-title">three platforms · one experience</div>
       <div class="platform-grid">
         <div class="plat">
-          <span class="plat-icon">🤖</span>
+          <span class="plat-icon"><svg class="i" aria-hidden="true"><use href="#i-box"/></svg></span>
           <div class="plat-name"><svg class="ico" width="14" height="14" viewBox="0 0 13 13" fill="none"><path d="M3.5 5.5h6v5a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1v-5z" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="none"/><path d="M4 5.5a2.5 2.5 0 0 1 5 0" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="none"/><circle cx="5" cy="4" r=".5" fill="rgba(255,255,255,.5)"/><circle cx="8" cy="4" r=".5" fill="rgba(255,255,255,.5)"/></svg>Android</div>
           <div class="plat-lang">Kotlin · Jetpack Compose</div>
           <div class="plat-feature">Native Material You design · full keyboard access · background AI processing</div>
         </div>
         <div class="plat">
-          <span class="plat-icon">🍎</span>
+          <span class="plat-icon"><svg class="i" aria-hidden="true"><use href="#i-laptop"/></svg></span>
           <div class="plat-name"><svg class="ico" width="14" height="14" viewBox="0 0 13 13" fill="none"><path d="M6.5 2C6.5 2 8 1 9 2.5c-1 .5-1.5 1.5-1 2.5.5 1 2 1.5 1.5 4-.5 1.5-2 3-3 3s-1.5-.5-2.5-.5-1.5.5-2.5.5-2-1.5-2.5-3c-.5-2.5 1.5-5 3-5 .8 0 1.5.5 2 .5s1-.5 1.5-.5" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="none"/></svg>macOS</div>
           <div class="plat-lang">Swift · SwiftUI</div>
           <div class="plat-feature">Native Mac experience · menu bar integration · system-wide text access</div>
         </div>
         <div class="plat">
-          <span class="plat-icon">🪟</span>
+          <span class="plat-icon"><svg class="i" aria-hidden="true"><use href="#i-layers"/></svg></span>
           <div class="plat-name"><svg class="ico" width="14" height="14" viewBox="0 0 13 13" fill="none"><path d="M1.5 3.5L5.5 3V6.5H1.5V3.5Z" fill="rgba(255,255,255,.5)"/><path d="M6.5 2.8L11.5 2V6.5H6.5V2.8Z" fill="rgba(255,255,255,.5)"/><path d="M1.5 7.5H5.5V11L1.5 10.5V7.5Z" fill="rgba(255,255,255,.5)"/><path d="M6.5 7.5H11.5V12L6.5 11.2V7.5Z" fill="rgba(255,255,255,.5)"/></svg>Windows</div>
           <div class="plat-lang">C# · WinUI 3</div>
           <div class="plat-feature">Fluent Design · context menu integration · clipboard-aware transforms</div>
@@ -4941,21 +4970,21 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
         <div class="cs-h">Features</div>
     <div class="feat-list" style="margin-bottom:40px">
       <div class="feat">
-        <div class="feat-icon">📐</div>
+        <div class="feat-icon"><svg class="i" aria-hidden="true"><use href="#i-split"/></svg></div>
         <div>
           <div class="feat-title">Hybrid Hosting</div>
           <div class="feat-desc">Public routes on Vercel CDN + private /me/* behind Tailscale + Caddy IP allowlist on athena</div>
         </div>
       </div>
       <div class="feat">
-        <div class="feat-icon">🎨</div>
+        <div class="feat-icon"><svg class="i" aria-hidden="true"><use href="#i-layers"/></svg></div>
         <div>
           <div class="feat-title">3 Design Systems</div>
           <div class="feat-desc">Liquid Glass (nav/frames), Neomorphism (widgets), NeoPOP (CTAs) layered together</div>
         </div>
       </div>
       <div class="feat">
-        <div class="feat-icon">⚡</div>
+        <div class="feat-icon"><svg class="i" aria-hidden="true"><use href="#i-box"/></svg></div>
         <div>
           <div class="feat-title">Single SPA</div>
           <div class="feat-desc">portfolio-combined.html consolidates all 5 standalone prototype pages into one experience</div>
@@ -5077,28 +5106,28 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
         <div class="cs-h">Features</div>
     <div class="feat-list" style="margin-bottom:40px">
       <div class="feat">
-        <div class="feat-icon">🔐</div>
+        <div class="feat-icon"><svg class="i" aria-hidden="true"><use href="#i-lock"/></svg></div>
         <div>
           <div class="feat-title">Nous Portal OAuth</div>
           <div class="feat-desc">Replaces ?token= URL auth with proper OAuth code path so the community app can talk to gated dashboards</div>
         </div>
       </div>
       <div class="feat">
-        <div class="feat-icon">🎟️</div>
+        <div class="feat-icon"><svg class="i" aria-hidden="true"><use href="#i-gate"/></svg></div>
         <div>
           <div class="feat-title">Single-Use WS Tickets</div>
           <div class="feat-desc">Mints per-connection WS auth tickets that don't get burned by probes before the renderer can use them</div>
         </div>
       </div>
       <div class="feat">
-        <div class="feat-icon">🔍</div>
+        <div class="feat-icon"><svg class="i" aria-hidden="true"><use href="#i-search"/></svg></div>
         <div>
           <div class="feat-title">Provider Discovery</div>
           <div class="feat-desc">Discovers dashboard auth providers from /api/status instead of hardcoding nous — community-portable</div>
         </div>
       </div>
       <div class="feat">
-        <div class="feat-icon">🧪</div>
+        <div class="feat-icon"><svg class="i" aria-hidden="true"><use href="#i-checklist"/></svg></div>
         <div>
           <div class="feat-title">38/38 Tests</div>
           <div class="feat-desc">Vitest suite covers IPC channels, OAuth flow, WS ticket lifecycle, dashboard connection</div>
@@ -5207,21 +5236,21 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
         <div class="cs-h">Features</div>
     <div class="feat-list" style="margin-bottom:40px">
       <div class="feat">
-        <div class="feat-icon">🌐</div>
+        <div class="feat-icon"><svg class="i" aria-hidden="true"><use href="#i-repeat"/></svg></div>
         <div>
           <div class="feat-title">WebSocket RPC</div>
           <div class="feat-desc">Ed25519 device identity + RPC client connecting to OpenClaw gateway over ws://127.0.0.1:18789</div>
         </div>
       </div>
       <div class="feat">
-        <div class="feat-icon">🎨</div>
+        <div class="feat-icon"><svg class="i" aria-hidden="true"><use href="#i-bulb"/></svg></div>
         <div>
           <div class="feat-title">NeoPOP + Neumorphism</div>
           <div class="feat-desc">Hybrid design system via @cred/neopop-web, tokens in src/theme/tokens.ts, two themes (dark + light)</div>
         </div>
       </div>
       <div class="feat">
-        <div class="feat-icon">⚡</div>
+        <div class="feat-icon"><svg class="i" aria-hidden="true"><use href="#i-terminal"/></svg></div>
         <div>
           <div class="feat-title">Command Palette</div>
           <div class="feat-desc">Keyboard-first navigation in src/components/commands/, slash commands like /network and /agent in chat</div>
@@ -5356,21 +5385,21 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
         <div class="cs-h">Features</div>
     <div class="feat-list" style="margin-bottom:40px">
       <div class="feat">
-        <div class="feat-icon">📷</div>
+        <div class="feat-icon"><svg class="i" aria-hidden="true"><use href="#i-figure"/></svg></div>
         <div>
           <div class="feat-title">Computer Vision</div>
           <div class="feat-desc">MediaPipe Pose + custom CNN heads for rep counting, form scoring, biomechanical analysis</div>
         </div>
       </div>
       <div class="feat">
-        <div class="feat-icon">🤖</div>
+        <div class="feat-icon"><svg class="i" aria-hidden="true"><use href="#i-cpu"/></svg></div>
         <div>
           <div class="feat-title">7 AI Modules</div>
           <div class="feat-desc">Combines CV + NLP + IoT + behavioral ML + conversational AI in a single ecosystem</div>
         </div>
       </div>
       <div class="feat">
-        <div class="feat-icon">📡</div>
+        <div class="feat-icon"><svg class="i" aria-hidden="true"><use href="#i-globe"/></svg></div>
         <div>
           <div class="feat-title">Edge + Cloud</div>
           <div class="feat-desc">MQTT (Mosquitto) on Jetson Nano / RPi 5 / ESP32-CAM, FastAPI backend, MLflow for experiment tracking</div>
