@@ -61,7 +61,8 @@ la-Cormorant Bold Italic wordmark redo (all 5 occurrences) and Roadmap title res
 - [ ] Kickoff `tasks/kickoff-fix-design-system-migration.md` Box 2 says "27/27 Playwright tests pass" but the suite is 40 — tick or reword to "all tests pass" (local-only file; needs Vishal's call)
 - [ ] 860px home grid leaves an empty third column (pre-existing, same on `3f8e1ce`)
 - [ ] Skills tile: "TypeScript" label touches its bar (pre-existing)
-- [ ] Implement the search stub `runSearch()` (input is wired, no results UI)
+- [x] Topbar search implemented (PR: feat/site-search) — Ctrl K dialog, ranked index over pages/projects/topics/timeline/careers/resources/about/home, `/me` excluded
+- [ ] Search entry point on phones (≤560px the pill is hidden; needs a topbar slot or a menu item)
 - [ ] Legacy standalone prototypes still reference undefined handlers; `resume*.html` still carry "Open to work" pills
 - [ ] Remove unused `@vercel/speed-insights` dependency
 - [ ] Consider raising the search focus ring above 35% if keyboard-focus visibility becomes a concern

@@ -6,6 +6,31 @@
 
 ---
 
+## [2026-10-25] Claude Code (local) — feat/site-search · working topbar search (Ctrl K dialog)
+
+**Mode:** Execution
+
+**Did:** Replaced the `runSearch()` console.log stub with a real site search, modelled on `tasks/germany-tax-map.html` (dialog UI + ranking engine), adapted to the portfolio.
+
+- **UI:** the topbar pill is now a `<button id="sbtn">` (icon until scroll/keyboard focus, `search… Ctrl K` after) that opens a modal dialog: query field, page filter chips (all/projects/roadmap/about/home), grouped hue-tinted results with highlighted matches + snippet, footer key hints + match count, empty state with "jump to a page", suggestion chips and recent searches. Tokens only, so light mode works; z-index 900 (above the topic modal at 800).
+- **Index:** crawled lazily from the live DOM + `TOPICS` on first open, so it can't drift from the content: pages, 8 project case studies, 11 roadmap topics (name/desc/learn items/resources), 24 timeline entries, career paths, resources, about (education, interests, languages) and home widgets. 75 entries.
+- **Privacy:** `#pg-me` is never crawled (it is the private gate page). Covered by a test.
+- **Ranking:** exact title word > title prefix > body word > body prefix > substring > one-typo (Levenshtein 1, tokens ≥5 chars); phrase bonus; per-type multiplier; tokenizer keeps `+ # .` so `C++` works.
+- **Navigation:** `go()` switches page via `showPage(…, {scrollTop:false})`, then scrolls + flashes the target (`.sx-flash`); topics open their modal; timeline entries expand. Honors `prefers-reduced-motion`.
+- **Keys:** Ctrl/⌘+K toggle, `/` open (not when typing or a modal is open), ↑/↓, Enter, Esc (returns focus to the pill), Tab trapped in the dialog.
+- **Storage:** recents in `localStorage` via guarded `lsGet/lsSet`; corrupt JSON tolerated.
+- Removed: `runSearch`, `#navSearchInput`, `.nav-search-input` CSS, the old Ctrl+K-focuses-input handler and pill click handler.
+
+**Verification:** `npm test` 48/48 (40 existing, 1 updated: the pill test now uses keyboard focus; 8 new `site search` tests); `npm run lint:html` 0 errors; screenshots dark + light.
+
+**State:** PR open against `dev`. Known limit: the pill is still hidden ≤560px (no room in the topbar), so phones have no search entry point yet.
+
+**Modified:** `prototypes/portfolio-combined.html`, `tests/e2e/spa.spec.js`, `tasks/DEVLOG.md`, `tasks/todo.md`.
+
+**Lessons (candidate L-0NN):** public case studies mention the tailnet suffix, so "no /me leakage" tests must target strings unique to `#pg-me` (`me.auxois`), not the shared suffix.
+
+---
+
 ## [2026-10-25] Claude Code (local) — fix/roadmap-nav-icons · fix/roadmap-nav-overlap · fix/search-focus-ring · roadmap nav + search polish
 
 **Mode:** Execution
