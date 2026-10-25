@@ -1059,14 +1059,6 @@ main {
 @media (max-width: 860px) {
   .hero { min-height: 80vh; }
   .hero-name { letter-spacing: -3px; }
-  #roadmap-internal-nav {
-    top: auto !important;
-    bottom: 20px;
-    gap: 20px;
-    padding: 12px 20px;
-  }
-  #roadmap-internal-nav .nav-links { gap: 0; }
-  #roadmap-internal-nav .nav-links a { font-size: 10px; padding: 6px 11px; }
   .nav-avail { display: none; }
 
   main {
@@ -1120,45 +1112,6 @@ main {
   /* prevent grid items from forcing column expansion */
   #pg-home .grid { overflow-x: hidden; }
   #pg-home .grid > * { min-width: 0; }
-  #roadmap-internal-nav {
-    bottom: 16px;
-    width: calc(100% - 32px);
-    max-width: none;
-    gap: 0;
-    padding: 0;
-    background: rgba(8,8,8,.75);
-    backdrop-filter: blur(32px) saturate(200%);
-    -webkit-backdrop-filter: blur(32px) saturate(200%);
-    border-radius: 22px;
-    overflow: hidden;
-    border: 1px solid rgba(255,255,255,.12);
-    box-shadow:
-      0 0 0 .5px rgba(255,255,255,.05) inset,
-      0 1px 0 rgba(255,255,255,.1) inset,
-      0 16px 48px rgba(0,0,0,.8);
-  }
-  #roadmap-internal-nav .nav-logo { display: none; }
-  #roadmap-internal-nav .nav-links {
-    display: flex;
-    width: 100%;
-    gap: 0;
-  }
-  #roadmap-internal-nav .nav-links li { flex: 1; min-width: 0; }
-  #roadmap-internal-nav .nav-links a {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 14px 6px;
-    font-size: 10px;
-    letter-spacing: .5px;
-    border-right: 1px solid rgba(255,255,255,.06);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  #roadmap-internal-nav .nav-links li:last-child a { border-right: none; }
-  #roadmap-internal-nav .nav-links a:hover { background: rgba(255,255,255,.05); }
-
   main {
     padding: 20px 12px 110px;
   }
@@ -2318,13 +2271,14 @@ html.light #pg-about .contact-card:nth-of-type(4) .cc-icon { color: var(--acc); 
   transform-origin: center center;
   z-index: 201;
   width: fit-content; max-width: calc(100% - 40px);
-  display: flex; align-items: center; gap: 8px;
-  padding: 5px 5px;
-  background: linear-gradient(135deg, rgba(255,255,255,.10) 0%, rgba(255,255,255,.04) 100%);
-  backdrop-filter: blur(40px) saturate(180%);
-  -webkit-backdrop-filter: blur(40px) saturate(180%);
-  border-radius: 100px; border: 1px solid rgba(255,255,255,.16);
-  box-shadow: 0 4px 28px rgba(0,0,0,.55), 0 1px 0 rgba(255,255,255,.12) inset;
+  height: 54px; box-sizing: border-box;
+  display: flex; align-items: center; gap: 4px;
+  padding: 5px 8px;
+  background: linear-gradient(180deg, var(--glass-top), var(--glass-bottom));
+  backdrop-filter: blur(28px) saturate(1.6);
+  -webkit-backdrop-filter: blur(28px) saturate(1.6);
+  border-radius: 100px; border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow);
   opacity: 0;
   pointer-events: none;
   visibility: hidden;
@@ -2339,30 +2293,36 @@ html.light #pg-about .contact-card:nth-of-type(4) .cc-icon { color: var(--acc); 
 }
 
 #roadmap-internal-nav .nav-logo {
-  font-family: var(--font-ndot); font-size: 16px; font-weight: 500;
+  font-family: var(--sans); font-size: 16px; font-weight: 700;
   letter-spacing: normal; color: var(--w); text-decoration: none;
-  padding: 7px 16px; background: none; border: none; border-radius: 100px;
+  padding: 7px 14px; background: none; border: none; border-radius: 100px;
   box-shadow: none; backdrop-filter: none; -webkit-backdrop-filter: none;
   transition: color .2s;
 }
 #roadmap-internal-nav .nav-logo:hover { box-shadow: none; color: var(--w); }
-#roadmap-internal-nav .nav-logo em { color: var(--blue); font-style: normal; }
+#roadmap-internal-nav .nav-logo em { color: var(--acc); font-style: normal; }
 
 #roadmap-internal-nav .nav-links {
   position: static; left: auto; transform: none;
-  display: flex; gap: 0; list-style: none;
+  display: flex; gap: 4px; list-style: none;
   background: none; border: none; border-radius: 0;
-  box-shadow: none; padding: 0;
+  box-shadow: none; padding: 0; height: auto;
   backdrop-filter: none; -webkit-backdrop-filter: none;
 }
 #roadmap-internal-nav .nav-links a {
-  display: flex; align-items: center; font-family: var(--font-ndot); font-size: 13px; letter-spacing: 1.2px; color: rgba(241,240,246,.38); text-decoration: none;
-  background: none; border: none; border-radius: 100px; padding: 7px 16px;
-  transition: color .13s, background .13s;
+  display: flex; align-items: center; font-family: var(--sans); font-weight: 500; font-size: 14.5px; letter-spacing: .06em;
+  color: var(--w80); text-decoration: none; white-space: nowrap;
+  background: none; border: 1px solid transparent; border-radius: 100px; padding: 9px 14px;
+  transition: color .24s cubic-bezier(.2,.7,.2,1), background .24s cubic-bezier(.2,.7,.2,1), border-color .24s cubic-bezier(.2,.7,.2,1);
   text-transform: uppercase;
 }
-#roadmap-internal-nav .nav-links a:hover,
-#roadmap-internal-nav .nav-links a.active { color: var(--w); background: rgba(255,255,255,.07); }
+#roadmap-internal-nav .nav-links a:hover { color: var(--w); background: var(--w06); }
+/* scroll-spy active link = hue-tinted pill, same recipe as the shared nav (16% fill / 50% border) */
+#roadmap-internal-nav .nav-links a.active {
+  color: var(--w);
+  background: color-mix(in srgb, var(--h, var(--acc)) 16%, transparent);
+  border-color: color-mix(in srgb, var(--h, var(--acc)) 50%, transparent);
+}
 
 /* ── main layout ── */
 #pg-roadmap main {
@@ -3007,23 +2967,6 @@ html.light #pg-about .contact-card:nth-of-type(4) .cc-icon { color: var(--acc); 
 #pg-home main { padding-top: 76px; }
 #pg-projects main, #pg-about main { padding-top: 76px; }
 
-html.light #roadmap-internal-nav {
-  background: linear-gradient(135deg, rgba(255,255,255,.78) 0%, rgba(245,245,245,.72) 100%);
-  border-color: rgba(13,13,15,.12);
-  box-shadow: 0 4px 24px rgba(0,0,0,.10), 0 1px 0 rgba(255,255,255,.95) inset;
-}
-html.light #roadmap-internal-nav .nav-logo,
-html.light #roadmap-internal-nav .nav-links {
-  background: transparent;
-  border-color: transparent;
-  box-shadow: none;
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
-}
-html.light #roadmap-internal-nav .nav-logo { color: var(--w); }
-html.light #roadmap-internal-nav .nav-links a { color: rgba(13,13,15,.45); }
-html.light #roadmap-internal-nav .nav-links a:hover { color: rgba(13,13,15,.8); background: rgba(0,0,0,.05); }
-html.light #roadmap-internal-nav .nav-links a.active { background: rgba(0,0,0,.08); color: var(--w); }
 html.light .nav-search { color: rgba(13,13,15,.45); border-right-color: rgba(13,13,15,.08); }
 html.light .nav-search-input { color: var(--w); }
 html.light .nav-search-input::placeholder { color: rgba(13,13,15,.32); }
@@ -3405,35 +3348,7 @@ html.light footer.roadmap-footer a { color: var(--w); }
 
 /* All .pi cards use uniform border-radius from .pi rule (14px) */
 
-/* --- Roadmap page widgets (timeline items explicitly excluded) --- */
-#pg-roadmap .phase-card,
-#pg-roadmap .guide-card,
-#pg-roadmap .topic-card,
-#pg-roadmap .career-card,
-#pg-roadmap .resource-item,
-#pg-roadmap .stat-badge {
-  background: var(--glass-bg);
-  backdrop-filter: blur(40px) saturate(180%);
-  -webkit-backdrop-filter: blur(40px) saturate(180%);
-  border: 1px solid var(--glass-border);
-  box-shadow: var(--glass-shadow);
-}
-
-#pg-roadmap .phase-card:hover,
-#pg-roadmap .guide-card:hover,
-#pg-roadmap .topic-card:hover,
-#pg-roadmap .career-card:hover,
-#pg-roadmap .resource-item:hover,
-#pg-roadmap .stat-badge:hover {
-  transform: translateY(-2px) scale(1.012);
-  box-shadow: var(--glass-hover-shadow);
-  border-color: var(--glass-border);
-}
-
-/* Make sure completed topic border stays visible over glass */
-#pg-roadmap .topic-card.completed { border-color: rgba(61,220,132,.35); }
-
-/* Resource items are anchors; ensure they still show as interactive */
+/* --- Roadmap page widgets: surfaces live in the PHASE 3 · ROADMAP block at the end of the stylesheet --- */
 #pg-roadmap .resource-item { text-decoration: none; }
 
 /* --- About page widgets --- */
@@ -3486,12 +3401,6 @@ html.light footer.roadmap-footer a { color: var(--w); }
 }
 
 /* --- Light mode overrides for glass readability --- */
-html.light #pg-roadmap .phase-card,
-html.light #pg-roadmap .guide-card,
-html.light #pg-roadmap .topic-card,
-html.light #pg-roadmap .career-card,
-html.light #pg-roadmap .resource-item,
-html.light #pg-roadmap .stat-badge,
 html.light #pg-about .photo-frame,
 html.light #pg-about .core-tech-card,
 html.light #pg-about .edu-card,
@@ -3715,6 +3624,208 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
 #pg-projects .bar-fill::after { display: none; }
 #pg-projects .bar-lbl { font-family: var(--mono); font-size: 12.5px; letter-spacing: 0; color: var(--w80); }
 #pg-projects .bar-val { font-family: var(--data); font-size: 12.5px; letter-spacing: 0; color: var(--w80); }
+/* ══════════════════════════════════════════════════════════════════════
+   PHASE 3 · ROADMAP (design system) — scoped to #pg-roadmap (+ its modal / progress widget)
+   Hues (reading order, nav = section): overview blue, topics teal, careers indigo, resources purple;
+   getting started cyan, timeline pink, page accent sand. Phase cards 01–04 take blue/teal/indigo/purple and
+   topic cards inherit their phase's hue (hue = phase, deliberate). Status green only marks "done" (check badge).
+══════════════════════════════════════════════════════════════════════ */
+#pg-roadmap { --h: var(--sand); }
+/* icons: legacy inline icons follow the hue (!important: legacy html.light .ico rules are !important too) */
+#pg-roadmap svg [stroke^="rgba(255,255,255"] { stroke: currentColor !important; }
+#pg-roadmap svg [fill^="rgba(255,255,255"] { fill: currentColor !important; }
+#pg-roadmap svg.i { width: 18px; height: 18px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+#pg-roadmap svg.ico { color: var(--h); flex: none; }
+
+/* page header */
+#pg-roadmap .ph-label { font-family: var(--mono); font-size: 13px; letter-spacing: .03em; text-transform: none; color: var(--h); }
+#pg-roadmap .ph-label::after { background: color-mix(in srgb, var(--h) 45%, transparent); }
+#pg-roadmap .ph-title { font-family: var(--display); font-weight: 800; font-size: clamp(28px, 4.4vw, 46px);
+  line-height: 1.04; letter-spacing: -.03em; color: var(--w); margin-bottom: 14px; }
+#pg-roadmap .ph-sub { font-family: var(--read); font-size: 18px; letter-spacing: 0; line-height: 1.6; color: var(--w80); max-width: 66ch; }
+
+/* hero: neutral chips (icon in the page accent), NeoPOP CTA unchanged */
+#pg-roadmap .stat-badge { gap: 8px; padding: 7px 14px; font-family: var(--mono); font-size: 13.5px; letter-spacing: 0; color: var(--w80);
+  background: var(--bg2); border: 1px solid var(--w12); border-radius: 100px; box-shadow: none; backdrop-filter: none; -webkit-backdrop-filter: none; }
+#pg-roadmap .stat-badge svg.i { color: var(--h); }
+#pg-roadmap .stat-badge:hover { transform: none; box-shadow: none; border-color: var(--w12); }
+#pg-roadmap .np-ghost { font-size: 12px; padding: 9px 16px; color: var(--w80); }
+#pg-roadmap .np-ghost:hover { color: var(--w); }
+
+/* section heads: mono label in the section hue */
+#pg-roadmap .sec-head h2 { font-family: var(--mono); font-size: 13px; letter-spacing: .08em; font-weight: 500; color: var(--h); }
+#pg-roadmap .sec-head::after { background: linear-gradient(to right, color-mix(in srgb, var(--h) 45%, transparent), transparent); }
+
+/* chips: neutral mono pill */
+#pg-roadmap .chip { font-family: var(--mono); font-size: 12.5px; letter-spacing: 0; color: var(--w80); background: var(--bg3);
+  border: 1px solid var(--w12); border-radius: 100px; padding: 4px 11px; }
+
+/* overview: 4 phase cards = panel + 3px hue top edge, hue numeral */
+#pg-roadmap .phases-grid { grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr)); }
+#pg-roadmap .phases-grid::before { background: color-mix(in srgb, var(--w) 12%, transparent); }
+#pg-roadmap .phase-card, #pg-roadmap .phase-card:hover {
+  background: var(--bg2); border: 1px solid var(--w12); border-top: 3px solid var(--h); border-radius: 20px;
+  box-shadow: none; backdrop-filter: none; -webkit-backdrop-filter: none;
+}
+#pg-roadmap .phase-card:hover { transform: translateY(-3px); background: var(--bg3); }
+#pg-roadmap .phase-num { font-family: var(--data); font-weight: 500; color: var(--h); }
+#pg-roadmap .phase-title { display: flex; align-items: center; gap: 8px; font-family: var(--sans); font-weight: 700; font-size: 18px; color: var(--w); }
+#pg-roadmap .phase-title svg.ico { width: 20px; height: 20px; }
+#pg-roadmap .phase-months { font-family: var(--data); font-size: 12.5px; letter-spacing: .04em; color: var(--w60); }
+
+/* getting started: two mini-cards with hue left edge */
+#pg-roadmap .guide-card, #pg-roadmap .guide-card:hover { padding: 0; background: none; border: none; box-shadow: none; border-radius: 0;
+  backdrop-filter: none; -webkit-backdrop-filter: none; overflow: visible; transform: none; }
+#pg-roadmap .guide-grid { grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 12px; }
+#pg-roadmap .guide-col { background: var(--bg3); border: 1px solid var(--w12); border-left: 4px solid var(--h); border-radius: 14px; padding: 20px; min-width: 0; }
+#pg-roadmap .guide-col h3 { font-family: var(--sans); font-weight: 700; font-size: 17px; color: var(--w); margin-bottom: 12px; }
+#pg-roadmap .guide-col h4 { font-family: var(--mono); font-size: 13px; letter-spacing: .06em; text-transform: none; color: var(--h); margin: 20px 0 10px; }
+#pg-roadmap .guide-col li { font-family: var(--read); font-size: 15.5px; letter-spacing: 0; line-height: 1.5; color: var(--w80); }
+#pg-roadmap .guide-col li::marker { color: var(--h); }
+
+/* timeline: tree connectors — 2px spine + elbow per item at --h 45% */
+/* the homepage timeline's global .tl-item{display:contents} / .tl-body grid + spine leak into this page; reset them */
+#pg-roadmap .tl-item { display: block; }
+#pg-roadmap .tl-body { display: block; position: relative; gap: 0; grid-template-columns: none; }
+#pg-roadmap .tl-body::before { display: none; }
+#pg-roadmap .timeline { padding-left: 28px; }
+#pg-roadmap .timeline::before { display: none; }
+#pg-roadmap .tl-item { margin-bottom: 0; padding-bottom: 8px; }
+#pg-roadmap .tl-item::before { content: ""; position: absolute; left: -28px; top: 0; bottom: 0; border-left: 2px solid color-mix(in srgb, var(--h) 45%, transparent); }
+#pg-roadmap .tl-item::after { content: ""; position: absolute; left: -28px; top: 26px; width: 22px; border-top: 2px solid color-mix(in srgb, var(--h) 45%, transparent); }
+#pg-roadmap .tl-item:last-child::before { bottom: auto; height: 26px; }
+#pg-roadmap .tl-dot { left: -33px; top: 22px; width: 10px; height: 10px; z-index: 1; background: var(--bg); border: 2px solid var(--h); }
+#pg-roadmap .tl-item.open .tl-dot { background: var(--h); border-color: var(--h); }
+#pg-roadmap .tl-header { padding: 14px 18px; min-height: 52px; border-radius: 14px; background: var(--bg2); border: 1px solid var(--w12); box-sizing: border-box; }
+#pg-roadmap .tl-header:hover { background: var(--bg3); border-color: color-mix(in srgb, var(--h) 42%, transparent); }
+#pg-roadmap .tl-item.open .tl-header { border-color: color-mix(in srgb, var(--h) 42%, transparent); border-radius: 14px 14px 0 0; background: var(--bg3); }
+#pg-roadmap .tl-month { font-family: var(--data); font-size: 12.5px; letter-spacing: .04em; color: var(--h); min-width: 84px; }
+#pg-roadmap .tl-title { display: flex; align-items: center; gap: 8px; font-family: var(--sans); font-weight: 700; font-size: 16px; color: var(--w); line-height: 1.3; }
+#pg-roadmap .tl-arrow { color: var(--w60); flex: none; padding-left: 8px; }
+#pg-roadmap .tl-item.open .tl-body { max-height: 640px; }
+#pg-roadmap .tl-body-inner { background: var(--bg3); border: 1px solid color-mix(in srgb, var(--h) 42%, transparent); border-top: none; border-radius: 0 0 14px 14px; padding: 14px 20px 18px; }
+#pg-roadmap .tl-body-inner li { font-family: var(--read); font-size: 15.5px; letter-spacing: 0; line-height: 1.5; color: var(--w80); }
+#pg-roadmap .tl-body-inner li::marker { color: var(--h); }
+@media (max-width: 560px) {
+  #pg-roadmap .tl-header-left { flex-direction: column; align-items: flex-start; gap: 4px; }
+  #pg-roadmap .tl-month { min-width: 0; }
+}
+
+/* filters: chip → hue-tinted when active (hue = phase) */
+#pg-roadmap .filter-btn { font-family: var(--mono); font-size: 13.5px; letter-spacing: 0; text-transform: none; padding: 8px 14px; color: var(--w80);
+  background: var(--bg2); border: 1px solid var(--w12); }
+#pg-roadmap .filter-btn:hover { background: var(--bg4); color: var(--w); border-color: var(--w12); }
+#pg-roadmap .filter-btn.active { background: color-mix(in srgb, var(--fh, var(--acc)) 16%, transparent); border-color: color-mix(in srgb, var(--fh, var(--acc)) 50%, transparent); color: var(--w); }
+#pg-roadmap .filter-btn[data-filter="foundation"] { --fh: var(--blue); } #pg-roadmap .filter-btn[data-filter="core"] { --fh: var(--teal); }
+#pg-roadmap .filter-btn[data-filter="system"] { --fh: var(--indigo); } #pg-roadmap .filter-btn[data-filter="advanced"] { --fh: var(--purple); }
+
+/* topic cards (11): mini-card, hue = phase */
+#pg-roadmap .topics-grid, #pg-roadmap .careers-grid, #pg-roadmap .resources-grid { grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); }
+#pg-roadmap .topic-card[data-phase="foundation"] { --h: var(--blue); } #pg-roadmap .topic-card[data-phase="core"] { --h: var(--teal); }
+#pg-roadmap .topic-card[data-phase="system"] { --h: var(--indigo); } #pg-roadmap .topic-card[data-phase="advanced"] { --h: var(--purple); }
+#pg-roadmap .topic-card, #pg-roadmap .topic-card.completed {
+  padding: 18px; background: var(--bg3); border: 1px solid var(--w12); border-left: 4px solid var(--h); border-radius: 14px;
+  box-shadow: none; backdrop-filter: none; -webkit-backdrop-filter: none; min-width: 0;
+}
+#pg-roadmap .topic-card:hover { transform: translateY(-3px); background: var(--bg2); box-shadow: none; border-color: var(--w12); border-left-color: var(--h); }
+#pg-roadmap .topic-num { font-family: var(--data); font-size: 12.5px; letter-spacing: .06em; color: var(--w60); }
+#pg-roadmap .topic-name { display: flex; align-items: center; gap: 8px; font-family: var(--sans); font-weight: 700; font-size: 17px; line-height: 1.25; color: var(--w); }
+#pg-roadmap .topic-desc { font-family: var(--read); font-size: 15px; letter-spacing: 0; line-height: 1.55; color: var(--w80); }
+#pg-roadmap .badge { font-family: var(--mono); font-size: 12px; letter-spacing: 0; font-weight: 400; color: var(--w80);
+  background: var(--bg2); border: 1px solid var(--w12); border-radius: 100px; padding: 3px 10px; }
+#pg-roadmap .nd .line { background: var(--w12); }
+#pg-roadmap .topic-check-label { font-family: var(--mono); font-size: 13px; letter-spacing: 0; color: var(--w80); gap: 8px; }
+/* done = StatusBadge: 22px circle, green dot + check (status colour marks status only) */
+#pg-roadmap .checkmark { width: 22px; height: 22px; border-radius: 50%; border: 1px solid var(--w30); }
+#pg-roadmap .topic-check-label:hover .checkmark { border-color: var(--h); }
+#pg-roadmap .topic-check-label input:checked ~ .checkmark { color: var(--green); border-color: var(--green); background: color-mix(in srgb, var(--green) 14%, transparent); }
+#pg-roadmap .topic-check-label input:checked ~ .checkmark::after { content: none; }
+#pg-roadmap .topic-check-label input:checked ~ .checkmark { font-size: 13px; font-weight: 700; line-height: 1; }
+#pg-roadmap .topic-check-label input:focus-visible ~ .checkmark { outline: 2px solid var(--acc); outline-offset: 3px; }
+#pg-roadmap .topic-check-label input { display: block; position: absolute; opacity: 0; width: 22px; height: 22px; margin: 0; cursor: pointer; }
+#pg-roadmap .topic-check-label { position: relative; }
+
+/* careers (10): panel + hue top edge; % + bar in the hue */
+#pg-roadmap .career-card { background: var(--bg2); border: 1px solid var(--w12); border-top: 3px solid var(--h); border-radius: 20px; padding: 22px;
+  box-shadow: none; backdrop-filter: none; -webkit-backdrop-filter: none; min-width: 0; }
+#pg-roadmap .career-card:hover { transform: translateY(-3px); background: var(--bg3); box-shadow: none; border-color: var(--w12); border-top-color: var(--h); }
+#pg-roadmap .career-title { display: flex; align-items: center; gap: 10px; font-family: var(--sans); font-weight: 700; font-size: 19px; line-height: 1.2; color: var(--w); }
+#pg-roadmap .career-title svg.ico { width: 22px; height: 22px; }
+#pg-roadmap .career-tagline { font-family: var(--read); font-size: 15px; letter-spacing: 0; color: var(--w80); margin-top: 4px; }
+/* JS writes an inline status colour on these two; the hue wins */
+#pg-roadmap .career-pct { font-family: var(--data); font-size: 44px; color: var(--h) !important; }
+#pg-roadmap .career-pct-label { font-family: var(--mono); font-size: 12px; letter-spacing: .04em; text-transform: none; color: var(--w60); max-width: 110px; }
+#pg-roadmap .career-bar-track { height: 10px; border-radius: 5px; background: var(--w12); box-shadow: none; }
+#pg-roadmap .career-bar-fill { border-radius: 0 5px 5px 0; background: var(--h) !important; }
+#pg-roadmap .career-section-label { font-family: var(--mono); font-size: 12.5px; letter-spacing: .06em; text-transform: none; color: var(--w60); }
+#pg-roadmap .career-chips { gap: 6px; }
+
+/* resources (3 groups): mini-cards, purple edge; level = neutral chip */
+#pg-roadmap .resource-group h3 { font-family: var(--mono); font-size: 13px; letter-spacing: .06em; text-transform: none; font-weight: 500; color: var(--h); }
+#pg-roadmap .resource-item { padding: 14px 16px; background: var(--bg3); border: 1px solid var(--w12); border-left: 4px solid var(--h); border-radius: 14px;
+  box-shadow: none; backdrop-filter: none; -webkit-backdrop-filter: none; }
+#pg-roadmap .resource-item:hover { transform: translateY(-2px); background: var(--bg2); box-shadow: none; border-color: var(--w12); border-left-color: var(--h); }
+#pg-roadmap .resource-name { display: flex; align-items: flex-start; gap: 8px; font-family: var(--sans); font-weight: 600; font-size: 15px; line-height: 1.35; color: var(--w); }
+#pg-roadmap .resource-name svg.ico { margin-top: 3px; }
+#pg-roadmap .resource-level { font-family: var(--mono); font-size: 12px; letter-spacing: 0; color: var(--w80); background: var(--bg2); border: 1px solid var(--w12); border-radius: 100px; padding: 2px 10px; }
+#pg-roadmap .resource-arrow { color: var(--w60); font-size: 14px; }
+#pg-roadmap .resource-item:hover .resource-arrow { color: var(--h); }
+
+/* footer */
+#pg-roadmap .footer-logo { font-size: 12.5px; letter-spacing: .08em; color: var(--w60); }
+#pg-roadmap .footer-links a { font-size: 12.5px; letter-spacing: .04em; color: var(--w60); }
+@media (max-width: 560px) { #pg-roadmap footer { flex-direction: column; align-items: flex-start; gap: 12px; } }
+
+/* scroll progress + topic progress widget = SkillBar (hue fill, DM Mono value) */
+#progress-bar { background: var(--acc); }
+#progress-widget { --h: var(--teal); background: var(--bg2); border-color: var(--w12); box-shadow: var(--shadow); }
+.pw-label { font-family: var(--mono); font-size: 12.5px; letter-spacing: .06em; text-transform: none; color: var(--w60); }
+.pw-count { font-family: var(--data); color: var(--h); }
+.pw-count span { color: var(--w60); }
+.pw-bar-track { height: 10px; border-radius: 5px; background: var(--w12); }
+.pw-bar-fill { border-radius: 0 5px 5px 0; background: var(--h); }
+
+/* the fixed bottom nav (≤860) owns the bottom edge: lift the progress widget above it */
+@media (max-width: 860px) { #progress-widget { bottom: 86px; left: 16px; } }
+@media (max-width: 559px) { #progress-widget { bottom: 80px; min-width: 0; padding: 10px 14px; } }
+
+/* topic modal (opened from the cards; JS sets data-phase) */
+.modal-overlay { background: var(--scrim); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+.modal { --h: var(--acc); background: var(--bg2); border: 1px solid var(--w12); border-radius: 20px; box-shadow: var(--shadow); }
+.modal[data-phase="foundation"] { --h: var(--blue); } .modal[data-phase="core"] { --h: var(--teal); }
+.modal[data-phase="system"] { --h: var(--indigo); } .modal[data-phase="advanced"] { --h: var(--purple); }
+.modal-close { font-family: var(--mono); font-size: 13px; letter-spacing: 0; color: var(--w80); }
+.modal-num { font-family: var(--data); font-size: 12.5px; letter-spacing: .06em; color: var(--h); }
+.modal-title { font-family: var(--display); font-weight: 800; font-size: clamp(24px, 4vw, 32px); letter-spacing: -.03em; line-height: 1.05; color: var(--w); }
+.modal .badge { font-family: var(--mono); font-size: 12px; letter-spacing: 0; font-weight: 400; color: var(--w80); background: var(--bg3); border: 1px solid var(--w12); border-radius: 100px; padding: 3px 10px; }
+.modal-section-label { font-family: var(--mono); font-size: 13px; letter-spacing: .06em; text-transform: none; color: var(--h); }
+.modal-section-label::after { background: color-mix(in srgb, var(--h) 30%, transparent); }
+.modal p, .modal li { font-family: var(--read); font-size: 15.5px; line-height: 1.6; color: var(--w80); }
+.modal li::marker { color: var(--h); }
+.modal-learn-cat { background: var(--bg3); border: 1px solid var(--w12); border-left: 4px solid var(--h); border-radius: 14px; }
+.modal-learn-cat h4 { font-family: var(--mono); font-size: 12.5px; letter-spacing: .04em; text-transform: none; color: var(--w); }
+.modal-learn-cat li { font-size: 14.5px; }
+.modal-week-item { font-family: var(--read); font-size: 15px; line-height: 1.5; color: var(--w80); background: var(--bg3); border: 1px solid var(--w12); border-radius: 10px; }
+.modal-daily { font-family: var(--mono); font-size: 13px; letter-spacing: 0; line-height: 1.5; color: var(--w); background: color-mix(in srgb, var(--h) 13%, transparent); border: 1px solid color-mix(in srgb, var(--h) 42%, transparent); border-radius: 10px; }
+.modal-projects-label { font-family: var(--mono); font-size: 12.5px; letter-spacing: .04em; text-transform: none; color: var(--w60); }
+.modal-resource-link { background: var(--bg3); border: 1px solid var(--w12); border-left: 4px solid var(--h); border-radius: 14px; }
+.modal-resource-link:hover { background: var(--bg4); border-color: var(--w12); border-left-color: var(--h); }
+.modal-resource-link span { font-family: var(--sans); font-size: 14.5px; color: var(--w); }
+.modal-resource-link .arrow { color: var(--w60); }
+.modal-resource-link:hover .arrow { color: var(--h); }
+
+/* internal nav: responsive. Tablet = bottom pill; phone = full-width 4-up bar (rules live after the base so they win) */
+@media (max-width: 860px) {
+  #roadmap-internal-nav { top: auto !important; bottom: 20px; }
+  #roadmap-internal-nav .nav-links a { font-size: 13px; letter-spacing: .04em; padding: 8px 12px; }
+}
+@media (max-width: 559px) {
+  #roadmap-internal-nav { bottom: 16px; width: calc(100% - 32px); max-width: none; height: 50px; padding: 4px; gap: 0; }
+  #roadmap-internal-nav .nav-logo { display: none; }
+  #roadmap-internal-nav .nav-links { width: 100%; gap: 2px; }
+  #roadmap-internal-nav .nav-links li { flex: 1; min-width: 0; }
+  #roadmap-internal-nav .nav-links a { justify-content: center; padding: 8px 4px; font-size: 12px; letter-spacing: .02em; overflow: hidden; text-overflow: ellipsis; }
+}
 </style>
 </head>
 <body>
@@ -3744,6 +3855,8 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
   <symbol id="i-wallet" viewBox="0 0 24 24"><path d="M3 7a2 2 0 0 1 2-2h13v4"/><path d="M3 7v11a2 2 0 0 0 2 2h14a1 1 0 0 0 1-1V9a1 1 0 0 0-1-1H5a2 2 0 0 1-2-2"/><circle cx="16.5" cy="14" r="1"/></symbol>
   <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></symbol>
   <symbol id="i-bang" viewBox="0 0 24 24"><path d="M12 6v8M12 18h.01"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+  <symbol id="i-book" viewBox="0 0 24 24"><path d="M5 4h10a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3zM5 17a3 3 0 0 1 3-3h10"/></symbol>
   <symbol id="ic-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></symbol>
   <symbol id="ic-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
     <circle cx="12" cy="12" r="5"/>
@@ -3814,10 +3927,10 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
 <nav id="roadmap-internal-nav">
   <a href="#" class="nav-logo" onclick="showPage('home');return false;">CS<em>.</em></a>
   <ul class="nav-links">
-    <li><a href="#roadmap" onclick="scrollInRoadmap('roadmap');return false;">overview</a></li>
-    <li><a href="#topics" onclick="scrollInRoadmap('topics');return false;">topics</a></li>
-    <li><a href="#careers" onclick="scrollInRoadmap('careers');return false;">careers</a></li>
-    <li><a href="#resources" onclick="scrollInRoadmap('resources');return false;">resources</a></li>
+    <li><a href="#roadmap" class="hue-blue" onclick="scrollInRoadmap('roadmap');return false;">overview</a></li>
+    <li><a href="#topics" class="hue-teal" onclick="scrollInRoadmap('topics');return false;">topics</a></li>
+    <li><a href="#careers" class="hue-indigo" onclick="scrollInRoadmap('careers');return false;">careers</a></li>
+    <li><a href="#resources" class="hue-purple" onclick="scrollInRoadmap('resources');return false;">resources</a></li>
   </ul>
 </nav>
 
@@ -5460,25 +5573,25 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
   <!-- ═══════════ HERO STATS + CTA ═══════════ -->
   <section class="hero" aria-label="Roadmap">
     <div class="hero-stats">
-      <span class="stat-badge blue">📋 11 Core Topics</span>
-      <span class="stat-badge amber">⏱ 12–14 Months</span>
-      <span class="stat-badge green">🤖 ML · Infra · Full-stack</span>
+      <span class="stat-badge"><svg class="i" aria-hidden="true"><use href="#i-checklist"/></svg>11 Core Topics</span>
+      <span class="stat-badge"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg>12–14 Months</span>
+      <span class="stat-badge"><svg class="i" aria-hidden="true"><use href="#i-cpu"/></svg>ML · Infra · Full-stack</span>
     </div>
     <div class="hero-cta">
       <a class="np" href="#topics" onclick="scrollInRoadmap('topics');return false;">Start Your Journey →</a>
-      <a class="np-ghost" href="#home" onclick="showPage('home');return false;" style="font-size:10px">← back to portfolio</a>
+      <a class="np-ghost" href="#home" onclick="showPage('home');return false;">← back to portfolio</a>
     </div>
   </section>
 
   <!-- ═══════════ LEARNING PATH OVERVIEW ═══════════ -->
-  <section id="roadmap" aria-labelledby="roadmap-heading">
+  <section id="roadmap" class="hue-blue" aria-labelledby="roadmap-heading">
     <div class="sec-head">
       <h2 id="roadmap-heading">learning path overview</h2>
     </div>
     <div class="phases-grid">
 
-      <article class="pcard phase-card" data-anim>
-        <div class="phase-num" style="color:var(--blue)">01</div>
+      <article class="pcard phase-card hue-blue" data-anim>
+        <div class="phase-num">01</div>
         <div class="phase-title"><svg class="ico" width="18" height="18" viewBox="0 0 13 13" fill="none"><path d="M2 2v9a1 1 0 0 0 1 1h8" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="none"/><path d="M4 1h7a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H4V1z" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="none"/><line x1="6" y1="4" x2="10" y2="4" stroke="rgba(255,255,255,.5)" stroke-width="1"/></svg>Foundation</div>
         <div class="phase-months">Months 0–3</div>
         <div class="phase-chips">
@@ -5488,8 +5601,8 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
         </div>
       </article>
 
-      <article class="pcard phase-card" data-anim style="animation-delay:.08s">
-        <div class="phase-num" style="color:var(--amber)">02</div>
+      <article class="pcard phase-card hue-teal" data-anim style="animation-delay:.08s">
+        <div class="phase-num">02</div>
         <div class="phase-title"><svg class="ico" width="18" height="18" viewBox="0 0 13 13" fill="none"><rect x="3" y="3" width="7" height="7" rx="1" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="none"/><line x1="5" y1="3" x2="5" y2="1" stroke="rgba(255,255,255,.5)" stroke-width="1"/><line x1="8" y1="3" x2="8" y2="1" stroke="rgba(255,255,255,.5)" stroke-width="1"/><line x1="5" y1="10" x2="5" y2="12" stroke="rgba(255,255,255,.5)" stroke-width="1"/></svg>Core Skills</div>
         <div class="phase-months">Months 3–7</div>
         <div class="phase-chips">
@@ -5500,8 +5613,8 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
         </div>
       </article>
 
-      <article class="pcard phase-card" data-anim style="animation-delay:.16s">
-        <div class="phase-num" style="color:var(--red)">03</div>
+      <article class="pcard phase-card hue-indigo" data-anim style="animation-delay:.16s">
+        <div class="phase-num">03</div>
         <div class="phase-title"><svg class="ico" width="18" height="18" viewBox="0 0 13 13" fill="none"><path d="M6.5 1.5L1 5L6.5 8.5L12 5L6.5 1.5Z" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="none"/><path d="M1 8L6.5 11.5L12 8" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="none"/></svg>System Core</div>
         <div class="phase-months">Months 8–10</div>
         <div class="phase-chips">
@@ -5511,8 +5624,8 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
         </div>
       </article>
 
-      <article class="pcard phase-card" data-anim style="animation-delay:.24s">
-        <div class="phase-num" style="color:var(--green)">04</div>
+      <article class="pcard phase-card hue-purple" data-anim style="animation-delay:.24s">
+        <div class="phase-num">04</div>
         <div class="phase-title"><svg class="ico" width="18" height="18" viewBox="0 0 13 13" fill="none"><path d="M6.5 1.5C6.5 1.5 4 4 4 7.5l2.5 3.5 2.5-3.5C9 4 6.5 1.5 6.5 1.5Z" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="none"/><circle cx="6.5" cy="6" r="1" fill="rgba(255,255,255,.5)"/></svg>Security &amp; Specialization</div>
         <div class="phase-months">Months 11–14</div>
         <div class="phase-chips">
@@ -5525,7 +5638,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
   </section>
 
   <!-- ═══════════ GETTING STARTED ═══════════ -->
-  <section aria-labelledby="getting-started-heading">
+  <section class="hue-cyan" aria-labelledby="getting-started-heading">
     <div class="sec-head">
       <h2 id="getting-started-heading">getting started</h2>
     </div>
@@ -5566,7 +5679,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
   </section>
 
   <!-- ═══════════ TIMELINE ═══════════ -->
-  <section id="timeline" aria-labelledby="timeline-heading">
+  <section id="timeline" class="hue-pink" aria-labelledby="timeline-heading">
     <div class="sec-head">
       <h2 id="timeline-heading">month-by-month timeline</h2>
     </div>
@@ -5852,7 +5965,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
   </section>
 
   <!-- ═══════════ 11 CORE TOPICS ═══════════ -->
-  <section id="topics" aria-labelledby="topics-heading">
+  <section id="topics" class="hue-teal" aria-labelledby="topics-heading">
     <div class="sec-head">
       <h2 id="topics-heading">11 core topics</h2>
     </div>
@@ -5869,7 +5982,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
   </section>
 
   <!-- ═══════════ CAREERS ═══════════ -->
-  <section id="careers" aria-labelledby="careers-heading">
+  <section id="careers" class="hue-indigo" aria-labelledby="careers-heading">
     <div class="sec-head">
       <h2 id="careers-heading">career paths</h2>
     </div>
@@ -5879,7 +5992,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
   </section>
 
   <!-- ═══════════ RESOURCES ═══════════ -->
-  <section id="resources" aria-labelledby="resources-heading">
+  <section id="resources" class="hue-purple" aria-labelledby="resources-heading">
     <div class="sec-head">
       <h2 id="resources-heading">curated resources</h2>
     </div>
@@ -5891,7 +6004,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
           <a class="resource-item" href="https://www.amazon.com/Primer-5th-Stanley-BLippman/dp/0321714113" target="_blank" rel="noopener noreferrer">
             <span class="resource-name"><svg class="ico" width="14" height="14" viewBox="0 0 13 13" fill="none"><rect x="2" y="1.5" width="9" height="10" rx="1" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="none"/><line x1="5" y1="1.5" x2="5" y2="11.5" stroke="rgba(255,255,255,.5)" stroke-width="1"/><line x1="6.5" y1="4.5" x2="9.5" y2="4.5" stroke="rgba(255,255,255,.5)" stroke-width=".7"/><line x1="6.5" y1="7" x2="9.5" y2="7" stroke="rgba(255,255,255,.5)" stroke-width=".7"/></svg>C++ Primer 5th Edition</span>
             <div class="resource-meta">
-              <span class="resource-level beginner-intermediate" style="background:rgba(61,220,132,.07);color:var(--green);border:1px solid rgba(61,220,132,.2);font-family:'DM Mono',monospace;font-size:10px;padding:2px 8px;border-radius:4px;letter-spacing:.5px;">Beginner–Intermediate</span>
+              <span class="resource-level beginner-intermediate">Beginner–Intermediate</span>
               <span class="resource-arrow">↗</span>
             </div>
           </a>
@@ -6759,7 +6872,7 @@ function esc(str) {
           <span class="checkmark">${done ? '✓' : ''}</span>
           <span>${done ? 'done' : 'mark done'}</span>
         </label>
-        <button class="np-ghost" style="font-size:10px;padding:6px 12px" data-expand="${t.id}">expand →</button>
+        <button class="np-ghost" data-expand="${t.id}">expand →</button>
       </div>
     `;
     grid.appendChild(card);
@@ -6874,7 +6987,7 @@ function updateProgressWidget(saved) {
         <div class="career-chips">${addChips}</div>
       </div>
       <div class="career-footer">
-        <a class="np-ghost" href="${esc(c.url)}" target="_blank" rel="noopener noreferrer" style="font-size:10px;padding:6px 12px">View Roadmap →</a>
+        <a class="np-ghost" href="${esc(c.url)}" target="_blank" rel="noopener noreferrer">View Roadmap →</a>
       </div>
     `;
     grid.appendChild(card);
@@ -6950,6 +7063,7 @@ function openModal(id) {
     </div>
   `;
 
+  document.getElementById('modal-content').dataset.phase = t.phase;
   const overlay = document.getElementById('modal-overlay');
   overlay.classList.add('open');
   document.body.style.overflow = 'hidden';

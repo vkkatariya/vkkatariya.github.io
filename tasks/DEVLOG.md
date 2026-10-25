@@ -7,6 +7,37 @@
 ---
 
 
+## [2026-10-25] Claude Code (local) — feat/design-system-migration · Phase 3 roadmap
+
+**Mode:** Builder
+
+**Did:** Executed `tasks/kickoff-phase3-roadmap.md` (`#pg-roadmap`, its internal nav, topic modal and progress widget). `prototypes/portfolio-combined.html` only. The kickoff's reference structure (9 `.th` topic sections, `.tree` mind maps, `.duo`/`.flow` panels, verdict inline) does not exist on this page, so the design-system components were mapped onto the real sections: overview phase cards, getting-started guide, month-by-month timeline, 11 topic cards, 10 career cards, 3 resource groups. The legacy Roadmap glass overrides (the "Roadmap page widgets" block + their `html.light` entries) were removed in place; everything new lives in a `PHASE 3 · ROADMAP` block at the end of the stylesheet.
+- **Hues (nav = section, never reused except by phase):** overview blue, topics teal, careers indigo, resources purple (replaces the old blue/amber/red/green status numerals); getting started cyan, timeline pink, header sand. Phase cards 01–04 take blue/teal/indigo/purple and each topic card (and the modal + filter chip) inherits its phase's hue via `data-phase`, so hue = phase there (deliberate reuse; no JS change needed beyond one `dataset.phase` line in `openModal`).
+- **Internal nav:** morph from the shared centre pill kept; surface/type retuned like the Phase 1 NavPill (54px, glass tokens, Space Grotesk 500 14.5px uppercase, active link = hue 16% fill / 50% border via `.hue-*` on each link). Dropped the old `html.light` overrides (tokens flip with the theme). The old ≤860/≤559 bottom-bar rules sat before the base rule and were silently overridden; moved after it (tablet bottom pill, phone full-width 4-up bar).
+- **Header/hero:** Syne 800 clamp(28–46px) title (script "R" kept), sand mono kicker, Outfit 18px lead; stat badges are neutral chips with sprite icons (the 3 emoji 📋 ⏱ 🤖 replaced; `i-clock`/`i-book` added to the page sprite).
+- **Overview:** 4 phase cards = bg2 panel, 3px hue top edge, DM Mono hue numeral, hue icon. **Getting started:** two mini-cards (bg3, 14px, 4px hue edge), Outfit 15.5px list, hue markers.
+- **Timeline = tree:** 2px spine + elbow per item at `--h` 45% (reference `.tree` pattern), hue dots (filled when open), header/body on bg2/bg3, Outfit 15.5px bullets, open max-height 400→640px (longer Outfit lists). Fixed a pre-existing leak: the homepage's global `.tl-item{display:contents}` and `.tl-body` 3-column grid applied to this timeline (only one dot rendered, open body was half width).
+- **Topics:** 11 mini-cards (bg3, 14px, 4px phase-hue edge), Space Grotesk 700 title, Outfit 15px description, neutral pill badges (Essential/Core/Critical/… are not status). "Done" is a StatusBadge: 22px circle, green dot + check (status colour marks status only). Filter buttons are chips; active = phase-hue tint. **Careers:** 10 panels with hue top edge, DM Mono % + 10px hue bar (JS writes inline status colours; `!important` hue wins). **Resources:** mini-cards with purple edge; level (Beginner/Intermediate/Advanced) is a neutral chip.
+- **Progress widget** = SkillBar (teal fill, DM Mono count), lifted above the fixed bottom nav ≤860 (it covered the nav links at 390). **Modal:** bg2 20px panel, hue from `data-phase`, Syne title, mono labels, Outfit body, hue-edged sub-cards.
+- **Typography:** the page's descriptions moved from JetBrains Mono to Outfit (`--read`); labels stay mono; w30 text on this page raised to w60/w80 (colour-meaningful text only), small 10–11px labels raised to 12–13px.
+- Grids now `auto-fit minmax(min(100%,300px),1fr)` (phases 230px) instead of fixed 3/4 columns plus the 768/480 breakpoint overrides.
+
+**Decided / not done:**
+- The kickoff's "mind-map trees / `.node` / flow steps / `.duo` / verdict inline" components have no content on this page; not invented. The timeline took the tree-connector treatment; verdict badges are used for the topic "done" state only.
+- Replaced inline `font-size:10px;padding:6px 12px` on the JS-rendered ghost buttons (and the hero "back to portfolio") with a CSS rule (cosmetic template change, behaviour untouched).
+- Filter buttons have no `aria-pressed` (would need JS); left for Phase 5.
+
+**Verification:** `npm run lint:html` 0 errors; `npm test` 29/29; automated overflow/clip/truncation pass at 1920, 1440, 860, 560, 390 × dark + light: no page overflow, no clipped or truncated text (the only flags are the 12 timeline dots, which sit on the spine outside their item by design). Visually reviewed (full page and states: timeline open, topics with 2 marked done, careers with bars filled, topic modal, mobile bar + progress widget) at 1440, 860, 390 in both themes.
+
+**State:** branch `feat/design-system-migration`, no PR opened.
+
+**Next:** Phase 4 (`tasks/kickoff-phase4-about.md`).
+
+**Modified:** `prototypes/portfolio-combined.html`, `tasks/DEVLOG.md`, `tasks/kickoff-phase3-roadmap.md`
+
+---
+
+
 ## [2026-10-25] Claude Code (local) — feat/design-system-migration · Phase 2 projects
 
 **Mode:** Builder
