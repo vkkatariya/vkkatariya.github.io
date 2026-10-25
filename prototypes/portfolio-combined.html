@@ -44,47 +44,77 @@ window.va = window.va || function () { (window.vaq = window.vaq || []).push(argu
 
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 
+/* === design-system tokens (source: tasks/germany-tax-map.html lines 9-59) ===
+   Dark is the default. Light is applied via html.light (JS toggle + e2e depend on it)
+   and [data-theme="light"]. The OS-driven block is opt-in via [data-theme="auto"] so the
+   site stays dark-by-default for visitors whose OS prefers light. === */
 :root {
-  --bg: #1B1C1D;
-  --bg2: #1F2021;
-  --bg3: #252527;
-  --bg4: #2C2C2E;
-  --w: #F1F0F6;
-  --w80: rgba(241,240,246,.8);
-  --w60: rgba(241,240,246,.6);
-  --w30: rgba(241,240,246,.3);
-  --w12: rgba(241,240,246,.12);
-  --w06: rgba(241,240,246,.06);
-  --w03: rgba(241,240,246,.03);
-  --green: #34C77B;
-  --amber: #F5B55F;
-  --blue: #5B9CF6;
-  --acc: #00D4AA;
-  --red: #F05C5C;
-  --purple: #A78BFA;
+  --bg:#1B1C1D; --bg2:#222425; --bg3:#161718; --bg4:#2B2D2E;
+  --w:#F4F4F5; --w80:#CCCED0; --w60:#A4A7AB; --w30:#5C5E62;
+  --w12:rgba(255,255,255,.12); --w06:rgba(255,255,255,.06);
+  --acc:#2FD9BE; --acc-dim:rgba(47,217,190,.12);
+  --blue:#5E9BFF; --teal:#2FD9BE; --cyan:#4CCBF0; --indigo:#9A9DFF; --purple:#BC92FF; --pink:#FF7CC0; --orange:#FF9A5C; --lime:#B4E34D; --sand:#E0C08A;
+  --green:#4ADE80; --amber:#F2B84B; --red:#FF6B6B;
+  --bar-ref:#80848A; --shadow:0 12px 32px rgba(0,0,0,.42); --scrim:rgba(8,9,10,.62);
+  --glass-top:rgba(34,36,37,.86); --glass-bottom:rgba(27,28,29,.78); --glass-border:rgba(255,255,255,.14);
+  --display:'Syne','Space Grotesk',system-ui,sans-serif;
+  --sans:'Space Grotesk',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --read:'Outfit','Space Grotesk',system-ui,sans-serif;
+  --mono:'JetBrains Mono',ui-monospace,'SFMono-Regular',Menlo,monospace;
+  --data:'DM Mono',ui-monospace,'SFMono-Regular',Menlo,monospace;
+  color-scheme:dark;
+  /* legacy aliases still referenced by existing rules — retire in later phases */
+  --w03: rgba(255,255,255,.03);
   --sd: rgba(0,0,0,.7);
   --sl: rgba(255,255,255,.07);
   --glass: rgba(27,28,29,.78);
-  --glass-b: rgba(241,240,246,.13);
+  --glass-b: rgba(255,255,255,.13);
   --np-off: 4px;
 }
-html.light {
-  --bg: #F0F0EE;
-  --bg2: #FFFFFF;
-  --bg3: #F4F4F2;
-  --bg4: #E8E8E6;
-  --w: #0D0D0F;
-  --w80: rgba(13,13,15,.8);
-  --w60: rgba(13,13,15,.6);
-  --w30: rgba(13,13,15,.3);
-  --w12: rgba(13,13,15,.12);
-  --w06: rgba(13,13,15,.06);
+@media (prefers-color-scheme: light) {
+  :root[data-theme="auto"] {
+    --bg:#FAFAFA; --bg2:#FFFFFF; --bg3:#F0F0F1; --bg4:#E6E6E8;
+    --w:#0D0D0F; --w80:#2B2D30; --w60:#54575B; --w30:#A3A6AA;
+    --w12:rgba(13,13,15,.12); --w06:rgba(13,13,15,.06);
+    --acc:#007860; --acc-dim:rgba(0,120,96,.10);
+    --blue:#0C65DF; --teal:#007860; --cyan:#00708F; --indigo:#4A4DD1; --purple:#7338CC; --pink:#BE2379; --orange:#B04800; --lime:#4B7600; --sand:#85601F;
+    --green:#1B7A3A; --amber:#8A5600; --red:#C42B2B;
+    --bar-ref:#8A8E94; --shadow:0 12px 32px rgba(13,13,15,.16); --scrim:rgba(13,13,15,.38);
+    --glass-top:rgba(255,255,255,.92); --glass-bottom:rgba(250,250,250,.86); --glass-border:rgba(13,13,15,.12);
+    color-scheme:light;
+  }
+}
+:root[data-theme="dark"] {
+  --bg:#1B1C1D; --bg2:#222425; --bg3:#161718; --bg4:#2B2D2E;
+  --w:#F4F4F5; --w80:#CCCED0; --w60:#A4A7AB; --w30:#5C5E62;
+  --w12:rgba(255,255,255,.12); --w06:rgba(255,255,255,.06);
+  --acc:#2FD9BE; --acc-dim:rgba(47,217,190,.12);
+  --blue:#5E9BFF; --teal:#2FD9BE; --cyan:#4CCBF0; --indigo:#9A9DFF; --purple:#BC92FF; --pink:#FF7CC0; --orange:#FF9A5C; --lime:#B4E34D; --sand:#E0C08A;
+  --green:#4ADE80; --amber:#F2B84B; --red:#FF6B6B;
+  --bar-ref:#80848A; --shadow:0 12px 32px rgba(0,0,0,.42); --scrim:rgba(8,9,10,.62);
+  --glass-top:rgba(34,36,37,.86); --glass-bottom:rgba(27,28,29,.78); --glass-border:rgba(255,255,255,.14);
+  color-scheme:dark;
+}
+html.light,
+:root[data-theme="light"] {
+  --bg:#FAFAFA; --bg2:#FFFFFF; --bg3:#F0F0F1; --bg4:#E6E6E8;
+  --w:#0D0D0F; --w80:#2B2D30; --w60:#54575B; --w30:#A3A6AA;
+  --w12:rgba(13,13,15,.12); --w06:rgba(13,13,15,.06);
+  --acc:#007860; --acc-dim:rgba(0,120,96,.10);
+  --blue:#0C65DF; --teal:#007860; --cyan:#00708F; --indigo:#4A4DD1; --purple:#7338CC; --pink:#BE2379; --orange:#B04800; --lime:#4B7600; --sand:#85601F;
+  --green:#1B7A3A; --amber:#8A5600; --red:#C42B2B;
+  --bar-ref:#8A8E94; --shadow:0 12px 32px rgba(13,13,15,.16); --scrim:rgba(13,13,15,.38);
+  --glass-top:rgba(255,255,255,.92); --glass-bottom:rgba(250,250,250,.86); --glass-border:rgba(13,13,15,.12);
+  color-scheme:light;
   --w03: rgba(13,13,15,.03);
   --sd: rgba(0,0,0,.1);
   --sl: rgba(255,255,255,.8);
   --glass: rgba(255,255,255,.72);
   --glass-b: rgba(13,13,15,.1);
 }
+
+/* hue classes: set --h; components read it for 13-16% fill, 42-50% border, 100% icon */
+.hue-blue{--h:var(--blue)}.hue-teal{--h:var(--teal)}.hue-cyan{--h:var(--cyan)}.hue-indigo{--h:var(--indigo)}.hue-purple{--h:var(--purple)}.hue-pink{--h:var(--pink)}.hue-orange{--h:var(--orange)}.hue-lime{--h:var(--lime)}.hue-sand{--h:var(--sand)}
 
 /* ── font variable ─────────────────────────────────────────────────────────
    Kept the variable name for minimal blast radius — all 29 selectors that
@@ -99,7 +129,6 @@ html.light {
 
 :root {
   --glass-bg: linear-gradient(135deg, rgba(255,255,255,.10) 0%, rgba(255,255,255,.04) 100%);
-  --glass-border: rgba(255,255,255,.16);
   --glass-shadow: 0 4px 28px rgba(0,0,0,.55), 0 1px 0 rgba(255,255,255,.12) inset;
   --glass-hover-shadow: 8px 10px 24px rgba(0,0,0,.55), 0 1px 0 rgba(255,255,255,.12) inset;
 }
@@ -114,17 +143,43 @@ html { scroll-behavior: smooth }
 
 body {
   background: var(--bg);
-  color: var(--w);
-  font-family: 'Space Grotesk', sans-serif;
+  color: var(--w80);
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.6;
   min-height: 100vh;
   overflow-x: hidden;
+}
+
+/* Phase 0 containment: body line-height is now 1.6, but the fixed-height home tiles were tuned
+   against the browser-default `normal`. Keep them there until Phase 3 rebuilds the widget surface. */
+.w { line-height: normal; }
+
+/* a11y: visible keyboard focus ring (2px acc, 3px offset) */
+a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible,
+textarea:focus-visible, summary:focus-visible, [role="button"]:focus-visible, [tabindex]:focus-visible {
+  outline: 2px solid var(--acc);
+  outline-offset: 3px;
+}
+
+/* a11y: honour reduced-motion — transitions/animations collapse to ~0ms (not `none`, so
+   fill-mode end states and transitionend handlers still land) */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    transition-duration: .001ms !important;
+    transition-delay: 0s !important;
+    animation-duration: .001ms !important;
+    animation-delay: 0s !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
 }
 
 /* ── dot matrix bg ── */
 body::before {
   content: '';
   position: fixed; inset: 0;
-  background-image: radial-gradient(circle, rgba(241,240,246,.04) 1px, transparent 1px);
+  background-image: radial-gradient(circle, var(--w06) 1px, transparent 1px);
   background-size: 20px 20px;
   pointer-events: none;
   z-index: 0;
@@ -3142,6 +3197,12 @@ html.light footer.roadmap-footer a { color: var(--w); }
 ══════════════════════════════════════════ */
 .widget, .pcard, .skill-group, .lang-card, .lcard, .edu-card, .tl-badge, .card, .panel, .w {
   transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease !important;
+}
+/* this rule's !important beats the global reduced-motion reset (specificity), so repeat it here */
+@media (prefers-reduced-motion: reduce) {
+  .widget, .pcard, .skill-group, .lang-card, .lcard, .edu-card, .tl-badge, .card, .panel, .w {
+    transition-duration: .001ms !important;
+  }
 }
 
 .widget:hover, .pcard:hover, .skill-group:hover, .lang-card:hover, .lcard:hover, .edu-card:hover, .tl-badge:hover, .card:hover, .panel:hover, .w:hover {

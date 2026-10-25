@@ -7,6 +7,34 @@
 ---
 
 
+## [2026-10-25] Claude Code (local) — feat/design-system-migration · Phase 0 foundation
+
+**Mode:** Builder
+
+**Did:** Executed `tasks/kickoff-phase0-foundation.md` (tokens/foundation only, no visual redesign). Reference: `tasks/germany-tax-map.html` (untracked locally). Baseline first: 29/29 e2e, htmlhint 0 errors, 10 before-screenshots (5 pages × dark/light).
+- `prototypes/portfolio-combined.html`: replaced the `:root` + `html.light` token blocks with the design-system values (verbatim from the reference). Dark default; light via `html.light` + `[data-theme="light"]`; `[data-theme="dark"]` block added; `color-scheme` set per theme. New tokens: teal/cyan/indigo/pink/orange/lime/sand, bar-ref, acc-dim, shadow, scrim, glass-top/bottom/border. Ink ladder is now solid (`--w80/60/30`), `bg3` is now darker than `bg`.
+- Semantic font vars `--display/--sans/--read/--mono/--data`; `body` is now `var(--sans)` 16px / 1.6 / `var(--w80)`. `--font-ndot` alias left in place (removal is Phase 1 per the migration doc).
+- Global `:focus-visible` (2px acc ring, 3px offset) and `prefers-reduced-motion: reduce` (durations collapse to .001ms, not `none`, so end states and transitionend still land). The existing `.widget/.pcard/.w…` hover rule has `transition … !important` and out-ranks the global reset, so a companion reduced-motion override sits right after it.
+- `.hue-blue` … `.hue-sand` set `--h`. Dot matrix now uses `var(--w06)`.
+- New `prototypes/assets/icons.svg`: 59 symbols (51 from the reference + github, lock, server, terminal, cpu, mail, download, external-link), `currentColor`, stroke 1.6, verified rendering via `<use>`.
+
+**Decided:**
+- **Kickoff says 52 symbols; the reference has 51.** Shipped 51 + 8 portfolio = 59.
+- **OS-driven light block is opt-in** (`:root[data-theme="auto"]`), not automatic. The site is dark-by-default with an `html.light` toggle (e2e + the migration doc's pending decision "stay dark by default"); an automatic `prefers-color-scheme: light` block would flip tokens for OS-light visitors while `html.light` overrides stay off (half-themed page). Values are identical to the reference; flip the selector if auto-light is wanted.
+- **Dropped the second `--glass-border: rgba(255,255,255,.16)`** (a later `:root` block was overriding the new token; L-023/L-024). Dark glass border is now .14 per the system.
+- **Legacy aliases kept** (`--w03 --sd --sl --glass --glass-b --np-off`, per-theme) — 31 rules still use them; retire when the surfaces are rebuilt.
+- **`.w { line-height: normal }`**: the new body line-height 1.6 pushed fixed-height home tiles to overflow more (GitHub widget, Hermes at 860/390px). Pinned tiles to old line-height; overflow metrics match baseline within 1px at 1440/860/390. Phase 3 rebuilds these.
+
+**State:** 29/29 e2e pass, htmlhint 0 errors, tokens/focus ring/hue/reduced-motion verified in the live page (computed styles, dark + light, OS-light default stays dark). Page heights grew ~1–4% from 1.6 line-height outside `.w`. Visible changes: teal accent, dot grid slightly stronger (.04→.06), `w30`/chip text darker than before (solid `#5C5E62`) — the planned w30 contrast audit is Phase 4.
+Not done / out of scope here: docs-first items from the migration doc (CONTEXT.md/CLAUDE.md palette, L-072, cs-roadmap frozen note) and sprite *use* in the page (sprite file only; emoji replacement is Phase 3).
+
+**Next:** Phase 1 (`tasks/kickoff-phase1-homepage.md`). Untracked planning docs (`kickoff-phase*.md`, `kickoff-master-index.md`, `portfolio-design-system-migration.md`, `germany-tax-map.html`) and `tasks/todo.md` edits were intentionally left out of this commit.
+
+**Modified:** `prototypes/portfolio-combined.html`, `prototypes/assets/icons.svg` (new), `tasks/DEVLOG.md`
+
+---
+
+
 ## [2026-07-01] Hermes — feat/resume-redesign · cv.pdf regen + corner-to-corner widget
 
 **Mode:** Builder (scripted)
