@@ -195,7 +195,7 @@ html.light body::before {
   z-index: 200;
   pointer-events: none; /* only the pills catch clicks, not the gutters between them */
 }
-.tb { display: flex; align-items: center; gap: 10px; }
+.tb { display: flex; align-items: center; justify-content: center; gap: 8px; max-width: fit-content; margin: 0 auto; }
 .pill {
   pointer-events: auto;
   height: 54px; box-sizing: border-box; border-radius: 999px;
@@ -234,7 +234,7 @@ html.light body::before {
 
 /* links: scroll-spy pill; the active page is a hue-tinted pill (16% fill / 50% border) */
 .links {
-  flex: 1; min-width: 0; gap: 4px; padding: 0 8px; overflow-x: auto; scrollbar-width: none;
+  flex: 0 1 auto; min-width: 0; gap: 4px; padding: 0 8px; overflow-x: auto; scrollbar-width: none;
   -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 14px, #000 calc(100% - 24px), transparent 100%);
   mask-image: linear-gradient(90deg, transparent 0, #000 14px, #000 calc(100% - 24px), transparent 100%);
   transition: opacity .32s ease, transform .32s ease;
@@ -3555,7 +3555,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
       <a href="#about" aria-label="about" onclick="showPage('about')"><svg class="i" aria-hidden="true"><use href="#i-figure"/></svg><span>about</span></a>
       <span class="nav-avail-item">
         <span class="nav-avail-dot"></span>
-        <span class="nav-avail-txt">available</span>
+        <span class="nav-avail-txt">Not available</span>
       </span>
     </nav>
 
@@ -3629,7 +3629,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
         <div class="clock-date" id="cd">wed · 25 mar 2026</div>
       </div>
       <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
-        <span class="sbadge">open to work</span>
+        <span class="sbadge">Not available</span>
         <span class="chip">AI · ML · SWE · DevOps</span>
       </div>
     </div>
@@ -3878,7 +3878,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
       </div>
       <div style="display:flex;flex-direction:column;gap:8px">
         <div class="loc-label"><svg class="i" aria-hidden="true"><use href="#i-pin"/></svg>Darmstadt</div>
-        <div class="avail-badge">open to werkstudent jobs</div>
+        <div class="avail-badge">Not available</div>
         <a href="assets/cv.pdf" download="Vishal-Katariya-Resume.pdf" class="np" style="text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:6px;font-size:10px;padding:8px 14px;margin-top:2px">↓ download resume</a>
       </div>
     </div>
@@ -5626,7 +5626,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
       <div class="photo-frame">
         <img class="photo-img" src="assets/image.png" alt="Vishal Katariya" loading="lazy">
       </div>
-      <div class="photo-status">open to werkstudent jobs</div>
+      <div class="photo-status">Not available</div>
       <!-- ── RESUME DOWNLOAD PILL ── -->
       <a class="cv-dl" href="assets/cv.pdf" download="Vishal-Katariya-Resume.pdf">
         <svg class="i" aria-hidden="true"><use href="#i-download"/></svg>
@@ -5983,12 +5983,12 @@ const COPY = {
   EN: {
     eyebrow: 'CS student · Darmstadt · 2026',
     role: ['ML Engineering','Full-Stack','Infrastructure'],
-    avail: 'available for internships',
+    avail: 'Not available',
   },
   DE: {
     eyebrow: 'Informatikstudent · Darmstadt · 2026',
     role: ['ML Engineering','Full-Stack','Infrastruktur'],
-    avail: 'offen für Praktikumsplätze',
+    avail: 'Nicht verfügbar',
   }
 };
 let lang = 'EN';
@@ -5996,7 +5996,10 @@ function toggleLang() {
   lang = lang === 'EN' ? 'DE' : 'EN';
   document.getElementById('langBtn').textContent = lang;
   const eyebrow = document.querySelector('.hero-eyebrow'); if (eyebrow && eyebrow.childNodes[2]) eyebrow.childNodes[2].nodeValue = ' ' + COPY[lang].eyebrow + ' ';
-  document.querySelector('.avail-badge').textContent = COPY[lang].avail;
+  const availBadge = document.querySelector('.avail-badge'); if (availBadge) availBadge.textContent = COPY[lang].avail;
+  const navAvail = document.querySelector('.nav-avail-txt'); if (navAvail) navAvail.textContent = COPY[lang].avail;
+  const photoStatus = document.querySelector('.photo-status'); if (photoStatus) photoStatus.textContent = COPY[lang].avail;
+  const sbadge = document.querySelector('#home-clock .sbadge'); if (sbadge) sbadge.textContent = COPY[lang].avail;
 }
 
 // ── Simulated GitHub contribution grid (cells only) ──

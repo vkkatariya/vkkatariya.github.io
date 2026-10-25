@@ -7,6 +7,41 @@
 ---
 
 
+## [2026-10-25] Antigravity — feat/post-design-system-topbar-status · topbar centered grouping + status text to "Not available"
+
+**Mode:** Execution
+
+**Did:**
+- Created isolated git worktree at `portfolio-website-topbar-status` on branch `feat/post-design-system-topbar-status` created from `feat/design-system-migration`.
+- Centered topbar pills: updated `.tb` CSS with `justify-content: center; gap: 8px; max-width: fit-content; margin: 0 auto;`, and set `.links` to `flex: 0 1 auto; min-width: 0;` so the 3 glass pills (brand, links, tools) sit tightly grouped together near center on desktop instead of stretching across the full screen width.
+- Verified topbar responsiveness across viewports (1920, 1200, 860, 560, 390, 375, 320) with automated viewport sweep in Playwright — 0 horizontal scroll across all widths, with smooth collapse down to icon-only links at mobile breakpoints.
+- Updated status text from "available" / "open to work" / "open to werkstudent jobs" to "Not available" across all relevant locations:
+  - Homepage nav center `.nav-avail-txt` ("Not available")
+  - Homepage clock widget `.sbadge` ("Not available")
+  - Homepage contact widget `.avail-badge` ("Not available")
+  - About page photo block `.photo-status` ("Not available")
+  - JS `COPY` object (`EN.avail: 'Not available'`, `DE.avail: 'Nicht verfügbar'`)
+  - Updated `toggleLang()` so switching language updates all status indicators to German ("Nicht verfügbar") and restores English ("Not available").
+- Updated Playwright test expectations in `tests/e2e/spa.spec.js` to assert "Nicht verfügbar" in DE and "Not available" in EN.
+- Preserved light mode tokens (`html.light`, `[data-theme="light"]`) matching Germany Tax Chat reference values.
+- Verified visual output across 1920/860/560/390 in both dark and light modes with rendered screenshots.
+
+**State:** Clean, passing all verification gates.
+- `npm run lint:html`: 14 files scanned, 0 errors.
+- `npm test`: 29/29 Playwright tests passing.
+- 0 horizontal scroll across all viewports (320px–1920px).
+
+**Decided:**
+- Grouped pills using `max-width: fit-content; margin: 0 auto; justify-content: center; gap: 8px;` on `.tb` with `flex: 0 1 auto` on `.links`, allowing the pills to hug their contents compactly while preserving the centered layout and the roadmap nav morph slot.
+- Retained the pulsing green dot for status badges while changing the label text to "Not available" (and "Nicht verfügbar" in DE) per kickoff specifications.
+
+**Blocked / Next:** Work on `feat/post-design-system-topbar-status` is complete and ready for PR / merge.
+
+**Modified:** `prototypes/portfolio-combined.html`, `tests/e2e/spa.spec.js`, `tasks/DEVLOG.md`
+
+---
+
+
 ## [2026-10-25] Claude Code (local) — feat/design-system-migration · Phase 6 alignment
 
 **Mode:** Execution + Analytical
