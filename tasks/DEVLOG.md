@@ -7,6 +7,32 @@
 ---
 
 
+## [2026-10-25] Claude Code (local) — feat/design-system-migration · Phase 5 polish
+
+**Mode:** Analytical + Execution
+
+**Did:** Executed `tasks/kickoff-phase5-polish.md` across all five pages (`prototypes/portfolio-combined.html`, `index.html` meta only). Audited with Playwright (computed styles / contrast per text node) rather than only grepping.
+- **Radii:** every off-scale `border-radius` in the file snapped to the scale (4/6/7 → 5 chips or 3 bars, 6 logo tiles → 8, 12 → 14 mini-cards/steps or 11 icon tiles, 12 CTA button → 10, 16 → 14, 22 → 20, modal panel → 20). A computed-radius audit of all five pages (+ nav) at 1440 now reports no off-scale value.
+- **Easing:** 47 transition declarations normalised to `.24s cubic-bezier(.2,.7,.2,1)` (bare `.13/.18/.2/.25/.3s` and `ease` removed). Widget transform spring kept (`.34,1.46,.64,1`). Left as-is on purpose: SPA page fade, nav morph, bar/progress width fills, max-height accordion, NeoPOP button press (.1s), modal enter, `widget-enter` entrance animations.
+- **Hover rule:** the global `.widget/.pcard/.skill-group/.lang-card/.edu-card/.panel/.w:hover` `!important` rule (translateY(-2px) scale(1.012) + `border-color: w06 !important`) erased the hue edges added in Phases 2–4 on hover. Cards now lift `translateY(-3px)` only; `.w` gets `translateY(-3px) scale(1.015)`; no box-shadow / border-colour override. Home about/contact tiles, `.pcard` and the /me card follow.
+- **Contrast:** all 105 text uses of `var(--w30)` → `var(--w60)` (w30 stays for borders/dividers/dots only); light-mode nav language/theme/search colours and placeholder → `--w60`; "planned" infra items opacity .5 → .85 + italic. Computed contrast (text vs resolved background, 4.5:1 normal / 3:1 large) over all five pages at 1920/1440/860/560/390 × dark + light: 0 failures. Text under 10px raised to 10px.
+- **Focus / motion:** every focusable element on all five pages computes a ≥2px outline on `:focus-visible` (global 2px acc ring, 3px offset); with `prefers-reduced-motion: reduce` no element keeps a transition/animation over 0.01ms.
+- **theme-color:** metas were still `#080808`/`#f0f0f0` (kickoff said Phase 0 had done it): now `#1B1C1D` dark / `#FAFAFA` light in `index.html` and the SPA; the SPA also sets both metas from the saved/toggled site theme (the OS-light media meta would otherwise win over a dark site).
+- **Tablet grid:** `grid-auto-rows` at ≤860px is `minmax(152px, auto)` so the Hermes tile no longer clips after the label size bump.
+
+**Not done:** "Port tokens to Phase 1 SvelteKit" — no scaffold exists yet (`web/` not started); the `:root` block in `portfolio-combined.html` is the source to copy. The `.nav-search-input` has `outline:none` with the focus ring on its wrapper (`:focus-within`), left as designed.
+
+**Verification:** `npm run lint:html` 0 errors; `npm test` 29/29; overflow/clip pass on all five pages at 1920/860/560/390 × dark + light (the remaining flags — System Time, Identity, Stack tiles — are identical before this phase); home, roadmap, about, projects, /me screenshots reviewed.
+
+**State:** branch `feat/design-system-migration` — Phases 0–5 complete; no PR opened.
+
+**Next:** open a PR to `dev` when the user asks; start the SvelteKit scaffold with the Phase 0 tokens.
+
+**Modified:** `prototypes/portfolio-combined.html`, `index.html`, `tasks/DEVLOG.md`
+
+---
+
+
 ## [2026-10-25] Claude Code (local) — feat/design-system-migration · Phase 4 about
 
 **Mode:** Builder
