@@ -277,7 +277,9 @@ html.light body::before {
 #shared-nav:not(.scrolled) .tbtn.srch:not(:focus-within) { max-width: 42px; padding: 0; gap: 0; justify-content: center; border-color: transparent; background: transparent; cursor: pointer; }
 #shared-nav:not(.scrolled) .tbtn.srch:not(:focus-within) .nav-search-input { width: 0; opacity: 0; }
 #shared-nav:not(.scrolled) .tbtn.srch:not(:focus-within) kbd { display: none; }
-.tbtn.srch:focus-within { outline: 2px solid var(--acc); outline-offset: 3px; }
+.tbtn.srch:focus-within { outline: 2px solid color-mix(in srgb, var(--acc) 35%, transparent); outline-offset: 3px; }
+/* the pill carries the focus ring; the global input:focus-visible outline would draw a box inside it */
+.tbtn.srch .nav-search-input:focus-visible { outline: none; }
 .tbtn.srch kbd {
   font-family: var(--mono); font-size: 11px; line-height: 1; letter-spacing: 0; white-space: nowrap;
   color: var(--w60); background: var(--bg3); border: 1px solid var(--w12); border-radius: 5px; padding: 3px 7px;
