@@ -48,6 +48,19 @@
 ---
 
 
+## [2026-10-25] Claude Code (local) — fix/ci-runner · first real CI run failed on the runner image
+
+**Mode:** Execution
+
+**Did:** After #21 made `ci.yml` valid, its first real run (on `dev`, 2cdf54f) passed `HTML Lint` and failed `E2E Tests (Playwright)` at "Install Playwright browser": `Playwright does not support chromium on ubuntu26.04-x64` — `ubuntu-latest` now resolves to Ubuntu 26.04 and Playwright 1.56.1 has no build for it. Pinned both `ci.yml` jobs to `ubuntu-24.04` (comment says to unpin on a Playwright upgrade).
+
+**Verification:** the `ci.yml` run on the `dev` push after merge.
+
+**Modified:** `.github/workflows/ci.yml`, `tasks/DEVLOG.md`
+
+---
+
+
 ## [2026-10-25] Claude Code (local) — fix/ci-workflow · ci.yml never ran
 
 **Mode:** Analytical + Execution

@@ -7,9 +7,11 @@ on:
     branches: [main]
 
 jobs:
+  # Pinned to ubuntu-24.04: `ubuntu-latest` now resolves to 26.04, which Playwright 1.56 cannot install
+  # chromium on ("does not support chromium on ubuntu26.04-x64"). Unpin when Playwright is upgraded.
   lint-html:
     name: HTML Lint
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -21,7 +23,7 @@ jobs:
 
   e2e:
     name: E2E Tests (Playwright)
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: lint-html
     steps:
       - uses: actions/checkout@v4
