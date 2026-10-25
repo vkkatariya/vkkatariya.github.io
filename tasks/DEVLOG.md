@@ -26,7 +26,9 @@
 - **Left alone (not in the Done-When list):** emoji glyphs (`.feat-icon`, `.plat-icon` in TypeShift) — they render as tofu in this headless Chromium but are unchanged from before; replacing them with sprite icons stays on the migration plan.
 - **Responsive fixes found in review:** `.platform-grid` is now `repeat(auto-fit, minmax(170px,1fr))` (3 fixed columns overflowed the panel at 560px); node-diagrams stack ≤700px with the connector between nodes; mobile skill rows use `minmax(0,1.5fr) minmax(0,1fr) 28px` so names stop truncating.
 
-**State:** 29/29 e2e, htmlhint 0 errors, no console errors. Reviewed full-page captures at 1920/1440/860/560/390 in dark + light, plus crops of every artifact type; no horizontal overflow in any panel at any width. Pipelines still scroll horizontally inside their panel on phones (existing pattern).
+**Verification (redone after the first pass was found incomplete):** on the final code, every case study (8) and the page header + 8 index cards were reviewed section-by-section, dark and light side by side, at 1920, 860, 560 and 390px (1440 spot-checked earlier). An automated pass over the same 8 widths/themes checks escapes-card, beyond-viewport, text truncation and clipped heights. It found and I fixed: skill names still truncated at 390 (now wrap), orlon-bot's first pipeline card stretched to ~400px (fixed 200px step cards), Unilox's 3-node diagram wrapped unevenly at 860 (stacks ≤1000px). Result: 0 issues at all widths in both themes.
+
+**State:** 29/29 e2e, htmlhint 0 errors. Console shows 3× 404 on every page load (`/_vercel/speed-insights/script.js`, `/_vercel/insights/script.js`, `lib/speed-insights.min.js`): these only exist on Vercel / the deleted `lib/` dir, identical at the pre-Phase-2 commit, not caused by this work. No JS errors. Pipelines still scroll horizontally inside their panel on phones (existing pattern).
 
 **Next:** Phase 3 (`tasks/kickoff-phase3-roadmap.md`).
 
