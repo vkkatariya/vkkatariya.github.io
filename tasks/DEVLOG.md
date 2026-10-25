@@ -21,6 +21,8 @@
 - Moved the "flex-flow" nav tier boundary from ≤860px to ≤1000px. The absolutely-centred pill overlapped the logo/right pill from 861–1000px **before** this phase (baseline measured); now no overlap from 1100px down to 390px. 1001–1100px hides only the "available" text.
 - Kept `.w { line-height: normal }` from Phase 0 (tile heights are fixed).
 
+**Visual verification (kickoff step):** full-page captures at 1920/860/560/390, dark + light, reviewed one by one (reduced-motion emulation to avoid mid-animation frames); no horizontal overflow at any width; tile geometry at 860/560/390 identical to the Phase 0 baseline (empty grid cells at 860/560 and the hidden System Time tile on mobile are pre-existing). Found and fixed one pre-existing defect at 390: `.grid` used `repeat(2, 1fr)`, whose implicit `auto` min let the Skills tile squeeze column 2 to ~85px (Now/Homelab/Hermes labels clipped); now `repeat(2, minmax(0,1fr))`, two equal 178px columns, Hermes content contained.
+
 **State:** 29/29 e2e, htmlhint 0 errors. Verified in the live page: hover transform matrix(1.015,0,0,1.015,0,-3), no backdrop-filter on `.w`, radius 28px, nav 54px with blur(28px) saturate(1.6), 9 hue classes in order, Ctrl+K focuses `#navSearchInput`. Tile overflow metrics match baseline or better (About widget now fits at 1440). Playwright `full_page` screenshots can catch the entry animation mid-flight (System Time looks blank); viewport screenshots and computed opacity confirm it renders.
 Known/left: `runSearch()` is still a `console.log` stub (the aria-label/hint describe intent; no search yet). Hermes widget stats labels are tiny (7.5px, pre-existing). Roadmap's internal nav shares the `.nav-links`/`.nav-logo` classes but its ID-scoped overrides keep it unchanged (checked).
 
