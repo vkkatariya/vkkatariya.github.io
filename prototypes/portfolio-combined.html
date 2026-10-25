@@ -1795,29 +1795,6 @@ footer {
 }
 
 
-/* #pg-me: VK avatar already uses green→blue gradient (inline). Reinforce with
-   the same :root tokens used elsewhere — no new colors. */
-#pg-me .cta-btn { transition: transform .24s cubic-bezier(.2,.7,.2,1), box-shadow .24s cubic-bezier(.2,.7,.2,1); }
-#pg-me .cta-btn:hover { transform: translateY(-2px); box-shadow: 4px 8px 20px rgba(0,0,0,.35); }
-
-/* ══════════════════════════════════════════
-   POP-OUT HOVER (/me Page)
-   The /me page is a placeholder with a single auth-gate card. Per L-021's
-   "one cohesive visual" rule, the whole .me-auth-card lifts as one unit
-   (avatar + heading + description + back-home button). The button inside
-   does NOT lift independently — it's part of the cohesive card.
-
-   Spec matches the other pages: translateY(-2px) scale(1.012),
-   8px/10px/24px shadow stack, --w06 border tint, .18s ease transition.
-══════════════════════════════════════════ */
-#pg-me .me-auth-card {
-  transition: transform .24s cubic-bezier(.2,.7,.2,1), box-shadow .24s cubic-bezier(.2,.7,.2,1), border-color .24s cubic-bezier(.2,.7,.2,1);
-}
-
-#pg-me .me-auth-card:hover {
-  transform: translateY(-3px);
-}
-
 /* ══════════════════════════════════════════
    POP-OUT HOVER (Roadmap Page)
    The 4 widget families that already lift via the GLOBAL widget-hover rule
@@ -2269,6 +2246,10 @@ footer {
 .pfoot-type.app { color: var(--blue); }
 .pfoot-type.collab { color: var(--purple); }
 .pfoot-type.ai { color: var(--green); }
+/* light mode: the #ECECEC page background leaves these 11px labels just under 4.5:1; step each one darker */
+html.light .pfoot-type.ai { color: color-mix(in srgb, var(--green) 85%, #000); }
+html.light .pfoot-type.app { color: color-mix(in srgb, var(--blue) 88%, #000); }
+html.light #pg-home .pcard-num { color: var(--w80); }
 /* cs-badge tints: private→blue, open→green, collab→purple, year→acc */
 .cb-blue { border-color: rgba(91,156,246,.25); background: rgba(91,156,246,.08); color: var(--blue); }
 .cb-blue::before { background: var(--blue); }
@@ -2580,17 +2561,6 @@ html.light .np-ghost:hover { background: rgba(0,0,0,.05); }
 html.light .roadmap-hero .np { background: var(--w); color: var(--bg); }
 html.light .roadmap-hero .np:hover { background: var(--w60); }
 
-html.light #pg-me button,
-html.light #pg-me .cta-btn {
-  background: var(--w) !important;
-  color: var(--bg) !important;
-  border-color: rgba(0,0,0,.08);
-}
-html.light #pg-me button:hover,
-html.light #pg-me .cta-btn:hover {
-  background: var(--w60) !important;
-}
-
 html.light .w { color: var(--w); }
 html.light .w .sub { color: var(--w60); }
 html.light .w [style*="color:rgba(240,240,240,.85)"],
@@ -2825,8 +2795,7 @@ html.light footer.roadmap-footer a { color: var(--w); }
 #pg-about .lang-card,
 #pg-about .int-card,
 #pg-about .contact-card,
-#pg-about .avail-block,
-#pg-me .me-auth-card {
+#pg-about .avail-block {
   transition: transform .24s cubic-bezier(.2,.7,.2,1), box-shadow .24s cubic-bezier(.2,.7,.2,1), border-color .24s cubic-bezier(.2,.7,.2,1);
 }
 
@@ -2914,26 +2883,6 @@ html.light footer.roadmap-footer a { color: var(--w); }
 
 /* --- About page widgets: surfaces live in the PHASE 4 · ABOUT block at the end of the stylesheet --- */
 
-/* --- /me page widget --- */
-#pg-me .me-auth-card {
-  background: linear-gradient(180deg, var(--glass-top), var(--glass-bottom));
-  backdrop-filter: blur(28px) saturate(1.6);
-  -webkit-backdrop-filter: blur(28px) saturate(1.6);
-  border: 1px solid var(--glass-border);
-  box-shadow: var(--shadow);
-}
-
-#pg-me .me-auth-card:hover {
-  transform: translateY(-3px);
-  box-shadow: var(--shadow), 0 0 0 1px var(--w12);
-  border-color: var(--glass-border);
-}
-
-/* --- Light mode overrides for glass readability --- */
-html.light #pg-me .me-auth-card {
-  color: var(--w);
-}
-
 /* Make sure chips/badges/text inside glass widgets stay opaque and readable */
 #pg-home .chip, #pg-home .chip-inv, #pg-home .sbadge,
 #pg-projects .pi-tag,
@@ -2942,8 +2891,7 @@ html.light #pg-me .me-auth-card {
 #pg-about .cc-icon, #pg-about .cc-label, #pg-about .cc-val,
 #pg-about .lang-level, #pg-about .lang-note,
 #pg-about .int-icon, #pg-about .int-title, #pg-about .int-desc,
-#pg-about .sg-label,
-#pg-me .me-auth-card h2, #pg-me .me-auth-card p, #pg-me .me-auth-card button {
+#pg-about .sg-label {
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
   background: transparent;
@@ -3497,6 +3445,37 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
 #pg-about .cc-label { font-family: var(--mono); font-size: 12.5px; letter-spacing: .08em; color: var(--w60); margin-bottom: 4px; }
 #pg-about .cc-val { font-family: var(--sans); font-weight: 500; font-size: 15.5px; letter-spacing: 0; color: var(--w); overflow-wrap: anywhere; }
 #pg-about .contact-card:hover .cc-val { color: var(--h); }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   /ME · private placeholder (design system) — scoped to #pg-me
+   Page accent = sand (header kicker, lock icon, hover edge). One GlassCard, one NeoPOP CTA.
+   No status text on this page.
+═══════════════════════════════════════════════════════════════════════════ */
+.page-wrap { position: relative; z-index: 1; max-width: 960px; margin: 0 auto; padding: 120px 20px 80px; }
+#pg-me .ph { padding: 0 0 32px; max-width: none; }
+#pg-me .ph-label { font-family: var(--mono); font-size: 13px; letter-spacing: .03em; text-transform: none; color: var(--h); }
+#pg-me .ph-label::after { background: color-mix(in srgb, var(--h) 45%, transparent); }
+#pg-me .ph-title { font-family: var(--display); font-weight: 800; font-size: clamp(28px, 4.4vw, 46px);
+  line-height: 1.04; letter-spacing: -.03em; color: var(--w); margin-bottom: 14px; }
+#pg-me .ph-sub { font-family: var(--read); font-size: 18px; letter-spacing: 0; line-height: 1.6; color: var(--w80); max-width: 66ch; }
+#pg-me svg.i { width: 22px; height: 22px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+
+#pg-me .me-card { max-width: 640px; padding: 40px;
+  transition: transform .24s cubic-bezier(.2,.7,.2,1), box-shadow .24s cubic-bezier(.2,.7,.2,1), border-color .24s cubic-bezier(.2,.7,.2,1); }
+#pg-me .me-card:hover { transform: translateY(-3px); border-color: color-mix(in srgb, var(--h) 42%, var(--glass-border)); }
+#pg-me .me-logo { width: 56px; height: 56px; border-radius: 18px; display: grid; place-items: center; margin-bottom: 22px;
+  background: linear-gradient(135deg, color-mix(in srgb, var(--acc) 34%, transparent), color-mix(in srgb, var(--green) 18%, transparent));
+  border: 1px solid var(--glass-border); }
+#pg-me .me-logo img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; display: block; }
+#pg-me .me-title { display: flex; align-items: center; gap: 10px; margin: 0 0 12px;
+  font-family: var(--display); font-weight: 800; font-size: clamp(22px, 3.2vw, 28px); line-height: 1.1; letter-spacing: -.02em; color: var(--w); }
+#pg-me .me-title svg.i { color: var(--h); }
+#pg-me .me-text { max-width: 66ch; margin: 0 0 20px; font-family: var(--read); font-size: 16px; line-height: 1.6; color: var(--w80); }
+#pg-me .me-url { display: block; width: fit-content; margin: 0 0 28px; font-family: var(--mono); font-size: 11px; letter-spacing: .4px; color: var(--w60);
+  text-decoration: underline; text-decoration-color: var(--w30); text-underline-offset: 3px;
+  transition: color .24s cubic-bezier(.2,.7,.2,1), text-decoration-color .24s cubic-bezier(.2,.7,.2,1); }
+#pg-me .me-url:hover { color: var(--w); text-decoration-color: var(--h); }
+@media (max-width: 560px) { .page-wrap { padding: 96px 16px 64px; } #pg-me .me-card { padding: 28px 22px; } }
 </style>
 </head>
 <body>
@@ -5928,14 +5907,24 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
 </div>
 </div>
 <div class="page" id="pg-me">
-<div class="page-wrap" style="max-width:520px;padding-top:100px;margin:0 auto">
-  <div class="me-auth-card" style="text-align:center;padding:56px 36px;border-radius:24px">
-    <img src="assets/logo-128.png" alt="VK" width="56" height="56" style="border-radius:50%;margin:0 auto 20px;display:block;box-shadow:0 0 0 1.5px rgba(255,255,255,.22)">
-    <h2 style="font-family:'Space Grotesk',sans-serif;font-size:24px;font-weight:700;margin:0 0 10px"><svg class="ico" width="24" height="24" viewBox="0 0 13 13" fill="none"><rect x="3" y="6" width="7" height="5.5" rx="1" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="none"/><path d="M4.5 6V4.5a2 2 0 0 1 4 0V6" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="none"/><circle cx="6.5" cy="9" r=".8" fill="rgba(255,255,255,.5)"/></svg>Private section</h2>
-    <p style="color:var(--w60);font-size:14px;line-height:1.6;margin:0 0 28px">/me is only available on the Tailnet.<br>Connect to Tailscale and open the private site.</p>
-    <p style="color:var(--w60);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.4px;margin:0 0 24px">me.auxois-wyrm.ts.net</p>
-    <button onclick="showPage('home')" style="padding:12px 24px;border-radius:14px;border:none;background:var(--w);color:#050505;font-family:'Space Grotesk',sans-serif;font-weight:700;cursor:pointer">Back home</button>
+<div class="page-wrap hue-sand">
+
+  <!-- PAGE HEADER -->
+  <div class="ph">
+    <div class="ph-label">vkkatariya · private</div>
+    <h1 class="ph-title"><span class="hn-script">M</span>e</h1>
+    <p class="ph-sub">The private side of this site: it lives on my homelab and only answers on the Tailnet.</p>
   </div>
+
+  <!-- AUTH GATE -->
+  <div class="me-card glass-card">
+    <div class="me-logo"><img src="assets/logo-128.png" alt="VK" width="40" height="40"></div>
+    <h2 class="me-title"><svg class="i" aria-hidden="true"><use href="#i-lock"/></svg>Private section</h2>
+    <p class="me-text">/me is reachable only from the Tailnet. Connect to Tailscale and open the private site.</p>
+    <a class="me-url" href="https://me.auxois-wyrm.ts.net" rel="noopener noreferrer">me.auxois-wyrm.ts.net</a>
+    <button type="button" class="np" onclick="showPage('home')">Back home</button>
+  </div>
+
 </div>
 </div>
 
