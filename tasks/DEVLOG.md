@@ -7,6 +7,38 @@
 ---
 
 
+## [2026-10-25] Claude Code (local) — feat/design-system-migration · Phase 4 about
+
+**Mode:** Builder
+
+**Did:** Executed `tasks/kickoff-phase4-about.md` (`#pg-about`). `prototypes/portfolio-combined.html` only. The legacy About colour rules (per-row green/amber/blue skill bars, `.sk.hi/mid/lo` colours, tinted education/language/contact borders and their `html.light` copies, the old glass list entries and the old About pop-out hover block) were removed in place; everything new lives in a `PHASE 4 · ABOUT` block at the end of the stylesheet.
+- **Hues (reading order, never reused):** bio blue, education teal, skills cyan, languages indigo, interests pink, contact orange; header sand. Applied as `.hue-*` on `.intro` and each `.section`.
+- **Header:** `ph-title` Syne 800 clamp(28–46px) (script "A" kept), sand mono kicker. No lead paragraph added (content unchanged).
+- **Bio:** GlassCard (glass tokens, 20px, blur 28/saturate 1.6) wrapping photo + text; photo frame 20px with `--shadow`; text Outfit 16.5px w80; "open to werkstudent jobs" keeps the green dot (real status) with neutral text; resume pill = bg2 chip with sprite download icon.
+- **Education:** GlassCard; grad-cap sprite icon, Space Grotesk 700 24px degree, DM Mono period, neutral pill tags/modules, "currently enrolled" = green dot + neutral text on a 14% green pill (real status), mono "MODULES COMPLETED / IN PROGRESS" label in w60.
+- **Skills:** the 7 core bars = SkillBar (cyan fill, 10px / 5px radius track, DM Mono values; replaces green/amber/blue by value) in a GlassCard; the 4 chip groups are mini-cards (bg3, 14px, 4px cyan edge), all chips neutral pills (the hi/mid/lo colour coding was decoration; `hi` keeps full-white text).
+- **Languages:** 4 GlassCards, sprite globe + name, dots in the indigo hue (no green native highlight), mono level label, Outfit note. Flag emoji (decorative, 25% opacity) removed.
+- **Interests:** 4 mini-cards (bg3, 14px, 4px pink edge) with a 44px tinted icon tile; emoji 💻🤖🏏📚 → sprite `i-laptop`, `i-cpu`, new `i-cricket`, `i-book`; the small duplicate title icons removed.
+- **Contact:** 2 GlassCards (Email, GitHub, orange tiles) with sprite `i-mail` / `i-github` (page sprite gained `i-mail`, `i-github`, `i-download`, `i-grad`, `i-cricket`). Markup already had only these two.
+- **Typography:** paragraphs/descriptions/notes → Outfit; labels/chips mono 12.5–13px; data DM Mono; w30 text raised to w60/w80; inline styles on the core-skills card removed (classes).
+- Grids are `auto-fit minmax(min(100%, 400px), 1fr)` (2×2 for the 4-item grids) instead of fixed columns.
+
+**Decided / not done:**
+- Kickoff's skill categories (Backend blue / AI teal / Frontend cyan / Hosting indigo, 5 bars each) conflict with "content unchanged" (the page has 7 core bars + 4 chip groups, no Hosting) and with the no-reuse hue rule against the section hues. Kept the content; all skill UI uses the section hue (cyan). Soft skills stay chips (there are 8, not 5).
+- `#pg-me` is a sibling of `#pg-about` (not nested) — verified.
+- The homepage `.about-*` widgets and `#pg-me` are untouched.
+
+**Verification:** `npm run lint:html` 0 errors; `npm test` 29/29; automated overflow/clip/truncation pass at 1920, 1440, 860, 560, 390 × dark + light = 0 issues; full-page screenshots reviewed at 1440 (dark + light), 860 and 390 (dark + light).
+
+**State:** branch `feat/design-system-migration`, no PR opened.
+
+**Next:** Phase 5 polish (`tasks/kickoff-phase5-polish.md`).
+
+**Modified:** `prototypes/portfolio-combined.html`, `tasks/DEVLOG.md`, `tasks/kickoff-phase4-about.md`
+
+---
+
+
 ## [2026-10-25] Claude Code (local) — feat/design-system-migration · Phase 3 roadmap
 
 **Mode:** Builder

@@ -2075,56 +2075,6 @@ footer {
 }
 
 
-/* ── roadmap color profile (mirrors home/projects pct-high/mid/low treatment) ── */
-/* All selectors scoped under #pg-about (or #pg-me). Uses existing :root tokens
-   (--green / --blue / --amber / --acc / --purple). No new colors. CSS-only —
-   no markup, no JS, no layout changes. */
-
-/* Skill-bar rows (.skb-row): about uses local classes, not .skill-row.pct-*,
-   so we map pct colors by :nth-of-type to match the home page's pct-high(≥80),
-   pct-mid(70-79), pct-low(<70) split. Source widths in the markup:
-   1:Python 86% (high), 2:Docker·Linux 82% (high), 3:TypeScript 68% (low),
-   4:ML/AI 72% (mid), 5:SvelteKit 60% (low), 6:Proxmox·ARM 64% (low), 7:C++ 52% (low). */
-#pg-about .skb-row:nth-of-type(1) .skb-fill,
-#pg-about .skb-row:nth-of-type(2) .skb-fill { background: var(--green); box-shadow: 0 0 4px rgba(52,199,123,.5); }
-#pg-about .skb-row:nth-of-type(3) .skb-fill,
-#pg-about .skb-row:nth-of-type(5) .skb-fill,
-#pg-about .skb-row:nth-of-type(6) .skb-fill,
-#pg-about .skb-row:nth-of-type(7) .skb-fill { background: var(--amber); }
-#pg-about .skb-row:nth-of-type(4) .skb-fill { background: var(--blue); box-shadow: 0 0 4px rgba(91,156,246,.5); }
-#pg-about .skb-row:nth-of-type(1) .skb-v,
-#pg-about .skb-row:nth-of-type(2) .skb-v { color: var(--green); }
-#pg-about .skb-row:nth-of-type(3) .skb-v,
-#pg-about .skb-row:nth-of-type(5) .skb-v,
-#pg-about .skb-row:nth-of-type(6) .skb-v,
-#pg-about .skb-row:nth-of-type(7) .skb-v { color: var(--amber); }
-#pg-about .skb-row:nth-of-type(4) .skb-v { color: var(--blue); }
-
-/* Skill chips: hi=green, mid=blue, lo=amber (mirror .skill-row.pct-* treatment) */
-#pg-about .sk.hi { color: var(--green); border-color: rgba(52,199,123,.28); }
-#pg-about .sk.mid { color: var(--blue); border-color: rgba(91,156,246,.25); }
-#pg-about .sk.lo { color: var(--amber); border-color: rgba(245,181,95,.25); }
-
-/* Education card: accent border using green (matches home .edu-badge accent) */
-#pg-about .edu-card { border-color: rgba(52,199,123,.18); }
-
-/* Languages: native cards use green tint (matches .lang-card.native hint),
-   non-native use blue/amber tinted borders to add the pct-style accent variety. */
-#pg-about .lang-card.native { border-color: rgba(52,199,123,.28); background: rgba(52,199,123,.03); }
-#pg-about .lang-card.native .lang-name { color: var(--green); }
-#pg-about .lang-card:nth-of-type(1) { border-color: rgba(245,181,95,.25); } /* Deutsch - amber */
-#pg-about .lang-card:nth-of-type(2) { border-color: rgba(91,156,246,.25); } /* English - blue */
-#pg-about .lvl-green { color: var(--green); } /* unstyled class used in markup */
-
-/* Contact cards: mirror home's tinted-icon pattern (.pfoot-type.app=blue,
-   .pfoot-type.collab=purple, .pfoot-type.ai=green). About has 4 cards:
-   email/linkedin=blue, github=neutral, website=acc. */
-#pg-about .contact-card { transition: border-color .2s, background .2s; }
-#pg-about .contact-card:hover { border-color: rgba(91,156,246,.35); }
-#pg-about .contact-card:nth-of-type(1) .cc-icon,
-#pg-about .contact-card:nth-of-type(3) .cc-icon { color: var(--blue); border-color: rgba(91,156,246,.3); background: rgba(91,156,246,.06); }
-#pg-about .contact-card:nth-of-type(4) .cc-icon { color: var(--acc); border-color: rgba(0,212,170,.3); background: rgba(0,212,170,.06); }
-
 /* #pg-me: VK avatar already uses green→blue gradient (inline). Reinforce with
    the same :root tokens used elsewhere — no new colors. */
 #pg-me .cta-btn { transition: transform .18s ease, box-shadow .18s ease; }
@@ -2149,68 +2099,6 @@ footer {
   box-shadow: 8px 10px 24px var(--sd), -2px -2px 10px var(--sl);
   border-color: var(--w06);
 }
-
-/* Light-mode overrides (mirror home/projects html.light rules at lines 2465+).
-   !important needed to beat the global `html.light .skb-fill { background: var(--w30) !important }` at line 2479. */
-html.light #pg-about .skb-row:nth-of-type(1) .skb-fill,
-html.light #pg-about .skb-row:nth-of-type(2) .skb-fill { background: var(--green) !important; box-shadow: 0 0 4px rgba(52,199,123,.4); }
-html.light #pg-about .skb-row:nth-of-type(3) .skb-fill,
-html.light #pg-about .skb-row:nth-of-type(5) .skb-fill,
-html.light #pg-about .skb-row:nth-of-type(6) .skb-fill,
-html.light #pg-about .skb-row:nth-of-type(7) .skb-fill { background: var(--amber) !important; }
-html.light #pg-about .skb-row:nth-of-type(4) .skb-fill { background: var(--blue) !important; box-shadow: 0 0 4px rgba(91,156,246,.4); }
-html.light #pg-about .skb-row:nth-of-type(1) .skb-v,
-html.light #pg-about .skb-row:nth-of-type(2) .skb-v { color: var(--green); }
-html.light #pg-about .skb-row:nth-of-type(3) .skb-v,
-html.light #pg-about .skb-row:nth-of-type(5) .skb-v,
-html.light #pg-about .skb-row:nth-of-type(6) .skb-v,
-html.light #pg-about .skb-row:nth-of-type(7) .skb-v { color: var(--amber); }
-html.light #pg-about .skb-row:nth-of-type(4) .skb-v { color: var(--blue); }
-html.light #pg-about .sk.hi { color: var(--green); border-color: rgba(52,199,123,.35); }
-html.light #pg-about .sk.mid { color: var(--blue); border-color: rgba(91,156,246,.35); }
-html.light #pg-about .sk.lo { color: var(--amber); border-color: rgba(245,181,95,.35); }
-html.light #pg-about .edu-card { border-color: rgba(52,199,123,.28); }
-html.light #pg-about .lang-card.native { border-color: rgba(52,199,123,.4); background: rgba(52,199,123,.04); }
-html.light #pg-about .lang-card.native .lang-name { color: var(--green); }
-html.light #pg-about .lang-card:nth-of-type(1) { border-color: rgba(245,181,95,.35); }
-html.light #pg-about .lang-card:nth-of-type(2) { border-color: rgba(91,156,246,.35); }
-html.light #pg-about .lvl-green { color: var(--green); }
-html.light #pg-about .contact-card:hover { border-color: rgba(91,156,246,.5); }
-html.light #pg-about .contact-card:nth-of-type(1) .cc-icon,
-html.light #pg-about .contact-card:nth-of-type(3) .cc-icon { color: var(--blue); border-color: rgba(91,156,246,.4); background: rgba(91,156,246,.08); }
-html.light #pg-about .contact-card:nth-of-type(4) .cc-icon { color: var(--acc); border-color: rgba(0,212,170,.4); background: rgba(0,212,170,.08); }
-
-
-/* ══════════════════════════════════════════
-   POP-OUT HOVER (About Page)
-   Per-widget hover for the 4 widgets the user identified as missing it.
-   .photo-frame and .core-tech-card lift as whole widgets (per L-021's
-   "one cohesive visual" rule — they ARE the visual card). .int-card and
-   .contact-card lift individually (they are distinct interactive widgets,
-   not data rows).
-   Reuses the same transform/shadow/transition as the global rule.
-
-   NOTE: .photo-block is just a flex wrapper containing .photo-frame +
-   .photo-status. It has no border/background of its own, so lifting it
-   creates a "double pop-out" — the invisible wrapper shifts AND the
-   visible card lifts from the global rule. Target .photo-frame directly.
-══════════════════════════════════════════ */
-#pg-about .photo-frame,
-#pg-about .core-tech-card,
-#pg-about .int-card,
-#pg-about .contact-card {
-  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
-}
-
-#pg-about .photo-frame:hover,
-#pg-about .core-tech-card:hover,
-#pg-about .int-card:hover,
-#pg-about .contact-card:hover {
-  transform: translateY(-2px) scale(1.012);
-  box-shadow: 8px 10px 24px var(--sd), -2px -2px 10px var(--sl);
-  border-color: var(--w06);
-}
-
 
 /* ══════════════════════════════════════════
    POP-OUT HOVER (Roadmap Page)
@@ -3351,39 +3239,7 @@ html.light footer.roadmap-footer a { color: var(--w); }
 /* --- Roadmap page widgets: surfaces live in the PHASE 3 · ROADMAP block at the end of the stylesheet --- */
 #pg-roadmap .resource-item { text-decoration: none; }
 
-/* --- About page widgets --- */
-#pg-about .photo-frame,
-#pg-about .core-tech-card,
-#pg-about .edu-card,
-#pg-about .skill-group,
-#pg-about .lang-card,
-#pg-about .int-card,
-#pg-about .contact-card,
-#pg-about .avail-block {
-  background: var(--glass-bg);
-  backdrop-filter: blur(40px) saturate(180%);
-  -webkit-backdrop-filter: blur(40px) saturate(180%);
-  border: 1px solid var(--glass-border);
-  box-shadow: var(--glass-shadow);
-}
-
-#pg-about .photo-frame:hover,
-#pg-about .core-tech-card:hover,
-#pg-about .edu-card:hover,
-#pg-about .skill-group:hover,
-#pg-about .lang-card:hover,
-#pg-about .int-card:hover,
-#pg-about .contact-card:hover,
-#pg-about .avail-block:hover {
-  transform: translateY(-2px) scale(1.012);
-  box-shadow: var(--glass-hover-shadow);
-  border-color: var(--glass-border);
-}
-
-/* Preserve the green-tinted accent borders on about widgets */
-#pg-about .edu-card { border-color: rgba(52,199,123,.25); }
-#pg-about .lang-card.native { border-color: rgba(52,199,123,.35); }
-#pg-about .avail-block { border-color: rgba(61,220,132,.25); }
+/* --- About page widgets: surfaces live in the PHASE 4 · ABOUT block at the end of the stylesheet --- */
 
 /* --- /me page widget --- */
 #pg-me .me-auth-card {
@@ -3401,14 +3257,6 @@ html.light footer.roadmap-footer a { color: var(--w); }
 }
 
 /* --- Light mode overrides for glass readability --- */
-html.light #pg-about .photo-frame,
-html.light #pg-about .core-tech-card,
-html.light #pg-about .edu-card,
-html.light #pg-about .skill-group,
-html.light #pg-about .lang-card,
-html.light #pg-about .int-card,
-html.light #pg-about .contact-card,
-html.light #pg-about .avail-block,
 html.light #pg-me .me-auth-card {
   background: var(--glass-bg);
   border: 1px solid var(--glass-border);
@@ -3826,6 +3674,136 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
   #roadmap-internal-nav .nav-links li { flex: 1; min-width: 0; }
   #roadmap-internal-nav .nav-links a { justify-content: center; padding: 8px 4px; font-size: 12px; letter-spacing: .02em; overflow: hidden; text-overflow: ellipsis; }
 }
+/* ══════════════════════════════════════════════════════════════════════
+   PHASE 4 · ABOUT (design system) — scoped to #pg-about
+   Section hues (reading order, never reused): bio blue, education teal, skills cyan, languages indigo,
+   interests pink, contact orange; header = sand. Surfaces: bio / education / core skills / languages / contact
+   = GlassCard (glass tokens, 20px); skill groups + interests = mini-cards (bg3, 14px, 4px hue edge).
+   Status colour only marks real status (open-to-work dot, "currently enrolled").
+══════════════════════════════════════════════════════════════════════ */
+#pg-about { --h: var(--sand); font-family: var(--sans); }
+#pg-about .hue-blue { --h: var(--blue); } #pg-about .hue-teal { --h: var(--teal); } #pg-about .hue-cyan { --h: var(--cyan); }
+#pg-about .hue-indigo { --h: var(--indigo); } #pg-about .hue-pink { --h: var(--pink); } #pg-about .hue-orange { --h: var(--orange); }
+
+/* icons follow the hue; legacy .ico rules are !important in light mode */
+#pg-about svg [stroke^="rgba(255,255,255"] { stroke: currentColor !important; }
+#pg-about svg.i { width: 18px; height: 18px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+
+/* page header */
+#pg-about .ph-label { font-family: var(--mono); font-size: 13px; letter-spacing: .03em; text-transform: none; color: var(--h); }
+#pg-about .ph-label::after { background: color-mix(in srgb, var(--h) 45%, transparent); }
+#pg-about .ph-title { font-family: var(--display); font-weight: 800; font-size: clamp(28px, 4.4vw, 46px);
+  line-height: 1.04; letter-spacing: -.03em; color: var(--w); margin-bottom: 36px; }
+
+/* section heads: mono label in the hue, hue rule, DM Mono number */
+#pg-about .section { margin-bottom: 56px; }
+#pg-about .sh-label { display: inline-flex; align-items: center; gap: 8px; font-family: var(--mono); font-size: 13px; letter-spacing: .08em; text-transform: none; color: var(--h); }
+#pg-about .sh-label svg.ico { width: 16px; height: 16px; }
+#pg-about .sh-line { background: linear-gradient(to right, color-mix(in srgb, var(--h) 45%, transparent), transparent); }
+#pg-about .sh-num { font-family: var(--data); font-size: 12.5px; letter-spacing: .06em; color: var(--w60); }
+
+/* GlassCard surfaces */
+#pg-about .intro, #pg-about .edu-card, #pg-about .core-tech-card, #pg-about .lang-card, #pg-about .contact-card {
+  background: linear-gradient(180deg, var(--glass-top), var(--glass-bottom));
+  backdrop-filter: blur(28px) saturate(1.6); -webkit-backdrop-filter: blur(28px) saturate(1.6);
+  border: 1px solid var(--glass-border); border-radius: 20px; box-shadow: var(--shadow);
+}
+#pg-about .lang-card:hover, #pg-about .contact-card:hover, #pg-about .int-card:hover {
+  transform: translateY(-3px); border-color: color-mix(in srgb, var(--h) 42%, var(--glass-border)); box-shadow: var(--shadow);
+}
+#pg-about .int-card:hover { border-color: var(--w12); border-left-color: var(--h); }
+
+/* bio */
+#pg-about .intro { padding: 36px; gap: 40px; margin-bottom: 56px; }
+@media (max-width: 680px) { #pg-about .intro { padding: 24px 20px; gap: 24px; } }
+#pg-about .photo-frame { border: 1px solid var(--w12); border-radius: 20px; background: var(--bg2); box-shadow: var(--shadow); }
+#pg-about .photo-frame:hover { transform: translateY(-3px); box-shadow: var(--shadow); }
+#pg-about .photo-status { font-family: var(--mono); font-size: 12.5px; letter-spacing: 0; color: var(--w80); gap: 8px; }
+#pg-about .cv-dl { gap: 10px; padding: 10px 16px; background: var(--bg2); backdrop-filter: none; -webkit-backdrop-filter: none;
+  border: 1px solid var(--w12); box-shadow: none; color: var(--w); }
+#pg-about .cv-dl:hover { transform: translateY(-2px); box-shadow: none; border-color: var(--h); background: var(--bg3); }
+#pg-about .cv-dl svg.i { color: var(--h); }
+#pg-about .cv-dl-label { font-family: var(--mono); font-size: 12.5px; letter-spacing: .04em; text-transform: none; color: var(--w); white-space: nowrap; }
+#pg-about .cv-dl-sub { font-family: var(--data); font-size: 12px; letter-spacing: .04em; color: var(--w60); }
+#pg-about .cv-dl-arrow { color: var(--h); }
+#pg-about .bio { gap: 16px; }
+#pg-about .bio-p { font-family: var(--read); font-size: 16.5px; line-height: 1.7; color: var(--w80); }
+#pg-about .bio-p strong { color: var(--w); font-weight: 600; }
+
+/* education */
+#pg-about .edu-card { padding: 28px 32px; }
+@media (max-width: 560px) { #pg-about .edu-card { padding: 22px 18px; } }
+#pg-about .edu-inst { display: flex; align-items: center; gap: 10px; font-family: var(--mono); font-size: 13px; letter-spacing: .04em; color: var(--w60); margin-bottom: 10px; }
+#pg-about .edu-inst svg.i { color: var(--h); }
+#pg-about .edu-degree { font-family: var(--sans); font-weight: 700; font-size: 24px; letter-spacing: -.01em; color: var(--w); }
+#pg-about .edu-period { font-family: var(--data); font-size: 13.5px; letter-spacing: .02em; color: var(--w80); }
+#pg-about .edu-tag, #pg-about .edu-mod, #pg-about .sk {
+  font-family: var(--mono); font-size: 13px; letter-spacing: 0; color: var(--w80);
+  background: var(--bg2); border: 1px solid var(--w12); border-radius: 100px; padding: 5px 12px;
+  backdrop-filter: none; -webkit-backdrop-filter: none;
+}
+#pg-about .edu-mod { background: var(--bg3); }
+/* real status: dot carries the status colour, text stays neutral */
+#pg-about .edu-badge { font-family: var(--mono); font-size: 12.5px; letter-spacing: 0; color: var(--w);
+  background: color-mix(in srgb, var(--green) 14%, transparent); border: 1px solid color-mix(in srgb, var(--green) 45%, transparent); padding: 6px 14px; gap: 8px; }
+#pg-about .edu-badge { justify-self: start; }
+#pg-about .edu-modules { border-top: 1px solid var(--w12); }
+#pg-about .edu-mod-label { font-family: var(--mono); font-size: 13px; letter-spacing: .06em; color: var(--w60); }
+
+/* skills: SkillBar (hue fill, DM Mono value) + mini-card groups */
+#pg-about .core-tech-card { padding: 24px 28px; margin-bottom: 14px; }
+#pg-about .core-tech-card:hover { transform: none; }
+@media (max-width: 560px) { #pg-about .core-tech-card { padding: 20px 18px; } }
+#pg-about .core-label { display: flex; align-items: center; gap: 8px; margin-bottom: 18px; font-family: var(--mono); font-size: 13px; letter-spacing: .06em; text-transform: none; color: var(--h); }
+#pg-about .core-label::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
+#pg-about .skill-bars { margin: 0; padding: 0; border: 0; gap: 12px; }
+#pg-about .skb-row { display: grid; grid-template-columns: minmax(0, 150px) minmax(0, 1fr) 34px; gap: 14px; align-items: center; }
+#pg-about .skb-n { width: auto; font-family: var(--mono); font-size: 13px; letter-spacing: 0; color: var(--w80); line-height: 1.3; }
+#pg-about .skb-track { flex: none; height: 10px; border-radius: 5px; background: var(--w12); box-shadow: none; }
+/* !important: the global html.light .skb-fill rule is !important */
+#pg-about .skb-fill { background: var(--h) !important; box-shadow: none !important; border-radius: 0 5px 5px 0; }
+#pg-about .skb-v { width: auto; font-family: var(--data); font-size: 13px; letter-spacing: 0; color: var(--w80) !important; }
+@media (max-width: 480px) { #pg-about .skb-row { grid-template-columns: minmax(0, 1fr) 34px; } #pg-about .skb-n { grid-column: 1 / -1; } #pg-about .skb-track { grid-column: 1; } #pg-about .skb-v { grid-column: 2; } }
+#pg-about .skills-grid { grid-template-columns: repeat(auto-fit, minmax(min(100%, 400px), 1fr)); gap: 12px; }
+#pg-about .skill-group { padding: 20px; background: var(--bg3); border: 1px solid var(--w12); border-left: 4px solid var(--h); border-radius: 14px;
+  box-shadow: none; backdrop-filter: none; -webkit-backdrop-filter: none; min-width: 0; }
+#pg-about .skill-group:hover { transform: none; box-shadow: none; border-color: var(--w12); border-left-color: var(--h); }
+#pg-about .sg-label { font-family: var(--sans); font-weight: 700; font-size: 16px; letter-spacing: 0; text-transform: none; color: var(--w); margin-bottom: 14px; }
+#pg-about .sg-label::before { width: 6px; height: 6px; background: var(--h); }
+#pg-about .sk { background: var(--bg2); }
+#pg-about .sk:hover { background: var(--bg4); border-color: var(--w12); }
+#pg-about .sk.hi { color: var(--w); border-color: var(--w12); }
+#pg-about .sk.mid, #pg-about .sk.lo { color: var(--w80); border-color: var(--w12); }
+
+/* languages: globe + name, dots in the hue, level label in mono */
+#pg-about .lang-grid { grid-template-columns: repeat(auto-fit, minmax(min(100%, 400px), 1fr)); gap: 12px; }
+#pg-about .lang-card, #pg-about .lang-card.native { padding: 22px; border-radius: 20px; background: linear-gradient(180deg, var(--glass-top), var(--glass-bottom)); border-color: var(--glass-border); }
+#pg-about .lang-name { display: flex; align-items: center; gap: 10px; font-family: var(--sans); font-weight: 700; font-size: 20px; letter-spacing: -.01em; color: var(--w); }
+#pg-about .lang-name svg.i { width: 22px; height: 22px; color: var(--h); }
+#pg-about .lang-card.native .lang-name { color: var(--w); }
+#pg-about .lang-level, #pg-about .lang-level.lvl-green { font-family: var(--mono); font-size: 12.5px; letter-spacing: .02em; color: var(--w60); margin: 6px 0 14px; line-height: 1.4; }
+#pg-about .ld { width: 10px; height: 10px; background: var(--w12); }
+#pg-about .ld.on, #pg-about .ld.hi { background: var(--h); box-shadow: none; }
+#pg-about .lang-note { font-family: var(--read); font-size: 15px; letter-spacing: 0; line-height: 1.55; color: var(--w80); border-top: 1px solid var(--w12); }
+
+/* interests: mini-cards, pink edge, icon tile */
+#pg-about .int-grid { grid-template-columns: repeat(auto-fit, minmax(min(100%, 400px), 1fr)); gap: 12px; }
+#pg-about .int-card { padding: 18px; gap: 14px; background: var(--bg3); border: 1px solid var(--w12); border-left: 4px solid var(--h); border-radius: 14px;
+  box-shadow: none; backdrop-filter: none; -webkit-backdrop-filter: none; min-width: 0; }
+#pg-about .int-icon { width: 44px; height: 44px; border-radius: 12px; color: var(--h);
+  background: color-mix(in srgb, var(--h) 13%, transparent); border: 1px solid color-mix(in srgb, var(--h) 42%, transparent); }
+#pg-about .int-icon svg.i { width: 24px; height: 24px; }
+#pg-about .int-title { font-family: var(--sans); font-weight: 700; font-size: 17px; letter-spacing: 0; color: var(--w); margin-bottom: 6px; }
+#pg-about .int-desc { font-family: var(--read); font-size: 15.5px; letter-spacing: 0; line-height: 1.55; color: var(--w80); }
+
+/* contact: 2 cards (email, GitHub) */
+#pg-about .contact-grid { grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 12px; }
+#pg-about .contact-card { padding: 20px 22px; min-width: 0; }
+#pg-about .cc-icon, #pg-about .contact-card:nth-of-type(n) .cc-icon { width: 44px; height: 44px; border-radius: 12px; color: var(--h);
+  background: color-mix(in srgb, var(--h) 13%, transparent); border: 1px solid color-mix(in srgb, var(--h) 42%, transparent); }
+#pg-about .cc-label { font-family: var(--mono); font-size: 12.5px; letter-spacing: .08em; color: var(--w60); margin-bottom: 4px; }
+#pg-about .cc-val { font-family: var(--sans); font-weight: 500; font-size: 15.5px; letter-spacing: 0; color: var(--w); overflow-wrap: anywhere; }
+#pg-about .contact-card:hover .cc-val { color: var(--h); }
 </style>
 </head>
 <body>
@@ -3856,6 +3834,11 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
   <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></symbol>
   <symbol id="i-bang" viewBox="0 0 24 24"><path d="M12 6v8M12 18h.01"/></symbol>
   <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></symbol>
+  <symbol id="i-github" viewBox="0 0 24 24"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></symbol>
+  <symbol id="i-download" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></symbol>
+  <symbol id="i-grad" viewBox="0 0 24 24"><path d="M2 9 12 4l10 5-10 5z"/><path d="M6 11v5c0 1.5 3 3 6 3s6-1.5 6-3v-5M22 9v6"/></symbol>
+  <symbol id="i-cricket" viewBox="0 0 24 24"><path d="m14.5 3.5 6 6-9.2 9.2a2 2 0 0 1-2.8 0l-3.2-3.2a2 2 0 0 1 0-2.8z"/><path d="m4.5 19.5-2 2M17 6l-3.5 3.5"/><circle cx="19" cy="19" r="1.5"/></symbol>
   <symbol id="i-book" viewBox="0 0 24 24"><path d="M5 4h10a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3zM5 17a3 3 0 0 1 3-3h10"/></symbol>
   <symbol id="ic-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></symbol>
   <symbol id="ic-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -6118,7 +6101,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
   <h1 class="ph-title"><span class="hn-script">A</span>bout</h1>
 
   <!-- ── INTRO ── -->
-  <div class="intro">
+  <div class="intro hue-blue">
     <!-- Photo placeholder -->
     <div class="photo-block">
       <div class="photo-frame">
@@ -6127,12 +6110,12 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
       <div class="photo-status">open to werkstudent jobs</div>
       <!-- ── RESUME DOWNLOAD PILL ── -->
       <a class="cv-dl" href="assets/cv.pdf" download="Vishal-Katariya-Resume.pdf">
-        <svg width="13" height="13" viewBox="0 0 16 16" fill="currentColor" style="color:var(--acc);flex-shrink:0"><path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/><path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/></svg>
+        <svg class="i" aria-hidden="true"><use href="#i-download"/></svg>
         <div>
           <div class="cv-dl-label">Download Resume</div>
           <div class="cv-dl-sub">PDF · A4 · 2026</div>
         </div>
-        <span class="cv-dl-arrow">↓</span>
+        <span class="cv-dl-arrow" aria-hidden="true">↓</span>
       </a>
     </div>
 
@@ -6151,7 +6134,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
   </div>
 
   <!-- ── EDUCATION ── -->
-  <div class="section">
+  <div class="section hue-teal">
     <div class="sh">
       <span class="sh-label"><svg class="ico" width="12" height="12" viewBox="0 0 13 13" fill="none"><path d="M1 6.5L6.5 4L12 6.5L6.5 9L1 6.5Z" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="none"/><line x1="12" y1="6.5" x2="12" y2="10" stroke="rgba(255,255,255,.5)" stroke-width="1"/></svg>Education</span>
       <div class="sh-line"></div>
@@ -6160,7 +6143,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
 
     <div class="edu-card">
       <div>
-        <div class="edu-inst"><svg class="ico" width="12" height="12" viewBox="0 0 13 13" fill="none"><path d="M1 6.5L6.5 4L12 6.5L6.5 9L1 6.5Z" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="none"/><line x1="12" y1="6.5" x2="12" y2="10" stroke="rgba(255,255,255,.5)" stroke-width="1"/></svg>HOCHSCHULE DARMSTADT · DARMSTADT, GERMANY</div>
+        <div class="edu-inst"><svg class="i" aria-hidden="true"><use href="#i-grad"/></svg>HOCHSCHULE DARMSTADT · DARMSTADT, GERMANY</div>
         <div class="edu-degree">B.Sc. Computer Science</div>
         <div class="edu-period">Oct 2024 – Expected 2028</div>
         <div class="edu-tags">
@@ -6188,7 +6171,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
   </div>
 
   <!-- ── SKILLS ── -->
-  <div class="section">
+  <div class="section hue-cyan">
     <div class="sh">
       <span class="sh-label"><svg class="ico" width="12" height="12" viewBox="0 0 13 13" fill="none"><path d="M6.5 1.5L1 4.5L6.5 7.5L12 4.5L6.5 1.5Z" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="none"/><path d="M1 7L6.5 10L12 7" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="none"/><path d="M1 9.5L6.5 12.5L12 9.5" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="none"/></svg>Skills</span>
       <div class="sh-line"></div>
@@ -6196,8 +6179,8 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
     </div>
 
     <!-- Key skill bars -->
-    <div class="core-tech-card" style="padding:24px 28px;border-radius:20px;margin-bottom:14px">
-      <div style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:3px;color:var(--w30);text-transform:uppercase;margin-bottom:18px;display:flex;align-items:center;gap:7px"><span style="width:3px;height:3px;border-radius:50%;background:currentColor;flex-shrink:0;display:inline-block"></span>core technical</div>
+    <div class="core-tech-card">
+      <div class="core-label">core technical</div>
       <div class="skill-bars">
         <div class="skb-row"><span class="skb-n">Python</span><div class="skb-track"><div class="skb-fill" style="width:86%;animation-delay:.1s"></div></div><span class="skb-v">86</span></div>
         <div class="skb-row"><span class="skb-n">Docker · Linux</span><div class="skb-track"><div class="skb-fill" style="width:82%;animation-delay:.2s"></div></div><span class="skb-v">82</span></div>
@@ -6282,7 +6265,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
   </div>
 
   <!-- ── LANGUAGES ── -->
-  <div class="section">
+  <div class="section hue-indigo">
     <div class="sh">
       <span class="sh-label"><svg class="ico" width="12" height="12" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="5" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="none"/><ellipse cx="6.5" cy="6.5" rx="2.2" ry="5" stroke="rgba(255,255,255,.5)" stroke-width=".7" fill="none"/><line x1="1.5" y1="6.5" x2="11.5" y2="6.5" stroke="rgba(255,255,255,.5)" stroke-width=".7"/></svg>Languages</span>
       <div class="sh-line"></div>
@@ -6292,8 +6275,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
     <div class="lang-grid">
 
       <div class="lang-card">
-        <div class="lang-flag">🇩🇪</div>
-        <div class="lang-name"><svg class="ico" width="20" height="20" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="5" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="none"/><ellipse cx="6.5" cy="6.5" rx="2.2" ry="5" stroke="rgba(255,255,255,.5)" stroke-width=".7" fill="none"/><line x1="1.5" y1="6.5" x2="11.5" y2="6.5" stroke="rgba(255,255,255,.5)" stroke-width=".7"/></svg>Deutsch</div>
+        <div class="lang-name"><svg class="i" aria-hidden="true"><use href="#i-globe"/></svg>Deutsch</div>
         <div class="lang-level">PROFESSIONAL WORKING PROFICIENCY · B2–C1</div>
         <div class="lang-dots">
           <span class="ld on"></span>
@@ -6306,8 +6288,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
       </div>
 
       <div class="lang-card">
-        <div class="lang-flag">🇬🇧</div>
-        <div class="lang-name"><svg class="ico" width="20" height="20" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="5" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="none"/><ellipse cx="6.5" cy="6.5" rx="2.2" ry="5" stroke="rgba(255,255,255,.5)" stroke-width=".7" fill="none"/><line x1="1.5" y1="6.5" x2="11.5" y2="6.5" stroke="rgba(255,255,255,.5)" stroke-width=".7"/></svg>English</div>
+        <div class="lang-name"><svg class="i" aria-hidden="true"><use href="#i-globe"/></svg>English</div>
         <div class="lang-level">FULL PROFESSIONAL PROFICIENCY · C1–C2</div>
         <div class="lang-dots">
           <span class="ld on"></span>
@@ -6320,8 +6301,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
       </div>
 
       <div class="lang-card native">
-        <div class="lang-flag">🇮🇳</div>
-        <div class="lang-name"><svg class="ico" width="20" height="20" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="5" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="none"/><ellipse cx="6.5" cy="6.5" rx="2.2" ry="5" stroke="rgba(255,255,255,.5)" stroke-width=".7" fill="none"/><line x1="1.5" y1="6.5" x2="11.5" y2="6.5" stroke="rgba(255,255,255,.5)" stroke-width=".7"/></svg>Hindi</div>
+        <div class="lang-name"><svg class="i" aria-hidden="true"><use href="#i-globe"/></svg>Hindi</div>
         <div class="lang-level lvl-green">FULL PROFESSIONAL PROFICIENCY · NATIVE</div>
         <div class="lang-dots">
           <span class="ld hi"></span>
@@ -6334,8 +6314,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
       </div>
 
       <div class="lang-card native">
-        <div class="lang-flag">🇮🇳</div>
-        <div class="lang-name"><svg class="ico" width="20" height="20" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="5" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="none"/><ellipse cx="6.5" cy="6.5" rx="2.2" ry="5" stroke="rgba(255,255,255,.5)" stroke-width=".7" fill="none"/><line x1="1.5" y1="6.5" x2="11.5" y2="6.5" stroke="rgba(255,255,255,.5)" stroke-width=".7"/></svg>Gujarati</div>
+        <div class="lang-name"><svg class="i" aria-hidden="true"><use href="#i-globe"/></svg>Gujarati</div>
         <div class="lang-level lvl-green">FULL PROFESSIONAL PROFICIENCY · NATIVE</div>
         <div class="lang-dots">
           <span class="ld hi"></span>
@@ -6351,7 +6330,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
   </div>
 
   <!-- ── INTERESTS ── -->
-  <div class="section">
+  <div class="section hue-pink">
     <div class="sh">
       <span class="sh-label"><svg class="ico" width="12" height="12" viewBox="0 0 13 13" fill="none"><path d="M6.5 1.5L8 5h4L8.8 7.5l1.2 4-3.5-2.5L3 11.5l1.2-4L1 5h4L6.5 1.5Z" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="none"/></svg>Interests</span>
       <div class="sh-line"></div>
@@ -6360,33 +6339,33 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
 
     <div class="int-grid">
       <div class="int-card">
-        <div class="int-icon">💻</div>
+        <div class="int-icon"><svg class="i" aria-hidden="true"><use href="#i-laptop"/></svg></div>
         <div>
-          <div class="int-title"><svg class="ico" width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M4.5 3L1.5 6.5L4.5 10" stroke="rgba(255,255,255,.5)" stroke-width="1.2" fill="none"/><path d="M8.5 3L11.5 6.5L8.5 10" stroke="rgba(255,255,255,.5)" stroke-width="1.2" fill="none"/></svg>Programming</div>
+          <div class="int-title">Programming</div>
           <div class="int-desc">Started coding in 10th grade — before I knew it was a career path. Now building production systems, self-hosted infrastructure, and ML pipelines across whatever stack fits the problem.</div>
         </div>
       </div>
 
       <div class="int-card">
-        <div class="int-icon">🤖</div>
+        <div class="int-icon"><svg class="i" aria-hidden="true"><use href="#i-cpu"/></svg></div>
         <div>
-          <div class="int-title"><svg class="ico" width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="4" r="2.5" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="none"/><path d="M3 9c0-2 1.5-3 3.5-3s3.5 1 3.5 3" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="none"/><line x1="6.5" y1="10" x2="6.5" y2="12" stroke="rgba(255,255,255,.5)" stroke-width="1"/></svg>Artificial Intelligence</div>
+          <div class="int-title">Artificial Intelligence</div>
           <div class="int-desc">Not just using AI tools — understanding how they work under the hood. Fine-tuning LLMs with QLoRA, running inference on edge NPUs, building multi-agent systems on self-hosted hardware.</div>
         </div>
       </div>
 
       <div class="int-card">
-        <div class="int-icon">🏏</div>
+        <div class="int-icon"><svg class="i" aria-hidden="true"><use href="#i-cricket"/></svg></div>
         <div>
-          <div class="int-title"><svg class="ico" width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="5" r="3" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="none"/><line x1="6.5" y1="8" x2="6.5" y2="12" stroke="rgba(255,255,255,.5)" stroke-width="1.2"/></svg>Cricket</div>
+          <div class="int-title">Cricket</div>
           <div class="int-desc">Played since childhood — always been a big part of life. The strategy, the patience, the team dynamics. Grew up watching and playing in India and still follow it closely.</div>
         </div>
       </div>
 
       <div class="int-card">
-        <div class="int-icon">📚</div>
+        <div class="int-icon"><svg class="i" aria-hidden="true"><use href="#i-book"/></svg></div>
         <div>
-          <div class="int-title"><svg class="ico" width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M3 10L6.5 2L10 10" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="none"/><line x1="4.3" y1="7" x2="8.7" y2="7" stroke="rgba(255,255,255,.5)" stroke-width="1"/></svg>Entrepreneurship</div>
+          <div class="int-title">Entrepreneurship</div>
           <div class="int-desc">Reading business books and studying how companies are built — not just the tech, but the strategy, the product thinking, and what makes a system scale. Building toward something called orlon.</div>
         </div>
       </div>
@@ -6394,7 +6373,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
   </div>
 
   <!-- ── CONTACT ── -->
-  <div class="section" id="contact">
+  <div class="section hue-orange" id="contact">
     <div class="sh">
       <span class="sh-label"><svg class="ico" width="12" height="12" viewBox="0 0 13 13" fill="none"><rect x="1" y="3" width="11" height="7" rx="1" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="none"/><path d="M1 3.5L6.5 7.5L12 3.5" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="none"/></svg>Contact</span>
       <div class="sh-line"></div>
@@ -6403,9 +6382,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
 
     <div class="contact-grid">
       <a class="contact-card" href="mailto:vishalkatariya404@gmail.com">
-        <div class="cc-icon">
-          <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2zm13 2.383-4.758 2.855L15 11.114v-5.73zm-.034 6.878L9.271 8.82 8 9.583 6.728 8.82l-5.694 3.44A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.739zM1 11.114l4.758-3.876L1 4.383v6.73z"/></svg>
-        </div>
+        <div class="cc-icon"><svg class="i" aria-hidden="true"><use href="#i-mail"/></svg></div>
         <div>
           <div class="cc-label">EMAIL</div>
           <div class="cc-val">vishalkatariya404@gmail.com</div>
@@ -6413,9 +6390,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
       </a>
 
       <a class="contact-card" href="https://github.com/vkkatariya" target="_blank">
-        <div class="cc-icon">
-          <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
-        </div>
+        <div class="cc-icon"><svg class="i" aria-hidden="true"><use href="#i-github"/></svg></div>
         <div>
           <div class="cc-label">GITHUB</div>
           <div class="cc-val">github.com/vkkatariya</div>
