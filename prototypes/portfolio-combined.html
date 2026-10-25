@@ -3,7 +3,8 @@
 <head>
 <script>
 (function(){
-  var light = localStorage.getItem('vk-theme') === 'light';
+  var light = false;
+  try { light = localStorage.getItem('vk-theme') === 'light'; } catch (e) { /* storage blocked: stay dark */ }
   if(light){
     document.documentElement.classList.add('light');
   }
@@ -5369,11 +5370,11 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
       <h2 id="topics-heading">11 core topics</h2>
     </div>
     <div class="filter-bar" role="group" aria-label="Filter topics by phase">
-      <button class="filter-btn active" data-filter="all">All</button>
-      <button class="filter-btn" data-filter="foundation">Foundation</button>
-      <button class="filter-btn" data-filter="core">Core Skills</button>
-      <button class="filter-btn" data-filter="system">System Core</button>
-      <button class="filter-btn" data-filter="advanced">Advanced</button>
+      <button class="filter-btn active" data-filter="all" aria-pressed="true">All</button>
+      <button class="filter-btn" data-filter="foundation" aria-pressed="false">Foundation</button>
+      <button class="filter-btn" data-filter="core" aria-pressed="false">Core Skills</button>
+      <button class="filter-btn" data-filter="system" aria-pressed="false">System Core</button>
+      <button class="filter-btn" data-filter="advanced" aria-pressed="false">Advanced</button>
     </div>
     <div class="topics-grid" id="topics-grid">
       <!-- Rendered by JS -->
@@ -5889,11 +5890,22 @@ function trackRoadmapNav() {
 }
 window.addEventListener('resize', alignRoadmapNav);
 
+// ── Storage helpers: localStorage can throw (blocked / private mode) and the saved JSON can be corrupt;
+// neither may stop the page script from running.
+function lsGet(key) { try { return localStorage.getItem(key); } catch (e) { return null; } }
+function lsSet(key, val) { try { localStorage.setItem(key, val); } catch (e) { /* ignore */ } }
+function readProgress() {
+  try {
+    const v = JSON.parse(lsGet('cs-roadmap-progress') || '{}');
+    return v && typeof v === 'object' && !Array.isArray(v) ? v : {};
+  } catch (e) { return {}; }
+}
+
 // ── Theme toggle
 function toggleTheme() {
   const html = document.documentElement;
   const isLight = html.classList.toggle('light');
-  localStorage.setItem('vk-theme', isLight ? 'light' : 'dark');
+  lsSet('vk-theme', isLight ? 'light' : 'dark');
   document.querySelectorAll('meta[name="theme-color"]').forEach(m => { m.content = isLight ? '#ECECEC' : '#1B1C1D'; });
   const ico = document.getElementById('theme-ico');
   if (ico) ico.setAttribute('href', isLight ? '#ic-sun' : '#ic-moon');
@@ -6263,7 +6275,7 @@ function esc(str) {
 
     function renderTopics() {
   const grid = document.getElementById('topics-grid');
-  const saved = JSON.parse(localStorage.getItem('cs-roadmap-progress') || '{}');
+  const saved = readProgress();
   grid.innerHTML = '';
 
   TOPICS.forEach((t, idx) => {
@@ -6308,13 +6320,13 @@ function esc(str) {
 
 function handleCheckbox(e) {
   const id = parseInt(e.target.dataset.topicId);
-  const saved = JSON.parse(localStorage.getItem('cs-roadmap-progress') || '{}');
+  const saved = readProgress();
   if (e.target.checked) {
     saved[id] = true;
   } else {
     delete saved[id];
   }
-  localStorage.setItem('cs-roadmap-progress', JSON.stringify(saved));
+  lsSet('cs-roadmap-progress', JSON.stringify(saved));
   updateProgressWidget(saved);
   // update card style
   const card = e.target.closest('.topic-card');
@@ -6334,7 +6346,7 @@ function handleCheckbox(e) {
 }
 
 function updateProgressWidget(saved) {
-  const count = Object.keys(saved).length;
+  const count = TOPICS.filter(t => saved[t.id]).length; // ignore stale ids from older saves
   const widget = document.getElementById('progress-widget');
   const countEl = document.getElementById('pw-count');
   const barEl = document.getElementById('pw-bar');
@@ -6414,9 +6426,11 @@ function updateProgressWidget(saved) {
 // ═══════════════════════════════════════════
 // MODAL
 // ═══════════════════════════════════════════
+let modalOpener = null;
 function openModal(id) {
   const t = TOPICS.find(x => x.id === id);
   if (!t) return;
+  modalOpener = document.activeElement;
 
   const learnHTML = t.learn.map(cat => `
     <div class="modal-learn-cat">
@@ -6485,11 +6499,17 @@ function openModal(id) {
   overlay.classList.add('open');
   document.body.style.overflow = 'hidden';
   document.getElementById('modal-content').scrollTop = 0;
+  document.getElementById('modal-close').focus();
 }
 
 function closeModal() {
-  document.getElementById('modal-overlay').classList.remove('open');
+  const overlay = document.getElementById('modal-overlay');
+  const wasOpen = overlay.classList.contains('open');
+  overlay.classList.remove('open');
   document.body.style.overflow = '';
+  // hand focus back to whatever opened the dialog
+  if (wasOpen && modalOpener && typeof modalOpener.focus === 'function' && document.contains(modalOpener)) modalOpener.focus();
+  modalOpener = null;
 }
 
 document.getElementById('modal-overlay').addEventListener('click', (e) => {
@@ -6498,6 +6518,14 @@ document.getElementById('modal-overlay').addEventListener('click', (e) => {
 document.getElementById('modal-close').addEventListener('click', closeModal);
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') closeModal();
+  // keep Tab inside the open dialog
+  if (e.key === 'Tab' && document.getElementById('modal-overlay').classList.contains('open')) {
+    const f = document.querySelectorAll('#modal-content a[href], #modal-content button');
+    if (!f.length) return;
+    const first = f[0], last = f[f.length - 1];
+    if (e.shiftKey && (document.activeElement === first || !document.getElementById('modal-content').contains(document.activeElement))) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+  }
 });
 
 // ═══════════════════════════════════════════
@@ -6505,8 +6533,9 @@ document.addEventListener('keydown', (e) => {
 // ═══════════════════════════════════════════
 document.querySelectorAll('.filter-btn').forEach(btn => {
   btn.addEventListener('click', () => {
-    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.filter-btn').forEach(b => { b.classList.remove('active'); b.setAttribute('aria-pressed', 'false'); });
     btn.classList.add('active');
+    btn.setAttribute('aria-pressed', 'true');
     const filter = btn.dataset.filter;
     document.querySelectorAll('.topic-card').forEach(card => {
       if (filter === 'all' || card.dataset.phase === filter) {
@@ -6619,7 +6648,7 @@ renderCareers();
 document.querySelectorAll('.career-card').forEach(c => barObserver.observe(c));
 
 // restore progress
-const savedProgress = JSON.parse(localStorage.getItem('cs-roadmap-progress') || '{}');
+const savedProgress = readProgress();
 updateProgressWidget(savedProgress);
 
 // observe anim elements (includes newly rendered ones)
@@ -6766,14 +6795,6 @@ window.addEventListener('hashchange', (e) => {
 });
 window.addEventListener('DOMContentLoaded', routeFromHash);
 
-</script>
-<!-- Vercel Speed Insights -->
-<script src="../lib/speed-insights.min.js"></script>
-<script>
-  // Initialize Speed Insights
-  if (typeof window.injectSpeedInsights === 'function') {
-    window.injectSpeedInsights();
-  }
 </script>
 
 </body>

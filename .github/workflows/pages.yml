@@ -118,7 +118,7 @@ jobs:
           check 'id="pg-about"'           "pg-about section"
           check 'id="themeBtn"'           "theme toggle button"
           check 'id="langBtn"'            "language toggle button"
-          check 'id="navMenuBtn"'         "mobile menu button"
+          check 'id="pg-me"'              "pg-me section"
           check 'id="modal-overlay"'      "roadmap modal"
           check 'id="shared-nav"'         "shared navigation"
           exit $fail

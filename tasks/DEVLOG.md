@@ -48,6 +48,32 @@
 ---
 
 
+## [2026-10-25] Claude Code (local) — fix/code-review · whole-codebase review
+
+**Mode:** Analytical + Execution
+
+**Did:** Reviewed `index.html`, `prototypes/portfolio-combined.html` (markup, CSS, all inline JS), the legacy prototypes, `tests/e2e`, both workflows, `playwright.config.js`, `vercel.json` and the Caddy `/me` config. Method: static pass over every HTML file (CSS brace balance per `<style>`, `node --check` on every inline script, duplicate ids, `<use>` targets without a `<symbol>`, missing local files, inline handlers without a definition), a Playwright run of the SPA with console/pageerror/requestfailed capture while exercising all pages, theme/lang toggles, Ctrl+K, roadmap checkboxes, modal, filters, accordion and hash routes, then a read of the page JS.
+- **CI would have failed on `main`:** `pages.yml` smoke test asserts `id="navMenuBtn"`, which Phase 6 removed with the hamburger. Replaced the check with `id="pg-me"`.
+- **Storage failures killed the whole page script:** `localStorage` was read unguarded in the `<head>` theme script and `JSON.parse(localStorage…)` ran at init, so blocked storage (private mode, embedded browsers) or a corrupt `cs-roadmap-progress` value threw before `showPage` was even defined. Added `lsGet/lsSet/readProgress` (try/catch, validates the parsed value is an object) and a guarded head script.
+- **Progress widget miscounted:** counted every saved key; now counts only ids that exist in `TOPICS`.
+- **Roadmap modal had no focus management:** focus now moves to the close button on open, Tab is kept inside the dialog, and focus returns to the opener on close.
+- **Topic filter buttons** expose `aria-pressed` (markup + handler).
+- **Dead script:** removed `../lib/speed-insights.min.js` (404 on every load, no `lib/` folder) and its guarded init; the `/_vercel/*` scripts in `<head>` do the job.
+- **Test server bound to `0.0.0.0`:** `playwright.config.js` started `http-server` on all interfaces, serving the working tree (including untracked planning docs) to the LAN; now `-a 127.0.0.1`. A stale server of that kind, orphaned when the earlier review run was stopped, was also serving old files on :3000 and made new tests fail until it was killed.
+- **Caddy note** pointed at the retired `vishalkatariya.dev`; now `vishal-katariya.com`.
+- **Tests:** +5 (stylesheet brace balance, corrupt progress, blocked storage, modal focus in/out, `aria-pressed`) → 32. The brace test guards against the CSS merge artifact from PR #18, which htmlhint cannot see.
+
+**Reported, not changed:** `runSearch()` is still a stub that logs to the console; the legacy standalone prototypes (`about.html`, `projects.html`, `portfolio-v4.html`) call `toggleLang/toggleTheme/runSearch` that they never define (not linked from the site); the `resume*.html` sources still carry "Open to work" pills; `@vercel/speed-insights` in `package.json` is unused (no build step); the `<use>` / duplicate-id scan flags only false positives (`id="cc"` inside a JS comment, `/_vercel/*` served by Vercel).
+
+**Verification:** `npm run lint:html` 0 errors; `npm test` 32/32.
+
+**State:** branch `fix/code-review`, PR to `dev`.
+
+**Modified:** `prototypes/portfolio-combined.html`, `.github/workflows/pages.yml`, `playwright.config.js`, `homelab-configs/me-tailscale-caddy.conf`, `tests/e2e/spa.spec.js`, `tasks/DEVLOG.md`
+
+---
+
+
 ## [2026-10-25] Claude Code (local) — fix/dev-css-merge-artifact · home lost its colours on dev
 
 **Mode:** Analytical + Execution
