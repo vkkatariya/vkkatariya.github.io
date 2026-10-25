@@ -3401,27 +3401,7 @@ html.light footer.roadmap-footer a { color: var(--w); }
 #pg-home .about-bio p:last-child { margin-bottom: 0; }
 
 /* --- Projects page widgets --- */
-#pg-projects .pi,
-#pg-projects .vis-wrap,
-#pg-projects .chart-wrap,
-#pg-projects .nd-node,
-#pg-projects .plat {
-  background: var(--glass-bg);
-  backdrop-filter: blur(40px) saturate(180%);
-  -webkit-backdrop-filter: blur(40px) saturate(180%);
-  border: 1px solid var(--glass-border);
-  box-shadow: var(--glass-shadow);
-}
-
-#pg-projects .pi:hover,
-#pg-projects .vis-wrap:hover,
-#pg-projects .chart-wrap:hover,
-#pg-projects .nd-node:hover,
-#pg-projects .plat:hover {
-  transform: translateY(-2px) scale(1.012);
-  box-shadow: var(--glass-hover-shadow);
-  border-color: var(--glass-border);
-}
+/* (Projects surfaces moved to the PHASE 2 · PROJECTS block at the end of the stylesheet) */
 
 /* All .pi cards use uniform border-radius from .pi rule (14px) */
 
@@ -3506,11 +3486,6 @@ html.light footer.roadmap-footer a { color: var(--w); }
 }
 
 /* --- Light mode overrides for glass readability --- */
-html.light #pg-projects .pi,
-html.light #pg-projects .vis-wrap,
-html.light #pg-projects .chart-wrap,
-html.light #pg-projects .nd-node,
-html.light #pg-projects .plat,
 html.light #pg-roadmap .phase-card,
 html.light #pg-roadmap .guide-card,
 html.light #pg-roadmap .topic-card,
@@ -3558,7 +3533,6 @@ html.light #pg-home .w.inv {
 #pg-about .skill-bars .skb-track,
 #pg-roadmap .career-bar-track,
 #pg-projects .bar-track,
-#pg-projects .pipe-stage,
 #pg-projects .donut-wrap .donut-legend .dl-dot {
   background: rgba(0,0,0,.22);
 }
@@ -3567,15 +3541,171 @@ html.light #pg-about .int-icon,
 html.light #pg-about .skill-bars .skb-track,
 html.light #pg-roadmap .career-bar-track,
 html.light #pg-projects .bar-track,
-html.light #pg-projects .pipe-stage,
 html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
   background: rgba(0,0,0,.08);
 }
 
+
+/* ══════════════════════════════════════════════════════════════════════
+   PHASE 2 · PROJECTS (design system) — scoped to #pg-projects
+   Hue per project (reading order): finance blue, homelab teal, typeshift cyan, orlon indigo,
+   portfolio purple, hermes pink, openclaw orange, unilox lime; page accent = sand (.ph).
+   Everything below reads --h; no per-element rgba tints. Product accent (--product) only
+   recolours the project's title icon: Finance Buddy + Portfolio = --acc, Homelab = nothing-red.
+   Surfaces: index cards = bg2 panel + 4px hue edge; case studies = GlassCard; artifacts = panels.
+══════════════════════════════════════════════════════════════════════ */
+#pg-projects { --nothing-red: #D71921; }
+#pg-projects .p-acc { --product: var(--acc); }
+#pg-projects .p-red { --product: var(--nothing-red); }
+
+/* icons: every inline icon follows the hue / product accent (100%) */
+/* !important: the legacy html.light .ico rules (L-061) are !important too; the #pg-projects id out-ranks them */
+#pg-projects svg [stroke^="rgba(255,255,255"] { stroke: currentColor !important; }
+#pg-projects svg [fill^="rgba(255,255,255,.4"], #pg-projects svg [fill^="rgba(255,255,255,.5"],
+#pg-projects svg [fill^="rgba(255,255,255,.6"], #pg-projects svg [fill^="rgba(255,255,255,.7"],
+#pg-projects svg [fill^="rgba(255,255,255,.8"], #pg-projects svg [fill^="rgba(255,255,255,.9"] { fill: currentColor !important; }
+#pg-projects .plat-icon, #pg-projects .vis-title, #pg-projects .cs-skills .wlbl-row { color: var(--h); }
+
+/* StatusBadge (verdict badge): 24px circle, status colour + icon. Status colours mark status only. */
+.vb { width: 24px; height: 24px; border-radius: 50%; display: inline-grid; place-items: center; flex: none;
+  border: 1px solid currentColor; background: color-mix(in srgb, currentColor 14%, transparent); }
+.vb svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+.v-ok { color: var(--green); } .v-near { color: var(--amber); } .v-wrong { color: var(--red); }
+
+/* page header: lab kicker + h2.big-style title + lead */
+#pg-projects .ph-label { font-family: var(--mono); font-size: 13px; letter-spacing: .03em; text-transform: none; color: var(--h); }
+#pg-projects .ph-label::after { background: color-mix(in srgb, var(--h) 45%, transparent); }
+#pg-projects .ph-title { font-family: var(--display); font-weight: 800; font-size: clamp(28px, 4.4vw, 46px);
+  line-height: 1.04; letter-spacing: -.03em; color: var(--w); margin-bottom: 14px; }
+#pg-projects .ph-sub { font-family: var(--read); font-size: 18px; letter-spacing: 0; line-height: 1.6; color: var(--w80); max-width: 66ch; }
+
+/* chips: neutral — mono, w80, bg2, w12 border, pill */
+#pg-projects .pi-tag, #pg-projects .cs-badge {
+  font-family: var(--mono); letter-spacing: 0; color: var(--w80);
+  background: var(--bg2); border: 1px solid var(--w12); border-radius: 100px;
+  backdrop-filter: none; -webkit-backdrop-filter: none;
+}
+#pg-projects .pi-tag { font-size: 12.5px; padding: 4px 11px; }
+#pg-projects .cs-badge { font-size: 13.5px; padding: 7px 14px; display: inline-flex; align-items: center; gap: 8px; }
+#pg-projects .cs-badge::before { display: none; }
+#pg-projects .cs-badge.cs-status { padding: 4px 14px 4px 5px; }
+
+/* index cards (8) */
+#pg-projects .pi {
+  background: var(--bg2); border: 1px solid var(--w12); border-left: 4px solid var(--h); border-radius: 20px;
+  box-shadow: none; backdrop-filter: none; -webkit-backdrop-filter: none;
+  transition: transform .24s cubic-bezier(.2,.7,.2,1), background .24s cubic-bezier(.2,.7,.2,1), border-color .24s cubic-bezier(.2,.7,.2,1);
+}
+#pg-projects .pi:hover { transform: translateY(-4px); background: var(--bg3); box-shadow: none; border-color: var(--w12); border-left-color: var(--h); }
+@media (prefers-reduced-motion: reduce) { #pg-projects .pi:hover { transform: none; } }
+#pg-projects .pi-num { font-family: var(--data); font-size: 12px; letter-spacing: .06em; color: var(--w60); margin-bottom: 12px; }
+#pg-projects .pi-title { display: flex; align-items: center; gap: 10px; font-family: var(--sans); font-weight: 700; font-size: 17px;
+  letter-spacing: 0; line-height: 1.25; color: var(--w); margin-bottom: 6px; }
+#pg-projects .pi-title svg.ico { width: 22px; height: 22px; flex: none; color: var(--product, var(--h)); }
+#pg-projects .pi-sub { font-family: var(--read); font-size: 15.5px; letter-spacing: 0; line-height: 1.5; color: var(--w80); margin-bottom: 14px; }
+#pg-projects .pi-tags { margin-bottom: 16px; }
+#pg-projects .pi-status { display: inline-flex; align-items: center; gap: 8px; font-family: var(--mono); font-size: 13px; letter-spacing: 0; color: var(--w80); }
+#pg-projects .pi-status::before { display: none; }
+#pg-projects .pi-arrow { color: var(--w60); }
+#pg-projects .pi:hover .pi-arrow { color: var(--h); }
+
+/* case studies (8): GlassCard */
+#pg-projects .cs { padding-bottom: 60px; }
+#pg-projects .cs-section, #pg-projects .cs-section:first-child {
+  padding: 40px; margin-bottom: 28px;
+  background: linear-gradient(180deg, var(--glass-top), var(--glass-bottom));
+  backdrop-filter: blur(28px) saturate(1.6); -webkit-backdrop-filter: blur(28px) saturate(1.6);
+  border: 1px solid var(--glass-border); border-radius: 20px; box-shadow: var(--shadow);
+}
+@media (max-width: 700px) { #pg-projects .cs-section, #pg-projects .cs-section:first-child { padding: 22px 18px; } }
+#pg-projects .cs-number { font-family: var(--data); font-size: 13px; letter-spacing: .08em; color: var(--h); }
+#pg-projects .cs-title { font-family: var(--display); font-weight: 800; font-size: clamp(32px, 5vw, 56px); letter-spacing: -.03em; line-height: 1; color: var(--w); }
+#pg-projects .cs-title svg.ico { width: 40px; height: 40px; color: var(--product, var(--h)); }
+#pg-projects .cs-tagline { font-family: var(--read); font-size: 17px; line-height: 1.6; color: var(--w80); max-width: 62ch; }
+#pg-projects .cs-stats { background: var(--w12); border-radius: 14px; }
+#pg-projects .cs-stat { background: var(--bg2); }
+#pg-projects .cs-stat-n { font-family: var(--data); color: var(--w); }
+#pg-projects .cs-stat-l { font-family: var(--mono); letter-spacing: .08em; color: var(--w60); }
+#pg-projects .cs-h { font-family: var(--mono); font-size: 13px; letter-spacing: .08em; color: var(--h); }
+#pg-projects .cs-p { font-family: var(--read); font-size: 15.5px; line-height: 1.7; color: var(--w80); }
+#pg-projects .cs-p strong { color: var(--w); font-weight: 500; }
+#pg-projects .feat { background: var(--bg3); border: 1px solid var(--w12); border-radius: 14px; }
+#pg-projects .feat-icon { border-radius: 11px; background: color-mix(in srgb, var(--h) 13%, transparent); border: 1px solid color-mix(in srgb, var(--h) 42%, transparent); }
+#pg-projects .feat-title { font-family: var(--sans); font-weight: 700; font-size: 15px; letter-spacing: 0; color: var(--w); }
+#pg-projects .feat-desc { font-family: var(--read); font-size: 14px; letter-spacing: 0; line-height: 1.55; color: var(--w80); }
+
+/* SkillBar: 5 bars, hue fill, DM Mono values */
+#pg-projects .cs-skills { background: var(--bg2); border: 1px solid var(--w12); border-radius: 14px; box-shadow: none;
+  backdrop-filter: none; -webkit-backdrop-filter: none; }
+#pg-projects .cs-skills:hover { transform: none; box-shadow: none; }
+#pg-projects .cs-skills-name { font-family: var(--mono); font-size: 12px; color: var(--w80); }
+#pg-projects .cs-skills-bar { background: var(--w12); }
+#pg-projects .cs-skills-fill { background: var(--h); }
+#pg-projects .cs-skills-score { font-family: var(--data); font-size: 12px; color: var(--w80); }
+
+/* artifacts: panel + hue-based parts */
+#pg-projects .vis-wrap { background: var(--bg2); border: 1px solid var(--w12); border-radius: 20px; box-shadow: none;
+  backdrop-filter: none; -webkit-backdrop-filter: none; }
+#pg-projects .vis-wrap:has(> .bar-chart):hover { transform: none; box-shadow: none; border-color: var(--w12); }
+#pg-projects .vis-title { font-family: var(--mono); font-size: 13px; letter-spacing: .03em; text-transform: none; }
+
+/* node-diagram: node = 13% fill / 42% border / 10px radius / hue icon */
+#pg-projects .nd-node { background: color-mix(in srgb, var(--h) 13%, transparent); border: 1px solid color-mix(in srgb, var(--h) 42%, transparent);
+  border-radius: 10px; box-shadow: none; backdrop-filter: none; -webkit-backdrop-filter: none; }
+#pg-projects .nd-node:hover { transform: translateY(-2px); box-shadow: none; border-color: color-mix(in srgb, var(--h) 60%, transparent); }
+#pg-projects .nd-name { display: flex; align-items: center; gap: 8px; font-family: var(--sans); font-weight: 700; font-size: 15px; letter-spacing: 0; color: var(--w); }
+#pg-projects .nd-name .ico { color: var(--h); }
+#pg-projects .nd-hw { font-family: var(--mono); font-size: 12px; letter-spacing: 0; line-height: 1.5; color: var(--w60); }
+#pg-projects .nd-svc-item { font-family: var(--mono); font-size: 12.5px; letter-spacing: 0; color: var(--w80); }
+#pg-projects .nd-svc-item::before { background: var(--h); box-shadow: none; }
+#pg-projects .nd-connector, #pg-projects .nd-connector span { color: var(--w60); }
+#pg-projects .nd-connector-line { background: linear-gradient(to bottom, transparent, var(--w30), transparent); }
+#pg-projects .nd-state { margin-top: 10px; font-family: var(--mono); font-size: 12px; letter-spacing: 0; color: var(--w80); }
+#pg-projects .nd-dot { color: var(--h); }
+
+/* pipeline: step cards, 14px radius, hue left edge, hue icon */
+#pg-projects .pipeline { gap: 10px; }
+#pg-projects .pipe-stage, #pg-projects .pipe-stage:first-child, #pg-projects .pipe-stage:last-child, #pg-projects .pipe-stage:not(:first-child) {
+  background: var(--bg3); border: 1px solid var(--w12); border-left: 4px solid var(--h); border-radius: 14px;
+}
+#pg-projects .pipe-stage:hover { transform: translateY(-2px); box-shadow: none; border-color: var(--w12); border-left-color: var(--h); }
+#pg-projects .pipe-num { font-family: var(--data); letter-spacing: .08em; color: var(--h); }
+#pg-projects .pipe-name { display: flex; align-items: center; gap: 6px; font-family: var(--sans); font-weight: 700; font-size: 14px; letter-spacing: 0; color: var(--w); }
+#pg-projects .pipe-name .ico { color: var(--h); }
+#pg-projects .pipe-detail { font-family: var(--read); font-size: 13.5px; letter-spacing: 0; line-height: 1.5; color: var(--w80); }
+#pg-projects .pipe-arrow { right: -9px; color: var(--w60); }
+#pg-projects .pipe-state { margin-top: 8px; display: flex; align-items: center; gap: 8px; font-family: var(--mono); font-size: 12px; letter-spacing: 0; color: var(--w80); }
+
+/* platform-grid: mini-cards, bg3, 14px radius, hue left edge */
+#pg-projects .plat { background: var(--bg3); border: 1px solid var(--w12); border-left: 4px solid var(--h); border-radius: 14px;
+  text-align: left; box-shadow: none; backdrop-filter: none; -webkit-backdrop-filter: none; }
+#pg-projects .plat:hover { transform: translateY(-2px); box-shadow: none; border-color: var(--w12); border-left-color: var(--h); }
+#pg-projects .plat-name { display: flex; align-items: center; gap: 8px; font-family: var(--sans); font-weight: 700; font-size: 15px; letter-spacing: 0; color: var(--w); }
+#pg-projects .plat-name .ico { color: var(--h); }
+#pg-projects .plat-lang { font-family: var(--mono); font-size: 12px; letter-spacing: 0; color: var(--w60); }
+#pg-projects .plat-feature { font-family: var(--read); font-size: 14px; letter-spacing: 0; line-height: 1.5; color: var(--w80); }
+#pg-projects .plat-icon svg { color: var(--h); }
+
+/* responsive: platform cards wrap instead of overflowing the panel; node diagram stacks; skill names get room */
+#pg-projects .platform-grid { grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); }
+@media (max-width: 700px) {
+  #pg-projects .node-diagram { flex-direction: column; align-items: stretch; gap: 10px; padding: 12px 0; }
+  #pg-projects .nd-node { min-width: 0; }
+  #pg-projects .cs-skills-row { grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr) 28px; gap: 10px; }
+}
+
+/* bar-chart (Finance Buddy): hue bars, 12px / 5px radius; JS sets an inline colour, so !important */
+#pg-projects .bar-track { height: 12px; border-radius: 5px; box-shadow: none; }
+#pg-projects .bar-fill { background: var(--h) !important; border-radius: 0 5px 5px 0; }
+#pg-projects .bar-fill::after { display: none; }
+#pg-projects .bar-lbl { font-family: var(--mono); font-size: 12.5px; letter-spacing: 0; color: var(--w80); }
+#pg-projects .bar-val { font-family: var(--data); font-size: 12.5px; letter-spacing: 0; color: var(--w80); }
 </style>
 </head>
 <body>
 <svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></symbol>
+  <symbol id="i-bang" viewBox="0 0 24 24"><path d="M12 6v8M12 18h.01"/></symbol>
   <symbol id="ic-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></symbol>
   <symbol id="ic-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
     <circle cx="12" cy="12" r="5"/>
@@ -4094,7 +4224,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
 </div>
 <div class="page" id="pg-projects">
 <!-- PAGE HEADER -->
-<div class="ph">
+<div class="ph hue-sand">
   <div class="ph-label">vkkatariya · work</div>
   <h1 class="ph-title"><span class="hn-script">P</span>rojects</h1>
   <p class="ph-sub">Things I've built and shipped — from personal finance trackers to homelab infrastructure to collaborative AI tools.</p>
@@ -4103,7 +4233,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
 <!-- PROJECT INDEX GRID -->
 <section style="position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:0 20px 80px">
   <div class="proj-index">
-    <a href="javascript:void(0)" class="pi" style="text-decoration:none;color:inherit;padding:22px 24px" onclick="scrollToAnchor('finance-buddy')">
+    <a href="javascript:void(0)" class="pi hue-blue p-acc" style="text-decoration:none;color:inherit;padding:22px 24px" onclick="scrollToAnchor('finance-buddy')">
       <div class="pi-num">01 / 08</div>
       <div class="pi-title"><svg class="ico" width="28" height="28" viewBox="0 0 13 13" fill="none"><rect x="1" y="8" width="2.5" height="4" fill="rgba(255,255,255,.5)"/><rect x="5.25" y="5" width="2.5" height="7" fill="rgba(255,255,255,.5)"/><rect x="9.5" y="2" width="2.5" height="10" fill="rgba(255,255,255,.5)"/></svg>Finance Buddy</div>
       <div class="pi-sub">Personal finance tracker</div>
@@ -4112,10 +4242,10 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
         <span class="pi-tag">PostgreSQL</span>
         <span class="pi-tag">Chart.js</span>
       </div>
-      <div class="pi-status s-done">Prototype complete</div>
+      <div class="pi-status"><span class="vb v-ok" aria-hidden="true"><svg><use href="#i-check"/></svg></span>Prototype complete</div>
       <div class="pi-arrow">↗</div>
     </a>
-    <a href="javascript:void(0)" class="pi" style="text-decoration:none;color:inherit;padding:22px 24px" onclick="scrollToAnchor('homelab')">
+    <a href="javascript:void(0)" class="pi hue-teal p-red" style="text-decoration:none;color:inherit;padding:22px 24px" onclick="scrollToAnchor('homelab')">
       <div class="pi-num">02 / 08</div>
       <div class="pi-title"><svg class="ico" width="28" height="28" viewBox="0 0 13 13" fill="none"><rect x="1" y="1" width="4.5" height="5" rx="1" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="none"/><rect x="7.5" y="1" width="4.5" height="3" rx="1" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="none"/><rect x="1" y="8" width="4.5" height="4" rx="1" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="none"/><rect x="7.5" y="6" width="4.5" height="6" rx="1" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="none"/></svg>Homelab Dashboard</div>
       <div class="pi-sub">Realtime ops · 2-node cluster</div>
@@ -4124,10 +4254,10 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
         <span class="pi-tag">WebSocket</span>
         <span class="pi-tag">Docker</span>
       </div>
-      <div class="pi-status s-done">Prototype complete</div>
+      <div class="pi-status"><span class="vb v-ok" aria-hidden="true"><svg><use href="#i-check"/></svg></span>Prototype complete</div>
       <div class="pi-arrow">↗</div>
     </a>
-    <a href="javascript:void(0)" class="pi" style="text-decoration:none;color:inherit;padding:22px 24px" onclick="scrollToAnchor('typeshift')">
+    <a href="javascript:void(0)" class="pi hue-cyan" style="text-decoration:none;color:inherit;padding:22px 24px" onclick="scrollToAnchor('typeshift')">
       <div class="pi-num">03 / 08</div>
       <div class="pi-title"><svg class="ico" width="28" height="28" viewBox="0 0 13 13" fill="none"><rect x="1" y="3" width="11" height="7" rx="1.5" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="none"/><line x1="3.5" y1="5.5" x2="5" y2="5.5" stroke="rgba(255,255,255,.5)" stroke-width="1"/><line x1="8" y1="5.5" x2="9.5" y2="5.5" stroke="rgba(255,255,255,.5)" stroke-width="1"/><line x1="4" y1="8" x2="9" y2="8" stroke="rgba(255,255,255,.5)" stroke-width="1"/></svg>TypeShift</div>
       <div class="pi-sub">Cross-platform AI · collab</div>
@@ -4136,10 +4266,10 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
         <span class="pi-tag">Swift</span>
         <span class="pi-tag">C#</span>
       </div>
-      <div class="pi-status s-wip">In progress</div>
+      <div class="pi-status"><span class="vb v-near" aria-hidden="true"><svg><use href="#i-bang"/></svg></span>In progress</div>
       <div class="pi-arrow">↗</div>
     </a>
-    <a href="javascript:void(0)" class="pi" style="text-decoration:none;color:inherit;padding:22px 24px" onclick="scrollToAnchor('orlon-bot')">
+    <a href="javascript:void(0)" class="pi hue-indigo" style="text-decoration:none;color:inherit;padding:22px 24px" onclick="scrollToAnchor('orlon-bot')">
       <div class="pi-num">04 / 08</div>
       <div class="pi-title"><svg class="ico" width="28" height="28" viewBox="0 0 13 13" fill="none"><rect x="3" y="4" width="7" height="6" rx="1" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="none"/><circle cx="5" cy="7" r=".8" fill="rgba(255,255,255,.5)"/><circle cx="8" cy="7" r=".8" fill="rgba(255,255,255,.5)"/><line x1="6.5" y1="1.5" x2="6.5" y2="4" stroke="rgba(255,255,255,.5)" stroke-width="1"/><circle cx="6.5" cy="1.5" r=".8" fill="rgba(255,255,255,.5)"/></svg>orlon-bot</div>
       <div class="pi-sub">QLoRA fine-tune · Telegram</div>
@@ -4148,10 +4278,10 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
         <span class="pi-tag">QLoRA</span>
         <span class="pi-tag">Unsloth</span>
       </div>
-      <div class="pi-status s-wip">In progress</div>
+      <div class="pi-status"><span class="vb v-near" aria-hidden="true"><svg><use href="#i-bang"/></svg></span>In progress</div>
       <div class="pi-arrow">↗</div>
     </a>
-    <a href="javascript:void(0)" class="pi" style="text-decoration:none;color:inherit;padding:22px 24px" onclick="scrollToAnchor('portfolio-website')">
+    <a href="javascript:void(0)" class="pi hue-purple p-acc" style="text-decoration:none;color:inherit;padding:22px 24px" onclick="scrollToAnchor('portfolio-website')">
       <div class="pi-num">05 / 08</div>
       <div class="pi-title"><svg class="ico" width="28" height="28" viewBox="0 0 13 13" fill="none"><rect x="1.5" y="2" width="10" height="9" rx="1" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="none"/><line x1="1.5" y1="5" x2="11.5" y2="5" stroke="rgba(255,255,255,.5)" stroke-width="1"/><circle cx="3.5" cy="3.5" r=".6" fill="rgba(255,255,255,.5)"/><circle cx="5.5" cy="3.5" r=".6" fill="rgba(255,255,255,.5)"/></svg>Portfolio Website</div>
       <div class="pi-sub">This site · Vercel + Tailscale</div>
@@ -4161,10 +4291,10 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
         <span class="pi-tag">Tailscale</span>
         <span class="pi-tag">Liquid Glass</span>
       </div>
-      <div class="pi-status s-done">Live</div>
+      <div class="pi-status"><span class="vb v-ok" aria-hidden="true"><svg><use href="#i-check"/></svg></span>Live</div>
       <div class="pi-arrow">↗</div>
     </a>
-    <a href="javascript:void(0)" class="pi" style="text-decoration:none;color:inherit;padding:22px 24px" onclick="scrollToAnchor('hermes-desktop-oauth')">
+    <a href="javascript:void(0)" class="pi hue-pink" style="text-decoration:none;color:inherit;padding:22px 24px" onclick="scrollToAnchor('hermes-desktop-oauth')">
       <div class="pi-num">06 / 08</div>
       <div class="pi-title"><svg class="ico" width="28" height="28" viewBox="0 0 13 13" fill="none"><rect x="3" y="6" width="7" height="5.5" rx="1" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="none"/><path d="M4.5 6V4.5a2 2 0 0 1 4 0V6" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="none"/><circle cx="6.5" cy="9" r=".8" fill="rgba(255,255,255,.5)"/></svg>Hermes One (OAuth fork)</div>
       <div class="pi-sub">Hermes One · OAuth for gated dashboards</div>
@@ -4176,10 +4306,10 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
         <span class="pi-tag">Tailwind</span>
         <span class="pi-tag">better-sqlite3</span>
       </div>
-      <div class="pi-status s-done">13 PRs merged</div>
+      <div class="pi-status"><span class="vb v-ok" aria-hidden="true"><svg><use href="#i-check"/></svg></span>13 PRs merged</div>
       <div class="pi-arrow">↗</div>
     </a>
-    <a href="javascript:void(0)" class="pi" style="text-decoration:none;color:inherit;padding:22px 24px" onclick="scrollToAnchor('openclaw-dashboard')">
+    <a href="javascript:void(0)" class="pi hue-orange" style="text-decoration:none;color:inherit;padding:22px 24px" onclick="scrollToAnchor('openclaw-dashboard')">
       <div class="pi-num">07 / 08</div>
       <div class="pi-title"><svg class="ico" width="28" height="28" viewBox="0 0 13 13" fill="none"><rect x="1" y="1" width="4.5" height="5" rx="1" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="none"/><rect x="7.5" y="1" width="4.5" height="3" rx="1" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="none"/><rect x="1" y="8" width="4.5" height="4" rx="1" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="none"/><rect x="7.5" y="6" width="4.5" height="6" rx="1" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="none"/></svg>OpenClaw Dashboard</div>
       <div class="pi-sub">Control UI for OpenClaw gateway</div>
@@ -4189,10 +4319,10 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
         <span class="pi-tag">WebSocket</span>
         <span class="pi-tag">Neopop</span>
       </div>
-      <div class="pi-status s-wip">Active dev</div>
+      <div class="pi-status"><span class="vb v-near" aria-hidden="true"><svg><use href="#i-bang"/></svg></span>Active dev</div>
       <div class="pi-arrow">↗</div>
     </a>
-    <a href="javascript:void(0)" class="pi" style="text-decoration:none;color:inherit;padding:22px 24px" onclick="scrollToAnchor('unilox-fitness-ai')">
+    <a href="javascript:void(0)" class="pi hue-lime" style="text-decoration:none;color:inherit;padding:22px 24px" onclick="scrollToAnchor('unilox-fitness-ai')">
       <div class="pi-num">08 / 08</div>
       <div class="pi-title"><svg class="ico" width="28" height="28" viewBox="0 0 13 13" fill="none"><path d="M1 6.5H3.5L5 3L6.5 10L8 4L9.5 6.5H12" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="none"/></svg>UNILOX Fitness AI</div>
       <div class="pi-sub">AI Gym & Fitness Assistant · 7 modules</div>
@@ -4204,7 +4334,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
         <span class="pi-tag">PostgreSQL</span>
         <span class="pi-tag">MQTT</span>
       </div>
-      <div class="pi-status s-wip">Phase 0 spec</div>
+      <div class="pi-status"><span class="vb v-near" aria-hidden="true"><svg><use href="#i-bang"/></svg></span>Phase 0 spec</div>
       <div class="pi-arrow">↗</div>
     </a>
   </div>
@@ -4216,16 +4346,16 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
 <div class="cs">
 
   <!-- ── 01: FINANCE BUDDY ── -->
-  <section class="cs-section" id="finance-buddy">
+  <section class="cs-section hue-blue p-acc" id="finance-buddy">
     <div class="cs-hero">
       <div>
         <div class="cs-number">01 / 04</div>
         <h2 class="cs-title"><svg class="ico" width="28" height="28" viewBox="0 0 13 13" fill="none" style="vertical-align:middle;margin-right:12px"><rect x="1" y="8" width="2.5" height="4" fill="rgba(255,255,255,.5)"/><rect x="5.25" y="5" width="2.5" height="7" fill="rgba(255,255,255,.5)"/><rect x="9.5" y="2" width="2.5" height="10" fill="rgba(255,255,255,.5)"/></svg>Finance Buddy</h2>
         <p class="cs-tagline">Personal finance tracker built from real transaction data — 993 entries across 44 months of actual spending and income.</p>
         <div class="cs-badges">
-          <span class="cs-badge cb-green">Prototype complete</span>
-          <span class="cs-badge cb-blue">Private · Tailscale only</span>
-          <span class="cs-badge cb-acc">2026</span>
+          <span class="cs-badge cs-status"><span class="vb v-ok" aria-hidden="true"><svg><use href="#i-check"/></svg></span>Prototype complete</span>
+          <span class="cs-badge">Private · Tailscale only</span>
+          <span class="cs-badge">2026</span>
         </div>
       </div>
     </div>
@@ -4356,21 +4486,21 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
     <!-- Architecture note -->
     <div class="cs-body-full">
       <div class="cs-h">access + privacy</div>
-      <p class="cs-p">Finance Buddy is <strong>private by design</strong> — it contains real financial data and is only accessible through Tailscale on authorised devices. The route <code style="font-family:'DM Mono',monospace;font-size:12px;color:var(--w30)">buddy.auxois-wyrm.ts.net</code> never touches the public internet. No public ports, all traffic through WireGuard.</p>
+      <p class="cs-p">Finance Buddy is <strong>private by design</strong> — it contains real financial data and is only accessible through Tailscale on authorised devices. The route <code style="font-family:'DM Mono',monospace;font-size:12px;color:var(--w60)">buddy.auxois-wyrm.ts.net</code> never touches the public internet. No public ports, all traffic through WireGuard.</p>
     </div>
   </section>
 
   <!-- ── 02: HOMELAB DASHBOARD ── -->
-  <section class="cs-section" id="homelab">
+  <section class="cs-section hue-teal p-red" id="homelab">
     <div class="cs-hero">
       <div>
         <div class="cs-number">02 / 04</div>
         <h2 class="cs-title"><svg class="ico" width="28" height="28" viewBox="0 0 13 13" fill="none" style="vertical-align:middle;margin-right:12px"><rect x="1" y="1" width="11" height="3" rx="1.2" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="rgba(255,255,255,.07)"/><rect x="1" y="5" width="11" height="3" rx="1.2" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="rgba(255,255,255,.07)"/><rect x="1" y="9" width="11" height="3" rx="1.2" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="rgba(255,255,255,.07)"/><circle cx="10.5" cy="2.5" r=".9" fill="rgba(61,220,132,.8)"/><circle cx="10.5" cy="6.5" r=".9" fill="rgba(61,220,132,.8)"/><circle cx="10.5" cy="10.5" r=".9" fill="rgba(255,255,255,.3)"/></svg>Homelab Dashboard</h2>
         <p class="cs-tagline">Realtime ops dashboard for a self-hosted 2-node cluster — live metrics, service registry, and a Notion docs viewer.</p>
         <div class="cs-badges">
-          <span class="cs-badge cb-green">Prototype complete</span>
-          <span class="cs-badge cb-blue">Private · Tailscale only</span>
-          <span class="cs-badge cb-acc">2026</span>
+          <span class="cs-badge cs-status"><span class="vb v-ok" aria-hidden="true"><svg><use href="#i-check"/></svg></span>Prototype complete</span>
+          <span class="cs-badge">Private · Tailscale only</span>
+          <span class="cs-badge">2026</span>
         </div>
       </div>
     </div>
@@ -4413,7 +4543,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
         </div>
         <div class="nd-connector">
           <div class="nd-connector-line"></div>
-          <span style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:1.5px;color:var(--w30)">Tailscale<br>WireGuard</span>
+          <span style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:1.5px;color:var(--w60)">Tailscale<br>WireGuard</span>
           <div class="nd-connector-line"></div>
         </div>
         <div class="nd-node">
@@ -4495,16 +4625,16 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
   </section>
 
   <!-- ── 03: TYPESHIFT ── -->
-  <section class="cs-section" id="typeshift">
+  <section class="cs-section hue-cyan" id="typeshift">
     <div class="cs-hero">
       <div>
         <div class="cs-number">03 / 04</div>
         <h2 class="cs-title"><svg class="ico" width="28" height="28" viewBox="0 0 13 13" fill="none" style="vertical-align:middle;margin-right:12px"><rect x="0.5" y="2" width="12" height="9" rx="1.5" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="none"/><line x1="2.5" y1="5" x2="10.5" y2="5" stroke="rgba(255,255,255,.5)" stroke-width="1"/><line x1="2.5" y1="8" x2="8" y2="8" stroke="rgba(255,255,255,.3)" stroke-width="1"/></svg>TypeShift</h2>
         <p class="cs-tagline">Cross-platform AI writing assistant — same AI, three native apps. Built in collaboration with nayalambaliya.</p>
         <div class="cs-badges">
-          <span class="cs-badge cb-amber">In progress</span>
-          <span class="cs-badge cb-green">Open source</span>
-          <span class="cs-badge cb-purple">Collaboration</span>
+          <span class="cs-badge cs-status"><span class="vb v-near" aria-hidden="true"><svg><use href="#i-bang"/></svg></span>In progress</span>
+          <span class="cs-badge">Open source</span>
+          <span class="cs-badge">Collaboration</span>
         </div>
       </div>
     </div>
@@ -4563,7 +4693,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
       <div>
         <div class="cs-h">My role</div>
         <p class="cs-p">Joined as a collaborator on the project led by <strong>nayalambaliya</strong>. Contributed to the macOS CI release workflow, project scaffolding, and dev setup documentation. The cross-platform architecture decision — shared API backend, native UI per platform — was established early and I've helped build toward it.</p>
-        <p class="cs-p">Repo: <code style="font-family:'DM Mono',monospace;font-size:11px;color:var(--w30)">github.com/nayalambaliya/TypeShift</code></p>
+        <p class="cs-p">Repo: <code style="font-family:'DM Mono',monospace;font-size:11px;color:var(--w60)">github.com/nayalambaliya/TypeShift</code></p>
       </div>
     </div>
 
@@ -4599,16 +4729,16 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
 
   <!-- ── 04: ORLON-BOT ── -->
   <div class="feat-list" style="display:none"></div>
-  <section class="cs-section" id="orlon-bot">
+  <section class="cs-section hue-indigo" id="orlon-bot">
     <div class="cs-hero">
       <div>
         <div class="cs-number">04 / 04</div>
         <h2 class="cs-title"><svg class="ico" width="28" height="28" viewBox="0 0 13 13" fill="none" style="vertical-align:middle;margin-right:12px"><path d="M1.5 2.5h10v6h-10z M1.5 2.5l5 4 5-4" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="none"/><line x1="4" y1="11" x2="9" y2="11" stroke="rgba(255,255,255,.5)" stroke-width="1" stroke-linecap="round"/><circle cx="6.5" cy="8" r=".9" fill="rgba(61,220,132,.8)"/></svg>orlon-bot</h2>
         <p class="cs-tagline">A Telegram bot with a custom fine-tuned LLM — trained on Kaggle T4 GPUs using QLoRA and Unsloth, running inference on a Rock 5T NPU.</p>
         <div class="cs-badges">
-          <span class="cs-badge cb-amber">In progress</span>
-          <span class="cs-badge" style="border-color:rgba(192,132,252,.3);color:var(--purple)">ML / AI</span>
-          <span class="cs-badge cb-acc">2026</span>
+          <span class="cs-badge cs-status"><span class="vb v-near" aria-hidden="true"><svg><use href="#i-bang"/></svg></span>In progress</span>
+          <span class="cs-badge">ML / AI</span>
+          <span class="cs-badge">2026</span>
         </div>
       </div>
     </div>
@@ -4683,7 +4813,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
       </div>
       <div>
         <div class="cs-h">The NPU angle</div>
-        <p class="cs-p">The Rock 5T has a <strong>Rockchip RK3588J NPU with 6 TOPs</strong> — enough for inference on quantised models in the 1–7B range. Using <code style="font-family:'DM Mono',monospace;font-size:11px;color:var(--w30)">rkllama</code>, the model runs natively on the NPU rather than the CPU, giving better performance per watt.</p>
+        <p class="cs-p">The Rock 5T has a <strong>Rockchip RK3588J NPU with 6 TOPs</strong> — enough for inference on quantised models in the 1–7B range. Using <code style="font-family:'DM Mono',monospace;font-size:11px;color:var(--w60)">rkllama</code>, the model runs natively on the NPU rather than the CPU, giving better performance per watt.</p>
         <p class="cs-p">The whole pipeline — training on Kaggle, deploying on the NPU, serving through Telegram — closes a loop between free cloud compute and self-hosted inference.</p>
       </div>
     </div>
@@ -4721,16 +4851,16 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
 
   <!-- ── 05: PORTFOLIO WEBSITE ── -->
   <div class="feat-list" style="display:none"></div>
-  <section class="cs-section" id="portfolio-website">
+  <section class="cs-section hue-purple p-acc" id="portfolio-website">
     <div class="cs-hero">
       <div>
         <div class="cs-number">05 / 08</div>
         <h2 class="cs-title"><svg class="ico" width="28" height="28" viewBox="0 0 13 13" fill="none" style="vertical-align:middle;margin-right:12px"><rect x="0.5" y="1" width="12" height="11" rx="1.2" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="none"/><line x1="0.5" y1="3.5" x2="12.5" y2="3.5" stroke="rgba(255,255,255,.5)" stroke-width="1"/><circle cx="2" cy="2.25" r=".5" fill="rgba(255,255,255,.5)"/><circle cx="3.5" cy="2.25" r=".5" fill="rgba(255,255,255,.5)"/></svg>Portfolio Website</h2>
         <p class="cs-tagline">This site · Vercel + Tailscale</p>
         <div class="cs-badges">
-          <span class="cs-badge cb-green">Live</span>
-          <span class="cs-badge cb-blue">Hybrid · Vercel + Tailscale</span>
-          <span class="cs-badge cb-acc">2026</span>
+          <span class="cs-badge cs-status"><span class="vb v-ok" aria-hidden="true"><svg><use href="#i-check"/></svg></span>Live</span>
+          <span class="cs-badge">Hybrid · Vercel + Tailscale</span>
+          <span class="cs-badge">2026</span>
         </div>
       </div>
     </div>
@@ -4748,9 +4878,9 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
       <div class="vis-title">deploy topology · vercel + athena</div>
       <div class="node-diagram">
         <!-- Vercel node — public CDN -->
-        <div class="nd-node" style="border-color:rgba(52,199,123,.2)">
+        <div class="nd-node">
           <div class="nd-name">
-            <svg class="ico" width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M6.5 1.5L12 11.5H1L6.5 1.5Z" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="rgba(52,199,123,.1)"/></svg>
+            <svg class="ico" width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M6.5 1.5L12 11.5H1L6.5 1.5Z" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="rgba(255,255,255,.05)"/></svg>
             vercel
           </div>
           <div class="nd-hw">vishal-katariya.com · global CDN edge network</div>
@@ -4760,21 +4890,21 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
             <span class="nd-svc-item">/about</span>
             <span class="nd-svc-item">/me → redirect to gate</span>
           </div>
-          <div style="margin-top:10px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1.5px;color:var(--green);text-transform:uppercase">● public · open</div>
+          <div class="nd-state"><span class="nd-dot" aria-hidden="true">●</span> public · open</div>
         </div>
 
         <!-- Connector — routing split -->
         <div class="nd-connector">
           <div class="nd-connector-line"></div>
           <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7" stroke="rgba(255,255,255,.18)" stroke-width="1"/><path d="M5.5 9H12.5M9 5.5V12.5" stroke="rgba(255,255,255,.35)" stroke-width="1.2" stroke-linecap="round"/></svg>
-          <span style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:1px;color:var(--w30);text-align:center">request<br>routing</span>
+          <span style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:1px;color:var(--w60);text-align:center">request<br>routing</span>
           <div class="nd-connector-line"></div>
         </div>
 
         <!-- Athena node — private Tailscale -->
-        <div class="nd-node" style="border-color:rgba(91,156,246,.2)">
+        <div class="nd-node">
           <div class="nd-name">
-            <svg class="ico" width="13" height="13" viewBox="0 0 13 13" fill="none"><rect x="1" y="1" width="11" height="3" rx="1.2" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="rgba(255,255,255,.05)"/><rect x="1" y="5" width="11" height="3" rx="1.2" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="rgba(255,255,255,.05)"/><circle cx="10.5" cy="6.5" r=".9" fill="rgba(91,156,246,.9)"/></svg>
+            <svg class="ico" width="13" height="13" viewBox="0 0 13 13" fill="none"><rect x="1" y="1" width="11" height="3" rx="1.2" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="rgba(255,255,255,.05)"/><rect x="1" y="5" width="11" height="3" rx="1.2" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="rgba(255,255,255,.05)"/><circle cx="10.5" cy="6.5" r=".9" fill="rgba(255,255,255,.5)"/></svg>
             athena
           </div>
           <div class="nd-hw">Radxa Rock 5T · Caddy + Tailscale IP allowlist</div>
@@ -4783,7 +4913,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
             <span class="nd-svc-item">auxois-wyrm.ts.net</span>
             <span class="nd-svc-item">no public ports</span>
           </div>
-          <div style="margin-top:10px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1.5px;color:var(--blue);text-transform:uppercase">● private · tailscale only</div>
+          <div class="nd-state"><span class="nd-dot" aria-hidden="true">●</span> private · tailscale only</div>
         </div>
       </div>
     </div>
@@ -4850,17 +4980,17 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
   </section>
 
   <!-- ── 06: HERMES DESKTOP OAUTH ── -->
-  <section class="cs-section" id="hermes-desktop-oauth">
+  <section class="cs-section hue-pink" id="hermes-desktop-oauth">
     <div class="cs-hero">
       <div>
         <div class="cs-number">06 / 08</div>
         <h2 class="cs-title"><svg class="ico" width="28" height="28" viewBox="0 0 13 13" fill="none" style="vertical-align:middle;margin-right:12px"><rect x="3" y="6" width="7" height="5.5" rx="1" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="rgba(255,255,255,.07)"/><path d="M4.5 6V4.5C4.5 3.4 5.4 2.5 6.5 2.5C7.6 2.5 8.5 3.4 8.5 4.5V6" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="none"/><circle cx="6.5" cy="9" r=".9" fill="rgba(255,255,255,.7)"/></svg>Hermes One OAuth Fork</h2>
         <p class="cs-tagline">Hermes One · OAuth for gated dashboards</p>
         <div class="cs-badges">
-          <span class="cs-badge cb-green">13 PRs merged</span>
-          <span class="cs-badge cb-blue">Open source · fork</span>
-          <span class="cs-badge cb-purple">Phase 4 pending</span>
-          <span class="cs-badge cb-acc">2026</span>
+          <span class="cs-badge cs-status"><span class="vb v-ok" aria-hidden="true"><svg><use href="#i-check"/></svg></span>13 PRs merged</span>
+          <span class="cs-badge">Open source · fork</span>
+          <span class="cs-badge">Phase 4 pending</span>
+          <span class="cs-badge">2026</span>
         </div>
       </div>
     </div>
@@ -4885,7 +5015,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
             Audit
           </div>
           <div class="pipe-detail">Codebase review · dependency map · ?token= auth gap identified</div>
-          <div style="margin-top:8px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1px;color:var(--green)">✓ 3 PRs merged</div>
+          <div class="pipe-state"><span class="vb v-ok" aria-hidden="true"><svg><use href="#i-check"/></svg></span>3 PRs merged</div>
           <div class="pipe-arrow">›</div>
         </div>
         <!-- Phase 02: OAuth Flow -->
@@ -4896,7 +5026,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
             OAuth Flow
           </div>
           <div class="pipe-detail">Nous Portal OAuth · /api/status provider discovery · main-process cookies</div>
-          <div style="margin-top:8px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1px;color:var(--green)">✓ 5 PRs merged</div>
+          <div class="pipe-state"><span class="vb v-ok" aria-hidden="true"><svg><use href="#i-check"/></svg></span>5 PRs merged</div>
           <div class="pipe-arrow">›</div>
         </div>
         <!-- Phase 03: Mac E2E -->
@@ -4907,18 +5037,18 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
             Mac E2E
           </div>
           <div class="pipe-detail">Single-use WS ticket minting · Vitest suite · 38/38 tests pass</div>
-          <div style="margin-top:8px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1px;color:var(--green)">✓ 5 PRs merged</div>
+          <div class="pipe-state"><span class="vb v-ok" aria-hidden="true"><svg><use href="#i-check"/></svg></span>5 PRs merged</div>
           <div class="pipe-arrow">›</div>
         </div>
         <!-- Phase 04: Upstream PR — pending -->
-        <div class="pipe-stage" style="flex:1;min-width:130px;background:rgba(245,181,95,.04);border-color:rgba(245,181,95,.18)">
-          <div class="pipe-num" style="color:var(--amber)">phase 04</div>
+        <div class="pipe-stage" style="flex:1;min-width:130px">
+          <div class="pipe-num">phase 04</div>
           <div class="pipe-name">
             <svg class="ico" width="12" height="12" viewBox="0 0 13 13" fill="none"><circle cx="3.5" cy="3" r="1.5" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="none"/><circle cx="3.5" cy="10" r="1.5" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="none"/><circle cx="9.5" cy="5.5" r="1.5" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="none"/><line x1="3.5" y1="4.5" x2="3.5" y2="8.5" stroke="rgba(255,255,255,.4)" stroke-width="1"/><path d="M3.5 4.5C5 4 9.5 4 9.5 5.5" stroke="rgba(255,255,255,.4)" stroke-width="1" fill="none"/></svg>
             Upstream PR
           </div>
           <div class="pipe-detail">fathah/hermes-desktop:main · community merge · cross-provider</div>
-          <div style="margin-top:8px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1px;color:var(--amber)">⬡ pending</div>
+          <div class="pipe-state"><span class="vb v-near" aria-hidden="true"><svg><use href="#i-bang"/></svg></span>pending</div>
         </div>
       </div>
     </div>
@@ -4998,16 +5128,16 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
   </section>
 
   <!-- ── 07: OPENCLAW DASHBOARD ── -->
-  <section class="cs-section" id="openclaw-dashboard">
+  <section class="cs-section hue-orange" id="openclaw-dashboard">
     <div class="cs-hero">
       <div>
         <div class="cs-number">07 / 08</div>
         <h2 class="cs-title"><svg class="ico" width="28" height="28" viewBox="0 0 13 13" fill="none" style="vertical-align:middle;margin-right:12px"><rect x="1" y="1" width="5" height="5" rx="1" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="rgba(255,255,255,.07)"/><rect x="7" y="1" width="5" height="5" rx="1" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="rgba(255,255,255,.07)"/><rect x="1" y="7" width="5" height="5" rx="1" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="rgba(255,255,255,.07)"/><rect x="7" y="7" width="5" height="5" rx="1" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="rgba(255,255,255,.07)"/></svg>OpenClaw Dashboard</h2>
         <p class="cs-tagline">Control UI for OpenClaw gateway</p>
         <div class="cs-badges">
-          <span class="cs-badge cb-amber">Active dev</span>
-          <span class="cs-badge cb-blue">Private · homelab</span>
-          <span class="cs-badge cb-acc">2026</span>
+          <span class="cs-badge cs-status"><span class="vb v-near" aria-hidden="true"><svg><use href="#i-bang"/></svg></span>Active dev</span>
+          <span class="cs-badge">Private · homelab</span>
+          <span class="cs-badge">2026</span>
         </div>
       </div>
     </div>
@@ -5116,17 +5246,17 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
   </section>
 
   <!-- ── 08: UNILOX FITNESS AI ── -->
-  <section class="cs-section" id="unilox-fitness-ai">
+  <section class="cs-section hue-lime" id="unilox-fitness-ai">
     <div class="cs-hero">
       <div>
         <div class="cs-number">08 / 08</div>
         <h2 class="cs-title"><svg class="ico" width="28" height="28" viewBox="0 0 13 13" fill="none" style="vertical-align:middle;margin-right:12px"><polyline points="1,7 3.5,7 5,3 6.5,11 8,7 10.5,7" stroke="rgba(255,255,255,.5)" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round" fill="none"/><circle cx="2" cy="9" r=".7" fill="rgba(61,220,132,.8)"/><circle cx="11" cy="9" r=".7" fill="rgba(61,220,132,.8)"/></svg>UNILOX Fitness AI</h2>
         <p class="cs-tagline">AI Gym & Fitness Assistant · 7 modules</p>
         <div class="cs-badges">
-          <span class="cs-badge cb-amber">Phase 0 spec</span>
-          <span class="cs-badge cb-blue">Private · commercial</span>
-          <span class="cs-badge cb-purple">AI · ML</span>
-          <span class="cs-badge cb-acc">2026</span>
+          <span class="cs-badge cs-status"><span class="vb v-near" aria-hidden="true"><svg><use href="#i-bang"/></svg></span>Phase 0 spec</span>
+          <span class="cs-badge">Private · commercial</span>
+          <span class="cs-badge">AI · ML</span>
+          <span class="cs-badge">2026</span>
         </div>
       </div>
     </div>
@@ -5144,7 +5274,7 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
       <div class="vis-title">architecture · edge → backend → AI modules</div>
       <div class="node-diagram">
         <!-- Edge devices node -->
-        <div class="nd-node" style="border-color:rgba(91,156,246,.2)">
+        <div class="nd-node">
           <div class="nd-name">
             <svg class="ico" width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="11" r=".8" fill="rgba(255,255,255,.5)"/><path d="M4.2 8.8C4.2 8.8 5.2 7.5 6.5 7.5C7.8 7.5 8.8 8.8 8.8 8.8" stroke="rgba(255,255,255,.5)" stroke-width="1" stroke-linecap="round" fill="none"/><path d="M2 6.2C2 6.2 3.8 3.5 6.5 3.5C9.2 3.5 11 6.2 11 6.2" stroke="rgba(255,255,255,.28)" stroke-width="1" stroke-linecap="round" fill="none"/></svg>
             edge
@@ -5160,12 +5290,12 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
         <!-- Connector 1: MQTT -->
         <div class="nd-connector">
           <div class="nd-connector-line"></div>
-          <span style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:1px;color:var(--w30);text-align:center">MQTT<br>pub/sub</span>
+          <span style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:1px;color:var(--w60);text-align:center">MQTT<br>pub/sub</span>
           <div class="nd-connector-line"></div>
         </div>
 
         <!-- Backend node -->
-        <div class="nd-node" style="border-color:rgba(52,199,123,.2)">
+        <div class="nd-node">
           <div class="nd-name">
             <svg class="ico" width="13" height="13" viewBox="0 0 13 13" fill="none"><ellipse cx="6.5" cy="3" rx="4.5" ry="1.8" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="none"/><path d="M2 3v3.5c0 1 2 1.8 4.5 1.8s4.5-.8 4.5-1.8V3" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="none"/><path d="M2 6.5v3c0 1 2 1.8 4.5 1.8s4.5-.8 4.5-1.8v-3" stroke="rgba(255,255,255,.3)" stroke-width="1" fill="none"/></svg>
             backend
@@ -5181,12 +5311,12 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
         <!-- Connector 2: REST/WS -->
         <div class="nd-connector">
           <div class="nd-connector-line"></div>
-          <span style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:1px;color:var(--w30);text-align:center">REST<br>WebSocket</span>
+          <span style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:1px;color:var(--w60);text-align:center">REST<br>WebSocket</span>
           <div class="nd-connector-line"></div>
         </div>
 
         <!-- AI Modules node -->
-        <div class="nd-node" style="border-color:rgba(167,139,250,.2)">
+        <div class="nd-node">
           <div class="nd-name">
             <svg class="ico" width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="2.8" stroke="rgba(255,255,255,.5)" stroke-width="1" fill="none"/><circle cx="2.5" cy="3.5" r="1.2" stroke="rgba(255,255,255,.35)" stroke-width="1" fill="none"/><circle cx="10.5" cy="3.5" r="1.2" stroke="rgba(255,255,255,.35)" stroke-width="1" fill="none"/><circle cx="2.5" cy="9.5" r="1.2" stroke="rgba(255,255,255,.35)" stroke-width="1" fill="none"/><circle cx="10.5" cy="9.5" r="1.2" stroke="rgba(255,255,255,.35)" stroke-width="1" fill="none"/><line x1="3.6" y1="4.2" x2="4.8" y2="5.2" stroke="rgba(255,255,255,.25)" stroke-width="1"/><line x1="9.4" y1="4.2" x2="8.2" y2="5.2" stroke="rgba(255,255,255,.25)" stroke-width="1"/><line x1="3.6" y1="8.8" x2="4.8" y2="7.8" stroke="rgba(255,255,255,.25)" stroke-width="1"/><line x1="9.4" y1="8.8" x2="8.2" y2="7.8" stroke="rgba(255,255,255,.25)" stroke-width="1"/></svg>
             AI modules · 7

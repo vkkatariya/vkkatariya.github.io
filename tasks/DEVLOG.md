@@ -7,6 +7,34 @@
 ---
 
 
+## [2026-10-25] Claude Code (local) — feat/design-system-migration · Phase 2 projects
+
+**Mode:** Builder
+
+**Did:** Executed `tasks/kickoff-phase2-projects.md` (`#pg-projects` + one small shared addition). `prototypes/portfolio-combined.html` only. The old Projects glass overrides (the "Projects page widgets" block + their `html.light` entries) were removed in place; all new rules live in one scoped `PHASE 2 · PROJECTS` block at the end of the stylesheet.
+- **Hues (reading order, never reused):** Finance Buddy blue, Homelab teal, TypeShift cyan, orlon-bot indigo, Portfolio purple, Hermes pink, OpenClaw orange, Unilox lime; page accent (header) sand. Applied as `.hue-*` on each `.pi` card and `.cs-section`; everything below reads `--h`, so no per-element rgba tints remain (removed 5 inline `border-color:rgba(...)` node tints, the amber pending-stage style, and the purple ML/AI badge).
+- **Header:** `h1.ph-title` Syne 800 clamp(28–46px) (script "P" kept), mono kicker in sand, Outfit 18px w80 lead.
+- **Index cards (8):** bg2, `w12` border, 20px radius, 4px hue left edge, Space Grotesk 700 17px title, Outfit 15.5px description, neutral pill chips, 4px lift on hover (off under reduced motion).
+- **Case studies (8):** GlassCard (glass tokens, 20px, blur 28/saturate 1.6); hero number/labels in `--h`, stats in `--data`, body in Outfit 15.5px w80, feature rows on bg3 with hue icon tiles; SkillBar = 5 hue fills + DM Mono values (replaces green/amber/acc by score).
+- **Artifacts:** node-diagram (13% fill / 42% border / 10px radius, hue dots + icons), pipeline (separate step cards, bg3, 14px, hue left edge, hue icon/number), platform-grid (mini-cards, 14px, hue left edge), bar-chart (hue bars, 12px / 5px radius; JS sets an inline colour so `.bar-fill` uses `!important`).
+- **Status:** new global `.vb`/`.v-ok`/`.v-near` StatusBadge (24px circle, status colour + icon) with `i-check`/`i-bang` symbols added to the page's inline sprite (the external `assets/icons.svg` can't be used from `file://`). Index-card status, case-study badges and the pipeline "✓ N PRs merged / pending" lines use it; non-status tags (Private · Tailscale only, 2026, Open source, AI · ML…) are neutral chips.
+- **Icons:** inline SVG icons recolour to `currentColor` (hue; product accent on the title icon). The legacy `html.light .ico` rules (L-061) are `!important`, so the project rules are too (the `#pg-projects` id out-ranks them) — plain SVGs without `.ico` (OpenClaw views) are covered by the same rule.
+
+**Decided:**
+- **Product accents:** the kickoff's hue map and "Finance Buddy/Portfolio = acc, Homelab = nothing-red" conflict if both mean the card hue. Implemented as: hue map drives edges/artifacts/bars; the product accent recolours only that project's title icon (`.p-acc`, `.p-red`, `--nothing-red: #D71921`). Revisit if you want the accent to win.
+- **Index cards use `bg2` + w12 border** per the Done-When line (not the glass tokens); case studies use the glass tokens.
+- **Left alone (not in the Done-When list):** emoji glyphs (`.feat-icon`, `.plat-icon` in TypeShift) — they render as tofu in this headless Chromium but are unchanged from before; replacing them with sprite icons stays on the migration plan.
+- **Responsive fixes found in review:** `.platform-grid` is now `repeat(auto-fit, minmax(170px,1fr))` (3 fixed columns overflowed the panel at 560px); node-diagrams stack ≤700px with the connector between nodes; mobile skill rows use `minmax(0,1.5fr) minmax(0,1fr) 28px` so names stop truncating.
+
+**State:** 29/29 e2e, htmlhint 0 errors, no console errors. Reviewed full-page captures at 1920/1440/860/560/390 in dark + light, plus crops of every artifact type; no horizontal overflow in any panel at any width. Pipelines still scroll horizontally inside their panel on phones (existing pattern).
+
+**Next:** Phase 3 (`tasks/kickoff-phase3-roadmap.md`).
+
+**Modified:** `prototypes/portfolio-combined.html`, `tasks/DEVLOG.md`
+
+---
+
+
 ## [2026-10-25] Claude Code (local) — feat/design-system-migration · Phase 1 homepage
 
 **Mode:** Builder
