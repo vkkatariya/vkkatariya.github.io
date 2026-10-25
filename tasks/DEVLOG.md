@@ -48,6 +48,23 @@
 ---
 
 
+## [2026-10-25] Claude Code (local) — fix/dev-css-merge-artifact · home lost its colours on dev
+
+**Mode:** Analytical + Execution
+
+**Did:** The user reported the homepage on the Vercel preview had no colours. Verified the deployed HTML was byte-identical to `origin/dev`, then compared the hue tint on `#pg-home .w.hue-blue` across commits: present on `920d604` and `dadd6bc`, absent on `origin/dev` (`2813ca9`). The cause is a merge artifact in the `.w` transition selector list: the two merges into `dev` left a duplicated `#pg-about .avail-block, #pg-me .me-auth-card {` fragment after the list's opening brace. CSS nesting parses that as a nested rule, so the outer rule never closes (1229 `{` vs 1228 `}`) and every rule after it (home hue tints, Phase 2–4 page blocks, `/me`) is nested under the selector list and stops matching. Fix: close the list at `#pg-about .contact-card {` (also drops the dead `.avail-block` / `.me-auth-card` selectors). Braces balance again (1228/1228), hue tint computes (`color-mix` 13% fill / 42% border) and the home tiles are coloured again.
+
+**Verification:** `npm run lint:html` 0 errors (htmlhint does not parse CSS, so it never flagged this); `npm test` 27/27; computed hue tint on `#pg-home .w.hue-blue` restored; screenshot of home (dark).
+
+**State:** branch `fix/dev-css-merge-artifact`, one commit on top of `origin/dev`; PR to `dev`.
+
+**Next:** merge the PR; production currently serves a CLI deployment built from the broken `dev`, so it needs a redeploy after the merge.
+
+**Modified:** `prototypes/portfolio-combined.html`, `tasks/DEVLOG.md`
+
+---
+
+
 ## [2026-10-25] Claude Code (local) — feat/design-system-migration · Phase 6 alignment
 
 **Mode:** Execution + Analytical
