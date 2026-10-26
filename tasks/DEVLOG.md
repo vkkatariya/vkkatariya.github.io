@@ -14,6 +14,8 @@
 
 **Key numbers:** root hop +75ms (www) / +230ms (apex); direct first paint 559ms on the test board; blocking Google Fonts CSS + late font files are the biggest network cost; visual effects cost nothing measurable.
 
+**Also:** consolidated the scattered completed items in `todo.md` into one dated "Post-migration polish" list with PR numbers (including the previously unrecorded topbar spacing, widget hues, /me logo WebP and release PRs), split into "released to main" vs "on dev, not yet released", and trimmed Follow-ups to the genuinely open items.
+
 **State:** PR open against `dev`; work not started, waiting on the four decisions.
 
 **Modified:** `tasks/todo.md`, `tasks/DEVLOG.md`.
