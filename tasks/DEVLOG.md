@@ -6,6 +6,20 @@
 
 ---
 
+## [2026-10-26] Claude Code (local) — fix/home-neutral-widget-hues · hue on the last three home widgets
+
+**Mode:** Execution
+
+**Did:** The Hermes OAuth, About and Contact widgets were deliberately neutral (all 9 hues were already used by the first nine). Gave them `hue-pink` (Hermes' hue on the Projects page), `hue-purple` (About's nav hue) and `hue-blue` so their label, icon and 3px top accent match the rest of the grid. Hues repeat now (12 widgets, 9 hues) but no two neighbours share one. Updated the stale "stay neutral" comment.
+
+**Verification:** `npm run lint:html` 0 errors; `npm test` +1 (every home widget label carries a hue); label colours checked dark + light.
+
+**State:** PR open against `dev`. Branch is off `dev`, independent of the open #33.
+
+**Modified:** `prototypes/portfolio-combined.html`, `tests/e2e/spa.spec.js`, `tasks/DEVLOG.md`.
+
+---
+
 ## [2026-10-26] Claude Code (local) — fix/pop-fonts-timeline · roadmap pop-up, project titles, free case-study widgets, timeline hues
 
 **Mode:** Execution
