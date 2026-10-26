@@ -1237,5 +1237,16 @@ const obs = new IntersectionObserver((entries) => {
 }, { threshold: .3 });
 obs.observe(chart);
 </script>
+<script>
+// legacy standalone page: topbar controls shared with portfolio-combined. This page has no search UI, so these must simply not throw.
+function runSearch() { /* search lives in portfolio-combined (Ctrl K) */ }
+function toggleTheme() {
+  var isLight = document.documentElement.classList.toggle('light');
+  try { localStorage.setItem('vk-theme', isLight ? 'light' : 'dark'); } catch (e) { /* storage blocked: toggle still works for this visit */ }
+}
+function toggleLang() {
+  var b = document.getElementById('langBtn'); if (b) b.textContent = b.textContent === 'EN' ? 'DE' : 'EN'; // label-only stub, as in portfolio-combined
+}
+</script>
 </body>
 </html>
