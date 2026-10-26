@@ -61,6 +61,8 @@ la-Cormorant Bold Italic wordmark redo (all 5 occurrences) and Roadmap title res
 
 - [x] Home all-projects card icons hued per project; /me logo is the bare logo.png (2026-10-26)
 
+- [x] `index.html` migrated to the design system: tokens, fonts, hue chips, 1.7s intro, section-hash forwarding, absolute og meta (2026-10-26)
+
 ### Follow-ups (open, optional)
 - [x] Home all-projects footer tags follow the card hue (2026-10-26)
 - [x] Kickoff `tasks/kickoff-fix-design-system-migration.md` Box 2 reworded to "All Playwright tests pass" and ticked (local-only file, 2026-10-26)

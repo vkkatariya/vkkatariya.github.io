@@ -259,7 +259,7 @@ There is **no build step** for Phase 0. The source file is the deployed artifact
 | `prototypes/projects.html` | Projects page standalone |
 | `prototypes/about.html` | About page standalone |
 | `prototypes/cs-roadmap.html` | CS roadmap standalone |
-| `index.html` | Root redirect to `/prototypes/portfolio-combined.html` |
+| `index.html` | Root intro splash on the design-system tokens (logo, wordmark, hue chips, progress bar), then redirects to `/prototypes/portfolio-combined`. `/#stay` shows it without redirecting; `/#projects` etc. forward the section |
 | `vercel.json` | `{"framework": null, "outputDirectory": "."}` — minimal |
 | `homelab-configs/me-tailscale-caddy.conf` | Caddy config for `/me` private gate |
 
