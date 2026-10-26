@@ -25,6 +25,26 @@
 
 ---
 
+## [2026-10-26] Claude Code (local) — feat/phone-search-cleanup · phone search, footer tags, legacy cleanup
+
+**Mode:** Execution
+
+**Did:** Closed the open follow-ups from the release.
+- **Phone search:** the topbar has zero spare pixels at 360px (brand + 4 icons + theme + profile), so a fifth icon can't fit without dropping the logo or the private-section link. Added a floating glass search button (`#sxFab`, 48px, bottom-right, ≤560px only) that opens the same dialog; it lifts to 84px while the roadmap's bottom bar is showing so they never overlap. Also fixed page results reading "Page page".
+- **Footer tags:** the home all-projects `.pfoot-type` tags (App · private / Collab / AI · ML) now follow their card hue.
+- **Availability text gone everywhere:** removed "Open to work" pills from all 7 `resume*.html`, the `sbadge`/`avail-badge` in `portfolio-v4` and `portfolio-prototypev.1/.2` (plus the v4 JS that wrote to the removed badge), and the availability block on `about.html`.
+- **Legacy handlers:** `about.html`/`projects.html` referenced `runSearch`, `toggleTheme`, `toggleLang` and `portfolio-v4.html` referenced `runSearch`, none defined there. Added safe definitions (theme toggle persists `vk-theme`; lang is a label stub like combined; search is a no-op: search lives in portfolio-combined). A test then caught `portfolio-v4`'s own `toggleLang` throwing on a missing `.hero-eyebrow`; guarded.
+- **Dependency:** removed the unused `@vercel/speed-insights` npm package (nothing imports it; the `/_vercel/speed-insights/script.js` tag is served by Vercel itself). `npm ci --dry-run` is clean.
+- **Kickoff Box 2** (local-only file) reworded from "27/27" to "All Playwright tests pass" and ticked.
+
+**Verification:** `npm run lint:html` 0 errors; `npm test` 64/64 (+8 in new `tests/e2e/phone-and-legacy.spec.js`); phone screenshots at 390/320 incl. roadmap and dialog; resume hero checked after pill removal.
+
+**State:** PR open against `dev`.
+
+**Modified:** `prototypes/portfolio-combined.html`, `prototypes/{about,projects,portfolio-v4,portfolio-prototypev.1,portfolio-prototypev.2,resume*}.html`, `package.json`, `package-lock.json`, `tests/e2e/phone-and-legacy.spec.js`, `tasks/DEVLOG.md`, `tasks/todo.md`.
+
+---
+
 ## [2026-10-26] Claude Code (local) — fix/home-neutral-widget-hues · hue on the last three home widgets
 
 **Mode:** Execution
