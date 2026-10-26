@@ -448,3 +448,53 @@ test.describe('skill bars', () => {
     expect(m.h).toBeLessThan(34); // was 43px
   });
 });
+
+// ─── Pop-up alignment, project titles, free case-study widgets, timeline hues ─
+
+test.describe('pop-up + project polish', () => {
+  test.beforeEach(async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 900 });
+    await page.goto(SPA);
+  });
+  const hoverTransform = async (page, sel) => {
+    const el = page.locator(sel).first();
+    await el.scrollIntoViewIfNeeded();
+    await page.mouse.move(0, 0);
+    const bb = await el.boundingBox();
+    await page.mouse.move(bb.x + bb.width / 2, bb.y + bb.height / 2);
+    await page.waitForTimeout(500);
+    return el.evaluate(e => getComputedStyle(e).transform);
+  };
+
+  test('roadmap full-width timeline bar lifts without scaling', async ({ page }) => {
+    await page.locator('#shared-nav .links a[href="#roadmap"]').click();
+    await page.waitForTimeout(600);
+    expect(await hoverTransform(page, '#pg-roadmap .tl-header')).toBe('matrix(1, 0, 0, 1, 0, -3)');
+  });
+
+  test('project titles use Space Grotesk, not the display face', async ({ page }) => {
+    const home = await page.locator('#pg-home .proj-title').first().evaluate(e => getComputedStyle(e).fontFamily);
+    expect(home).toContain('Space Grotesk');
+    await page.locator('#shared-nav .links a[href="#projects"]').click();
+    const cs = await page.locator('#pg-projects .cs-title').first().evaluate(e => getComputedStyle(e).fontFamily);
+    expect(cs).toContain('Space Grotesk');
+  });
+
+  test('case studies have no outer card; their widgets float free and pop up', async ({ page }) => {
+    await page.locator('#shared-nav .links a[href="#projects"]').click();
+    await page.waitForTimeout(600);
+    const sec = await page.locator('#pg-projects .cs-section').first().evaluate(e => { const c = getComputedStyle(e); return [c.borderTopWidth, c.backgroundColor, c.boxShadow]; });
+    expect(sec[0]).toBe('0px');
+    expect(sec[1]).toBe('rgba(0, 0, 0, 0)');
+    expect(sec[2]).toBe('none');
+    const w = await page.locator('#pg-projects .cs-stat').first().evaluate(e => { const c = getComputedStyle(e); return [c.borderTopWidth, c.borderLeftWidth]; });
+    expect(w).toEqual(['0px', '4px']);
+    expect(await hoverTransform(page, '#pg-projects .cs-stat')).toBe('matrix(1.015, 0, 0, 1.015, 0, -3)');
+  });
+
+  test('home timeline icons carry a hue per entry type', async ({ page }) => {
+    const strokes = await page.locator('#pg-home .tl-item .tl-title svg [stroke]').evaluateAll(els => els.map(e => getComputedStyle(e).stroke));
+    expect(new Set(strokes).size).toBeGreaterThanOrEqual(5);
+    expect(strokes.some(s => s.includes('255, 255, 255'))).toBe(false);
+  });
+});

@@ -2814,8 +2814,24 @@ html.light footer.roadmap-footer a { color: var(--w); }
 #pg-home .skill-n { width: 68px; } /* fits "TypeScript" at 11px mono without touching the bar */
 #pg-home .clock-h, #pg-home .clock-colon, #pg-home .clock-m, #pg-home .skill-pct,
 #pg-home .proj-num, #pg-home .pcard-num, #pg-home .tl-year { font-family: var(--data); }
-#pg-home .proj-title { font-family: var(--display); font-weight: 800; color: var(--w); }
+#pg-home .proj-title { font-family: var(--sans); font-weight: 700; color: var(--w); }
 #pg-home .pcard-title, #pg-home .tl-title { font-family: var(--sans); font-weight: 700; color: var(--w); }
+/* timeline: one hue per entry type; it colours the icon, the badge and the dot */
+#pg-home .tl-item:has(.tl-badge.edu) { --h: var(--blue); }
+#pg-home .tl-item:has(.tl-badge.lab) { --h: var(--teal); }
+#pg-home .tl-item:has(.tl-badge.proj) { --h: var(--purple); }
+#pg-home .tl-item:has(.tl-badge.collab) { --h: var(--cyan); }
+#pg-home .tl-item:has(.tl-badge.ai) { --h: var(--pink); }
+#pg-home .tl-item:has(.tl-badge.goal) { --h: var(--lime); }
+#pg-home .tl-item .tl-title svg [stroke] { stroke: var(--h, var(--w60)); }
+#pg-home .tl-item .tl-title svg [fill^="rgba(255,255,255"] { fill: color-mix(in srgb, var(--h, var(--w)) 14%, transparent); }
+#pg-home .tl-item .tl-title svg [fill^="rgba(255,255,255"]:not([stroke]) { fill: color-mix(in srgb, var(--h, var(--w)) 80%, transparent); } /* solid-glyph icons (bars) */
+/* light mode forces these icon parts neutral with !important, so the hue needs it too */
+html.light #pg-home .tl-item .tl-title svg [stroke] { stroke: var(--h, var(--w60)) !important; }
+html.light #pg-home .tl-item .tl-title svg [fill^="rgba(255,255,255"] { fill: color-mix(in srgb, var(--h, var(--w)) 14%, transparent) !important; }
+html.light #pg-home .tl-item .tl-title svg [fill^="rgba(255,255,255"]:not([stroke]) { fill: color-mix(in srgb, var(--h, var(--w)) 80%, transparent) !important; }
+#pg-home .tl-item[class] .tl-badge { color: var(--h, var(--w60)); border-color: color-mix(in srgb, var(--h, var(--w12)) 35%, transparent); background: color-mix(in srgb, var(--h, var(--w)) 10%, transparent); }
+#pg-home .tl-item:not(.future) .tl-dot { background: var(--h, var(--w)); }
 #pg-home .sec-head h2 { font-family: var(--mono); color: var(--w60); }
 #pg-home .proj-desc, #pg-home .pcard-desc, #pg-home .tl-desc { font-family: var(--read); color: var(--w80); }
 #pg-home .proj-desc { font-size: 13px; line-height: 1.55; }
@@ -2979,12 +2995,12 @@ html.light #pg-projects .pi:hover { box-shadow: 8px 14px 36px rgba(13,13,15,.2),
 /* case studies (8): GlassCard */
 #pg-projects .cs { padding-bottom: 60px; }
 #pg-projects .cs-section, #pg-projects .cs-section:first-child {
-  padding: 40px; margin-bottom: 28px;
-  border: 1px solid var(--glass-border); /* re-stated: legacy .cs-section:first-child drops the top border */
+  /* no outer card or outline: the widgets inside float free (see "free widgets" below) */
+  padding: 0; margin-bottom: 72px; border: 0; border-radius: 0; background: none; box-shadow: none;
+  backdrop-filter: none; -webkit-backdrop-filter: none;
 }
-@media (max-width: 700px) { #pg-projects .cs-section, #pg-projects .cs-section:first-child { padding: 22px 18px; } }
 #pg-projects .cs-number { font-family: var(--data); font-size: 13px; letter-spacing: .08em; color: var(--h); }
-#pg-projects .cs-title { font-family: var(--display); font-weight: 800; font-size: clamp(32px, 5vw, 56px); letter-spacing: -.03em; line-height: 1; color: var(--w); }
+#pg-projects .cs-title { font-family: var(--sans); font-weight: 700; font-size: clamp(32px, 5vw, 56px); letter-spacing: -.025em; line-height: 1.05; color: var(--w); }
 #pg-projects .cs-title svg.ico { width: 40px; height: 40px; color: var(--product, var(--h)); }
 #pg-projects .cs-tagline { font-family: var(--read); font-size: 17px; line-height: 1.6; color: var(--w80); max-width: 62ch; }
 #pg-projects .cs-stats { background: var(--w12); border-radius: 14px; }
@@ -3006,12 +3022,10 @@ html.light #pg-projects .pi:hover { box-shadow: 8px 14px 36px rgba(13,13,15,.2),
 #pg-projects .cs-skills { gap: 0; --sb-val: 36px; }
 #pg-projects .cs-skills { background: var(--bg2); border: 1px solid var(--w12); border-radius: 14px; box-shadow: none;
   backdrop-filter: none; -webkit-backdrop-filter: none; }
-#pg-projects .cs-skills:hover { transform: none; box-shadow: none; }
 
 /* artifacts: panel + hue-based parts */
 #pg-projects .vis-wrap { background: var(--bg2); border: 1px solid var(--w12); border-radius: 20px; box-shadow: none;
   backdrop-filter: none; -webkit-backdrop-filter: none; }
-#pg-projects .vis-wrap:has(> .bar-chart):hover { transform: none; box-shadow: none; border-color: var(--w12); }
 #pg-projects .vis-title { font-family: var(--mono); font-size: 13px; letter-spacing: .03em; text-transform: none; }
 
 /* node-diagram: node = 13% fill / 42% border / 10px radius / hue icon */
@@ -3031,7 +3045,7 @@ html.light #pg-projects .pi:hover { box-shadow: 8px 14px 36px rgba(13,13,15,.2),
 /* pipeline: step cards, 14px radius, hue left edge, hue icon */
 #pg-projects .pipeline { gap: 10px; }
 #pg-projects .pipe-stage, #pg-projects .pipe-stage:first-child, #pg-projects .pipe-stage:last-child, #pg-projects .pipe-stage:not(:first-child) {
-  background: var(--bg3); border: 1px solid var(--w12); border-left: 4px solid var(--h); border-radius: 14px;
+  background: var(--bg3); border: 0; border-left: 4px solid var(--h); border-radius: 14px;
   box-shadow: none; backdrop-filter: none; -webkit-backdrop-filter: none; /* mini-card on the .glass-card base: flat, no blur */
 }
 #pg-projects .pipe-stage:hover { transform: translateY(-2px); box-shadow: none; border-color: var(--w12); border-left-color: var(--h); }
@@ -3043,7 +3057,7 @@ html.light #pg-projects .pi:hover { box-shadow: 8px 14px 36px rgba(13,13,15,.2),
 #pg-projects .pipe-state { margin-top: 8px; display: flex; align-items: center; gap: 8px; font-family: var(--mono); font-size: 12px; letter-spacing: 0; color: var(--w80); }
 
 /* platform-grid: mini-cards, bg3, 14px radius, hue left edge */
-#pg-projects .plat { background: var(--bg3); border: 1px solid var(--w12); border-left: 4px solid var(--h); border-radius: 14px;
+#pg-projects .plat { background: var(--bg3); border: 0; border-left: 4px solid var(--h); border-radius: 14px;
   text-align: left; box-shadow: none; backdrop-filter: none; -webkit-backdrop-filter: none; }
 #pg-projects .plat:hover { transform: translateY(-2px); box-shadow: none; border-color: var(--w12); border-left-color: var(--h); }
 #pg-projects .plat-name { display: flex; align-items: center; gap: 8px; font-family: var(--sans); font-weight: 700; font-size: 15px; letter-spacing: 0; color: var(--w); }
@@ -3074,6 +3088,29 @@ html.light #pg-projects .pi:hover { box-shadow: 8px 14px 36px rgba(13,13,15,.2),
 #pg-projects .bar-track { height: 12px; border-radius: 5px; box-shadow: none; }
 #pg-projects .bar-fill { background: var(--h) !important; border-radius: 0 5px 5px 0; }
 #pg-projects .bar-fill::after { display: none; }
+
+/* ── case studies: free widgets ─ no outline, 4px hue edge, spring lift (same recipe as the .pi index cards).
+   Wide panels lift only: a 1.5% scale on a full-width panel grows it ~15px. ── */
+#pg-projects .cs-stats { background: none; gap: 12px; overflow: visible; border-radius: 0; }
+#pg-projects .cs-stat, #pg-projects .vis-wrap, #pg-projects .feat, #pg-projects .cs-skills {
+  background: var(--bg2); border: 0; border-left: 4px solid var(--h); border-radius: 14px; box-shadow: var(--shadow);
+  backdrop-filter: none; -webkit-backdrop-filter: none;
+  transition: transform .24s cubic-bezier(.34,1.46,.64,1), box-shadow .24s cubic-bezier(.2,.7,.2,1);
+}
+#pg-projects .vis-wrap { border-radius: 20px; }
+#pg-projects .pipe-stage, #pg-projects .plat { transition: transform .24s cubic-bezier(.34,1.46,.64,1), box-shadow .24s cubic-bezier(.2,.7,.2,1); }
+#pg-projects .cs-stat:hover, #pg-projects .pipe-stage:hover, #pg-projects .plat:hover { transform: translateY(-3px) scale(1.015); }
+#pg-projects .vis-wrap:hover, #pg-projects .feat:hover, #pg-projects .cs-skills:hover { transform: translateY(-3px); }
+#pg-projects .cs-stat:hover, #pg-projects .pipe-stage:hover, #pg-projects .plat:hover, #pg-projects .vis-wrap:hover, #pg-projects .feat:hover, #pg-projects .cs-skills:hover {
+  box-shadow: 8px 14px 36px rgba(0,0,0,.5), 0 0 0 1px color-mix(in srgb, var(--h) 30%, transparent);
+}
+html.light #pg-projects .cs-stat:hover, html.light #pg-projects .pipe-stage:hover, html.light #pg-projects .plat:hover,
+html.light #pg-projects .vis-wrap:hover, html.light #pg-projects .feat:hover, html.light #pg-projects .cs-skills:hover {
+  box-shadow: 8px 14px 36px rgba(13,13,15,.2), 0 0 0 1px color-mix(in srgb, var(--h) 30%, transparent);
+}
+@media (prefers-reduced-motion: reduce) {
+  #pg-projects .cs-stat:hover, #pg-projects .pipe-stage:hover, #pg-projects .plat:hover, #pg-projects .vis-wrap:hover, #pg-projects .feat:hover, #pg-projects .cs-skills:hover { transform: none; }
+}
 #pg-projects .bar-lbl { font-family: var(--mono); font-size: 12.5px; letter-spacing: 0; color: var(--w80); }
 #pg-projects .bar-val { font-family: var(--data); font-size: 12.5px; letter-spacing: 0; color: var(--w80); }
 /* ══════════════════════════════════════════════════════════════════════
@@ -3227,7 +3264,9 @@ html.light #pg-projects .pi:hover { box-shadow: 8px 14px 36px rgba(13,13,15,.2),
 #pg-roadmap .tl-header, #pg-roadmap .resource-item {
   transition: transform .24s cubic-bezier(.34,1.46,.64,1), box-shadow .24s cubic-bezier(.2,.7,.2,1), border-color .24s cubic-bezier(.2,.7,.2,1), background .24s cubic-bezier(.2,.7,.2,1);
 }
-#pg-roadmap .tl-header:hover, #pg-roadmap .resource-item:hover { transform: translateY(-3px) scale(1.015); box-shadow: var(--shadow); }
+/* the timeline header spans the whole column, so a 1.5% scale grows it ~15px: lift only (like the cards next to it); the card-sized resource tiles keep the small scale */
+#pg-roadmap .tl-header:hover { transform: translateY(-3px); box-shadow: var(--shadow); }
+#pg-roadmap .resource-item:hover { transform: translateY(-3px) scale(1.01); box-shadow: var(--shadow); }
 @media (prefers-reduced-motion: reduce) { #pg-roadmap .tl-header:hover, #pg-roadmap .resource-item:hover { transform: none; } }
 
 /* mind map (reference .mapsec / .mapbox / .mapsvg / .mapcards): radial SVG >=900px, phase cards below */

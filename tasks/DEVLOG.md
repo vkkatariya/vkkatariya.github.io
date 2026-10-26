@@ -6,6 +6,26 @@
 
 ---
 
+## [2026-10-26] Claude Code (local) — fix/pop-fonts-timeline · roadmap pop-up, project titles, free case-study widgets, timeline hues
+
+**Mode:** Execution
+
+**Did:**
+- **Roadmap pop-up too strong:** measured hover transforms on every page. Cards everywhere lift 3px; the roadmap `.tl-header` (1027px wide) and `.resource-item` also scaled 1.015 with a big shadow, and a 1.5% scale on a full-width bar grows it ~15px. `.tl-header` now lifts only; `.resource-item` (card-sized) scales 1.01.
+- **Project titles → Space Grotesk:** `#pg-projects .cs-title` (was Syne 800) and `#pg-home .proj-title` (featured project) now `--sans` 700. `.pi-title` was already Space Grotesk.
+- **Case studies: no outer outline, free widgets:** `.cs-section` loses the glass card, border, shadow and padding. The widgets inside (`.cs-stat`, `.vis-wrap`, `.feat`, `.cs-skills`, `.pipe-stage`, `.plat`) float free: no outline, 4px hue left edge, shadow, spring lift like the `.pi` index cards. Wide panels (`.vis-wrap`, `.feat`, `.cs-skills`) lift only; small ones also scale 1.015. Removed two old rules that froze the bar-chart panel and skills card on hover.
+- **Home timeline colours:** one hue per entry type via `:has(.tl-badge.X)` (edu blue, homelab teal, project purple, collab cyan, AI pink, goal lime) colouring the icon, badge and dot. Light mode needed `!important` to beat the neutral icon rules; fill-only glyphs (Finance Buddy bars) get a solid tint.
+
+**Verification:** `npm run lint:html` 0 errors; `npm test` 53/53 (+4: roadmap lift, fonts, case-study widgets, timeline hues); dark + light screenshots; page overflow 0 at 390/860/1280 and off-viewport element counts identical to `dev`.
+
+**State:** PR open against `dev`.
+
+**Modified:** `prototypes/portfolio-combined.html`, `tests/e2e/spa.spec.js`, `tasks/DEVLOG.md`, `tasks/todo.md`.
+
+**Lessons (candidate L-0NN):** judge "too strong" hover by measuring transforms per element, not per page; a fixed scale is proportional to width, so full-width bars need lift-only.
+
+---
+
 ## [2026-10-26] Claude Code (local) — fix/home-accent-skillbars · home accent edge + compact skill bars
 
 **Mode:** Execution
