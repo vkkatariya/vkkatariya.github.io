@@ -315,6 +315,16 @@ html.light body::before {
 .sx-sug { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
 .sx-ft { display: flex; flex-wrap: wrap; gap: 6px 18px; align-items: center; padding: 10px 18px; border-top: 1px solid var(--w12); font-family: var(--mono); font-size: 13px; color: var(--w60); }
 .sx-ft kbd { font-family: var(--mono); font-size: 13px; border: 1px solid var(--w12); border-radius: 6px; padding: 0 6px; background: var(--bg3); color: var(--w80); }
+/* phones: the topbar has no spare pixels at 360px (brand + 4 icons + theme + profile), so search is a floating glass button;
+   lifted above the roadmap's bottom bar when that is showing */
+.pill.sx-fab { display: none; }
+@media (max-width: 560px) {
+  .pill.sx-fab { display: inline-flex; justify-content: center; position: fixed; z-index: 150; width: 48px; height: 48px; padding: 0; cursor: pointer; color: var(--w80);
+    right: max(16px, env(safe-area-inset-right, 0px)); bottom: max(20px, env(safe-area-inset-bottom, 0px)); }
+  .pill.sx-fab svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+  .pill.sx-fab:focus-visible { outline: 2px solid color-mix(in srgb, var(--acc) 35%, transparent); outline-offset: 3px; }
+  html:has(#roadmap-internal-nav.nav-visible) .pill.sx-fab { bottom: 84px; }
+}
 .sx-flash { outline: 2px solid var(--acc); outline-offset: 5px; border-radius: 14px; transition: outline-color .6s; }
 @media (max-width: 560px) { .sx-ft span:not(:last-child) { display: none; } }
 .nav-lang { font-family: var(--mono); font-size: 12px; letter-spacing: 1.5px; }
@@ -2833,6 +2843,7 @@ html.light #pg-home .tl-item .tl-title svg [fill^="rgba(255,255,255"]:not([strok
 #pg-home .tl-item[class] .tl-badge { color: var(--h, var(--w60)); border-color: color-mix(in srgb, var(--h, var(--w12)) 35%, transparent); background: color-mix(in srgb, var(--h, var(--w)) 10%, transparent); }
 #pg-home .tl-item:not(.future) .tl-dot { background: var(--h, var(--w)); }
 /* all-projects cards: icons take the project's hue (same map as the Projects page: homelab teal, TypeShift cyan, orlon-bot indigo) */
+#pg-home .pcard[class*="hue-"] .pfoot-type { color: var(--h); } /* beats the per-type colours (.app/.collab/.ai) and their light-mode twins */
 #pg-home .pcard[class*="hue-"] svg [stroke] { stroke: var(--h); }
 #pg-home .pcard[class*="hue-"] svg [fill^="rgba(255,255,255"] { fill: color-mix(in srgb, var(--h) 16%, transparent); }
 #pg-home .pcard[class*="hue-"] svg [fill^="rgba(255,255,255"]:not([stroke]) { fill: color-mix(in srgb, var(--h) 80%, transparent); }
@@ -5988,6 +5999,7 @@ html.light #pg-projects .vis-wrap:hover, html.light #pg-projects .feat:hover, ht
 </div>
 </div>
 
+<button class="pill sx-fab" id="sxFab" type="button" aria-haspopup="dialog" aria-label="Search the whole page"><svg aria-hidden="true"><use href="#i-search"/></svg></button>
 <div class="sx-ov" id="sxOv" hidden>
   <div class="sx-panel" role="dialog" aria-modal="true" aria-label="Search the site">
     <div class="sx-in">
@@ -7038,7 +7050,7 @@ function showPage(id, opts) {
      ['projects', 'Projects', 'Case studies and what each one is built with', 'i-box', 'teal'],
      ['roadmap', 'CS Roadmap', 'Learning path, core topics, career paths and timeline', 'i-map', 'indigo'],
      ['about', 'About', 'Education, interests and languages', 'i-figure', 'purple']
-    ].forEach(p => add({ t: 'page', pg: p[0], ti: p[1], tx: p[2], ic: p[3], h: p[4], meta: ['page'] }));
+    ].forEach(p => add({ t: 'page', pg: p[0], ti: p[1], tx: p[2], ic: p[3], h: p[4], meta: [] }));
 
     document.querySelectorAll('#pg-projects .cs-section').forEach(el => add({
       t: 'project', pg: 'projects', ti: textOf(el.querySelector('.cs-title')), tx: textOf(el), ic: 'i-box', h: hueOf(el), el,
@@ -7216,6 +7228,7 @@ function showPage(id, opts) {
   }
 
   sbtn.addEventListener('click', openDlg);
+  const fab = document.getElementById('sxFab'); if (fab) fab.addEventListener('click', openDlg);
   document.getElementById('sxX').addEventListener('click', closeDlg);
   ov.addEventListener('mousedown', e => { if (e.target === ov) closeDlg(); });
   inp.addEventListener('input', render);

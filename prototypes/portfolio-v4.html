@@ -1264,7 +1264,6 @@ html.light .sbadge { color: var(--w60); }
         <div class="clock-date" id="cd">wed · 25 mar 2026</div>
       </div>
       <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
-        <span class="sbadge">open to work</span>
         <span class="chip">AI · ML · SWE</span>
       </div>
     </div>
@@ -1627,7 +1626,6 @@ html.light .sbadge { color: var(--w60); }
           vishal-katariya.com
         </a>
         <div class="loc-label" style="margin-top:4px">📍 Dieburg · near Darmstadt</div>
-        <div class="avail-badge" style="margin-top:4px">available for internships</div>
       </div>
     </div>
   </section>
@@ -1677,20 +1675,18 @@ const COPY = {
   EN: {
     eyebrow: 'CS student · Darmstadt · 2026',
     role: ['ML Engineering','Full-Stack','Infrastructure'],
-    avail: 'available for internships',
   },
   DE: {
     eyebrow: 'Informatikstudent · Darmstadt · 2026',
     role: ['ML Engineering','Full-Stack','Infrastruktur'],
-    avail: 'offen für Praktikumsplätze',
   }
 };
 let lang = 'EN';
 function toggleLang() {
   lang = lang === 'EN' ? 'DE' : 'EN';
   document.getElementById('langBtn').textContent = lang;
-  document.querySelector('.hero-eyebrow').childNodes[2].nodeValue = ' ' + COPY[lang].eyebrow + ' ';
-  document.querySelector('.avail-badge').textContent = COPY[lang].avail;
+  const eyebrow = document.querySelector('.hero-eyebrow'); // not present on this layout
+  if (eyebrow && eyebrow.childNodes[2]) eyebrow.childNodes[2].nodeValue = ' ' + COPY[lang].eyebrow + ' ';
 }
 
 // ── Simulated GitHub contribution grid ──
@@ -1718,6 +1714,10 @@ const counter = setInterval(() => {
   document.getElementById('cc').textContent = cur.toLocaleString();
   if (cur >= target) clearInterval(counter);
 }, 30);
+</script>
+<script>
+// legacy standalone page: topbar controls shared with portfolio-combined. This page has no search UI, so these must simply not throw.
+function runSearch() { /* search lives in portfolio-combined (Ctrl K) */ }
 </script>
 </body>
 </html>
