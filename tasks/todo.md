@@ -51,29 +51,74 @@ la-Cormorant Bold Italic wordmark redo (all 5 occurrences) and Roadmap title res
 
 **Verification:** `npm test` 40/40 (27 original + 13 new); `npm run lint:html` 0 errors; 40/40 visual audit PASS; production deployed.
 
-### Post-migration polish (2026-10-25) ✅ COMPLETE
-- [x] Roadmap internal nav SVG icons sized + hue-styled (PR #25) — icons were 300×150 black blobs: no `svg.i` rule existed in `#roadmap-internal-nav`; icon-only on phones with `aria-label`s
-- [x] Roadmap internal nav no longer overlaps the brand/tools pills (PR #26) — smaller type/padding/icons; 10–11px clearance at 1001–1920px
-- [x] Search focus: inner box removed, ring softened to 35% accent (PR #27)
-- [x] Stale merged `fix/*` branches deleted (7, local + remote)
+### Post-migration polish (2026-10-25 → 2026-10-26) ✅ COMPLETE
+**Release status:** `main` = `90d850a` (release PR #35, live on Vercel + GitHub Pages). On `dev`, **not yet released**: #36, #37 (and #38 once merged).
 
-- [x] Roadmap pop-up aligned (full-width timeline bar lifts only); project titles back to Space Grotesk; case studies lose the outer outline with free pop-up widgets; home timeline icons/badges/dots coloured per entry type (2026-10-26)
+Released to `main` (#25–#27 via release PR #29; the rest via #35):
+- [x] #25 Roadmap internal nav SVG icons sized + hue-styled — icons were 300×150 black blobs: no `svg.i` rule existed in `#roadmap-internal-nav`; icon-only on phones with `aria-label`s
+- [x] #26 Roadmap internal nav no longer overlaps the brand/tools pills — smaller type/padding/icons; 10–11px clearance at 1001–1920px
+- [x] #27 Search focus: inner box removed, ring softened to 35% accent
+- [x] #30 **Working site search** — Ctrl/⌘+K and `/` dialog, ranked client-side index over pages/projects/topics/timeline/careers/resources/about/home widgets, page filters, typo tolerance, recents; `#pg-me` never indexed
+- [x] #31 Home widget accent is a curved 3px top border (follows the 28px corners); skill bars compact with no divider lines (About slimmer still); "TypeScript" label no longer touches its bar
+- [x] #32 Roadmap full-width timeline bar lifts without scaling; project titles back to Space Grotesk; case studies lose the outer outline, their widgets float free with a hue edge + spring lift; home timeline icons/badges/dots hued per entry type
+- [x] `1a5eebe` Topbar breathing room: gap above the home widgets 8px → 28px (32px on phones); removed the inline `padding-top:76px` that overrode the CSS
+- [x] #33 Home all-projects card icons hued per project (Homelab teal, TypeShift cyan, orlon-bot indigo); `/me` shows the bare logo — now a 5KB `logo-192.webp` instead of the 1.3MB `logo.png` (it loaded slowly)
+- [x] #34 Hermes OAuth / About / Contact widgets get a hue (pink / purple / blue) — every home widget is now coloured
+- [x] 7 merged `fix/*` branches deleted; `dev` and `main` are the only branches
 
-- [x] Home all-projects card icons hued per project; /me logo is the bare logo.png (2026-10-26)
+On `dev`, waiting for the next release:
+- [x] #36 Phone search: floating glass button ≤560px (the topbar has no spare room at 360px), lifts above the roadmap bottom bar; footer tags follow the card hue; "Open to work"/availability text removed from all resumes, legacy prototypes and `about.html`; undefined legacy handlers defined (+ guarded `portfolio-v4` `toggleLang`); unused `@vercel/speed-insights` npm dependency removed (the script tag is served by Vercel)
+- [x] #37 `index.html` migrated to the design system — tokens, fonts, 1.7s intro (logo, wordmark, hue chips, hue progress bar, NeoPOP CTA), reduced-motion path, section-hash forwarding, `/#stay` preview, absolute og/twitter images, lint covers it. **See Performance decision 1: this splash adds ~1.9s to the root and conflicts with the speed goal.**
+- [x] Kickoff `tasks/kickoff-fix-design-system-migration.md` Box 2 reworded to "All Playwright tests pass" and ticked (local-only file)
+- [x] Test suite: 27 → 73 tests (`spa.spec.js`, `phone-and-legacy.spec.js`, `index.spec.js`), all green; `lint:html` covers `index.html`
 
-- [x] `index.html` migrated to the design system: tokens, fonts, hue chips, 1.7s intro, section-hash forwarding, absolute og meta (2026-10-26)
+### Performance — cut the root-load cost (scoped 2026-10-26, not started)
+**Goal:** the root URL adds ~0ms over going straight to the portfolio (today +75ms via `www/`, +230ms via the apex), and first paint drops from ~560ms to ~350–400ms on the test board. A cold first visit cannot reach <100ms total (DNS+TLS alone is 100–240ms); <100ms is only realistic for repeat visits on a decent laptop.
+
+**Baseline (live, this board = ARM + software raster, absolute numbers differ on real devices; deltas hold).** Wall-clock to first paint of the portfolio, median of 7 cold-context runs:
+
+| Entry URL | Median | Extra vs direct |
+|---|---|---|
+| `www…/prototypes/portfolio-combined` (direct) | 559ms | n/a |
+| `www…/` (root page, meta refresh 0s) | 634ms | +75ms |
+| apex `vishal-katariya.com/` (308 to www + root hop) | 789ms | +230ms |
+| `…/portfolio-combined.html` (308 to clean URL) | 569ms | +10ms |
+
+**Where the time goes (portfolio page itself):**
+- Network: HTML done at 171ms (90KB br from 428KB). Google Fonts CSS is render-blocking on a new origin (arrives ~167ms); the 8 font files (205KB) are only discovered after it and land at 380–880ms. LCP 1480ms vs FCP 680ms (text re-renders when web fonts swap).
+- Main thread ~300ms on this CPU: ParseHTML 69, Layout 73, UpdateLayoutTree 65, scripts 48, paint/commit ~55 (+ ~200ms software raster off-thread).
+- Measured and ruled out (all within ±20ms noise): backdrop-filter, box-shadow, animations/transitions, `content-visibility`. Inactive pages are already `display:none`. Home-only DOM + no JS would save ~60ms (large refactor, see Phase 3).
+- Headers: HTML and assets are `cache-control: public, max-age=0, must-revalidate`, so every visit pays a revalidation round trip. `.html` URLs 308 to the clean URL.
+
+**Decisions needed before starting (ask Vishal):**
+1. Fate of the new splash (`index.html`, ~1.9s by design; contradicts the goal). Recommendation: serve `/` straight to the portfolio and keep the splash as an optional `/intro`.
+2. OK to add self-hosted font files (binary assets, not an npm dependency; needs `fonttools` installed to subset).
+3. Canonical host (apex or `www`) and permission to change the Vercel domain redirect.
+4. How stale the HTML may be after a deploy: 0 / 60s / 1h (drives the cache headers).
+
+- [ ] **Phase 1 — remove the hops and cache the assets (hours, low risk), expected −75ms (www) / −230ms (apex)**
+  - [ ] Vercel rewrite `{"source": "/", "destination": "/prototypes/portfolio-combined"}` in `vercel.json` so `/` serves the portfolio with no redirect. GitHub Pages cannot rewrite: keep its redirect (or generate a root copy in `pages.yml`).
+  - [ ] Decide and apply the splash move (`index.html` content to `/intro`, or drop); update `canonical`, `og:url` and the e2e tests that load `index.html`.
+  - [ ] One canonical host: redirect apex <-> `www` once at the edge (Vercel domain setting); use that host in `og:*`, canonical and every link. Check `list_project_domains` first.
+  - [ ] Cache headers in `vercel.json`: long `immutable` for fonts/images (version by filename if they change), short `max-age` + `stale-while-revalidate` for HTML (per decision 4).
+  - [ ] Image diet: `logo-128.png` (22KB, nav mark) and `logo-256.png` (75KB, home identity mark at 42px) to WebP at display size x2 (~5KB each); about 90KB less on the home page.
+  - [ ] Link to extension-less URLs everywhere (`.html` costs a 308 when not cached); update CLAUDE.md/og references.
+- [ ] **Phase 2 — fonts off the critical path (half a day, medium), expected −100–250ms first visit**
+  - [ ] Self-host Latin-subset woff2 for Syne (800), Space Grotesk, Outfit, JetBrains Mono, DM Mono; drop unused weights (DM Mono ships 3 files, 45KB). Target 205KB to ~80KB.
+  - [ ] Cormorant is used only for the "V"/"K" initials (39KB for 2 glyphs): subset to those letters (<3KB) or replace.
+  - [ ] Inline the `@font-face` rules (no render-blocking cross-origin CSS), `<link rel="preload" as="font" crossorigin>` for the 2–3 above-the-fold faces, remove the `fonts.googleapis.com` / `fonts.gstatic.com` preconnects, `font-display: swap` plus a size-adjusted fallback to stop the swap reflow.
+  - [ ] Apply the same to `index.html`/`/intro` if it stays.
+- [ ] **Phase 3 — optional, only if Phases 1–2 are not enough**
+  - [ ] Lazy-load the non-home pages' DOM as fragments (projects 79KB, me 64KB, roadmap, about): ~60ms CPU and ~half the HTML. Large and risky: the search index crawls the DOM, deep links, SPA routing and e2e tests all assume everything is in one document.
+  - [ ] Service worker for near-instant repeat visits (needs a cache-invalidation story).
+- [ ] **Not worth doing** (measured): removing glass/shadows/animations, `content-visibility`, trimming JS (30ms), more preconnects.
+
+**How to re-measure:** Playwright against the live site with fresh contexts (7 runs, median): `goto(url, {waitUntil:'commit'})`, `waitForURL(/portfolio-combined/)`, then FCP = `timeOrigin + paint['first-contentful-paint']` minus the start time. Main-thread breakdown via `Performance.getMetrics` and a `devtools.timeline` trace (ParseHTML, Layout, UpdateLayoutTree, EvaluateScript). `curl -w` for DNS/connect/TLS/TTFB. Always compare deltas, not absolutes (the test board is slower than a laptop).
 
 ### Follow-ups (open, optional)
-- [x] Home all-projects footer tags follow the card hue (2026-10-26)
-- [x] Kickoff `tasks/kickoff-fix-design-system-migration.md` Box 2 reworded to "All Playwright tests pass" and ticked (local-only file, 2026-10-26)
 - [ ] 860px home grid leaves an empty third column (pre-existing, same on `3f8e1ce`)
-- [x] Skills tile: "TypeScript" label no longer touches its bar (2026-10-26)
-- [x] Home widget accent follows the rounded corners; skill bars compact, no divider lines (2026-10-26)
-- [x] Topbar search implemented (PR: feat/site-search) — Ctrl K dialog, ranked index over pages/projects/topics/timeline/careers/resources/about/home, `/me` excluded
-- [x] Search entry point on phones: floating glass button ≤560px (the topbar has no spare room at 360px) (2026-10-26)
-- [x] Legacy standalone prototypes: undefined handlers defined, "Open to work"/availability text removed everywhere (2026-10-26)
-- [x] Removed unused `@vercel/speed-insights` npm dependency (the script tag is served by Vercel) (2026-10-26)
 - [ ] Consider raising the search focus ring above 35% if keyboard-focus visibility becomes a concern
+- [ ] `.srch-label` uses `var(--w40)`, which is not a defined token (falls back to inherited colour); define it or use `--w60`
 
 ---
 
