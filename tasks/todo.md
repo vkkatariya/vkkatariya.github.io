@@ -57,6 +57,8 @@ la-Cormorant Bold Italic wordmark redo (all 5 occurrences) and Roadmap title res
 - [x] Search focus: inner box removed, ring softened to 35% accent (PR #27)
 - [x] Stale merged `fix/*` branches deleted (7, local + remote)
 
+- [x] Roadmap pop-up aligned (full-width timeline bar lifts only); project titles back to Space Grotesk; case studies lose the outer outline with free pop-up widgets; home timeline icons/badges/dots coloured per entry type (2026-10-26)
+
 ### Follow-ups (open, optional)
 - [ ] Kickoff `tasks/kickoff-fix-design-system-migration.md` Box 2 says "27/27 Playwright tests pass" but the suite is 40 — tick or reword to "all tests pass" (local-only file; needs Vishal's call)
 - [ ] 860px home grid leaves an empty third column (pre-existing, same on `3f8e1ce`)
