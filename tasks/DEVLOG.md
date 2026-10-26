@@ -6,6 +6,98 @@
 
 ---
 
+## [2026-10-26] Claude Code (local) — fix/home-neutral-widget-hues · hue on the last three home widgets
+
+**Mode:** Execution
+
+**Did:** The Hermes OAuth, About and Contact widgets were deliberately neutral (all 9 hues were already used by the first nine). Gave them `hue-pink` (Hermes' hue on the Projects page), `hue-purple` (About's nav hue) and `hue-blue` so their label, icon and 3px top accent match the rest of the grid. Hues repeat now (12 widgets, 9 hues) but no two neighbours share one. Updated the stale "stay neutral" comment.
+
+**Verification:** `npm run lint:html` 0 errors; `npm test` +1 (every home widget label carries a hue); label colours checked dark + light.
+
+**State:** PR open against `dev`. Branch is off `dev`, independent of the open #33.
+
+**Modified:** `prototypes/portfolio-combined.html`, `tests/e2e/spa.spec.js`, `tasks/DEVLOG.md`.
+
+---
+
+## [2026-10-26] Claude Code (local) — fix/home-bottom-me-logo · hued all-projects icons, bare /me logo
+
+**Mode:** Execution
+
+**Did:**
+- **Home "All projects" cards (the three bottom widgets):** their title icons and the faint decorative glyph were neutral white. Added `hue-teal` / `hue-cyan` / `hue-indigo` to the Homelab, TypeShift and orlon-bot cards (same map as the Projects page) and tinted the icons from `--h`; fill-only glyphs get a solid tint, the decorative glyph is lifted from .08 to .2 opacity so the hue reads, and light mode gets `!important` twins because the neutral light-mode icon rules are `!important`.
+- **/me logo:** removed the green-gradient tile with its glass border and circular crop; the bare logo is shown at 64px with a 22% corner radius (trims the square canvas). First pass used the 1.3MB `logo.png` (lazy) and was visibly slow, so it now uses `assets/logo-192.webp`: `logo.png` centre-cropped square, resized to 192px (3x for hi-dpi), WebP q90, **5.4KB** (250x smaller), no lazy loading so it never pops in. The 1.3MB original is no longer fetched by the page at all.
+
+**Verification:** `npm run lint:html` 0 errors; `npm test` 55/55 (+2); dark + light screenshots; 2x-dpi check of the /me logo.
+
+**State:** PR open against `dev`. Open question: the footer type tags ("App · private", "Collab", "AI · ML") keep their own colours, which don't match the new card hues; left as is since only icons were asked for.
+
+**Modified:** `prototypes/portfolio-combined.html`, `tests/e2e/spa.spec.js`, `tasks/DEVLOG.md`, `tasks/todo.md`.
+
+---
+
+## [2026-10-26] Claude Code (local) — fix/pop-fonts-timeline · roadmap pop-up, project titles, free case-study widgets, timeline hues
+
+**Mode:** Execution
+
+**Did:**
+- **Roadmap pop-up too strong:** measured hover transforms on every page. Cards everywhere lift 3px; the roadmap `.tl-header` (1027px wide) and `.resource-item` also scaled 1.015 with a big shadow, and a 1.5% scale on a full-width bar grows it ~15px. `.tl-header` now lifts only; `.resource-item` (card-sized) scales 1.01.
+- **Project titles → Space Grotesk:** `#pg-projects .cs-title` (was Syne 800) and `#pg-home .proj-title` (featured project) now `--sans` 700. `.pi-title` was already Space Grotesk.
+- **Case studies: no outer outline, free widgets:** `.cs-section` loses the glass card, border, shadow and padding. The widgets inside (`.cs-stat`, `.vis-wrap`, `.feat`, `.cs-skills`, `.pipe-stage`, `.plat`) float free: no outline, 4px hue left edge, shadow, spring lift like the `.pi` index cards. Wide panels (`.vis-wrap`, `.feat`, `.cs-skills`) lift only; small ones also scale 1.015. Removed two old rules that froze the bar-chart panel and skills card on hover.
+- **Home timeline colours:** one hue per entry type via `:has(.tl-badge.X)` (edu blue, homelab teal, project purple, collab cyan, AI pink, goal lime) colouring the icon, badge and dot. Light mode needed `!important` to beat the neutral icon rules; fill-only glyphs (Finance Buddy bars) get a solid tint.
+
+**Verification:** `npm run lint:html` 0 errors; `npm test` 53/53 (+4: roadmap lift, fonts, case-study widgets, timeline hues); dark + light screenshots; page overflow 0 at 390/860/1280 and off-viewport element counts identical to `dev`.
+
+**State:** PR open against `dev`.
+
+**Modified:** `prototypes/portfolio-combined.html`, `tests/e2e/spa.spec.js`, `tasks/DEVLOG.md`, `tasks/todo.md`.
+
+**Lessons (candidate L-0NN):** judge "too strong" hover by measuring transforms per element, not per page; a fixed scale is proportional to width, so full-width bars need lift-only.
+
+---
+
+## [2026-10-26] Claude Code (local) — fix/home-accent-skillbars · home accent edge + compact skill bars
+
+**Mode:** Execution
+
+**Did:**
+- **Home widget accent:** the 3px hue bar was a flat `::before` strip, so it looked clipped inside the 28px corners. Replaced with `border-top: 3px solid var(--h)` (+ `padding-top:18px` to keep content in place), so the accent follows the corner radius edge to edge like the 4px left edge on `.pi` / `.skill-group`. Hover keeps the hue via a higher-specificity `border-top-color` (the hover rule forces `border-color` with `!important`).
+- **Skill bars (`.skill-bar`, About + Projects):** removed the `border-top` divider lines between rows; row padding 10→5px, label 15→14px, rail 12→8px, value 14→13px. About "core technical" card slimmer still: 4px row padding, 6px rail, 140px label column, 30px value column. Row height 43px → 29px (About) / 31px (Projects).
+- **Home Skills widget:** `.skill-n` 58→68px so "TypeScript" no longer touches its bar (the open follow-up from the migration audit).
+
+**Verification:** `npm run lint:html` 0 errors; `npm test` 49/49 (accent test rewritten for the border approach; +1 skill-bar test); screenshots dark + light, 390px no horizontal overflow.
+
+**State:** PR open against `dev`.
+
+**Modified:** `prototypes/portfolio-combined.html`, `tests/e2e/spa.spec.js`, `tasks/DEVLOG.md`, `tasks/todo.md`.
+
+---
+
+## [2026-10-25] Claude Code (local) — feat/site-search · working topbar search (Ctrl K dialog)
+
+**Mode:** Execution
+
+**Did:** Replaced the `runSearch()` console.log stub with a real site search, modelled on `tasks/germany-tax-map.html` (dialog UI + ranking engine), adapted to the portfolio.
+
+- **UI:** the topbar pill is now a `<button id="sbtn">` (icon until scroll/keyboard focus, `search… Ctrl K` after) that opens a modal dialog: query field, page filter chips (all/projects/roadmap/about/home), grouped hue-tinted results with highlighted matches + snippet, footer key hints + match count, empty state with "jump to a page", suggestion chips and recent searches. Tokens only, so light mode works; z-index 900 (above the topic modal at 800).
+- **Index:** crawled lazily from the live DOM + `TOPICS` on first open, so it can't drift from the content: pages, 8 project case studies, 11 roadmap topics (name/desc/learn items/resources), 24 timeline entries, career paths, resources, about (education, interests, languages) and home widgets. 75 entries.
+- **Privacy:** `#pg-me` is never crawled (it is the private gate page). Covered by a test.
+- **Ranking:** exact title word > title prefix > body word > body prefix > substring > one-typo (Levenshtein 1, tokens ≥5 chars); phrase bonus; per-type multiplier; tokenizer keeps `+ # .` so `C++` works.
+- **Navigation:** `go()` switches page via `showPage(…, {scrollTop:false})`, then scrolls + flashes the target (`.sx-flash`); topics open their modal; timeline entries expand. Honors `prefers-reduced-motion`.
+- **Keys:** Ctrl/⌘+K toggle, `/` open (not when typing or a modal is open), ↑/↓, Enter, Esc (returns focus to the pill), Tab trapped in the dialog.
+- **Storage:** recents in `localStorage` via guarded `lsGet/lsSet`; corrupt JSON tolerated.
+- Removed: `runSearch`, `#navSearchInput`, `.nav-search-input` CSS, the old Ctrl+K-focuses-input handler and pill click handler.
+
+**Verification:** `npm test` 48/48 (40 existing, 1 updated: the pill test now uses keyboard focus; 8 new `site search` tests); `npm run lint:html` 0 errors; screenshots dark + light.
+
+**State:** PR open against `dev`. Known limit: the pill is still hidden ≤560px (no room in the topbar), so phones have no search entry point yet.
+
+**Modified:** `prototypes/portfolio-combined.html`, `tests/e2e/spa.spec.js`, `tasks/DEVLOG.md`, `tasks/todo.md`.
+
+**Lessons (candidate L-0NN):** public case studies mention the tailnet suffix, so "no /me leakage" tests must target strings unique to `#pg-me` (`me.auxois`), not the shared suffix.
+
+---
+
 ## [2026-10-25] Claude Code (local) — fix/roadmap-nav-icons · fix/roadmap-nav-overlap · fix/search-focus-ring · roadmap nav + search polish
 
 **Mode:** Execution

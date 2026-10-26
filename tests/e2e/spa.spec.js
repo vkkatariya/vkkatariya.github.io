@@ -281,21 +281,40 @@ test.describe('final fixes', () => {
     expect(new Set(colours).size).toBe(4);
   });
 
-  test('search pill is an icon until the page scrolls or it gets focus', async ({ page }) => {
+  test('search pill is an icon until the page scrolls or it gets keyboard focus', async ({ page }) => {
     await page.goto(SPA);
     const box = page.locator('#shared-nav .tbtn.srch');
     expect((await box.boundingBox()).width).toBeLessThanOrEqual(44);
-    await box.click();
-    await expect(page.locator('#navSearchInput')).toBeFocused();
+    await box.focus();
+    await page.keyboard.press('Shift+Tab'); await page.keyboard.press('Tab'); // force :focus-visible
     await expect.poll(async () => (await box.boundingBox()).width).toBeGreaterThan(100); // width eases open over .3s
+  });
+
+  test('every home widget label carries a hue (Hermes, About and Contact included)', async ({ page }) => {
+    await page.goto(SPA);
+    const rows = await page.locator('#pg-home .w').evaluateAll(ws => ws.map(w => {
+      const l = w.querySelector('.wlbl-row');
+      return { label: l ? l.textContent.trim().toLowerCase() : '', color: l ? getComputedStyle(l).color : '', top: getComputedStyle(w).borderTopWidth };
+    }).filter(r => r.label));
+    expect(rows.length).toBeGreaterThanOrEqual(12);
+    for (const name of ['hermes oauth', 'about', 'contact']) {
+      const r = rows.find(x => x.label.includes(name));
+      expect(r, name).toBeTruthy();
+      expect(r.top).toBe('3px');
+      const [, rr, gg, bb] = /rgb\((\d+), (\d+), (\d+)\)/.exec(r.color);
+      expect(Math.max(rr, gg, bb) - Math.min(rr, gg, bb), `${name} label is not grey`).toBeGreaterThan(40);
+    }
   });
 
   test('home widgets are neutral with a hue accent bar', async ({ page }) => {
     await page.goto(SPA);
     const bg = await page.locator('#pg-home .w.hue-blue').first().evaluate(e => getComputedStyle(e).backgroundImage);
     expect(bg).toBe('none');
-    const bar = await page.locator('#pg-home .w.hue-blue').first().evaluate(e => getComputedStyle(e, '::before').height);
-    expect(bar).toBe('3px');
+    // the accent is a 3px top border (not a flat strip), so it follows the rounded corners edge to edge
+    const top = await page.locator('#pg-home .w.hue-blue').first().evaluate(e => { const c = getComputedStyle(e); return [c.borderTopWidth, c.borderTopColor !== c.borderLeftColor, c.borderTopLeftRadius]; });
+    expect(top[0]).toBe('3px');
+    expect(top[1]).toBe(true); // hue differs from the neutral side borders
+    expect(parseFloat(top[2])).toBeGreaterThan(20);
   });
 
   test('project index cards are free-floating (no glass card)', async ({ page }) => {
@@ -336,5 +355,188 @@ test.describe('final fixes', () => {
     await expect(page.locator('#mindmap-root .mapcards')).toBeVisible();
     await expect(page.locator('#mindmap-root .mapsvg')).toBeHidden();
     await expect(page.locator('#mindmap-root .mapbox')).toBeHidden(); // no empty frame above the cards
+  });
+});
+
+// ─── Site search (Ctrl K dialog) ─────────────────────────────────────────────
+
+test.describe('site search', () => {
+  test.beforeEach(async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 800 });
+    await page.goto(SPA);
+  });
+  const open = async (page) => { await page.keyboard.press('Control+k'); await expect(page.locator('#sxOv')).toBeVisible(); };
+
+  test('pill click and Ctrl K open the dialog; Esc closes it and returns focus', async ({ page }) => {
+    await page.locator('#sbtn').click();
+    await expect(page.locator('#sxOv')).toBeVisible();
+    await expect(page.locator('#sxQ')).toBeFocused();
+    await page.keyboard.press('Escape');
+    await expect(page.locator('#sxOv')).toBeHidden();
+    await expect(page.locator('#sbtn')).toBeFocused();
+    await open(page);
+    await page.keyboard.press('Control+k');
+    await expect(page.locator('#sxOv')).toBeHidden();
+  });
+
+  test('empty query lists pages, suggestions and the index size', async ({ page }) => {
+    await open(page);
+    await expect(page.locator('.sx-item')).toHaveCount(4);
+    await expect(page.locator('.sx-sug .sx-chip').first()).toBeVisible();
+    await expect(page.locator('#sxCount')).toContainText('entries indexed');
+  });
+
+  test('ranks, highlights and tolerates a typo', async ({ page }) => {
+    await open(page);
+    await page.fill('#sxQ', 'c++');
+    await expect(page.locator('.sx-item').first().locator('.sx-rt')).toHaveText('Programming Fundamentals');
+    await expect(page.locator('.sx-item mark').first()).toBeVisible();
+    await page.fill('#sxQ', 'fynance');
+    await expect(page.locator('.sx-item .sx-rt', { hasText: 'Finance Buddy' })).toBeVisible();
+  });
+
+  test('no-match state, and the page filter narrows results', async ({ page }) => {
+    await open(page);
+    await page.fill('#sxQ', 'xyzzyq');
+    await expect(page.locator('.sx-empty')).toContainText('No match');
+    await page.fill('#sxQ', 'pointers');
+    await page.locator('.sx-chip[data-f="about"]').click();
+    await expect(page.locator('.sx-item')).toHaveCount(0);
+    await page.locator('.sx-chip[data-f="roadmap"]').click();
+    expect(await page.locator('.sx-item').count()).toBeGreaterThan(0);
+  });
+
+  test('arrow keys move the selection; Enter on a topic switches page and opens its modal', async ({ page }) => {
+    await open(page);
+    await page.fill('#sxQ', 'c++');
+    await expect(page.locator('.sx-item').first()).toHaveAttribute('aria-selected', 'true');
+    await page.keyboard.press('ArrowDown');
+    await expect(page.locator('.sx-item').nth(1)).toHaveAttribute('aria-selected', 'true');
+    await page.keyboard.press('ArrowUp');
+    await page.keyboard.press('Enter');
+    await expect(page.locator('#sxOv')).toBeHidden();
+    await expect(page.locator('#pg-roadmap')).toHaveClass(/active/);
+    await expect(page.locator('#modal-overlay')).toHaveClass(/open/);
+    await expect(page.locator('#modal-body')).toContainText('Programming Fundamentals');
+  });
+
+  test('clicking a project result switches page and flashes the case study', async ({ page }) => {
+    await open(page);
+    await page.fill('#sxQ', 'hermes');
+    await page.locator('.sx-item', { hasText: 'Hermes One OAuth Fork' }).click();
+    await expect(page.locator('#pg-projects')).toHaveClass(/active/);
+    await expect(page.locator('#pg-projects .cs-section.sx-flash')).toHaveCount(1);
+  });
+
+  test('the private /me page is never indexed', async ({ page }) => {
+    await open(page);
+    // project case studies are public and name the tailnet suffix, but the /me gate hostname and copy live only in #pg-me
+    for (const q of ['me.auxois', 'Connect to Tailscale and open the private site']) {
+      await page.fill('#sxQ', q);
+      await expect(page.locator('.sx-item')).toHaveCount(0);
+    }
+  });
+
+  test('recent searches are remembered, and corrupt storage does not break it', async ({ page }) => {
+    await open(page);
+    await page.fill('#sxQ', 'darmstadt');
+    await page.keyboard.press('Enter');
+    await open(page);
+    await expect(page.locator('.sx-sug .sx-chip', { hasText: 'darmstadt' })).toHaveCount(1);
+    await page.evaluate(() => localStorage.setItem('pf-search-recent', '{not json'));
+    await page.keyboard.press('Escape');
+    await open(page);
+    await expect(page.locator('.sx-item')).toHaveCount(4);
+  });
+});
+
+// ─── Skill bars ──────────────────────────────────────────────────────────────
+
+test.describe('skill bars', () => {
+  test('about skill rows are compact and have no divider lines', async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 900 });
+    await page.goto(SPA);
+    await page.locator('#shared-nav .links a[href="#about"]').click();
+    const rows = page.locator('#pg-about .skill-bar');
+    expect(await rows.count()).toBeGreaterThan(0);
+    const m = await rows.first().evaluate(e => ({ h: e.getBoundingClientRect().height, line: getComputedStyle(e).borderTopWidth }));
+    expect(m.line).toBe('0px');
+    expect(m.h).toBeLessThan(34); // was 43px
+  });
+});
+
+// ─── Pop-up alignment, project titles, free case-study widgets, timeline hues ─
+
+test.describe('pop-up + project polish', () => {
+  test.beforeEach(async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 900 });
+    await page.goto(SPA);
+  });
+  const hoverTransform = async (page, sel) => {
+    const el = page.locator(sel).first();
+    await el.scrollIntoViewIfNeeded();
+    await page.mouse.move(0, 0);
+    const bb = await el.boundingBox();
+    await page.mouse.move(bb.x + bb.width / 2, bb.y + bb.height / 2);
+    await page.waitForTimeout(500);
+    return el.evaluate(e => getComputedStyle(e).transform);
+  };
+
+  test('roadmap full-width timeline bar lifts without scaling', async ({ page }) => {
+    await page.locator('#shared-nav .links a[href="#roadmap"]').click();
+    await page.waitForTimeout(600);
+    expect(await hoverTransform(page, '#pg-roadmap .tl-header')).toBe('matrix(1, 0, 0, 1, 0, -3)');
+  });
+
+  test('project titles use Space Grotesk, not the display face', async ({ page }) => {
+    const home = await page.locator('#pg-home .proj-title').first().evaluate(e => getComputedStyle(e).fontFamily);
+    expect(home).toContain('Space Grotesk');
+    await page.locator('#shared-nav .links a[href="#projects"]').click();
+    const cs = await page.locator('#pg-projects .cs-title').first().evaluate(e => getComputedStyle(e).fontFamily);
+    expect(cs).toContain('Space Grotesk');
+  });
+
+  test('case studies have no outer card; their widgets float free and pop up', async ({ page }) => {
+    await page.locator('#shared-nav .links a[href="#projects"]').click();
+    await page.waitForTimeout(600);
+    const sec = await page.locator('#pg-projects .cs-section').first().evaluate(e => { const c = getComputedStyle(e); return [c.borderTopWidth, c.backgroundColor, c.boxShadow]; });
+    expect(sec[0]).toBe('0px');
+    expect(sec[1]).toBe('rgba(0, 0, 0, 0)');
+    expect(sec[2]).toBe('none');
+    const w = await page.locator('#pg-projects .cs-stat').first().evaluate(e => { const c = getComputedStyle(e); return [c.borderTopWidth, c.borderLeftWidth]; });
+    expect(w).toEqual(['0px', '4px']);
+    expect(await hoverTransform(page, '#pg-projects .cs-stat')).toBe('matrix(1.015, 0, 0, 1.015, 0, -3)');
+  });
+
+  test('home timeline icons carry a hue per entry type', async ({ page }) => {
+    const strokes = await page.locator('#pg-home .tl-item .tl-title svg [stroke]').evaluateAll(els => els.map(e => getComputedStyle(e).stroke));
+    expect(new Set(strokes).size).toBeGreaterThanOrEqual(5);
+    expect(strokes.some(s => s.includes('255, 255, 255'))).toBe(false);
+  });
+});
+
+// ─── Home all-projects icons + /me logo ──────────────────────────────────────
+
+test.describe('home project icons and /me logo', () => {
+  test('all-projects card icons carry the project hues, not neutral white', async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 900 });
+    await page.goto(SPA);
+    const strokes = await page.locator('#pg-home .pcard .pcard-title svg [stroke]').evaluateAll(els => els.map(e => getComputedStyle(e).stroke));
+    expect(strokes.length).toBeGreaterThanOrEqual(3); // several shapes per icon
+    expect(new Set(strokes).size).toBe(3); // one hue per project
+    expect(strokes.some(s => s.includes('255, 255, 255'))).toBe(false);
+  });
+
+  test('/me shows the small logo without a tile or outline, and never pulls the 1.3MB original', async ({ page }) => {
+    const reqs = [];
+    page.on('request', r => { if (/assets\/logo[^/]*$/.test(r.url())) reqs.push(r.url().split('/').pop()); });
+    await page.goto(SPA);
+    await page.evaluate(() => showPage('me'));
+    const box = page.locator('#pg-me .me-logo');
+    await expect(box.locator('img')).toHaveAttribute('src', 'assets/logo-192.webp');
+    const s = await box.evaluate(e => { const c = getComputedStyle(e); return [c.backgroundImage, c.borderTopWidth]; });
+    expect(s).toEqual(['none', '0px']);
+    await expect.poll(() => box.locator('img').evaluate(i => i.complete && i.naturalWidth)).toBe(192);
+    expect(reqs).not.toContain('logo.png');
   });
 });

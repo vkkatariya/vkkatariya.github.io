@@ -57,11 +57,18 @@ la-Cormorant Bold Italic wordmark redo (all 5 occurrences) and Roadmap title res
 - [x] Search focus: inner box removed, ring softened to 35% accent (PR #27)
 - [x] Stale merged `fix/*` branches deleted (7, local + remote)
 
+- [x] Roadmap pop-up aligned (full-width timeline bar lifts only); project titles back to Space Grotesk; case studies lose the outer outline with free pop-up widgets; home timeline icons/badges/dots coloured per entry type (2026-10-26)
+
+- [x] Home all-projects card icons hued per project; /me logo is the bare logo.png (2026-10-26)
+
 ### Follow-ups (open, optional)
+- [ ] Home all-projects footer tags (`.pfoot-type`) still use their own colours; align to the card hue if wanted
 - [ ] Kickoff `tasks/kickoff-fix-design-system-migration.md` Box 2 says "27/27 Playwright tests pass" but the suite is 40 — tick or reword to "all tests pass" (local-only file; needs Vishal's call)
 - [ ] 860px home grid leaves an empty third column (pre-existing, same on `3f8e1ce`)
-- [ ] Skills tile: "TypeScript" label touches its bar (pre-existing)
-- [ ] Implement the search stub `runSearch()` (input is wired, no results UI)
+- [x] Skills tile: "TypeScript" label no longer touches its bar (2026-10-26)
+- [x] Home widget accent follows the rounded corners; skill bars compact, no divider lines (2026-10-26)
+- [x] Topbar search implemented (PR: feat/site-search) — Ctrl K dialog, ranked index over pages/projects/topics/timeline/careers/resources/about/home, `/me` excluded
+- [ ] Search entry point on phones (≤560px the pill is hidden; needs a topbar slot or a menu item)
 - [ ] Legacy standalone prototypes still reference undefined handlers; `resume*.html` still carry "Open to work" pills
 - [ ] Remove unused `@vercel/speed-insights` dependency
 - [ ] Consider raising the search focus ring above 35% if keyboard-focus visibility becomes a concern
