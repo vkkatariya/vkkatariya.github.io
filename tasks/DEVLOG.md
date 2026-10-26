@@ -12,9 +12,9 @@
 
 **Did:**
 - **Home "All projects" cards (the three bottom widgets):** their title icons and the faint decorative glyph were neutral white. Added `hue-teal` / `hue-cyan` / `hue-indigo` to the Homelab, TypeShift and orlon-bot cards (same map as the Projects page) and tinted the icons from `--h`; fill-only glyphs get a solid tint, the decorative glyph is lifted from .08 to .2 opacity so the hue reads, and light mode gets `!important` twins because the neutral light-mode icon rules are `!important`.
-- **/me logo:** removed the green-gradient tile with its glass border and circular crop. Now `assets/logo.png` is shown as-is at 64px with a 22% corner radius (trims the square canvas), `loading="lazy"` so the 1.3MB file is only fetched when /me is shown (verified: 0 requests on home load).
+- **/me logo:** removed the green-gradient tile with its glass border and circular crop; the bare logo is shown at 64px with a 22% corner radius (trims the square canvas). First pass used the 1.3MB `logo.png` (lazy) and was visibly slow, so it now uses `assets/logo-192.webp`: `logo.png` centre-cropped square, resized to 192px (3x for hi-dpi), WebP q90, **5.4KB** (250x smaller), no lazy loading so it never pops in. The 1.3MB original is no longer fetched by the page at all.
 
-**Verification:** `npm run lint:html` 0 errors; `npm test` 55/55 (+2); dark + light screenshots.
+**Verification:** `npm run lint:html` 0 errors; `npm test` 55/55 (+2); dark + light screenshots; 2x-dpi check of the /me logo.
 
 **State:** PR open against `dev`. Open question: the footer type tags ("App · private", "Collab", "AI · ML") keep their own colours, which don't match the new card hues; left as is since only icons were asked for.
 

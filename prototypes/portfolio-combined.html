@@ -3523,7 +3523,7 @@ html.light #pg-projects .vis-wrap:hover, html.light #pg-projects .feat:hover, ht
   transition: transform .24s cubic-bezier(.2,.7,.2,1), box-shadow .24s cubic-bezier(.2,.7,.2,1), border-color .24s cubic-bezier(.2,.7,.2,1); }
 #pg-me .me-card:hover { transform: translateY(-3px); border-color: color-mix(in srgb, var(--h) 42%, var(--glass-border)); }
 #pg-me .me-logo { width: 64px; height: 64px; margin-bottom: 22px; }
-/* logo.png is the full squircle mark: show it as is (the corner radius trims its square canvas), no tile or outline */
+/* logo-192.webp = logo.png centre-cropped square, 192px (3x for hi-dpi), 5KB vs the 1.3MB original: the full squircle mark shown as is (the corner radius trims its canvas), no tile or outline */
 #pg-me .me-logo img { width: 100%; height: 100%; border-radius: 22%; object-fit: cover; display: block; }
 #pg-me .me-title { display: flex; align-items: center; gap: 10px; margin: 0 0 12px;
   font-family: var(--display); font-weight: 800; font-size: clamp(22px, 3.2vw, 28px); line-height: 1.1; letter-spacing: -.02em; color: var(--w); }
@@ -5978,7 +5978,7 @@ html.light #pg-projects .vis-wrap:hover, html.light #pg-projects .feat:hover, ht
 
   <!-- AUTH GATE -->
   <div class="me-card glass-card">
-    <div class="me-logo"><img src="assets/logo.png" alt="VK" width="64" height="64" loading="lazy" decoding="async"></div>
+    <div class="me-logo"><img src="assets/logo-192.webp" alt="VK" width="64" height="64" decoding="async"></div>
     <h2 class="me-title"><svg class="i" aria-hidden="true"><use href="#i-lock"/></svg>Private section</h2>
     <p class="me-text">/me is reachable only from the Tailnet. Connect to Tailscale and open the private site.</p>
     <a class="me-url" href="https://me.auxois-wyrm.ts.net" rel="noopener noreferrer">me.auxois-wyrm.ts.net</a>

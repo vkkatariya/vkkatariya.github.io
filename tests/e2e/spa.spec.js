@@ -511,17 +511,16 @@ test.describe('home project icons and /me logo', () => {
     expect(strokes.some(s => s.includes('255, 255, 255'))).toBe(false);
   });
 
-  test('/me shows logo.png without a tile or outline, and does not fetch it on other pages', async ({ page }) => {
+  test('/me shows the small logo without a tile or outline, and never pulls the 1.3MB original', async ({ page }) => {
     const reqs = [];
-    page.on('request', r => { if (/assets\/logo\.png/.test(r.url())) reqs.push(r.url()); });
+    page.on('request', r => { if (/assets\/logo[^/]*$/.test(r.url())) reqs.push(r.url().split('/').pop()); });
     await page.goto(SPA);
-    await page.waitForTimeout(500);
-    expect(reqs).toHaveLength(0); // 1.3MB: lazy, only loads once /me is shown
     await page.evaluate(() => showPage('me'));
     const box = page.locator('#pg-me .me-logo');
-    await expect(box.locator('img')).toHaveAttribute('src', 'assets/logo.png');
+    await expect(box.locator('img')).toHaveAttribute('src', 'assets/logo-192.webp');
     const s = await box.evaluate(e => { const c = getComputedStyle(e); return [c.backgroundImage, c.borderTopWidth]; });
     expect(s).toEqual(['none', '0px']);
-    await expect.poll(() => reqs.length).toBe(1);
+    await expect.poll(() => box.locator('img').evaluate(i => i.complete && i.naturalWidth)).toBe(192);
+    expect(reqs).not.toContain('logo.png');
   });
 });
