@@ -6,6 +6,22 @@
 
 ---
 
+## [2026-10-26] Claude Code (local) — fix/home-bottom-me-logo · hued all-projects icons, bare /me logo
+
+**Mode:** Execution
+
+**Did:**
+- **Home "All projects" cards (the three bottom widgets):** their title icons and the faint decorative glyph were neutral white. Added `hue-teal` / `hue-cyan` / `hue-indigo` to the Homelab, TypeShift and orlon-bot cards (same map as the Projects page) and tinted the icons from `--h`; fill-only glyphs get a solid tint, the decorative glyph is lifted from .08 to .2 opacity so the hue reads, and light mode gets `!important` twins because the neutral light-mode icon rules are `!important`.
+- **/me logo:** removed the green-gradient tile with its glass border and circular crop. Now `assets/logo.png` is shown as-is at 64px with a 22% corner radius (trims the square canvas), `loading="lazy"` so the 1.3MB file is only fetched when /me is shown (verified: 0 requests on home load).
+
+**Verification:** `npm run lint:html` 0 errors; `npm test` 55/55 (+2); dark + light screenshots.
+
+**State:** PR open against `dev`. Open question: the footer type tags ("App · private", "Collab", "AI · ML") keep their own colours, which don't match the new card hues; left as is since only icons were asked for.
+
+**Modified:** `prototypes/portfolio-combined.html`, `tests/e2e/spa.spec.js`, `tasks/DEVLOG.md`, `tasks/todo.md`.
+
+---
+
 ## [2026-10-26] Claude Code (local) — fix/pop-fonts-timeline · roadmap pop-up, project titles, free case-study widgets, timeline hues
 
 **Mode:** Execution

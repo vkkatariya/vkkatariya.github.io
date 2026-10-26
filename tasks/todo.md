@@ -59,7 +59,10 @@ la-Cormorant Bold Italic wordmark redo (all 5 occurrences) and Roadmap title res
 
 - [x] Roadmap pop-up aligned (full-width timeline bar lifts only); project titles back to Space Grotesk; case studies lose the outer outline with free pop-up widgets; home timeline icons/badges/dots coloured per entry type (2026-10-26)
 
+- [x] Home all-projects card icons hued per project; /me logo is the bare logo.png (2026-10-26)
+
 ### Follow-ups (open, optional)
+- [ ] Home all-projects footer tags (`.pfoot-type`) still use their own colours; align to the card hue if wanted
 - [ ] Kickoff `tasks/kickoff-fix-design-system-migration.md` Box 2 says "27/27 Playwright tests pass" but the suite is 40 — tick or reword to "all tests pass" (local-only file; needs Vishal's call)
 - [ ] 860px home grid leaves an empty third column (pre-existing, same on `3f8e1ce`)
 - [x] Skills tile: "TypeScript" label no longer touches its bar (2026-10-26)
