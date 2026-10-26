@@ -290,6 +290,22 @@ test.describe('final fixes', () => {
     await expect.poll(async () => (await box.boundingBox()).width).toBeGreaterThan(100); // width eases open over .3s
   });
 
+  test('every home widget label carries a hue (Hermes, About and Contact included)', async ({ page }) => {
+    await page.goto(SPA);
+    const rows = await page.locator('#pg-home .w').evaluateAll(ws => ws.map(w => {
+      const l = w.querySelector('.wlbl-row');
+      return { label: l ? l.textContent.trim().toLowerCase() : '', color: l ? getComputedStyle(l).color : '', top: getComputedStyle(w).borderTopWidth };
+    }).filter(r => r.label));
+    expect(rows.length).toBeGreaterThanOrEqual(12);
+    for (const name of ['hermes oauth', 'about', 'contact']) {
+      const r = rows.find(x => x.label.includes(name));
+      expect(r, name).toBeTruthy();
+      expect(r.top).toBe('3px');
+      const [, rr, gg, bb] = /rgb\((\d+), (\d+), (\d+)\)/.exec(r.color);
+      expect(Math.max(rr, gg, bb) - Math.min(rr, gg, bb), `${name} label is not grey`).toBeGreaterThan(40);
+    }
+  });
+
   test('home widgets are neutral with a hue accent bar', async ({ page }) => {
     await page.goto(SPA);
     const bg = await page.locator('#pg-home .w.hue-blue').first().evaluate(e => getComputedStyle(e).backgroundImage);

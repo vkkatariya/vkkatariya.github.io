@@ -2792,7 +2792,7 @@ html.light footer.roadmap-footer a { color: var(--w); }
   border-color: var(--glass-border);
 }
 
-/* --- Homepage: topic hues (reading order, none reused; Hermes/About/Contact stay neutral) ---
+/* --- Homepage: topic hues (every widget now carries one: Hermes pink = its Projects-page hue, About purple = its nav hue, Contact blue) ---
    neutral surface; label + icon + 2px top bar read the hue from --h. */
 #pg-home .w[class*="hue-"] {
   /* neutral Widget surface; the hue shows only on the label/icon and a 2px accent bar along the top edge */
@@ -3846,7 +3846,7 @@ html.light #pg-projects .vis-wrap:hover, html.light #pg-projects .feat:hover, ht
     </div>
 
     <!-- 12 · HERMES OAUTH FORK · 1×1 — auto-placed at col4 row5 -->
-    <div class="w s11" style="display:flex;flex-direction:column;justify-content:space-between;padding:16px;overflow:hidden;position:relative">
+    <div class="w s11 hue-pink" style="display:flex;flex-direction:column;justify-content:space-between;padding:16px;overflow:hidden;position:relative">
       <!-- header -->
       <div class="wlbl-row" style="margin-bottom:0;gap:5px">
         <svg class="ico" width="11" height="11" viewBox="0 0 13 13" fill="none"><rect x="3" y="5.5" width="7" height="6" rx="1.2" stroke="rgba(255,255,255,.4)" stroke-width="1" fill="rgba(255,255,255,.04)"/><path d="M4.5 5.5V4a2 2 0 0 1 4 0v1.5" stroke="rgba(255,255,255,.4)" stroke-width="1" stroke-linecap="round" fill="none"/><circle cx="6.5" cy="8.5" r=".7" fill="rgba(255,255,255,.5)"/></svg>
@@ -3877,7 +3877,7 @@ html.light #pg-projects .vis-wrap:hover, html.light #pg-projects .feat:hover, ht
     </div>
 
     <!-- 9 · ABOUT — liquid glass · 2×2 -->
-    <div class="w s32" style="display:flex;flex-direction:column;gap:12px;">
+    <div class="w s32 hue-purple" style="display:flex;flex-direction:column;gap:12px;">
       <div class="wlbl-row">
         <svg class="ico" width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="5.5" stroke="rgba(255,255,255,.28)" stroke-width="1"/><circle cx="6.5" cy="4" r=".9" fill="rgba(255,255,255,.6)"/><line x1="6.5" y1="6" x2="6.5" y2="9.5" stroke="rgba(255,255,255,.55)" stroke-width="1.3" stroke-linecap="round"/></svg>
         about
@@ -3890,7 +3890,7 @@ html.light #pg-projects .vis-wrap:hover, html.light #pg-projects .feat:hover, ht
     </div>
 
     <!-- 11 · CONTACT · 1×2 -->
-    <div class="w s12 about-contact" style="width:260px;justify-self:start;gap:10px;padding:14px;overflow:visible;align-self:stretch;flex-shrink:0">
+    <div class="w s12 about-contact hue-blue" style="width:260px;justify-self:start;gap:10px;padding:14px;overflow:visible;align-self:stretch;flex-shrink:0">
       <div class="wlbl-row">
         <svg class="ico" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V4z" stroke="rgba(255,255,255,.4)" stroke-width="1" fill="rgba(255,255,255,.04)"/><polyline points="1,4 7,8.5 13,4" stroke="rgba(255,255,255,.35)" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
         contact
