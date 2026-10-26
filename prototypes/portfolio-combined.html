@@ -2799,10 +2799,9 @@ html.light footer.roadmap-footer a { color: var(--w); }
   background: var(--bg2);
   border-color: var(--w12);
 }
-#pg-home .w[class*="hue-"]::before {
-  content: ""; position: absolute; left: 0; right: 0; top: 0; height: 3px; z-index: 1; pointer-events: none;
-  background: var(--h);
-}
+/* accent = a 3px top border, so it follows the 28px corner radius edge to edge (same idea as the 4px left edge on .pi / .skill-group) */
+#pg-home .w[class*="hue-"] { border-top: 3px solid var(--h); padding-top: 18px; }
+#pg-home .w[class*="hue-"]:hover { border-top-color: var(--h) !important; }
 #pg-home .w[class*="hue-"] .wlbl-row { color: var(--h); }
 #pg-home .w[class*="hue-"] .wlbl-row svg * { stroke: var(--h); }
 
@@ -2812,6 +2811,7 @@ html.light footer.roadmap-footer a { color: var(--w); }
 #pg-home .sub, #pg-home .chip, #pg-home .tl-badge, #pg-home .clock-date { font-family: var(--mono); }
 #pg-home .sub, #pg-home .chip, #pg-home .tl-badge, #pg-home .clock-date, #pg-home .skill-n, #pg-home .si-tag, #pg-home .tl-year { color: var(--w60); }
 #pg-home .skill-n, #pg-home .si-name, #pg-home .si-tag { font-family: var(--mono); }
+#pg-home .skill-n { width: 68px; } /* fits "TypeScript" at 11px mono without touching the bar */
 #pg-home .clock-h, #pg-home .clock-colon, #pg-home .clock-m, #pg-home .skill-pct,
 #pg-home .proj-num, #pg-home .pcard-num, #pg-home .tl-year { font-family: var(--data); }
 #pg-home .proj-title { font-family: var(--display); font-weight: 800; color: var(--w); }
@@ -2873,23 +2873,21 @@ html.light #pg-projects .donut-wrap .donut-legend .dl-dot {
 .skill-bar {
   display: grid;
   grid-template-columns: minmax(0, 190px) minmax(0, 1fr);
-  gap: 6px 16px;
+  gap: 4px 14px;
   align-items: center;
-  padding: 10px 0;
-  border-top: 1px solid var(--w12);
+  padding: 5px 0;
 }
-.skill-bar-label { font-family: var(--read); font-size: 15px; color: var(--w80); line-height: 1.3; }
+.skill-bar-label { font-family: var(--read); font-size: 14px; color: var(--w80); line-height: 1.3; }
 .skill-bar-track { display: grid; grid-template-columns: minmax(0, 1fr) var(--sb-val, 78px); gap: 8px; align-items: center; }
-.skill-bar-rail { display: block; height: 12px; border-radius: 0 5px 5px 0; background: var(--w06); overflow: hidden; }
+.skill-bar-rail { display: block; height: 8px; border-radius: 0 4px 4px 0; background: var(--w06); overflow: hidden; }
 .skill-bar-fill {
-  display: block; height: 100%; min-width: 2px; border-radius: 0 5px 5px 0;
+  display: block; height: 100%; min-width: 2px; border-radius: 0 4px 4px 0;
   background: var(--h, var(--acc));
   transform-origin: left center;
   animation: grow 1.4s cubic-bezier(.4,0,.2,1) both;
 }
 .skill-bar-fill.ref { background: var(--bar-ref); }
-.skill-bar-value { font-family: var(--data); font-size: 14px; color: var(--w80); font-variant-numeric: tabular-nums; }
-.skill-bar:first-child, .wlbl-row + .skill-bar { border-top: 0; }
+.skill-bar-value { font-family: var(--data); font-size: 13px; color: var(--w80); font-variant-numeric: tabular-nums; }
 @media (max-width: 560px) { .skill-bar { grid-template-columns: minmax(0, 1fr); } }
 @media (prefers-reduced-motion: reduce) { .skill-bar-fill { animation: none; } }
 
@@ -3415,7 +3413,9 @@ html.light #pg-projects .pi:hover { box-shadow: 8px 14px 36px rgba(13,13,15,.2),
 @media (max-width: 560px) { #pg-about .core-tech-card { padding: 20px 18px; } }
 #pg-about .core-label { display: flex; align-items: center; gap: 8px; margin-bottom: 18px; font-family: var(--mono); font-size: 13px; letter-spacing: .06em; text-transform: none; color: var(--h); }
 #pg-about .core-label::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
-#pg-about .skill-bars { margin: 0; padding: 0; border: 0; gap: 0; --sb-val: 36px; }
+#pg-about .skill-bars { margin: 0; padding: 0; border: 0; gap: 0; --sb-val: 30px; }
+#pg-about .skill-bar { grid-template-columns: minmax(0, 140px) minmax(0, 1fr); padding: 4px 0; }
+#pg-about .skill-bar-rail { height: 6px; }
 #pg-about .skills-grid { grid-template-columns: repeat(auto-fit, minmax(min(100%, 400px), 1fr)); gap: 12px; }
 #pg-about .skill-group { padding: 20px; background: var(--bg3); border: 1px solid var(--w12); border-left: 4px solid var(--h); border-radius: 14px;
   box-shadow: none; backdrop-filter: none; -webkit-backdrop-filter: none; min-width: 0; }

@@ -294,8 +294,11 @@ test.describe('final fixes', () => {
     await page.goto(SPA);
     const bg = await page.locator('#pg-home .w.hue-blue').first().evaluate(e => getComputedStyle(e).backgroundImage);
     expect(bg).toBe('none');
-    const bar = await page.locator('#pg-home .w.hue-blue').first().evaluate(e => getComputedStyle(e, '::before').height);
-    expect(bar).toBe('3px');
+    // the accent is a 3px top border (not a flat strip), so it follows the rounded corners edge to edge
+    const top = await page.locator('#pg-home .w.hue-blue').first().evaluate(e => { const c = getComputedStyle(e); return [c.borderTopWidth, c.borderTopColor !== c.borderLeftColor, c.borderTopLeftRadius]; });
+    expect(top[0]).toBe('3px');
+    expect(top[1]).toBe(true); // hue differs from the neutral side borders
+    expect(parseFloat(top[2])).toBeGreaterThan(20);
   });
 
   test('project index cards are free-floating (no glass card)', async ({ page }) => {
@@ -428,5 +431,20 @@ test.describe('site search', () => {
     await page.keyboard.press('Escape');
     await open(page);
     await expect(page.locator('.sx-item')).toHaveCount(4);
+  });
+});
+
+// ─── Skill bars ──────────────────────────────────────────────────────────────
+
+test.describe('skill bars', () => {
+  test('about skill rows are compact and have no divider lines', async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 900 });
+    await page.goto(SPA);
+    await page.locator('#shared-nav .links a[href="#about"]').click();
+    const rows = page.locator('#pg-about .skill-bar');
+    expect(await rows.count()).toBeGreaterThan(0);
+    const m = await rows.first().evaluate(e => ({ h: e.getBoundingClientRect().height, line: getComputedStyle(e).borderTopWidth }));
+    expect(m.line).toBe('0px');
+    expect(m.h).toBeLessThan(34); // was 43px
   });
 });
