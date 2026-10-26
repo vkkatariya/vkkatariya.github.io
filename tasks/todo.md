@@ -60,7 +60,8 @@ la-Cormorant Bold Italic wordmark redo (all 5 occurrences) and Roadmap title res
 ### Follow-ups (open, optional)
 - [ ] Kickoff `tasks/kickoff-fix-design-system-migration.md` Box 2 says "27/27 Playwright tests pass" but the suite is 40 — tick or reword to "all tests pass" (local-only file; needs Vishal's call)
 - [ ] 860px home grid leaves an empty third column (pre-existing, same on `3f8e1ce`)
-- [ ] Skills tile: "TypeScript" label touches its bar (pre-existing)
+- [x] Skills tile: "TypeScript" label no longer touches its bar (2026-10-26)
+- [x] Home widget accent follows the rounded corners; skill bars compact, no divider lines (2026-10-26)
 - [x] Topbar search implemented (PR: feat/site-search) — Ctrl K dialog, ranked index over pages/projects/topics/timeline/careers/resources/about/home, `/me` excluded
 - [ ] Search entry point on phones (≤560px the pill is hidden; needs a topbar slot or a menu item)
 - [ ] Legacy standalone prototypes still reference undefined handlers; `resume*.html` still carry "Open to work" pills

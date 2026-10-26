@@ -6,6 +6,23 @@
 
 ---
 
+## [2026-10-26] Claude Code (local) — fix/home-accent-skillbars · home accent edge + compact skill bars
+
+**Mode:** Execution
+
+**Did:**
+- **Home widget accent:** the 3px hue bar was a flat `::before` strip, so it looked clipped inside the 28px corners. Replaced with `border-top: 3px solid var(--h)` (+ `padding-top:18px` to keep content in place), so the accent follows the corner radius edge to edge like the 4px left edge on `.pi` / `.skill-group`. Hover keeps the hue via a higher-specificity `border-top-color` (the hover rule forces `border-color` with `!important`).
+- **Skill bars (`.skill-bar`, About + Projects):** removed the `border-top` divider lines between rows; row padding 10→5px, label 15→14px, rail 12→8px, value 14→13px. About "core technical" card slimmer still: 4px row padding, 6px rail, 140px label column, 30px value column. Row height 43px → 29px (About) / 31px (Projects).
+- **Home Skills widget:** `.skill-n` 58→68px so "TypeScript" no longer touches its bar (the open follow-up from the migration audit).
+
+**Verification:** `npm run lint:html` 0 errors; `npm test` 49/49 (accent test rewritten for the border approach; +1 skill-bar test); screenshots dark + light, 390px no horizontal overflow.
+
+**State:** PR open against `dev`.
+
+**Modified:** `prototypes/portfolio-combined.html`, `tests/e2e/spa.spec.js`, `tasks/DEVLOG.md`, `tasks/todo.md`.
+
+---
+
 ## [2026-10-25] Claude Code (local) — feat/site-search · working topbar search (Ctrl K dialog)
 
 **Mode:** Execution
