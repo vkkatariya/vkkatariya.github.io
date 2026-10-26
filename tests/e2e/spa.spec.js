@@ -514,3 +514,29 @@ test.describe('pop-up + project polish', () => {
     expect(strokes.some(s => s.includes('255, 255, 255'))).toBe(false);
   });
 });
+
+// ─── Home all-projects icons + /me logo ──────────────────────────────────────
+
+test.describe('home project icons and /me logo', () => {
+  test('all-projects card icons carry the project hues, not neutral white', async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 900 });
+    await page.goto(SPA);
+    const strokes = await page.locator('#pg-home .pcard .pcard-title svg [stroke]').evaluateAll(els => els.map(e => getComputedStyle(e).stroke));
+    expect(strokes.length).toBeGreaterThanOrEqual(3); // several shapes per icon
+    expect(new Set(strokes).size).toBe(3); // one hue per project
+    expect(strokes.some(s => s.includes('255, 255, 255'))).toBe(false);
+  });
+
+  test('/me shows the small logo without a tile or outline, and never pulls the 1.3MB original', async ({ page }) => {
+    const reqs = [];
+    page.on('request', r => { if (/assets\/logo[^/]*$/.test(r.url())) reqs.push(r.url().split('/').pop()); });
+    await page.goto(SPA);
+    await page.evaluate(() => showPage('me'));
+    const box = page.locator('#pg-me .me-logo');
+    await expect(box.locator('img')).toHaveAttribute('src', 'assets/logo-192.webp');
+    const s = await box.evaluate(e => { const c = getComputedStyle(e); return [c.backgroundImage, c.borderTopWidth]; });
+    expect(s).toEqual(['none', '0px']);
+    await expect.poll(() => box.locator('img').evaluate(i => i.complete && i.naturalWidth)).toBe(192);
+    expect(reqs).not.toContain('logo.png');
+  });
+});
