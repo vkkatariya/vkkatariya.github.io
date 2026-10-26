@@ -61,6 +61,8 @@ la-Cormorant Bold Italic wordmark redo (all 5 occurrences) and Roadmap title res
 
 - [x] Home all-projects card icons hued per project; /me logo is the bare logo.png (2026-10-26)
 
+- [x] `index.html` migrated to the design system: tokens, fonts, hue chips, 1.7s intro, section-hash forwarding, absolute og meta (2026-10-26)
+
 ### Follow-ups (open, optional)
 - [ ] Home all-projects footer tags (`.pfoot-type`) still use their own colours; align to the card hue if wanted
 - [ ] Kickoff `tasks/kickoff-fix-design-system-migration.md` Box 2 says "27/27 Playwright tests pass" but the suite is 40 — tick or reword to "all tests pass" (local-only file; needs Vishal's call)

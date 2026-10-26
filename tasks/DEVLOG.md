@@ -6,6 +6,25 @@
 
 ---
 
+## [2026-10-26] Claude Code (local) — feat/index-design-system · index.html design-system migration
+
+**Mode:** Execution
+
+**Did:** `index.html` (the root URL) was the one page the migration never touched: a plain redirect with no fonts loaded (it asked for Cormorant/Space Grotesk but never linked them), raw rgba colours, and a `0s` meta refresh so the "Portfolio loading…" screen could never actually be seen. Rebuilt it as a short on-brand intro on the design-system tokens.
+- **Look:** same `:root` / `html.light` tokens as the site, dot-matrix background + top glow, Google Fonts link identical to the site (Syne wordmark with the Cormorant V/K initials, Outfit tagline, JetBrains Mono status, Space Grotesk chips). Dark by default; follows the site's `vk-theme` choice.
+- **Motion (CSS-only, ~1.7s):** logo mark springs in (site spring curve) with a teal halo → wordmark rises word by word → tagline fades → four destination chips (home/projects/roadmap/about) pop in, each in its nav hue with its topbar icon → a progress bar in the four nav hues sweeps → NeoPOP "Enter portfolio" button; then the stage fades out and the page changes.
+- **Behaviour:** JS only schedules the redirect (1.7s + 0.23s fade). `prefers-reduced-motion`: finished screen at once, redirect after 0.5s. `/#projects` (any section hash) is forwarded to the portfolio; `/#stay` shows the splash without redirecting (previews/tests). Chips are real deep links, the CTA redirects immediately. No-JS fallback: `meta refresh` 4s (was 0). Prefetches the target document.
+- **Social meta:** og:image/twitter:image were relative paths, which scrapers don't resolve; now absolute `https://vishal-katariya.com/...`.
+- `npm run lint:html` now also covers `index.html`; CLAUDE.md file table updated.
+
+**Verification:** `npm run lint:html` 0 errors (15 files); `npm test` +9 (new `tests/e2e/index.spec.js`: content, fonts/tokens, light theme, intro then redirect, reduced motion, hash forwarding, chip navigation, 320px no overflow, absolute og meta); dark + light + 390px screenshots (early + final frame). Fixed a 9px overflow at 390px found in the first screenshot.
+
+**State:** PR open against `dev`. Not yet deployed: the live root still shows the old splash until this reaches `main`.
+
+**Modified:** `index.html`, `package.json` (lint glob), `CLAUDE.md`, `tests/e2e/index.spec.js`, `tasks/DEVLOG.md`, `tasks/todo.md`.
+
+---
+
 ## [2026-10-26] Claude Code (local) — fix/home-neutral-widget-hues · hue on the last three home widgets
 
 **Mode:** Execution
