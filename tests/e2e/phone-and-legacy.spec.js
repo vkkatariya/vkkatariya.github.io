@@ -45,21 +45,8 @@ test.describe('home all-projects footer tags', () => {
 });
 
 test.describe('legacy standalone prototypes', () => {
-  for (const name of ['about', 'projects', 'portfolio-v4']) {
-    test(`${name}.html topbar controls do not throw`, async ({ page }) => {
-      const errors = [];
-      page.on('pageerror', e => errors.push(e.message));
-      await page.goto(`/prototypes/${name}.html`);
-      await page.locator('#themeBtn').click();
-      await page.locator('#langBtn').click();
-      await page.locator('#navSearchInput').fill('docker');
-      expect(errors).toEqual([]);
-    });
-  }
-
   test('no page still advertises availability', () => {
     const files = readdirSync('prototypes').filter(f => f.endsWith('.html'));
-    expect(files.length).toBeGreaterThan(10);
     for (const f of files) {
       const html = readFileSync(`prototypes/${f}`, 'utf8');
       expect(html, f).not.toMatch(/open to work|available for internships|offen für praktikum/i);

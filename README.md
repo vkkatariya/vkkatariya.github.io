@@ -10,11 +10,7 @@ This is a **simple standalone portfolio** — not a monolith. Real projects (hom
 
 | Prototype | Status |
 |---|---|
-| `prototypes/portfolio-v4.html` | Homepage — 3-pill topbar, widget grid, timeline |
-| `prototypes/projects.html` | Project showcase linking to standalone apps |
-| `prototypes/about.html` | Bio, education, skills, languages, contact |
-| `prototypes/cs-roadmap.html` | Dedicated CS roadmap page |
-| `prototypes/portfolio-combined.html` | Single-file SPA spike (reference only) |
+| `prototypes/portfolio-combined.html` | Live SPA — all 5 pages, primary source of truth |
 | SvelteKit production build | not started |
 
 See `tasks/todo.md` for the full phased task list.
@@ -96,10 +92,7 @@ The `/me` section shown in `portfolio-combined.html` is just a static informatio
 ## Running locally
 
 ```bash
-open prototypes/portfolio-v4.html
-open prototypes/projects.html
-open prototypes/about.html
-open prototypes/cs-roadmap.html
+open prototypes/portfolio-combined.html
 # No build step for prototypes
 ```
 
@@ -113,11 +106,8 @@ vkkatariya.github.io/
 ├── CONTEXT.md              ← project context (stack, infra, decisions)
 ├── README.md               ← this file
 ├── prototypes/             ← HTML prototypes
-│   ├── portfolio-v4.html
-│   ├── projects.html
-│   ├── about.html
-│   ├── cs-roadmap.html
-│   └── portfolio-combined.html
+│   ├── portfolio-combined.html
+│   └── resume.html
 ├── docs/                  ← architecture diagrams, references
 │   ├── mental-model-tree.html
 │   └── portfolio_architecture_v2.html
