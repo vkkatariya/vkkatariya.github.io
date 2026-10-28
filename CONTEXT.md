@@ -21,11 +21,8 @@ A personal portfolio web app at `vishal-katariya.com`.
 ## Current status
 
 **Phase 0 — HTML Prototypes:** in progress
-- `prototypes/portfolio-v4.html` — homepage with 3-pill glass topbar, widget grid, timeline.
-- `prototypes/projects.html` — project showcase linking to standalone apps.
-- `prototypes/about.html` — bio, education, skills, languages, contact.
-- `prototypes/portfolio-combined.html` — single-file SPA spike.
-- `prototypes/cs-roadmap.html` — dedicated CS roadmap page.
+- `prototypes/portfolio-combined.html` — single-file SPA, all 5 pages (home, projects, roadmap, about, me). Primary source of truth.
+- `prototypes/resume.html` — aesthetic resume using the portfolio design system.
 
 **Phase 1 — SvelteKit production scaffold:** NOT STARTED
 
@@ -37,7 +34,7 @@ A personal portfolio web app at `vishal-katariya.com`.
 |---|---|---|---|
 | `/` | public | Homepage — widget grid + career timeline + "now" status | Vercel |
 | `/projects` | public | Cards linking to standalone project sites | Vercel |
-| `/roadmap` | public | Port of `cs-roadmap.html` | Vercel |
+| `/roadmap` | public | Roadmap page in SPA | Vercel |
 | `/about` | public | Bio, h_da education, skills, 4 languages, contact | Vercel |
 | `/me/vault` | private | Identity vault — aliases tracker | athena (Tailscale) |
 | `/me/docs` | private | Notion artifacts rendered as HTML | athena (Tailscale) |
@@ -112,7 +109,7 @@ The `/me` page in `portfolio-combined.html` is only an informational placeholder
 
 ## Design system
 
-**Palette (from `portfolio-v4.html`):**
+**Palette (from `portfolio-combined.html`):**
 ```css
 --bg:   #080808;          /* near-black base */
 --bg2:  #0f0f0f;
@@ -223,7 +220,7 @@ const pageTransition = (node, { y = 16, duration = 350 }) =>
 
 ## Current focus
 
-`Phase 0: finalize homepage (portfolio-v4.html), then scaffold SvelteKit.`
+`Phase 0: portfolio-combined.html SPA is live; Phase 1 SvelteKit scaffold not started.`
 
 ---
 
