@@ -2803,15 +2803,19 @@ html.light footer.roadmap-footer a { color: var(--w); }
 }
 
 /* --- Homepage: topic hues (every widget now carries one: Hermes pink = its Projects-page hue, About purple = its nav hue, Contact blue) ---
-   neutral surface; label + icon + 2px top bar read the hue from --h. */
+   neutral surface; label + icon + 4px left bar read the hue from --h. */
 #pg-home .w[class*="hue-"] {
-  /* neutral Widget surface; the hue shows only on the label/icon and a 2px accent bar along the top edge */
+  /* neutral Widget surface; the hue shows only on the label/icon and a 4px accent bar along the left edge */
   background: var(--bg2);
   border-color: var(--w12);
 }
-/* accent = a 3px top border, so it follows the 28px corner radius edge to edge (same idea as the 4px left edge on .pi / .skill-group) */
-#pg-home .w[class*="hue-"] { border-top: 3px solid var(--h); padding-top: 18px; }
-#pg-home .w[class*="hue-"]:hover { border-top-color: var(--h) !important; }
+/* accent = a 4px left border, so it follows the 28px corner radius (same recipe as the left edge on .pi / .skill-group).
+   It replaces the 1px outline on that side, so padding-left is 3px smaller than the widget padding to keep the content where it was
+   (20px base, 16px <=560px, 14px <=380px; the two inline-padded widgets carry their own). */
+#pg-home .w[class*="hue-"] { border-left: 4px solid var(--h); padding-left: 17px; }
+#pg-home .w[class*="hue-"]:hover { border-left-color: var(--h) !important; }
+@media (max-width: 560px) { #pg-home .w[class*="hue-"] { padding-left: 13px; } }
+@media (max-width: 380px) { #pg-home .w[class*="hue-"] { padding-left: 11px; } }
 #pg-home .w[class*="hue-"] .wlbl-row { color: var(--h); }
 #pg-home .w[class*="hue-"] .wlbl-row svg * { stroke: var(--h); }
 
@@ -3130,6 +3134,29 @@ html.light #pg-projects .vis-wrap:hover, html.light #pg-projects .feat:hover, ht
 }
 @media (prefers-reduced-motion: reduce) {
   #pg-projects .cs-stat:hover, #pg-projects .pipe-stage:hover, #pg-projects .plat:hover, #pg-projects .vis-wrap:hover, #pg-projects .feat:hover, #pg-projects .cs-skills:hover { transform: none; }
+}
+/* accent bars, stripped down (they were on 95 elements, often nested): odd items keep the 4px hue edge, even items keep the same 4px
+   but transparent, so text stays aligned and nothing shifts. The two wide panels carry no bar at all; the cards and bars inside them
+   already carry the hue. The hover ring still shows the hue on every card. Must stay after the rules above (same specificity).
+   In a 2-column grid plain odd/even would stripe whole columns, so the index cards (2 columns above 700px) and the stat tiles
+   (2x2 at 600px and below) flip every row instead: a checkerboard. */
+#pg-projects :is(.feat, .pipe-stage, .plat):nth-child(even),
+#pg-projects :is(.feat, .pipe-stage, .plat):nth-child(even):hover,
+#pg-projects :is(.vis-wrap, .cs-skills),
+#pg-projects :is(.vis-wrap, .cs-skills):hover { border-left-color: transparent; }
+@media (min-width: 701px) {
+  #pg-projects .pi:is(:nth-child(4n+2), :nth-child(4n+3)),
+  #pg-projects .pi:is(:nth-child(4n+2), :nth-child(4n+3)):hover { border-left-color: transparent; }
+}
+@media (max-width: 700px) {
+  #pg-projects .pi:nth-child(even), #pg-projects .pi:nth-child(even):hover { border-left-color: transparent; }
+}
+@media (min-width: 601px) {
+  #pg-projects .cs-stat:nth-child(even), #pg-projects .cs-stat:nth-child(even):hover { border-left-color: transparent; }
+}
+@media (max-width: 600px) {
+  #pg-projects .cs-stat:is(:nth-child(4n+2), :nth-child(4n+3)),
+  #pg-projects .cs-stat:is(:nth-child(4n+2), :nth-child(4n+3)):hover { border-left-color: transparent; }
 }
 #pg-projects .bar-lbl { font-family: var(--mono); font-size: 12.5px; letter-spacing: 0; color: var(--w80); }
 #pg-projects .bar-val { font-family: var(--data); font-size: 12.5px; letter-spacing: 0; color: var(--w80); }
@@ -3860,7 +3887,7 @@ html.light #pg-projects .vis-wrap:hover, html.light #pg-projects .feat:hover, ht
     </div>
 
     <!-- 12 · HERMES OAUTH FORK · 1×1 — auto-placed at col4 row5 -->
-    <div class="w s11 hue-pink" style="display:flex;flex-direction:column;justify-content:space-between;padding:16px;overflow:hidden;position:relative">
+    <div class="w s11 hue-pink" style="display:flex;flex-direction:column;justify-content:space-between;padding:16px 16px 16px 13px;overflow:hidden;position:relative">
       <!-- header -->
       <div class="wlbl-row" style="margin-bottom:0;gap:5px">
         <svg class="ico" width="11" height="11" viewBox="0 0 13 13" fill="none"><rect x="3" y="5.5" width="7" height="6" rx="1.2" stroke="rgba(255,255,255,.4)" stroke-width="1" fill="rgba(255,255,255,.04)"/><path d="M4.5 5.5V4a2 2 0 0 1 4 0v1.5" stroke="rgba(255,255,255,.4)" stroke-width="1" stroke-linecap="round" fill="none"/><circle cx="6.5" cy="8.5" r=".7" fill="rgba(255,255,255,.5)"/></svg>
@@ -3904,7 +3931,7 @@ html.light #pg-projects .vis-wrap:hover, html.light #pg-projects .feat:hover, ht
     </div>
 
     <!-- 11 · CONTACT · 1×2 -->
-    <div class="w s12 about-contact hue-blue" style="width:260px;justify-self:start;gap:10px;padding:14px;overflow:visible;align-self:stretch;flex-shrink:0">
+    <div class="w s12 about-contact hue-blue" style="width:260px;justify-self:start;gap:10px;padding:14px 14px 14px 11px;overflow:visible;align-self:stretch;flex-shrink:0">
       <div class="wlbl-row">
         <svg class="ico" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V4z" stroke="rgba(255,255,255,.4)" stroke-width="1" fill="rgba(255,255,255,.04)"/><polyline points="1,4 7,8.5 13,4" stroke="rgba(255,255,255,.35)" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
         contact
