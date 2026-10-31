@@ -21,9 +21,11 @@
 
 **Verified:** `npm test` 79/79 (+9 new: neighbours never share a bar state on Roadmap and About at 1280/860/390, top-to-left on phase/career cards, topic filter per phase and back to "all", desktop-to-phone resize; all 9 fail on the old code); `lint:html` 0 errors; before/after geometry of the 14 converted cards at 1280 dark+light, 860, 390: width and horizontal content offset unchanged, max 2px vertical shift, no new overflow; screenshots dark + light.
 
-**Note:** Home and Projects (PR #40) alternate in plain CSS because their grids have fixed column counts; Roadmap/About use `balanceBars()`. Moving Projects onto `balanceBars()` too would unify them (and handle the in-between widths of its `auto-fit` platform grid) but is not needed today. This branch is based on `dev` without PR #40, so the two DEVLOG entries will conflict at the top when the second PR merges: merge `origin/dev` into the branch and keep both entries.
+**Review fixes (independent review of #40 and #41 before merging):** the `ResizeObserver` was created before `renderTopics()`/`renderCareers()`/`buildMindMap()` ran, so those three grids were never observed; it only worked because the window-resize listener and the other observed parents re-ran the pass for every group. `balanceBars()` now registers each card parent itself (`observe` is a no-op for one already watched), so late-rendered grids are covered. It also skips groups with no visible card, so a rebalance while a page is hidden (window resize on Home) no longer clears that page's tags, which made the cards fade from all-barred when the page opened. +2 tests (79 -> 81 on this branch; both fail on the earlier code). My first version of the observer test went from 3 columns to 1 and passed on the old code: an odd column count flattens to plain alternation, so it needs a switch to 2 columns.
 
-**State:** PR open against `dev`. The todo entry lives in the main checkout's uncommitted `tasks/todo.md`.
+**Note:** Home and Projects (PR #40) alternate in plain CSS because their grids have fixed column counts; Roadmap/About use `balanceBars()`. Known cosmetic gap in #40, left for a follow-up: between roughly 460px and 600px the three `.plat` cards wrap to 2 columns (`auto-fit, minmax(170px, 1fr)`), so plain odd/even puts the bar on cards 1 and 3 in the same column. Moving Projects onto `balanceBars()` would fix that and unify the two approaches.
+
+**State:** PR merged after #40 (`origin/dev` merged into the branch, DEVLOG entries kept). The todo entry lives in the main checkout's uncommitted `tasks/todo.md`.
 
 **Modified:** `prototypes/portfolio-combined.html`, `tests/e2e/spa.spec.js`, `tasks/DEVLOG.md`.
 

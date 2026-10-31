@@ -6782,12 +6782,15 @@ document.addEventListener('keydown', (e) => {
 // edge, same width). Row and column come from the real layout, so it holds for auto-fit grids, breakpoints and the topic filter.
 // Without JS every card simply keeps its bar.
 const ALT_BAR_CARDS = '#pg-roadmap .phase-card, #pg-roadmap .topic-card, #pg-roadmap .career-card, #pg-roadmap .guide-col, #pg-roadmap .resource-item, #pg-roadmap .mcard, #pg-about .skill-group, #pg-about .int-card';
+let barsRO = null; // watches every card parent; set below. Parents are registered inside balanceBars, so grids rendered later (topics, careers, mind map) are picked up too
 function balanceBars() {
   const cluster = vals => vals.sort((a, b) => a - b).reduce((out, v) => (out.length && v - out[out.length - 1] <= 4 ? out : out.concat(v)), []);
   const slot = (list, v) => list.findIndex(c => Math.abs(c - v) <= 4);
   new Set([...document.querySelectorAll(ALT_BAR_CARDS)].map(el => el.parentElement)).forEach(parent => {
+    if (barsRO) barsRO.observe(parent); // no-op when already observed; fires once on first observe, then on resize and when a hidden page is shown
     const cards = [...parent.children].filter(el => el.matches(ALT_BAR_CARDS));
     const shown = cards.filter(el => el.offsetParent !== null);
+    if (!shown.length) return; // page not visible: keep the last pattern so it does not flash all-barred when the page opens
     const xs = cluster(shown.map(el => el.offsetLeft)), ys = cluster(shown.map(el => el.offsetTop));
     cards.forEach(el => el.toggleAttribute('data-nobar', shown.includes(el) && (slot(xs, el.offsetLeft) + slot(ys, el.offsetTop)) % 2 === 1));
   });
@@ -6798,10 +6801,7 @@ function queueBars() {
   barsQueued = true;
   requestAnimationFrame(() => { barsQueued = false; balanceBars(); });
 }
-if (typeof ResizeObserver === 'function') {
-  const barsRO = new ResizeObserver(queueBars); // fires on first observe, on resize and when a hidden page is shown
-  new Set([...document.querySelectorAll(ALT_BAR_CARDS)].map(el => el.parentElement)).forEach(p => barsRO.observe(p));
-}
+if (typeof ResizeObserver === 'function') barsRO = new ResizeObserver(queueBars);
 window.addEventListener('resize', queueBars);
 queueBars();
 

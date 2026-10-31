@@ -634,4 +634,30 @@ test.describe('roadmap and about accent bars', () => {
     await page.setViewportSize({ width: 390, height: 900 });
     await settled(page, ROADMAP);
   });
+
+  test('a card grid that changes size on its own (no window resize) is re-balanced, including the JS-rendered grids', async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 900 });
+    await page.goto(SPA);
+    await page.evaluate(() => showPage('roadmap'));
+    await settled(page, ['#pg-roadmap .career-card', '#pg-roadmap .topic-card']);
+    const cols = () => page.evaluate(() => new Set([...document.querySelectorAll('#pg-roadmap .career-card')].map(e => e.offsetLeft)).size);
+    expect(await cols()).toBeGreaterThan(1);
+    // the careers and topics grids are rendered by JS after the observer is created. Narrowing them to 2 columns needs a different
+    // pattern (going 3 -> 1 column would keep the old one valid by luck, since an odd column count flattens to plain alternation)
+    await page.addStyleTag({ content: '#pg-roadmap .careers-grid, #pg-roadmap .topics-grid { width: 640px !important; }' });
+    await expect.poll(cols).toBe(2);
+    await settled(page, ['#pg-roadmap .career-card', '#pg-roadmap .topic-card']);
+  });
+
+  test('a page that is hidden keeps its bar pattern while the window resizes', async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 900 });
+    await page.goto(SPA);
+    await page.evaluate(() => showPage('about'));
+    await settled(page, ABOUT);
+    await page.evaluate(() => showPage('home'));
+    await page.setViewportSize({ width: 1100, height: 900 }); // triggers a rebalance pass while About is display:none
+    await page.waitForTimeout(300);
+    const kept = await page.evaluate(() => document.querySelectorAll('#pg-about [data-nobar]').length);
+    expect(kept, 'tags are not cleared while the page is hidden').toBe(4);
+  });
 });
