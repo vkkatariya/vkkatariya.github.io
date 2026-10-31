@@ -294,13 +294,13 @@ test.describe('final fixes', () => {
     await page.goto(SPA);
     const rows = await page.locator('#pg-home .w').evaluateAll(ws => ws.map(w => {
       const l = w.querySelector('.wlbl-row');
-      return { label: l ? l.textContent.trim().toLowerCase() : '', color: l ? getComputedStyle(l).color : '', top: getComputedStyle(w).borderTopWidth };
+      return { label: l ? l.textContent.trim().toLowerCase() : '', color: l ? getComputedStyle(l).color : '', bar: getComputedStyle(w).borderLeftWidth };
     }).filter(r => r.label));
     expect(rows.length).toBeGreaterThanOrEqual(12);
     for (const name of ['hermes oauth', 'about', 'contact']) {
       const r = rows.find(x => x.label.includes(name));
       expect(r, name).toBeTruthy();
-      expect(r.top).toBe('3px');
+      expect(r.bar).toBe('4px');
       const [, rr, gg, bb] = /rgb\((\d+), (\d+), (\d+)\)/.exec(r.color);
       expect(Math.max(rr, gg, bb) - Math.min(rr, gg, bb), `${name} label is not grey`).toBeGreaterThan(40);
     }
@@ -310,11 +310,62 @@ test.describe('final fixes', () => {
     await page.goto(SPA);
     const bg = await page.locator('#pg-home .w.hue-blue').first().evaluate(e => getComputedStyle(e).backgroundImage);
     expect(bg).toBe('none');
-    // the accent is a 3px top border (not a flat strip), so it follows the rounded corners edge to edge
-    const top = await page.locator('#pg-home .w.hue-blue').first().evaluate(e => { const c = getComputedStyle(e); return [c.borderTopWidth, c.borderTopColor !== c.borderLeftColor, c.borderTopLeftRadius]; });
-    expect(top[0]).toBe('3px');
-    expect(top[1]).toBe(true); // hue differs from the neutral side borders
-    expect(parseFloat(top[2])).toBeGreaterThan(20);
+    // the accent is a 4px left border (not a flat strip), so it follows the rounded corners; the top is a plain 1px outline again
+    const bar = await page.locator('#pg-home .w.hue-blue').first().evaluate(e => { const c = getComputedStyle(e); return [c.borderLeftWidth, c.borderLeftColor !== c.borderTopColor, c.borderTopWidth, c.borderTopLeftRadius]; });
+    expect(bar[0]).toBe('4px');
+    expect(bar[1]).toBe(true); // hue differs from the neutral outline
+    expect(bar[2]).toBe('1px');
+    expect(parseFloat(bar[3])).toBeGreaterThan(20);
+  });
+
+  test('every home widget has its hue bar on the left, none on top', async ({ page }) => {
+    await page.goto(SPA);
+    const bars = await page.locator('#pg-home .w[class*="hue-"]').evaluateAll(ws => ws.map(w => { const c = getComputedStyle(w); return [c.borderLeftWidth, c.borderTopWidth, c.borderLeftColor !== c.borderRightColor]; }));
+    expect(bars.length).toBeGreaterThanOrEqual(12);
+    for (const [left, top, hue] of bars) { expect(left).toBe('4px'); expect(top).toBe('1px'); expect(hue).toBe(true); }
+  });
+
+  // index of each item among its siblings -> does it carry the 4px hue edge?
+  const projectBars = page => page.evaluate(() => {
+    const bar = e => { const c = getComputedStyle(e); return c.borderLeftWidth === '4px' && c.borderLeftColor !== 'rgba(0, 0, 0, 0)'; };
+    const out = {};
+    for (const sel of ['.pi', '.cs-stat', '.feat', '.pipe-stage', '.plat']) {
+      out[sel] = [...document.querySelectorAll('#pg-projects ' + sel)].map(e => [[...e.parentElement.children].indexOf(e), bar(e)]);
+    }
+    for (const sel of ['.vis-wrap', '.cs-skills']) out[sel] = [...document.querySelectorAll('#pg-projects ' + sel)].map(e => [0, bar(e)]);
+    return out;
+  });
+  const expectBars = (bars, want) => {
+    for (const [sel, rule] of Object.entries(want)) {
+      expect(bars[sel].length, sel).toBeGreaterThan(0);
+      for (const [i, hasBar] of bars[sel]) expect(hasBar, `${sel} #${i + 1}`).toBe(rule(i));
+    }
+  };
+  const odd = i => i % 2 === 0;            // 1st, 3rd, 5th... (a single row or column)
+  const checker = i => i % 4 === 0 || i % 4 === 3; // 2-column grid: 1st, 4th, 5th, 8th... so rows alternate
+
+  test('projects accent bars alternate (desktop): odd items keep the hue edge, the 2-column index is a checkerboard, wide panels have none', async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 900 });
+    await page.goto(SPA);
+    expectBars(await projectBars(page), { '.pi': checker, '.cs-stat': odd, '.feat': odd, '.pipe-stage': odd, '.plat': odd, '.vis-wrap': () => false, '.cs-skills': () => false });
+  });
+
+  test('projects accent bars alternate (phone): one-column index is odd/even, 2x2 stat tiles are a checkerboard', async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 800 });
+    await page.goto(SPA);
+    expectBars(await projectBars(page), { '.pi': odd, '.cs-stat': checker, '.feat': odd, '.vis-wrap': () => false, '.cs-skills': () => false });
+  });
+
+  test('an even project card keeps its text aligned with the odd one and still shows a hue ring on hover', async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 900 });
+    await page.goto(SPA);
+    await page.locator('#shared-nav .links a[href="#projects"]').click();
+    await page.waitForTimeout(600);
+    const pis = page.locator('#pg-projects .pi');
+    const pad = await pis.evaluateAll(els => els.slice(0, 2).map(e => { const c = getComputedStyle(e); return [c.borderLeftWidth, c.paddingLeft]; }));
+    expect(pad[1]).toEqual(pad[0]); // same border width + padding, so the text starts at the same offset
+    await pis.nth(1).hover();
+    await expect.poll(() => pis.nth(1).evaluate(e => getComputedStyle(e).boxShadow)).toContain('0px 0px 0px 1px');
   });
 
   test('project index cards are free-floating (no glass card)', async ({ page }) => {
