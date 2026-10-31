@@ -90,6 +90,21 @@
 - [x] Merged #41 to `dev` after merging `origin/dev` into the branch (DEVLOG conflict, both entries kept). `npm test` 85/85 on the combined result
 - [ ] Release `dev` to `main` (carries #36, #37, the standalone-page cleanup, README, #40, #41); look at it on a phone first
 
+### Roadmap mobile nav + card surfaces (2026-10-31) — PR open against `dev`, not yet merged
+**Ask (from a phone screenshot of the dev preview):** the roadmap nav is at the bottom on a phone; it should be at the top. And some widgets are near-black instead of grey.
+
+**Scope:**
+- Nav: `#roadmap-internal-nav` is a bottom bar at 1000px and below (the grouped topbar has no free centre slot for its labelled links). On a phone (<=559px) the shared links pill is only 134-198px wide and is hidden on the roadmap, so there is room in the topbar row: put the nav there as an icons-only pill (the active tab is the highlighted one). 560-1000px keeps the bottom pill (its labelled 516px bar does not fit the 258px slot). Things that assume a bottom bar and must follow: the search FAB lift (`bottom: 84px`), the progress widget (`bottom: 80px`), `alignRoadmapNav()` (only aligns above 1000px), and the phone test that checks the FAB clears the bar.
+- Surfaces: `.guide-col` (Getting started), `.topic-card` (11 core topics), `.resource-item` (curated resources) on Roadmap and `.int-card` (Interests) on About use `--bg3` (near-black in dark theme); the other widgets use `--bg2`. Switch to `--bg2`, with the hover going to `--bg3` like the phase and career cards.
+- Same pattern, not in the ask: `.skill-group` (About) and `.mcard` (Roadmap mind-map cards) are also `--bg3`.
+
+- [x] Phone: roadmap nav in the topbar row, icons only; FAB and progress widget back to their normal positions
+- [x] Four card types on `--bg2`, hover `--bg3` (topic cards and resources)
+- [x] Playwright: nav at the top and inside the topbar row on phones (320/360/390/430/559), bottom pill kept at 560-1000; card backgrounds equal the other widgets'
+- [x] Verify: `npm test` 96/96, `lint:html` clean, phone screenshots, no overlap with the brand and tools pills at 320
+- [x] PR to `dev`
+- [ ] Decide: `.skill-group` (About) and `.mcard` (Roadmap) are also `--bg3`; move them to `--bg2` too?
+
 ### Performance — cut the root-load cost (scoped 2026-10-26, not started)
 **Goal:** root URL adds ~0ms over direct portfolio; first paint ~350-400ms (was ~560ms).
 

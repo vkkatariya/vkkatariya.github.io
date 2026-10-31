@@ -18,7 +18,7 @@ test.describe('phone search button', () => {
     await expect(page.locator('#sxFab')).toBeHidden();
   });
 
-  test('it clears the roadmap bottom bar', async ({ page }) => {
+  test('on the roadmap the nav is in the topbar, so the search button stays at the normal bottom position', async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 780 });
     await page.goto(SPA);
     await page.evaluate(() => showPage('roadmap'));
@@ -26,8 +26,8 @@ test.describe('phone search button', () => {
     await page.evaluate(() => window.scrollTo(0, 900));
     await expect(page.locator('#roadmap-internal-nav')).toHaveClass(/nav-visible/);
     const fab = await page.locator('#sxFab').boundingBox();
-    const bar = await page.locator('#roadmap-internal-nav').boundingBox();
-    expect(fab.y + fab.height).toBeLessThanOrEqual(bar.y);
+    expect(fab.y + fab.height).toBeGreaterThanOrEqual(780 - 40); // not lifted above a bottom bar
+    expect(await page.locator('#progress-widget').evaluate(e => getComputedStyle(e).bottom)).toBe('16px');
   });
 });
 
