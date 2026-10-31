@@ -35,7 +35,7 @@
 <meta name="twitter:image" content="https://vishal-katariya.com/prototypes/assets/og-image.png">
 <link rel="canonical" href="/prototypes/portfolio-combined">
 <!-- no-JS fallback; the script below redirects as soon as the intro has played (~0.85s) -->
-<meta http-equiv="refresh" content="4; url=/prototypes/portfolio-combined">
+<meta http-equiv="refresh" content="2; url=/prototypes/portfolio-combined">
 <link rel="prefetch" href="/prototypes/portfolio-combined" as="document">
 <script>
 window.si = window.si || function () { (window.siq = window.siq || []).push(arguments); };
@@ -47,167 +47,73 @@ window.va = window.va || function () { (window.vaq = window.vaq || []).push(argu
 <script defer src="/_vercel/insights/script.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,600;1,700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,700&family=JetBrains+Mono:wght@400&family=Syne:wght@800&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 
-/* design-system tokens (same values as prototypes/portfolio-combined.html) */
+/* design-system tokens (same values as prototypes/portfolio-combined.html, only those used here) */
 :root {
-  --bg:#1B1C1D; --bg2:#222425; --bg3:#161718; --bg4:#2B2D2E;
-  --w:#F4F4F5; --w80:#CCCED0; --w60:#A4A7AB; --w30:#5C5E62;
-  --w12:rgba(255,255,255,.12); --w06:rgba(255,255,255,.06);
-  --acc:#2FD9BE;
-  --blue:#5E9BFF; --teal:#2FD9BE; --cyan:#4CCBF0; --indigo:#9A9DFF; --purple:#BC92FF;
+  --bg:#1B1C1D; --w:#F4F4F5; --w60:#A4A7AB; --w06:rgba(255,255,255,.06);
+  --acc:#2FD9BE; --blue:#5E9BFF; --teal:#2FD9BE; --indigo:#9A9DFF; --purple:#BC92FF;
   --shadow:0 12px 32px rgba(0,0,0,.42);
-  --glass-top:rgba(34,36,37,.86); --glass-bottom:rgba(27,28,29,.78); --glass-border:rgba(255,255,255,.14);
   --display:'Syne','Space Grotesk',system-ui,sans-serif;
-  --sans:'Space Grotesk',system-ui,-apple-system,'Segoe UI',sans-serif;
-  --read:'Outfit','Space Grotesk',system-ui,sans-serif;
   --mono:'JetBrains Mono',ui-monospace,'SFMono-Regular',Menlo,monospace;
   --spring:cubic-bezier(.34,1.46,.64,1); --ease:cubic-bezier(.2,.7,.2,1);
-  --np-off:4px;
   color-scheme:dark;
 }
 html.light {
-  --bg:#ECECEC; --bg2:#FFFFFF; --bg3:#F0F0F1; --bg4:#E6E6E8;
-  --w:#0D0D0F; --w80:#2B2D30; --w60:#54575B; --w30:#A3A6AA;
-  --w12:rgba(13,13,15,.12); --w06:rgba(13,13,15,.06);
-  --acc:#007860;
-  --blue:#0C65DF; --teal:#007860; --cyan:#00708F; --indigo:#4A4DD1; --purple:#7338CC;
+  --bg:#ECECEC; --w:#0D0D0F; --w60:#54575B; --w06:rgba(13,13,15,.06);
+  --acc:#007860; --blue:#0C65DF; --teal:#007860; --indigo:#4A4DD1; --purple:#7338CC;
   --shadow:0 12px 32px rgba(13,13,15,.16);
-  --glass-top:rgba(255,255,255,.92); --glass-bottom:rgba(250,250,250,.86); --glass-border:rgba(13,13,15,.12);
   color-scheme:light;
 }
-.hue-blue{--h:var(--blue)}.hue-teal{--h:var(--teal)}.hue-indigo{--h:var(--indigo)}.hue-purple{--h:var(--purple)}
 
 html, body { min-height: 100vh; min-height: 100dvh; }
-body {
-  background: var(--bg); color: var(--w80);
-  font-family: var(--sans); font-size: 16px; line-height: 1.6;
-  display: grid; place-items: center; overflow: hidden;
-}
+body { background: var(--bg); color: var(--w); display: grid; place-items: center; overflow: hidden; }
 
-/* dot matrix + soft top glow, as on every page */
+/* dot matrix, as on every page */
 body::before {
-  content: ''; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  content: ''; position: fixed; inset: 0; pointer-events: none;
   background-image: radial-gradient(circle, var(--w06) 1px, transparent 1px); background-size: 20px 20px;
 }
-body::after {
-  content: ''; position: fixed; z-index: 0; pointer-events: none;
-  top: -200px; left: 50%; transform: translateX(-50%); width: 900px; height: 500px;
-  background: radial-gradient(ellipse, rgba(93,161,246,.055) 0%, transparent 70%);
-}
-
-a:focus-visible { outline: 2px solid var(--acc); outline-offset: 3px; }
 
 .stage {
-  position: relative; z-index: 1; width: 100%; max-width: 560px;
-  display: flex; flex-direction: column; align-items: center; text-align: center;
-  padding: 32px 20px;
+  position: relative; display: flex; flex-direction: column; align-items: center; text-align: center; padding: 24px 20px;
   animation: leave .18s var(--ease) both paused;
 }
 .stage.leave { animation-play-state: running; }
 @keyframes leave { to { opacity: 0; transform: translateY(-8px) scale(.985); } }
-
-/* intro: everything below is CSS-driven (no JS needed to play); the script only schedules the redirect */
 @keyframes pop { from { opacity: 0; transform: scale(.6); } to { opacity: 1; transform: scale(1); } }
 @keyframes rise { from { opacity: 0; transform: translateY(14px); filter: blur(6px); } to { opacity: 1; transform: none; filter: blur(0); } }
 @keyframes fade { from { opacity: 0; } to { opacity: 1; } }
-@keyframes chip { from { opacity: 0; transform: translateY(10px) scale(.9); } to { opacity: 1; transform: none; } }
 @keyframes sweep { from { transform: scaleX(0); } to { transform: scaleX(1); } }
 
-.mark {
-  position: relative; width: 84px; height: 84px; margin-bottom: 28px;
-  animation: pop .45s var(--spring) both;
-}
-.mark::before { /* hue halo that breathes once the mark has landed */
-  content: ''; position: absolute; inset: -22px; border-radius: 50%; z-index: -1;
-  background: radial-gradient(circle, color-mix(in srgb, var(--acc) 28%, transparent) 0%, transparent 68%);
-  animation: fade .5s var(--ease) .15s both;
-}
-.mark img { width: 100%; height: 100%; display: block; border-radius: 22%; object-fit: cover; box-shadow: var(--shadow); }
+/* the logo is the way in: tap it to skip the intro */
+.mark { position: relative; display: block; width: 76px; height: 76px; margin-bottom: 26px; border-radius: 22%; animation: pop .45s var(--spring) both; }
+.mark::before { content: ''; position: absolute; inset: -22px; border-radius: 50%; z-index: -1; background: radial-gradient(circle, color-mix(in srgb, var(--acc) 28%, transparent), transparent 68%); animation: fade .5s var(--ease) .15s both; }
+.mark img { width: 100%; height: 100%; display: block; border-radius: inherit; box-shadow: var(--shadow); }
+.mark:focus-visible { outline: 2px solid var(--acc); outline-offset: 6px; }
 
-.wm {
-  font-family: var(--display); font-weight: 800; color: var(--w);
-  font-size: clamp(24px, 8vw, 60px); line-height: 1.05; letter-spacing: -.03em; white-space: nowrap;
-}
+.wm { font-family: var(--display); font-weight: 800; font-size: clamp(26px, 8vw, 56px); line-height: 1.05; letter-spacing: -.03em; white-space: nowrap; }
 .wm .hn-script { font-family: 'Cormorant Garamond', serif; font-style: italic; font-weight: 700; font-size: 1.15em; letter-spacing: -.02em; line-height: .8; }
 .wm span { display: inline-block; animation: rise .45s var(--ease) both; }
 .wm .w1 { animation-delay: .06s; } .wm .w2 { animation-delay: .12s; } .wm .w3 { animation-delay: .19s; } .wm .w4 { animation-delay: .26s; }
 
-.tag {
-  margin-top: 14px; max-width: 34ch; font-family: var(--read); font-size: 17px; line-height: 1.55; color: var(--w80);
-  animation: fade .4s var(--ease) .3s both;
-}
+.role { margin-top: 14px; font-family: var(--mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--w60); animation: fade .4s var(--ease) .3s both; }
 
-/* destinations: the four nav hues, same glass-pill + hue-tint recipe as the topbar links */
-.dest { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 30px; }
-.dest a {
-  display: inline-flex; align-items: center; gap: 8px; padding: 10px 14px; border-radius: 999px;
-  font-family: var(--sans); font-weight: 500; font-size: 14px; letter-spacing: .06em; text-transform: uppercase; line-height: 1;
-  color: var(--w80); text-decoration: none;
-  background: color-mix(in srgb, var(--h) 12%, transparent); border: 1px solid color-mix(in srgb, var(--h) 42%, transparent);
-  animation: chip .35s var(--spring) both;
-  transition: background .24s var(--ease), border-color .24s var(--ease), color .24s var(--ease), transform .24s var(--spring);
-}
-.dest a:hover { color: var(--w); background: color-mix(in srgb, var(--h) 20%, transparent); border-color: var(--h); transform: translateY(-2px); }
-.dest a svg { width: 18px; height: 18px; flex: none; color: var(--h); fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
-.dest a:nth-child(1) { animation-delay: .34s; } .dest a:nth-child(2) { animation-delay: .39s; }
-.dest a:nth-child(3) { animation-delay: .44s; } .dest a:nth-child(4) { animation-delay: .49s; }
+/* progress hairline in the four nav hues; fills while the intro plays, then the page changes */
+.bar { width: min(200px, 60vw); height: 2px; margin-top: 30px; border-radius: 2px; background: var(--w06); overflow: hidden; }
+.bar i { display: block; height: 100%; transform-origin: left; background: linear-gradient(90deg, var(--blue), var(--teal), var(--indigo), var(--purple)); animation: sweep .6s cubic-bezier(.4,0,.2,1) .2s both; }
 
-/* progress: the four hues in nav order; fills over the time the intro takes, then the page changes */
-.bar { width: min(240px, 70vw); height: 3px; margin-top: 38px; border-radius: 3px; background: var(--w06); overflow: hidden; animation: fade .3s var(--ease) .15s both; }
-.bar i { display: block; height: 100%; border-radius: inherit; transform-origin: left; background: linear-gradient(90deg, var(--blue), var(--teal), var(--indigo), var(--purple)); animation: sweep .6s cubic-bezier(.4,0,.2,1) .2s both; }
-.status { margin-top: 12px; font-family: var(--mono); font-size: 12px; letter-spacing: .08em; color: var(--w60); animation: fade .3s var(--ease) .2s both; }
-
-/* CTA: NeoPOP button, as on the site */
-.np {
-  display: inline-flex; align-items: center; gap: 7px; margin-top: 26px; padding: 12px 20px;
-  background: var(--w); color: var(--bg); font-family: var(--mono); font-size: 11px; font-weight: 500; letter-spacing: 1.5px; text-transform: uppercase;
-  border-radius: 5px; text-decoration: none;
-  box-shadow: var(--np-off) var(--np-off) 0 color-mix(in srgb, var(--w) 28%, transparent);
-  transition: transform .1s ease, box-shadow .1s ease;
-  animation: chip .35s var(--spring) .55s both;
-}
-.np:hover { transform: translate(-2px,-2px); box-shadow: calc(var(--np-off) + 2px) calc(var(--np-off) + 2px) 0 color-mix(in srgb, var(--w) 28%, transparent); }
-.np:active { transform: translate(var(--np-off), var(--np-off)); box-shadow: 0 0 0 transparent; }
-
-@media (max-width: 420px) {
-  .dest { display: grid; grid-template-columns: repeat(2, 1fr); width: 100%; max-width: 300px; }
-  .dest a { justify-content: center; padding: 10px 12px; font-size: 13px; }
-  .tag { font-size: 16px; }
-}
-
-/* reduced motion: show the finished screen at once */
-@media (prefers-reduced-motion: reduce) {
-  .stage, .mark, .mark::before, .wm span, .tag, .dest a, .bar, .bar i, .status, .np { animation: none !important; }
-  .dest a { transition: none; }
-}
+@media (prefers-reduced-motion: reduce) { .stage, .mark, .mark::before, .wm span, .role, .bar i { animation: none !important; } }
 </style>
 </head>
 <body>
-<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
-  <symbol id="i-home" viewBox="0 0 24 24"><path d="M4 11 12 4l8 7v9H4z"/><path d="M10 20v-6h4v6"/></symbol>
-  <symbol id="i-box" viewBox="0 0 24 24"><path d="M3 8 12 3l9 5v8l-9 5-9-5zM3 8l9 5 9-5M12 13v8"/></symbol>
-  <symbol id="i-map" viewBox="0 0 24 24"><path d="M9 4 3 6.5v13L9 17l6 3 6-2.5v-13L15 7z"/><path d="M9 4v13M15 7v13"/></symbol>
-  <symbol id="i-figure" viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-8M22 20H2"/></symbol>
-</defs></svg>
-
 <main class="stage" id="stage">
-  <div class="mark"><img src="prototypes/assets/logo-192.webp" alt="" width="84" height="84"></div>
+  <a class="mark" id="enter" href="/prototypes/portfolio-combined" aria-label="Enter portfolio"><img src="prototypes/assets/logo-192.webp" alt="" width="76" height="76"></a>
   <h1 class="wm" aria-label="Vishal Katariya"><span class="hn-script w1" aria-hidden="true">V</span><span class="w2" aria-hidden="true">ishal</span> <span class="hn-script w3" aria-hidden="true">K</span><span class="w4" aria-hidden="true">atariya</span></h1>
-  <p class="tag">CS student at Hochschule Darmstadt. ML engineering, full-stack, infrastructure.</p>
-
-  <nav class="dest" aria-label="Sections">
-    <a class="hue-blue" href="/prototypes/portfolio-combined#home"><svg aria-hidden="true"><use href="#i-home"/></svg>home</a>
-    <a class="hue-teal" href="/prototypes/portfolio-combined#projects"><svg aria-hidden="true"><use href="#i-box"/></svg>projects</a>
-    <a class="hue-indigo" href="/prototypes/portfolio-combined#roadmap"><svg aria-hidden="true"><use href="#i-map"/></svg>roadmap</a>
-    <a class="hue-purple" href="/prototypes/portfolio-combined#about"><svg aria-hidden="true"><use href="#i-figure"/></svg>about</a>
-  </nav>
-
+  <p class="role">ML · Infra · Full-stack</p>
   <div class="bar" aria-hidden="true"><i></i></div>
-  <p class="status" role="status">loading portfolio…</p>
-  <a class="np" id="enter" href="/prototypes/portfolio-combined">Enter portfolio →</a>
 </main>
 
 <script>
@@ -217,6 +123,7 @@ a:focus-visible { outline: 2px solid var(--acc); outline-offset: 3px; }
   var hash = location.hash.replace('#', '');
   if (hash === 'stay') return; // view this screen without redirecting (previews, screenshots, tests)
   var dest = TARGET + (PAGES.indexOf(hash) > -1 ? '#' + hash : ''); // vishal-katariya.com/#projects lands on Projects
+  document.getElementById('enter').href = dest;
   var stage = document.getElementById('stage');
   var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
   var left = false;

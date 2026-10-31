@@ -6,6 +6,22 @@
 
 ---
 
+## [2026-10-31] Claude Code (local) — feat/index-minimal · index.html redesigned to a minimal splash
+
+**Mode:** Builder
+
+**Ask:** "Redesign index.html with minimal footprint yet modern and follows our design system".
+
+**Did:** `index.html` 13.8KB to 8.5KB. Kept: dot-matrix background, the logo with its hue halo (now a link: tapping it enters the portfolio), the Syne wordmark with the Cormorant V/K, a JetBrains Mono role line, a 2px four-hue progress hairline, the ~0.85s timeline, repeat-visit skip, `#stay`, section-hash forwarding, theme switch and absolute og: URLs. Removed: destination chips, the tagline, the "loading" status, the NeoPOP CTA, the icon sprite, unused tokens, the top glow. The Google Fonts request shrinks to the three faces used (Syne 800, Cormorant italic 700, JetBrains Mono 400; was five families and 20 weights). No new dependencies.
+
+**Verified:** `tests/e2e/index.spec.js` 12/12 (rewritten for the new content; new: size under 10KB, no chips/CTA, one font request, logo tap enters); screenshots dark 390px and light 1280px; full suite and `lint:html` before the PR.
+
+**State:** PR open against `dev`. Stacked on top of #44 (splash speed), so merge #44 first.
+
+**Modified:** `index.html`, `tests/e2e/index.spec.js`, `CLAUDE.md`, `tasks/DEVLOG.md`.
+
+---
+
 ## [2026-10-31] Claude Code (local) — perf/splash-faster · intro splash cut from ~1.9s to ~0.85s
 
 **Mode:** Builder
