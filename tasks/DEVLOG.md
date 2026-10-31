@@ -6,6 +6,38 @@
 
 ---
 
+## [2026-10-31] Claude Code (local) — feat/index-minimal · index.html redesigned to a minimal splash
+
+**Mode:** Builder
+
+**Ask:** "Redesign index.html with minimal footprint yet modern and follows our design system".
+
+**Did:** `index.html` 13.8KB to 8.5KB. Kept: dot-matrix background, the logo with its hue halo (now a link: tapping it enters the portfolio), the Syne wordmark with the Cormorant V/K, a JetBrains Mono role line, a 2px four-hue progress hairline, the ~0.85s timeline, repeat-visit skip, `#stay`, section-hash forwarding, theme switch and absolute og: URLs. Removed: destination chips, the tagline, the "loading" status, the NeoPOP CTA, the icon sprite, unused tokens, the top glow. The Google Fonts request shrinks to the three faces used (Syne 800, Cormorant italic 700, JetBrains Mono 400; was five families and 20 weights). No new dependencies.
+
+**Verified:** `tests/e2e/index.spec.js` 12/12 (rewritten for the new content; new: size under 10KB, no chips/CTA, one font request, logo tap enters); screenshots dark 390px and light 1280px; full suite and `lint:html` before the PR.
+
+**State:** PR open against `dev`. Stacked on top of #44 (splash speed), so merge #44 first.
+
+**Modified:** `index.html`, `tests/e2e/index.spec.js`, `CLAUDE.md`, `tasks/DEVLOG.md`.
+
+---
+
+## [2026-10-31] Claude Code (local) — perf/splash-faster · intro splash cut from ~1.9s to ~0.85s
+
+**Mode:** Builder
+
+**Ask:** "Sort out splash, 1.9s is a lot" (decision 1 of the perf task in `todo.md`).
+
+**Did:** `index.html` keeps the design-system intro but the whole timeline is compressed: mark pop .7s to .45s, wordmark words staggered .06-.26s, chips .34-.49s, progress bar sweep 1.35s to .6s, redirect timer 1700ms to 650ms plus .18s fade (~0.85s total; reduced motion 300ms). Repeat visits in the same tab session skip it entirely (`sessionStorage` key `vk-intro`, try/catch so blocked storage always plays it). `#stay` and section-hash forwarding unchanged.
+
+**Verified:** `tests/e2e/index.spec.js` 11/11 (new: redirect within 1.2s; repeat visit redirects within 400ms), full suite and `lint:html` run before the PR.
+
+**State:** PR open against `dev`. Self-hosted fonts, canonical host and HTML cache staleness (decisions 2-4) still open.
+
+**Modified:** `index.html`, `tests/e2e/index.spec.js`, `tasks/todo.md`, `tasks/DEVLOG.md`.
+
+---
+
 ## [2026-10-31] Claude Code (local) — fix/roadmap-mobile-nav-and-surfaces · roadmap nav at the top on phones, grey card surfaces
 
 **Mode:** Builder

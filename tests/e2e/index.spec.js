@@ -5,22 +5,26 @@ import { readFileSync } from 'node:fs';
 const STAY = '/index.html#stay'; // #stay: show the splash without redirecting
 
 test.describe('index.html splash (design system)', () => {
-  test('shows the wordmark, logo, four hued destinations and the CTA', async ({ page }) => {
+  test('shows the logo (as the way in), the wordmark, the role line and a four-hue progress bar', async ({ page }) => {
     await page.goto(STAY);
     await expect(page.locator('h1')).toHaveAttribute('aria-label', 'Vishal Katariya');
     await expect(page.locator('.mark img')).toHaveAttribute('src', 'prototypes/assets/logo-192.webp');
-    const links = page.locator('.dest a');
-    await expect(links).toHaveCount(4);
-    await expect(links).toHaveText(['home', 'projects', 'roadmap', 'about']);
-    const hues = await links.evaluateAll(as => as.map(a => getComputedStyle(a.querySelector('svg')).color));
-    expect(new Set(hues).size).toBe(4); // blue / teal / indigo / purple
     await expect(page.locator('#enter')).toHaveAttribute('href', '/prototypes/portfolio-combined');
+    await expect(page.locator('.role')).toHaveText('ML · Infra · Full-stack');
+    expect(await page.locator('.bar i').evaluate(e => getComputedStyle(e).backgroundImage.match(/rgb\(/g).length)).toBe(4);
+  });
+
+  test('stays minimal: small file, no destination chips, no CTA, one font request', async () => {
+    const html = readFileSync('index.html', 'utf8');
+    expect(html.length).toBeLessThan(10000);
+    expect(html).not.toMatch(/class="dest"|class="np"|class="tag"/);
+    expect(html.match(/fonts\.googleapis\.com\/css2/g)).toHaveLength(1);
   });
 
   test('uses the design-system fonts and tokens', async ({ page }) => {
     await page.goto(STAY);
     expect(await page.locator('h1').evaluate(e => getComputedStyle(e).fontFamily)).toContain('Syne');
-    expect(await page.locator('.tag').evaluate(e => getComputedStyle(e).fontFamily)).toContain('Outfit');
+    expect(await page.locator('.role').evaluate(e => getComputedStyle(e).fontFamily)).toContain('JetBrains Mono');
     expect(await page.locator('body').evaluate(e => getComputedStyle(e).backgroundColor)).toBe('rgb(27, 28, 29)'); // --bg
   });
 
@@ -32,10 +36,35 @@ test.describe('index.html splash (design system)', () => {
 
   test('plays the intro, then redirects to the portfolio', async ({ page }) => {
     await page.goto('/index.html');
-    await page.waitForTimeout(600);
+    await page.waitForTimeout(250);
     expect(page.url()).toContain('/index.html'); // still on the splash while it animates
     await page.waitForURL(/\/prototypes\/portfolio-combined/, { timeout: 6000 });
     await expect(page.locator('#pg-home')).toHaveClass(/active/);
+  });
+
+  test('the intro is short: the page leaves within ~1.2s of its own navigation start', async ({ page }) => {
+    // measured inside the page (performance.now() at pagehide), so a slow runner or server does not skew it
+    await page.addInitScript(() => {
+      if (!location.pathname.endsWith('index.html')) return;
+      addEventListener('pagehide', () => localStorage.setItem('vk-left-at', String(performance.now())));
+    });
+    await page.goto('/index.html');
+    await page.waitForURL(/\/prototypes\/portfolio-combined/, { timeout: 8000 });
+    const leftAt = Number(await page.evaluate(() => localStorage.getItem('vk-left-at')));
+    expect(leftAt).toBeGreaterThan(500); // it did play
+    expect(leftAt).toBeLessThan(1200);
+  });
+
+  test('a repeat visit in the same tab session skips the intro', async ({ page }) => {
+    await page.addInitScript(() => {
+      if (!location.pathname.endsWith('index.html')) return;
+      addEventListener('pagehide', () => localStorage.setItem('vk-left-at', String(performance.now())));
+    });
+    await page.goto('/index.html');
+    await page.waitForURL(/\/prototypes\/portfolio-combined/, { timeout: 8000 });
+    await page.goto('/index.html');
+    await page.waitForURL(/\/prototypes\/portfolio-combined/, { timeout: 8000 });
+    expect(Number(await page.evaluate(() => localStorage.getItem('vk-left-at')))).toBeLessThan(300); // the second visit left at once
   });
 
   test('reduced motion: finished screen, quick redirect', async ({ browser }) => {
@@ -54,10 +83,10 @@ test.describe('index.html splash (design system)', () => {
     await expect(page.locator('#pg-projects')).toHaveClass(/active/);
   });
 
-  test('the CTA and a destination chip navigate immediately', async ({ page }) => {
+  test('tapping the logo enters the portfolio immediately', async ({ page }) => {
     await page.goto(STAY);
-    await page.locator('.dest a', { hasText: 'roadmap' }).click();
-    await expect(page.locator('#pg-roadmap')).toHaveClass(/active/);
+    await page.locator('#enter').click();
+    await expect(page.locator('#pg-home')).toHaveClass(/active/);
   });
 
   test('fits a 320px phone without horizontal scroll', async ({ page }) => {
