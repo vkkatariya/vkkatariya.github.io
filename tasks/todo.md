@@ -106,6 +106,7 @@
 - [x] PR to `dev`
 - [x] `.skill-group` (About) and `.mcard` (Roadmap) moved to `--bg2` too
 - [x] Roadmap title starts at 120px on phones, like Projects and About (`npm test` 99/99)
+- [x] Roadmap hero: dead space before "Learning path overview" on phones/tablets (home `.hero` min-height 75-80vh leaked in) removed
 - [ ] Open: at 560px and above the roadmap title still starts at 196px (Projects 120px, About 120-130px): same 76px double padding on tablet and desktop. Decide whether to align those too
 
 ### Performance — cut the root-load cost (scoped 2026-10-26, not started)
