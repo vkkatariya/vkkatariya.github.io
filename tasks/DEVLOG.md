@@ -6,6 +6,31 @@
 
 ---
 
+## [2026-10-31] Claude Code (local) — fix/roadmap-mobile-nav-and-surfaces · roadmap nav at the top on phones, grey card surfaces
+
+**Mode:** Builder
+
+**Ask (from a phone screenshot of the dev preview):** the roadmap nav is at the bottom on a phone, put it at the top; and the Getting started, 11 core topics, curated resources (Roadmap) and Interests (About) widgets are near-black instead of grey.
+
+**Did:**
+- Nav: `#roadmap-internal-nav` was a bottom bar at 1000px and below. On phones (<=559px) it is now an icons-only pill in the topbar row (14px from the top, 50px tall like the other pills), centred in the slot of the shared links pill, which the roadmap hides: `alignRoadmapNav()` now also centres it there on phones (it only did so above 1000px). Items are 38px (30px at <=359px) so the pill is 168px (136px) and clears the brand and tools pills from 320px up; the links keep their aria-labels, the active tab is the hue-tinted circle. 560-1000px keeps the labelled bottom pill (516px does not fit the 258px slot); desktop unchanged.
+- Things that assumed a bottom bar: the search FAB lift (`bottom: 84px`) now only applies at exactly 560px (where the bottom pill and the FAB can meet); the progress widget is back at `bottom: 16px` on phones (the 560-1000px lift stays); the old phone test ("FAB clears the bottom bar") now checks the opposite.
+- Surfaces: `.guide-col`, `.topic-card`, `.resource-item` (Roadmap) and `.int-card` (About) used `--bg3` (near-black in dark theme) while the other widgets use `--bg2`. They now use `--bg2` (white in the light theme, like the career cards); `.topic-card` and `.resource-item` hover to `--bg3`, like the phase and career cards.
+
+**Follow-up in the same PR (asked after the first push):**
+- `.skill-group` (About) and `.mcard` (Roadmap mind-map cards, below 900px) were the same near-black `--bg3`; both now use `--bg2` too, so every card on Roadmap and About matches the other widgets. The chips inside the skill groups stay legible.
+- Roadmap title gap on phones: the roadmap header sits inside `<main>` (which adds 76px) and `.ph` added another 120px, so the title started at 196px while Projects and About start at 120px. At <=559px `#pg-roadmap .ph` now has `padding-top: 44px` (76 + 44 = 120), so all three pages line up from 320px to 559px. At 560px and above the roadmap still starts at 196px (desktop and tablet were not part of the ask).
+
+**Third follow-up (phone screenshot: big empty space between the roadmap hero buttons and "Learning path overview"):** the roadmap hero reuses the home `.hero` class, whose `min-height: 80vh` (<=860px) and `75vh` (<=560px) leaked onto it, leaving ~900px of dead space on a phone. `#pg-roadmap .hero` now has `min-height: 0` and `padding-bottom: 24px` (was 60px). At 390px the hero is ~230px tall and the buttons-to-heading gap is under 100px. New test "roadmap hero has no dead space" (390/768/1280px): fails at 390 and 768 on the old CSS. `npm test` 102/102 before the padding tweak; the new and title tests re-run after it, `lint:html` 0 errors.
+
+**Verified:** `npm test` 99/99 (96 + 3: the title lines up with Projects and About at 320/390/559px; the surfaces test now also covers `.mcard` and `.skill-group`; 5 of those 5 fail on the previous HTML). Earlier in this PR: `npm test` 96/96 (+10: nav inside the topbar row and clear of the brand/tools pills at 320/360/390/430/559px, bottom pill kept at 560 and 860px, desktop unchanged, card backgrounds equal the home widget's in dark and light, topic-card hover; the phone FAB test replaced; 8 of the 11 new/changed tests fail on the old CSS); `lint:html` 0 errors; nav rect measured at 11 widths from 320 to 1280; screenshots at 390 and 320 (dark and light). Gotcha for screenshots: `html { scroll-behavior: smooth }`, so a screenshot taken right after `scrollTo` shows the fixed bars displaced mid-scroll; use `behavior: 'instant'` and wait.
+
+**State:** PR open against `dev`.
+
+**Modified:** `prototypes/portfolio-combined.html`, `tests/e2e/spa.spec.js`, `tests/e2e/phone-and-legacy.spec.js`, `tasks/todo.md`, `tasks/DEVLOG.md`.
+
+---
+
 ## [2026-10-31] Claude Code (local) — chore/resume-folder-and-tidy · your reorganisation committed, move repaired
 
 **Mode:** Execution

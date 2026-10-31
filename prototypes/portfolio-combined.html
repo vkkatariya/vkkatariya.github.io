@@ -316,13 +316,15 @@ html.light body::before {
 .sx-ft { display: flex; flex-wrap: wrap; gap: 6px 18px; align-items: center; padding: 10px 18px; border-top: 1px solid var(--w12); font-family: var(--mono); font-size: 13px; color: var(--w60); }
 .sx-ft kbd { font-family: var(--mono); font-size: 13px; border: 1px solid var(--w12); border-radius: 6px; padding: 0 6px; background: var(--bg3); color: var(--w80); }
 /* phones: the topbar has no spare pixels at 360px (brand + 4 icons + theme + profile), so search is a floating glass button;
-   lifted above the roadmap's bottom bar when that is showing */
+   lifted above the roadmap's bottom bar when that is showing (only at exactly 560px: below that the roadmap nav is in the topbar) */
 .pill.sx-fab { display: none; }
 @media (max-width: 560px) {
   .pill.sx-fab { display: inline-flex; justify-content: center; position: fixed; z-index: 150; width: 48px; height: 48px; padding: 0; cursor: pointer; color: var(--w80);
     right: max(16px, env(safe-area-inset-right, 0px)); bottom: max(20px, env(safe-area-inset-bottom, 0px)); }
   .pill.sx-fab svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
   .pill.sx-fab:focus-visible { outline: 2px solid color-mix(in srgb, var(--acc) 35%, transparent); outline-offset: 3px; }
+}
+@media (min-width: 560px) and (max-width: 560px) {
   html:has(#roadmap-internal-nav.nav-visible) .pill.sx-fab { bottom: 84px; }
 }
 .sx-flash { outline: 2px solid var(--acc); outline-offset: 5px; border-radius: 14px; transition: outline-color .6s; }
@@ -1594,8 +1596,15 @@ footer {
 #pg-roadmap .ph {
   padding-bottom: 0;
 }
+/* phones: this header sits inside <main>, which already adds 76px, so the .ph 120px put the title at 196px while Projects and About
+   (header outside <main>) start at 120px. 44px + 76px = 120px. */
+@media (max-width: 559px) {
+  #pg-roadmap .ph { padding-top: 44px; }
+}
 #pg-roadmap .hero {
   padding-top: 20px;
+  padding-bottom: 24px;
+  min-height: 0; /* the home hero's 75-80vh tablet/phone min-height leaks in through the shared .hero class */
 }
 
 .hn-script {
@@ -3213,7 +3222,7 @@ html.light #pg-projects .vis-wrap:hover, html.light #pg-projects .feat:hover, ht
 #pg-roadmap .guide-card, #pg-roadmap .guide-card:hover { padding: 0; background: none; border: none; box-shadow: none; border-radius: 0;
   backdrop-filter: none; -webkit-backdrop-filter: none; overflow: visible; transform: none; }
 #pg-roadmap .guide-grid { grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 12px; }
-#pg-roadmap .guide-col { background: var(--bg3); border: 1px solid var(--w12); border-left: 4px solid var(--h); border-radius: 14px; padding: 20px; min-width: 0;
+#pg-roadmap .guide-col { background: var(--bg2); border: 1px solid var(--w12); border-left: 4px solid var(--h); border-radius: 14px; padding: 20px; min-width: 0;
   box-shadow: none; backdrop-filter: none; -webkit-backdrop-filter: none; }
 #pg-roadmap .guide-col h3 { font-family: var(--sans); font-weight: 700; font-size: 17px; color: var(--w); margin-bottom: 12px; }
 #pg-roadmap .guide-col h4 { font-family: var(--mono); font-size: 13px; letter-spacing: .06em; text-transform: none; color: var(--h); margin: 20px 0 10px; }
@@ -3261,10 +3270,10 @@ html.light #pg-projects .vis-wrap:hover, html.light #pg-projects .feat:hover, ht
 #pg-roadmap .topic-card[data-phase="foundation"] { --h: var(--blue); } #pg-roadmap .topic-card[data-phase="core"] { --h: var(--teal); }
 #pg-roadmap .topic-card[data-phase="system"] { --h: var(--indigo); } #pg-roadmap .topic-card[data-phase="advanced"] { --h: var(--purple); }
 #pg-roadmap .topic-card, #pg-roadmap .topic-card.completed {
-  padding: 18px; background: var(--bg3); border: 1px solid var(--w12); border-left: 4px solid var(--h); border-radius: 14px;
+  padding: 18px; background: var(--bg2); border: 1px solid var(--w12); border-left: 4px solid var(--h); border-radius: 14px;
   box-shadow: none; backdrop-filter: none; -webkit-backdrop-filter: none; min-width: 0;
 }
-#pg-roadmap .topic-card:hover { transform: translateY(-3px); background: var(--bg2); box-shadow: none; border-color: var(--w12); border-left-color: var(--h); }
+#pg-roadmap .topic-card:hover { transform: translateY(-3px); background: var(--bg3); box-shadow: none; border-color: var(--w12); border-left-color: var(--h); }
 #pg-roadmap .topic-num { font-family: var(--data); font-size: 12.5px; letter-spacing: .06em; color: var(--w60); }
 #pg-roadmap .topic-name { display: flex; align-items: center; gap: 8px; font-family: var(--sans); font-weight: 700; font-size: 17px; line-height: 1.25; color: var(--w); }
 #pg-roadmap .topic-desc { font-family: var(--read); font-size: 15px; letter-spacing: 0; line-height: 1.55; color: var(--w80); }
@@ -3302,9 +3311,9 @@ html.light #pg-projects .vis-wrap:hover, html.light #pg-projects .feat:hover, ht
 
 /* resources (3 groups): mini-cards, purple edge; level = neutral chip */
 #pg-roadmap .resource-group h3 { font-family: var(--mono); font-size: 13px; letter-spacing: .06em; text-transform: none; font-weight: 500; color: var(--h); }
-#pg-roadmap .resource-item { padding: 14px 16px; background: var(--bg3); border: 1px solid var(--w12); border-left: 4px solid var(--h); border-radius: 14px;
+#pg-roadmap .resource-item { padding: 14px 16px; background: var(--bg2); border: 1px solid var(--w12); border-left: 4px solid var(--h); border-radius: 14px;
   box-shadow: none; backdrop-filter: none; -webkit-backdrop-filter: none; }
-#pg-roadmap .resource-item:hover { transform: translateY(-2px); background: var(--bg2); box-shadow: none; border-color: var(--w12); border-left-color: var(--h); }
+#pg-roadmap .resource-item:hover { transform: translateY(-2px); background: var(--bg3); box-shadow: none; border-color: var(--w12); border-left-color: var(--h); }
 #pg-roadmap .resource-name { display: flex; align-items: flex-start; gap: 8px; font-family: var(--sans); font-weight: 600; font-size: 15px; line-height: 1.35; color: var(--w); }
 #pg-roadmap .resource-name svg.ico { margin-top: 3px; }
 #pg-roadmap .resource-level { font-family: var(--mono); font-size: 12px; letter-spacing: 0; color: var(--w80); background: var(--bg2); border: 1px solid var(--w12); border-radius: 100px; padding: 2px 10px; }
@@ -3338,7 +3347,7 @@ html.light #pg-projects .vis-wrap:hover, html.light #pg-projects .feat:hover, ht
 #pg-roadmap .mm-leaf text { fill: var(--w); font-weight: 500; font-size: 13px; text-anchor: middle; pointer-events: none; }
 #pg-roadmap .mm-leaf .mm-num { fill: var(--h); font-family: var(--data); font-size: 10.5px; font-weight: 400; }
 #pg-roadmap .mapcards { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 12px; }
-#pg-roadmap .mcard { background: var(--bg3); border: 1px solid var(--w12); border-left: 4px solid var(--h); border-radius: 14px; padding: 16px; min-width: 0; }
+#pg-roadmap .mcard { background: var(--bg2); border: 1px solid var(--w12); border-left: 4px solid var(--h); border-radius: 14px; padding: 16px; min-width: 0; }
 #pg-roadmap .mcard h3 { display: flex; align-items: center; gap: 10px; margin: 0 0 10px; font-family: var(--sans); font-weight: 700; font-size: 17px; color: var(--w); }
 #pg-roadmap .mcard h3::before { content: ""; width: 10px; height: 10px; border-radius: 50%; background: var(--h); flex: none; }
 #pg-roadmap .mcard ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
@@ -3377,9 +3386,9 @@ html.light #pg-projects .vis-wrap:hover, html.light #pg-projects .feat:hover, ht
 .pw-bar-track { height: 10px; border-radius: 5px; background: var(--w12); }
 .pw-bar-fill { border-radius: 0 5px 5px 0; background: var(--h); }
 
-/* the fixed bottom nav (≤860) owns the bottom edge: lift the progress widget above it */
+/* the fixed bottom nav (560-1000px) owns the bottom edge: lift the progress widget above it. On phones the nav is in the topbar. */
 @media (max-width: 1000px) { #progress-widget { bottom: 86px; left: 16px; } }
-@media (max-width: 559px) { #progress-widget { bottom: 80px; min-width: 0; padding: 10px 14px; } }
+@media (max-width: 559px) { #progress-widget { bottom: 16px; min-width: 0; padding: 10px 14px; } }
 
 /* topic modal (opened from the cards; JS sets data-phase) */
 .modal-overlay { background: var(--scrim); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
@@ -3406,8 +3415,9 @@ html.light #pg-projects .vis-wrap:hover, html.light #pg-projects .feat:hover, ht
 .modal-resource-link .arrow { color: var(--w60); }
 .modal-resource-link:hover .arrow { color: var(--h); }
 
-/* internal nav: responsive. <=1000px (the grouped topbar has no free centre slot) = bottom pill; phone = full-width 4-up bar
-   (rules live after the base so they win) */
+/* internal nav: responsive. 560-1000px (the grouped topbar has no free centre slot for the labelled links) = bottom pill;
+   phone (<=559px) = icons-only pill in the topbar row, in the slot of the shared links pill (alignRoadmapNav() centres it there).
+   Rules live after the base so they win. */
 @media (max-width: 1000px) {
   #roadmap-internal-nav { top: auto !important; bottom: 20px; }
 }
@@ -3415,13 +3425,18 @@ html.light #pg-projects .vis-wrap:hover, html.light #pg-projects .feat:hover, ht
   #roadmap-internal-nav .nav-links a { font-size: 13px; letter-spacing: .04em; padding: 8px 12px; }
 }
 @media (max-width: 559px) {
-  #roadmap-internal-nav { bottom: 16px; width: calc(100% - 32px); max-width: none; height: 50px; padding: 4px; gap: 0; }
+  /* same row and height as the shared topbar pills (14px from the top, 50px tall); 4 icons fit the 134-198px slot between the brand and the tools */
+  #roadmap-internal-nav { --rn-item: 38px; top: 14px !important; bottom: auto; width: fit-content; max-width: none; height: 50px; padding: 4px; gap: 0; }
   #roadmap-internal-nav .nav-logo { display: none; }
-  #roadmap-internal-nav .nav-links { width: 100%; gap: 2px; }
-  #roadmap-internal-nav .nav-links li { flex: 1; min-width: 0; }
-  #roadmap-internal-nav .nav-links a { justify-content: center; gap: 5px; padding: 8px 4px; font-size: 12px; letter-spacing: .02em; overflow: hidden; text-overflow: ellipsis; }
+  #roadmap-internal-nav .nav-links { width: auto; gap: 2px; }
+  #roadmap-internal-nav .nav-links li { flex: none; }
+  #roadmap-internal-nav .nav-links a { justify-content: center; width: var(--rn-item); height: var(--rn-item); padding: 0; }
+  #roadmap-internal-nav .nav-links a svg.i { width: 18px; height: 18px; }
+  #roadmap-internal-nav .nav-links a span { display: none; } /* the links carry aria-labels */
+}
+@media (max-width: 359px) {
+  #roadmap-internal-nav { --rn-item: 30px; }
   #roadmap-internal-nav .nav-links a svg.i { width: 16px; height: 16px; }
-  #roadmap-internal-nav .nav-links a:not(.active) span { display: none; }
 }
 /* ══════════════════════════════════════════════════════════════════════
    PHASE 4 · ABOUT (design system) — scoped to #pg-about
@@ -3506,7 +3521,7 @@ html.light #pg-projects .vis-wrap:hover, html.light #pg-projects .feat:hover, ht
 #pg-about .skill-bar { grid-template-columns: minmax(0, 140px) minmax(0, 1fr); padding: 4px 0; }
 #pg-about .skill-bar-rail { height: 6px; }
 #pg-about .skills-grid { grid-template-columns: repeat(auto-fit, minmax(min(100%, 400px), 1fr)); gap: 12px; }
-#pg-about .skill-group { padding: 20px; background: var(--bg3); border: 1px solid var(--w12); border-left: 4px solid var(--h); border-radius: 14px;
+#pg-about .skill-group { padding: 20px; background: var(--bg2); border: 1px solid var(--w12); border-left: 4px solid var(--h); border-radius: 14px;
   box-shadow: none; backdrop-filter: none; -webkit-backdrop-filter: none; min-width: 0; }
 #pg-about .skill-group:hover { transform: none; box-shadow: none; border-color: var(--w12); border-left-color: var(--h); }
 #pg-about .sg-label { font-family: var(--sans); font-weight: 700; font-size: 16px; letter-spacing: 0; text-transform: none; color: var(--w); margin-bottom: 14px; }
@@ -3529,7 +3544,7 @@ html.light #pg-projects .vis-wrap:hover, html.light #pg-projects .feat:hover, ht
 
 /* interests: mini-cards, pink edge, icon tile */
 #pg-about .int-grid { grid-template-columns: repeat(auto-fit, minmax(min(100%, 400px), 1fr)); gap: 12px; }
-#pg-about .int-card { padding: 18px; gap: 14px; background: var(--bg3); border: 1px solid var(--w12); border-left: 4px solid var(--h); border-radius: 14px;
+#pg-about .int-card { padding: 18px; gap: 14px; background: var(--bg2); border: 1px solid var(--w12); border-left: 4px solid var(--h); border-radius: 14px;
   box-shadow: none; backdrop-filter: none; -webkit-backdrop-filter: none; min-width: 0; }
 #pg-about .int-icon { width: 44px; height: 44px; border-radius: 11px; color: var(--h);
   background: color-mix(in srgb, var(--h) 13%, transparent); border: 1px solid color-mix(in srgb, var(--h) 42%, transparent); }
@@ -6077,13 +6092,13 @@ tick(); setInterval(tick, 1000);
 })();
 
 // The grouped topbar is centred as a whole, so the links slot is not at 50%: park the roadmap
-// internal nav over that slot (>1000px; below that it is a bottom bar). The brand pill animates
-// its width on scroll, so keep tracking for the length of that transition.
+// internal nav over that slot (above 1000px the labelled pill, up to 559px the icons-only pill; 560-1000px it is a
+// bottom bar). The brand pill animates its width on scroll, so keep tracking for the length of that transition.
 function alignRoadmapNav() {
   const rn = document.getElementById('roadmap-internal-nav');
   const links = document.querySelector('#shared-nav .links');
   if (!rn || !links) return;
-  if (window.innerWidth <= 1000) { rn.style.left = ''; return; }
+  if (window.innerWidth <= 1000 && window.innerWidth > 559) { rn.style.left = ''; return; }
   const r = links.getBoundingClientRect();
   rn.style.left = (r.left + r.width / 2) + 'px';
 }

@@ -712,3 +712,107 @@ test.describe('roadmap and about accent bars', () => {
     expect(kept, 'tags are not cleared while the page is hidden').toBe(4);
   });
 });
+
+// ─── Roadmap nav on phones + card surfaces ───────────────────────────────────
+
+test.describe('roadmap nav on phones and card surfaces', () => {
+  const navBox = async page => {
+    await page.evaluate(() => showPage('roadmap'));
+    await expect(page.locator('#roadmap-internal-nav')).toHaveClass(/nav-visible/);
+    await expect.poll(async () => (await page.locator('#roadmap-internal-nav').boundingBox()).width, { message: 'nav finished scaling in' }).toBeGreaterThan(100);
+    await page.waitForTimeout(450); // the pill eases in over ~.34s
+    return page.locator('#roadmap-internal-nav').boundingBox();
+  };
+
+  for (const width of [320, 360, 390, 430, 559]) {
+    test(`phone ${width}px: the nav is an icons-only pill in the topbar row, between the brand and the tools`, async ({ page }) => {
+      await page.setViewportSize({ width, height: 800 });
+      await page.goto(SPA);
+      const nav = await navBox(page);
+      const brand = await page.locator('#shared-nav .brand').boundingBox();
+      const tools = await page.locator('#shared-nav .tools').boundingBox();
+      expect(nav.y).toBeGreaterThanOrEqual(8);
+      expect(nav.y + nav.height).toBeLessThan(80); // in the topbar row, not at the bottom
+      expect(nav.x, 'clears the brand pill').toBeGreaterThanOrEqual(brand.x + brand.width);
+      expect(nav.x + nav.width, 'clears the tools pill').toBeLessThanOrEqual(tools.x);
+      const links = await page.locator('#roadmap-internal-nav .nav-links a').evaluateAll(as => as.map(a => { const r = a.getBoundingClientRect(); return [Math.round(r.width), Math.round(r.height), a.getAttribute('aria-label'), getComputedStyle(a.querySelector('span')).display]; }));
+      expect(links.map(l => l[2])).toEqual(['overview', 'topics', 'careers', 'resources']);
+      for (const [w, h, , span] of links) { expect(w).toBeGreaterThanOrEqual(30); expect(h).toBeGreaterThanOrEqual(30); expect(span).toBe('none'); }
+      expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBe(0);
+    });
+  }
+
+  test('between 560px and 1000px the labelled nav stays a bottom pill (it does not fit the topbar slot)', async ({ page }) => {
+    for (const width of [560, 860]) {
+      await page.setViewportSize({ width, height: 800 });
+      await page.goto(SPA);
+      const nav = await navBox(page);
+      expect(nav.y, `${width}px`).toBeGreaterThan(600);
+    }
+  });
+
+  test('desktop keeps the labelled nav at the top', async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 800 });
+    await page.goto(SPA);
+    const nav = await navBox(page);
+    expect(nav.y).toBeLessThan(40);
+    expect(nav.width).toBeGreaterThan(400);
+  });
+
+  for (const theme of ['dark', 'light']) {
+    test(`${theme}: getting-started, topic, resource, mind-map, skill-group and interest cards use the same surface as the other widgets`, async ({ page }) => {
+      await page.addInitScript(t => { try { localStorage.setItem('vk-theme', t); } catch (e) { /* ignore */ } }, theme);
+      await page.setViewportSize({ width: 1280, height: 900 });
+      await page.goto(SPA);
+      const bg = sel => page.locator(sel).first().evaluate(e => getComputedStyle(e).backgroundColor);
+      const widget = await bg('#pg-home .w.hue-blue');
+      await page.evaluate(() => showPage('roadmap'));
+      for (const sel of ['.guide-col', '.topic-card', '.resource-item', '.career-card', '.mcard']) expect(await bg(`#pg-roadmap ${sel}`), `roadmap ${sel}`).toBe(widget);
+      await page.evaluate(() => showPage('about'));
+      for (const sel of ['.int-card', '.skill-group']) expect(await bg(`#pg-about ${sel}`), `about ${sel}`).toBe(widget);
+    });
+  }
+
+  for (const width of [320, 390, 559]) {
+    test(`phone ${width}px: the roadmap title starts at the same height as on Projects and About`, async ({ page }) => {
+      await page.setViewportSize({ width, height: 844 });
+      await page.goto(SPA);
+      const top = async pg => {
+        await page.evaluate(p => showPage(p), pg);
+        await page.waitForTimeout(700); // the page eases in
+        return Math.round((await page.locator(`#pg-${pg} .ph-label`).boundingBox()).y);
+      };
+      const projects = await top('projects');
+      expect(await top('about')).toBe(projects);
+      expect(await top('roadmap')).toBe(projects); // was 76px lower: the header sits inside <main>, which already adds 76px
+    });
+  }
+
+  test('a topic card darkens a step on hover, like the phase and career cards', async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 900 });
+    await page.goto(SPA);
+    await page.evaluate(() => showPage('roadmap'));
+    const card = page.locator('#pg-roadmap .topic-card').first();
+    await card.scrollIntoViewIfNeeded();
+    const token = name => page.evaluate(n => { const d = document.createElement('div'); d.style.background = `var(${n})`; document.body.append(d); const c = getComputedStyle(d).backgroundColor; d.remove(); return c; }, name);
+    expect(await card.evaluate(e => getComputedStyle(e).backgroundColor)).toBe(await token('--bg2'));
+    await card.hover();
+    await expect.poll(() => card.evaluate(e => getComputedStyle(e).backgroundColor)).toBe(await token('--bg3'));
+  });
+});
+
+test.describe('roadmap hero has no dead space', () => {
+  for (const [width, height] of [[390, 844], [768, 1024], [1280, 800]]) {
+    test(`${width}px: the overview heading follows the hero buttons without a viewport-tall gap`, async ({ page }) => {
+      await page.setViewportSize({ width, height });
+      await page.goto(SPA);
+      await page.evaluate(() => showPage('roadmap'));
+      await page.waitForTimeout(800);
+      const hero = await page.locator('#pg-roadmap .hero').boundingBox();
+      const buttons = await page.locator('#pg-roadmap .hero-cta').boundingBox();
+      const heading = await page.locator('#roadmap-heading').boundingBox();
+      expect(hero.height).toBeLessThan(height * 0.5); // was min-height 75-80vh on phones and tablets
+      expect(heading.y - (buttons.y + buttons.height)).toBeLessThan(160);
+    });
+  }
+});
