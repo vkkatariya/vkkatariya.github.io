@@ -46,7 +46,7 @@
 - [x] Hermes OAuth / About / Contact widgets get hue — every home widget coloured
 - [x] Merged `fix/*` branches deleted; `dev` and `main` only branches
 - [x] Phone search: floating glass button ≤560px; footer tags follow card hue; availability text removed
-- [x] `index.html` migrated to design system — tokens, fonts, 1.7s intro, reduced-motion, section-hash forwarding
+- [x] `index.html` migrated to design system — tokens, fonts, 0.85s intro (first visit per tab session; repeat visits skip it), reduced-motion, section-hash forwarding
 - [x] Kickoff `tasks/kickoff-fix-design-system-migration.md` Box 2 reworded and ticked
 - [x] Test suite: 73 tests (spa.spec.js, phone-and-legacy.spec.js, index.spec.js), all green; lint covers index.html
 
@@ -118,7 +118,7 @@
 - Apex (308 + root): 789ms (+230ms)
 
 **Decisions needed before starting:**
-1. Fate of splash (`index.html`, ~1.9s) — serve `/` straight to portfolio, keep splash as optional `/intro`
+1. ~~Fate of splash~~ — decided: kept, cut from ~1.9s to ~0.85s, skipped on repeat visits in a tab session (sessionStorage `vk-intro`). Revisit if root-load still misses the budget
 2. OK to add self-hosted font files (binary assets, subset via `fonttools`)
 3. Canonical host (apex or `www`) and Vercel redirect permission
 4. HTML staleness tolerance: 0 / 60s / 1h (drives cache headers)

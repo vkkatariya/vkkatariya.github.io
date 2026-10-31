@@ -34,7 +34,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://vishal-katariya.com/prototypes/assets/og-image.png">
 <link rel="canonical" href="/prototypes/portfolio-combined">
-<!-- no-JS fallback; the script below redirects as soon as the intro has played (~1.9s) -->
+<!-- no-JS fallback; the script below redirects as soon as the intro has played (~0.85s) -->
 <meta http-equiv="refresh" content="4; url=/prototypes/portfolio-combined">
 <link rel="prefetch" href="/prototypes/portfolio-combined" as="document">
 <script>
@@ -104,7 +104,7 @@ a:focus-visible { outline: 2px solid var(--acc); outline-offset: 3px; }
   position: relative; z-index: 1; width: 100%; max-width: 560px;
   display: flex; flex-direction: column; align-items: center; text-align: center;
   padding: 32px 20px;
-  animation: leave .22s var(--ease) both paused;
+  animation: leave .18s var(--ease) both paused;
 }
 .stage.leave { animation-play-state: running; }
 @keyframes leave { to { opacity: 0; transform: translateY(-8px) scale(.985); } }
@@ -118,12 +118,12 @@ a:focus-visible { outline: 2px solid var(--acc); outline-offset: 3px; }
 
 .mark {
   position: relative; width: 84px; height: 84px; margin-bottom: 28px;
-  animation: pop .7s var(--spring) both;
+  animation: pop .45s var(--spring) both;
 }
 .mark::before { /* hue halo that breathes once the mark has landed */
   content: ''; position: absolute; inset: -22px; border-radius: 50%; z-index: -1;
   background: radial-gradient(circle, color-mix(in srgb, var(--acc) 28%, transparent) 0%, transparent 68%);
-  animation: fade .9s var(--ease) .3s both;
+  animation: fade .5s var(--ease) .15s both;
 }
 .mark img { width: 100%; height: 100%; display: block; border-radius: 22%; object-fit: cover; box-shadow: var(--shadow); }
 
@@ -132,12 +132,12 @@ a:focus-visible { outline: 2px solid var(--acc); outline-offset: 3px; }
   font-size: clamp(24px, 8vw, 60px); line-height: 1.05; letter-spacing: -.03em; white-space: nowrap;
 }
 .wm .hn-script { font-family: 'Cormorant Garamond', serif; font-style: italic; font-weight: 700; font-size: 1.15em; letter-spacing: -.02em; line-height: .8; }
-.wm span { display: inline-block; animation: rise .7s var(--ease) both; }
-.wm .w1 { animation-delay: .15s; } .wm .w2 { animation-delay: .25s; } .wm .w3 { animation-delay: .38s; } .wm .w4 { animation-delay: .48s; }
+.wm span { display: inline-block; animation: rise .45s var(--ease) both; }
+.wm .w1 { animation-delay: .06s; } .wm .w2 { animation-delay: .12s; } .wm .w3 { animation-delay: .19s; } .wm .w4 { animation-delay: .26s; }
 
 .tag {
   margin-top: 14px; max-width: 34ch; font-family: var(--read); font-size: 17px; line-height: 1.55; color: var(--w80);
-  animation: fade .6s var(--ease) .65s both;
+  animation: fade .4s var(--ease) .3s both;
 }
 
 /* destinations: the four nav hues, same glass-pill + hue-tint recipe as the topbar links */
@@ -147,18 +147,18 @@ a:focus-visible { outline: 2px solid var(--acc); outline-offset: 3px; }
   font-family: var(--sans); font-weight: 500; font-size: 14px; letter-spacing: .06em; text-transform: uppercase; line-height: 1;
   color: var(--w80); text-decoration: none;
   background: color-mix(in srgb, var(--h) 12%, transparent); border: 1px solid color-mix(in srgb, var(--h) 42%, transparent);
-  animation: chip .5s var(--spring) both;
+  animation: chip .35s var(--spring) both;
   transition: background .24s var(--ease), border-color .24s var(--ease), color .24s var(--ease), transform .24s var(--spring);
 }
 .dest a:hover { color: var(--w); background: color-mix(in srgb, var(--h) 20%, transparent); border-color: var(--h); transform: translateY(-2px); }
 .dest a svg { width: 18px; height: 18px; flex: none; color: var(--h); fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
-.dest a:nth-child(1) { animation-delay: .85s; } .dest a:nth-child(2) { animation-delay: .95s; }
-.dest a:nth-child(3) { animation-delay: 1.05s; } .dest a:nth-child(4) { animation-delay: 1.15s; }
+.dest a:nth-child(1) { animation-delay: .34s; } .dest a:nth-child(2) { animation-delay: .39s; }
+.dest a:nth-child(3) { animation-delay: .44s; } .dest a:nth-child(4) { animation-delay: .49s; }
 
 /* progress: the four hues in nav order; fills over the time the intro takes, then the page changes */
-.bar { width: min(240px, 70vw); height: 3px; margin-top: 38px; border-radius: 3px; background: var(--w06); overflow: hidden; animation: fade .4s var(--ease) .5s both; }
-.bar i { display: block; height: 100%; border-radius: inherit; transform-origin: left; background: linear-gradient(90deg, var(--blue), var(--teal), var(--indigo), var(--purple)); animation: sweep 1.35s cubic-bezier(.4,0,.2,1) .55s both; }
-.status { margin-top: 12px; font-family: var(--mono); font-size: 12px; letter-spacing: .08em; color: var(--w60); animation: fade .4s var(--ease) .6s both; }
+.bar { width: min(240px, 70vw); height: 3px; margin-top: 38px; border-radius: 3px; background: var(--w06); overflow: hidden; animation: fade .3s var(--ease) .15s both; }
+.bar i { display: block; height: 100%; border-radius: inherit; transform-origin: left; background: linear-gradient(90deg, var(--blue), var(--teal), var(--indigo), var(--purple)); animation: sweep .6s cubic-bezier(.4,0,.2,1) .2s both; }
+.status { margin-top: 12px; font-family: var(--mono); font-size: 12px; letter-spacing: .08em; color: var(--w60); animation: fade .3s var(--ease) .2s both; }
 
 /* CTA: NeoPOP button, as on the site */
 .np {
@@ -167,7 +167,7 @@ a:focus-visible { outline: 2px solid var(--acc); outline-offset: 3px; }
   border-radius: 5px; text-decoration: none;
   box-shadow: var(--np-off) var(--np-off) 0 color-mix(in srgb, var(--w) 28%, transparent);
   transition: transform .1s ease, box-shadow .1s ease;
-  animation: chip .5s var(--spring) 1.3s both;
+  animation: chip .35s var(--spring) .55s both;
 }
 .np:hover { transform: translate(-2px,-2px); box-shadow: calc(var(--np-off) + 2px) calc(var(--np-off) + 2px) 0 color-mix(in srgb, var(--w) 28%, transparent); }
 .np:active { transform: translate(var(--np-off), var(--np-off)); box-shadow: 0 0 0 transparent; }
@@ -221,8 +221,12 @@ a:focus-visible { outline: 2px solid var(--acc); outline-offset: 3px; }
   var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
   var left = false;
   function go() { if (left) return; left = true; location.replace(dest); }
-  // the intro plays for ~1.7s, then the stage fades out (.22s) and the page changes
-  setTimeout(function () { if (!reduce) stage.classList.add('leave'); setTimeout(go, reduce ? 0 : 230); }, reduce ? 500 : 1700);
+  // repeat visit in this tab session: skip the intro entirely
+  var seen = false;
+  try { seen = sessionStorage.getItem('vk-intro') === '1'; sessionStorage.setItem('vk-intro', '1'); } catch (e) { /* storage blocked: always play */ }
+  if (seen) { go(); return; }
+  // the intro plays for ~0.65s, then the stage fades out (.18s) and the page changes: ~0.85s in total
+  setTimeout(function () { if (!reduce) stage.classList.add('leave'); setTimeout(go, reduce ? 0 : 190); }, reduce ? 300 : 650);
 })();
 </script>
 </body>

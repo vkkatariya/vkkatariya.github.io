@@ -32,10 +32,24 @@ test.describe('index.html splash (design system)', () => {
 
   test('plays the intro, then redirects to the portfolio', async ({ page }) => {
     await page.goto('/index.html');
-    await page.waitForTimeout(600);
+    await page.waitForTimeout(250);
     expect(page.url()).toContain('/index.html'); // still on the splash while it animates
     await page.waitForURL(/\/prototypes\/portfolio-combined/, { timeout: 6000 });
     await expect(page.locator('#pg-home')).toHaveClass(/active/);
+  });
+
+  test('the intro is short: redirect within ~1.2s of load', async ({ page }) => {
+    await page.goto('/index.html');
+    const t0 = Date.now();
+    await page.waitForURL(/\/prototypes\/portfolio-combined/, { timeout: 4000 });
+    expect(Date.now() - t0).toBeLessThan(1200);
+  });
+
+  test('a repeat visit in the same tab session skips the intro', async ({ page }) => {
+    await page.goto('/index.html');
+    await page.waitForURL(/\/prototypes\/portfolio-combined/, { timeout: 4000 });
+    await page.goto('/index.html');
+    await page.waitForURL(/\/prototypes\/portfolio-combined/, { timeout: 400 });
   });
 
   test('reduced motion: finished screen, quick redirect', async ({ browser }) => {
