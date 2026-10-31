@@ -3196,11 +3196,11 @@ html.light #pg-projects .vis-wrap:hover, html.light #pg-projects .feat:hover, ht
 #pg-roadmap .chip { font-family: var(--mono); font-size: 12.5px; letter-spacing: 0; color: var(--w80); background: var(--bg3);
   border: 1px solid var(--w12); border-radius: 100px; padding: 4px 11px; }
 
-/* overview: 4 phase cards = panel + 3px hue top edge, hue numeral */
+/* overview: 4 phase cards = panel + 4px hue left edge (padding-left 3px under the 22px so the content stays put), hue numeral */
 #pg-roadmap .phases-grid { grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr)); }
 #pg-roadmap .phases-grid::before { background: color-mix(in srgb, var(--w) 12%, transparent); }
 #pg-roadmap .phase-card, #pg-roadmap .phase-card:hover {
-  background: var(--bg2); border: 1px solid var(--w12); border-top: 3px solid var(--h); border-radius: 20px;
+  background: var(--bg2); border: 1px solid var(--w12); border-left: 4px solid var(--h); border-radius: 20px; padding-left: 19px;
   box-shadow: none; backdrop-filter: none; -webkit-backdrop-filter: none;
 }
 #pg-roadmap .phase-card:hover { transform: translateY(-3px); background: var(--bg3); }
@@ -3282,10 +3282,13 @@ html.light #pg-projects .vis-wrap:hover, html.light #pg-projects .feat:hover, ht
 #pg-roadmap .topic-check-label input { display: block; position: absolute; opacity: 0; width: 24px; height: 24px; margin: 0; cursor: pointer; }
 #pg-roadmap .topic-check-label { position: relative; }
 
-/* careers (10): panel + hue top edge; % + bar in the hue */
-#pg-roadmap .career-card { background: var(--bg2); border: 1px solid var(--w12); border-top: 3px solid var(--h); border-radius: 20px; padding: 22px;
+/* careers (10): panel + hue left edge; % + bar in the hue */
+#pg-roadmap .career-card { background: var(--bg2); border: 1px solid var(--w12); border-left: 4px solid var(--h); border-radius: 20px; padding: 22px 22px 22px 19px;
   box-shadow: none; backdrop-filter: none; -webkit-backdrop-filter: none; min-width: 0; }
-#pg-roadmap .career-card:hover { transform: translateY(-3px); background: var(--bg3); box-shadow: none; border-color: var(--w12); border-top-color: var(--h); }
+#pg-roadmap .career-card:hover { transform: translateY(-3px); background: var(--bg3); box-shadow: none; border-color: var(--w12); border-left-color: var(--h); }
+/* alternating accent bars: balanceBars() tags every other visible card; its 4px hue edge turns transparent (same width, so nothing
+   shifts). !important beats the per-card :hover edge rules. Roadmap + About only. */
+[data-nobar] { border-left-color: transparent !important; }
 #pg-roadmap .career-title { display: flex; align-items: center; gap: 10px; font-family: var(--sans); font-weight: 700; font-size: 19px; line-height: 1.2; color: var(--w); }
 #pg-roadmap .career-title svg.ico { width: 22px; height: 22px; }
 #pg-roadmap .career-tagline { font-family: var(--read); font-size: 15px; letter-spacing: 0; color: var(--w80); margin-top: 4px; }
@@ -6800,6 +6803,36 @@ document.addEventListener('keydown', (e) => {
 });
 
 // ═══════════════════════════════════════════
+// ACCENT BARS: every other visible card
+// ═══════════════════════════════════════════
+// Cards in a grid or list keep their 4px hue edge on a checkerboard of the *visible* cards; the others get [data-nobar] (transparent
+// edge, same width). Row and column come from the real layout, so it holds for auto-fit grids, breakpoints and the topic filter.
+// Without JS every card simply keeps its bar.
+const ALT_BAR_CARDS = '#pg-roadmap .phase-card, #pg-roadmap .topic-card, #pg-roadmap .career-card, #pg-roadmap .guide-col, #pg-roadmap .resource-item, #pg-roadmap .mcard, #pg-about .skill-group, #pg-about .int-card';
+let barsRO = null; // watches every card parent; set below. Parents are registered inside balanceBars, so grids rendered later (topics, careers, mind map) are picked up too
+function balanceBars() {
+  const cluster = vals => vals.sort((a, b) => a - b).reduce((out, v) => (out.length && v - out[out.length - 1] <= 4 ? out : out.concat(v)), []);
+  const slot = (list, v) => list.findIndex(c => Math.abs(c - v) <= 4);
+  new Set([...document.querySelectorAll(ALT_BAR_CARDS)].map(el => el.parentElement)).forEach(parent => {
+    if (barsRO) barsRO.observe(parent); // no-op when already observed; fires once on first observe, then on resize and when a hidden page is shown
+    const cards = [...parent.children].filter(el => el.matches(ALT_BAR_CARDS));
+    const shown = cards.filter(el => el.offsetParent !== null);
+    if (!shown.length) return; // page not visible: keep the last pattern so it does not flash all-barred when the page opens
+    const xs = cluster(shown.map(el => el.offsetLeft)), ys = cluster(shown.map(el => el.offsetTop));
+    cards.forEach(el => el.toggleAttribute('data-nobar', shown.includes(el) && (slot(xs, el.offsetLeft) + slot(ys, el.offsetTop)) % 2 === 1));
+  });
+}
+let barsQueued = false;
+function queueBars() {
+  if (barsQueued) return;
+  barsQueued = true;
+  requestAnimationFrame(() => { barsQueued = false; balanceBars(); });
+}
+if (typeof ResizeObserver === 'function') barsRO = new ResizeObserver(queueBars);
+window.addEventListener('resize', queueBars);
+queueBars();
+
+// ═══════════════════════════════════════════
 // TOPIC FILTER
 // ═══════════════════════════════════════════
 document.querySelectorAll('.filter-btn').forEach(btn => {
@@ -6815,6 +6848,7 @@ document.querySelectorAll('.filter-btn').forEach(btn => {
         card.classList.add('hidden');
       }
     });
+    queueBars();
   });
 });
 
