@@ -96,14 +96,17 @@
 **Scope:**
 - Nav: `#roadmap-internal-nav` is a bottom bar at 1000px and below (the grouped topbar has no free centre slot for its labelled links). On a phone (<=559px) the shared links pill is only 134-198px wide and is hidden on the roadmap, so there is room in the topbar row: put the nav there as an icons-only pill (the active tab is the highlighted one). 560-1000px keeps the bottom pill (its labelled 516px bar does not fit the 258px slot). Things that assume a bottom bar and must follow: the search FAB lift (`bottom: 84px`), the progress widget (`bottom: 80px`), `alignRoadmapNav()` (only aligns above 1000px), and the phone test that checks the FAB clears the bar.
 - Surfaces: `.guide-col` (Getting started), `.topic-card` (11 core topics), `.resource-item` (curated resources) on Roadmap and `.int-card` (Interests) on About use `--bg3` (near-black in dark theme); the other widgets use `--bg2`. Switch to `--bg2`, with the hover going to `--bg3` like the phase and career cards.
-- Same pattern, not in the ask: `.skill-group` (About) and `.mcard` (Roadmap mind-map cards) are also `--bg3`.
+- Same pattern, asked for afterwards: `.skill-group` (About) and `.mcard` (Roadmap mind-map cards) were also `--bg3`; both moved to `--bg2`.
+- Phone title gap: the roadmap header is inside `<main>` (76px) plus `.ph` 120px = title at 196px vs 120px on Projects/About. At <=559px `.ph` gets `padding-top: 44px`.
 
 - [x] Phone: roadmap nav in the topbar row, icons only; FAB and progress widget back to their normal positions
 - [x] Four card types on `--bg2`, hover `--bg3` (topic cards and resources)
 - [x] Playwright: nav at the top and inside the topbar row on phones (320/360/390/430/559), bottom pill kept at 560-1000; card backgrounds equal the other widgets'
 - [x] Verify: `npm test` 96/96, `lint:html` clean, phone screenshots, no overlap with the brand and tools pills at 320
 - [x] PR to `dev`
-- [ ] Decide: `.skill-group` (About) and `.mcard` (Roadmap) are also `--bg3`; move them to `--bg2` too?
+- [x] `.skill-group` (About) and `.mcard` (Roadmap) moved to `--bg2` too
+- [x] Roadmap title starts at 120px on phones, like Projects and About (`npm test` 99/99)
+- [ ] Open: at 560px and above the roadmap title still starts at 196px (Projects 120px, About 120-130px): same 76px double padding on tablet and desktop. Decide whether to align those too
 
 ### Performance — cut the root-load cost (scoped 2026-10-26, not started)
 **Goal:** root URL adds ~0ms over direct portfolio; first paint ~350-400ms (was ~560ms).

@@ -760,16 +760,31 @@ test.describe('roadmap nav on phones and card surfaces', () => {
   });
 
   for (const theme of ['dark', 'light']) {
-    test(`${theme}: getting-started, topic, resource and interest cards use the same surface as the other widgets`, async ({ page }) => {
+    test(`${theme}: getting-started, topic, resource, mind-map, skill-group and interest cards use the same surface as the other widgets`, async ({ page }) => {
       await page.addInitScript(t => { try { localStorage.setItem('vk-theme', t); } catch (e) { /* ignore */ } }, theme);
       await page.setViewportSize({ width: 1280, height: 900 });
       await page.goto(SPA);
       const bg = sel => page.locator(sel).first().evaluate(e => getComputedStyle(e).backgroundColor);
       const widget = await bg('#pg-home .w.hue-blue');
       await page.evaluate(() => showPage('roadmap'));
-      for (const sel of ['.guide-col', '.topic-card', '.resource-item', '.career-card']) expect(await bg(`#pg-roadmap ${sel}`), `roadmap ${sel}`).toBe(widget);
+      for (const sel of ['.guide-col', '.topic-card', '.resource-item', '.career-card', '.mcard']) expect(await bg(`#pg-roadmap ${sel}`), `roadmap ${sel}`).toBe(widget);
       await page.evaluate(() => showPage('about'));
-      expect(await bg('#pg-about .int-card'), 'about .int-card').toBe(widget);
+      for (const sel of ['.int-card', '.skill-group']) expect(await bg(`#pg-about ${sel}`), `about ${sel}`).toBe(widget);
+    });
+  }
+
+  for (const width of [320, 390, 559]) {
+    test(`phone ${width}px: the roadmap title starts at the same height as on Projects and About`, async ({ page }) => {
+      await page.setViewportSize({ width, height: 844 });
+      await page.goto(SPA);
+      const top = async pg => {
+        await page.evaluate(p => showPage(p), pg);
+        await page.waitForTimeout(700); // the page eases in
+        return Math.round((await page.locator(`#pg-${pg} .ph-label`).boundingBox()).y);
+      };
+      const projects = await top('projects');
+      expect(await top('about')).toBe(projects);
+      expect(await top('roadmap')).toBe(projects); // was 76px lower: the header sits inside <main>, which already adds 76px
     });
   }
 
