@@ -6,6 +6,27 @@
 
 ---
 
+## [2026-10-31] Claude Code (local) — chore/resume-folder-and-tidy · your reorganisation committed, move repaired
+
+**Mode:** Execution
+
+**Did:** Reviewed the uncommitted work in the main checkout, fast-forwarded it to `origin/dev` (nothing overlapped), and committed it in two steps.
+- Commit 1, as you made it: the seven resume pages moved to `prototypes/resume/` (byte-identical, git sees 100% renames), `tasks/design-dual-deployment.md` moved to `docs/`, the two old diagrams in `docs/` deleted, `tasks/todo.md` condensed (open items 118 -> 113, all phases kept).
+- Commit 2, repairs the move: the pages' `assets/...` links (photo, favicons, manifest, og-image) now resolve one folder up (`../assets/...`), otherwise the resume photo and icons 404; `vercel.json` redirects the old public URLs `/prototypes/resume` and `/prototypes/resume-dark` to the new location (temporary 307, easy to drop); the `lint:html` glob and the availability-text test now cover `prototypes/resume/` (they silently stopped at `prototypes/*.html`); README and CONTEXT point at the new paths. New test loads every resume page and checks the photo and requests (fails on the as-moved files).
+- Commit 3: `.gitignore` entry for `prototypes/me/`.
+
+**Left out on purpose:** `prototypes/me/` (X bookmarks and following lists, Reddit communities, YouTube and TL;DR digests, private dashboards: personal browsing data, and this repo is public and `outputDirectory` is `.`, so anything committed is served) and `docs/germany-tax-map.html` (a personal tax-planning page: a EUR 1,440/month Werkstudent forecast, family, parents, cash flow; `docs/` is publicly served).
+
+**Watch:** the GitHub Pages mirror cannot redirect, so `vkkatariya.github.io/prototypes/resume` no longer resolves there (the new path `/prototypes/resume/resume` does). `docs/design-dual-deployment.md` still lists some pages that no longer exist; it is a historical design note and was moved unchanged.
+
+**Verified:** `npm test` 86/86, `lint:html` 0 errors (9 files: the SPA, index and the seven resume pages).
+
+**State:** branch pushed, PR open against `dev`.
+
+**Modified:** moves and deletions above, `vercel.json`, `package.json`, `tests/e2e/phone-and-legacy.spec.js`, `README.md`, `CONTEXT.md`, `.gitignore`, `tasks/DEVLOG.md`.
+
+---
+
 ## [2026-10-31] Claude Code (local) — style/accent-bars-roadmap-about · same accent-bar treatment on Roadmap and About
 
 **Mode:** Builder

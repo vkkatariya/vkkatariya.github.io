@@ -7,7 +7,7 @@
     "build": "echo 'No build step required for HTML prototype'",
     "test": "npx playwright test",
     "test:e2e": "npx playwright test",
-    "lint:html": "npx htmlhint 'prototypes/*.html' index.html --config .htmlhintrc"
+    "lint:html": "npx htmlhint 'prototypes/*.html' 'prototypes/resume/*.html' index.html --config .htmlhintrc"
   },
   "keywords": [],
   "author": "Vishal Katariya",

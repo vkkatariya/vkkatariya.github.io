@@ -22,7 +22,7 @@ A personal portfolio web app at `vishal-katariya.com`.
 
 **Phase 0 — HTML Prototypes:** in progress
 - `prototypes/portfolio-combined.html` — single-file SPA, all 5 pages (home, projects, roadmap, about, me). Primary source of truth.
-- `prototypes/resume.html` — aesthetic resume using the portfolio design system.
+- `prototypes/resume/resume.html` — aesthetic resume using the portfolio design system (earlier iterations and dark variants beside it; `vercel.json` redirects the old `/prototypes/resume` URLs).
 
 **Phase 1 — SvelteKit production scaffold:** NOT STARTED
 
@@ -189,7 +189,7 @@ const pageTransition = (node, { y = 16, duration = 350 }) =>
 |---|---|
 | kebab-case | All filenames |
 | `prototypes/` | HTML prototypes, source of truth for design |
-| `docs/` | Architecture diagrams, reference HTML (mental-model-tree, portfolio_architecture_v2) |
+| `docs/` | Design notes (e.g. `design-dual-deployment.md`). Everything committed here is publicly served, so no personal notes |
 | `src/lib/styles/tokens.css` | Shared design tokens (Phase 1) |
 | `src/lib/components/` | SvelteKit components (Phase 1) |
 | `src/routes/` | SvelteKit routes |

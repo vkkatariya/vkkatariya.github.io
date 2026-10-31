@@ -46,11 +46,22 @@ test.describe('home all-projects footer tags', () => {
 
 test.describe('legacy standalone prototypes', () => {
   test('no page still advertises availability', () => {
-    const files = readdirSync('prototypes').filter(f => f.endsWith('.html'));
+    const files = ['prototypes', 'prototypes/resume'].flatMap(d => readdirSync(d).filter(f => f.endsWith('.html')).map(f => `${d}/${f}`));
+    expect(files.length).toBeGreaterThanOrEqual(8); // the SPA + the seven resume pages
     for (const f of files) {
-      const html = readFileSync(`prototypes/${f}`, 'utf8');
+      const html = readFileSync(f, 'utf8');
       expect(html, f).not.toMatch(/open to work|available for internships|offen für praktikum/i);
     }
+  });
+
+  test('the moved resume pages load their images, favicons and manifest from ../assets', async ({ page }) => {
+    const failed = [];
+    page.on('response', r => { if (r.status() >= 400) failed.push(`${r.status()} ${new URL(r.url()).pathname}`); });
+    for (const f of readdirSync('prototypes/resume').filter(f => f.endsWith('.html'))) {
+      await page.goto(`/prototypes/resume/${f}`);
+      await expect.poll(() => page.locator('img[src$="assets/image.png"]').first().evaluate(i => i.complete && i.naturalWidth), { message: f }).toBeGreaterThan(0);
+    }
+    expect(failed).toEqual([]);
   });
 
   test('the unused @vercel/speed-insights npm dependency is gone (Vercel serves the script itself)', () => {

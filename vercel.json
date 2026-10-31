@@ -1,5 +1,9 @@
 {
   "framework": null,
   "outputDirectory": ".",
-  "cleanUrls": true
+  "cleanUrls": true,
+  "redirects": [
+    { "source": "/prototypes/resume", "destination": "/prototypes/resume/resume", "permanent": false },
+    { "source": "/prototypes/resume-dark", "destination": "/prototypes/resume/resume-dark", "permanent": false }
+  ]
 }
