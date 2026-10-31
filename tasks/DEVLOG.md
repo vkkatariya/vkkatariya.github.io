@@ -6,6 +6,29 @@
 
 ---
 
+## [2026-10-31] Claude Code (local) — style/accent-bar-rebalance · hue accent bars moved and stripped down
+
+**Mode:** Builder
+
+**Ask:** the hue accent bar was overused. Move the home widgets' bar from the top to the left; on the Projects page strip it down to an odd/even pattern.
+
+**Scope (measured first):** home had 12 widgets with a 3px `border-top`. Projects had 95 elements with a 4px hue left edge (8 `.pi`, 32 `.cs-stat`, 23 `.feat`, 8 `.vis-wrap`, 8 `.cs-skills`, 10 `.pipe-stage`, 6 `.plat`), several nested inside each other.
+
+**Did:**
+- Home: `#pg-home .w[class*="hue-"]` now has a 4px `border-left` (curves with the 28px corners); the top is a plain 1px outline again. `padding-left` is 3px under the widget padding at each breakpoint (17px, 13px at <=560px, 11px at <=380px) and the two inline-padded widgets (Hermes, About-contact) were adjusted, so content keeps its horizontal position. The hover override moved from `border-top-color` to `border-left-color`.
+- Projects: odd items keep the bar, even items get the same 4px but transparent (alignment and layout unchanged). The wide panels (`.vis-wrap`, `.cs-skills`) carry no bar. The hover ring still shows the hue on every card. In the two 2-column cases (index cards above 700px, stat tiles at <=600px) plain odd/even would stripe whole columns, so the pattern flips each row (checkerboard). Bars on Projects: 95 -> 43.
+- Roadmap and About keep their left bars (not in the ask).
+
+**Verified:** `npm test` 74/74 (+4 new: home bar on the left, desktop and phone odd/even, even-card alignment and hover ring; 5 of the 6 changed/new tests fail on the old CSS); `lint:html` 0 errors; before/after geometry diff of all 12 home widgets at 1280 dark+light, 860, 390, 1920: widths and horizontal child offsets unchanged, vertical shift <=2px on desktop and <=4px at 390px (the top border is 1px again, and the old `padding-top: 18px` override had made phone widgets 4px deeper than their 16px padding), no new overflow; screenshots dark + light at 1280 and 390.
+
+**Decision for later:** if the checkerboard is not wanted, drop the four `@media` blocks under "accent bars, stripped down" and use `:nth-child(even)` for `.pi` and `.cs-stat` too.
+
+**State:** PR open against `dev`. The todo entry lives in the main checkout's uncommitted `tasks/todo.md` (large uncommitted rewrite there), so it is not in this PR.
+
+**Modified:** `prototypes/portfolio-combined.html`, `tests/e2e/spa.spec.js`, `tasks/DEVLOG.md`.
+
+---
+
 ## [2026-10-31] Claude Code (local) — docs/readme-refresh · README rewritten, repo description updated
 
 **Mode:** Execution
