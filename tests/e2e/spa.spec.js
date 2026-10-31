@@ -800,3 +800,19 @@ test.describe('roadmap nav on phones and card surfaces', () => {
     await expect.poll(() => card.evaluate(e => getComputedStyle(e).backgroundColor)).toBe(await token('--bg3'));
   });
 });
+
+test.describe('roadmap hero has no dead space', () => {
+  for (const [width, height] of [[390, 844], [768, 1024], [1280, 800]]) {
+    test(`${width}px: the overview heading follows the hero buttons without a viewport-tall gap`, async ({ page }) => {
+      await page.setViewportSize({ width, height });
+      await page.goto(SPA);
+      await page.evaluate(() => showPage('roadmap'));
+      await page.waitForTimeout(800);
+      const hero = await page.locator('#pg-roadmap .hero').boundingBox();
+      const buttons = await page.locator('#pg-roadmap .hero-cta').boundingBox();
+      const heading = await page.locator('#roadmap-heading').boundingBox();
+      expect(hero.height).toBeLessThan(height * 0.5); // was min-height 75-80vh on phones and tablets
+      expect(heading.y - (buttons.y + buttons.height)).toBeLessThan(160);
+    });
+  }
+});
