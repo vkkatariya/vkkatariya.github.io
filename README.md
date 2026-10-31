@@ -26,7 +26,7 @@ Also:
 - **Dark and light themes**, remembered across visits (`vk-theme`).
 - **EN / DE toggle** for the main UI strings (German coverage is partial).
 - **Intro splash** (`index.html`): a short animation on the same design tokens, then a redirect to the portfolio. `/#stay` shows it without redirecting, and section hashes like `/#projects` are forwarded.
-- **Resume** (`prototypes/resume.html`): a one-page A4 resume in the same design system, with a print stylesheet. Earlier iterations (`resume-v1` to `resume-v3`, plus dark variants) are kept for reference. The PDF is `prototypes/assets/cv.pdf`.
+- **Resume** (`prototypes/resume/resume.html`, served at `/prototypes/resume`): a one-page A4 resume in the same design system, with a print stylesheet. Earlier iterations (`resume-v1` to `resume-v3`, plus dark variants) sit beside it for reference. The PDF is `prototypes/assets/cv.pdf`.
 - **Responsive and accessible**: checked from 320px to 1920px in both themes, with visible focus rings, `prefers-reduced-motion` support, and a WCAG AA contrast audit.
 - **Self-contained icons**: inline SVG, no icon CDN.
 
@@ -105,7 +105,7 @@ There is no build step. Use `http-server` rather than opening the file directly 
 ├── index.html                  intro splash, redirects to the portfolio
 ├── prototypes/
 │   ├── portfolio-combined.html the SPA: all five pages, CSS and JS in one file
-│   ├── resume.html             current A4 resume (plus resume-v1..v3 and dark variants)
+│   ├── resume/                 current A4 resume (resume.html) plus v1..v3 and dark variants
 │   └── assets/                 logos, favicons, og-image, cv.pdf
 ├── tests/e2e/                  Playwright specs (spa, index, phone-and-legacy)
 ├── homelab-configs/            Caddy config for the Tailscale-gated /me
