@@ -6,6 +6,29 @@
 
 ---
 
+## [2026-10-31] Claude Code (local) — style/accent-bars-roadmap-about · same accent-bar treatment on Roadmap and About
+
+**Mode:** Builder
+
+**Ask:** apply the Home/Projects accent-bar changes (PR #40) to the Roadmap and About pages.
+
+**Scope (measured at 1280/860/390):** Roadmap: 14 cards with a 3px top bar (4 `.phase-card`, 10 `.career-card`) and 26 with a 4px left bar (11 `.topic-card`, 9 `.resource-item`, 4 `.mcard` below 900px, 2 `.guide-col`). About: 8 left bars (4 `.skill-group`, 4 `.int-card`, both 2-column).
+
+**Did:**
+- `.phase-card` and `.career-card`: top bar to a 4px left border, `padding-left` 19px (22px - 3px) so the content keeps its horizontal position; hover rule moved to `border-left-color`.
+- Alternation: these grids are `auto-fit` (1-4 columns) and the topic filter hides cards with `.hidden`, so CSS-only `:nth-child` would stripe columns and break after filtering. New `balanceBars()` (JS, next to the topic filter) reads each card's real row/column among the *visible* cards of its parent and tags every other one `data-nobar` (a checkerboard; in a single row or column it is plain alternation). CSS: `[data-nobar] { border-left-color: transparent !important; }` (same 4px width, nothing shifts). Re-runs through a `ResizeObserver` on the card parents (resize, first show of a hidden page), after a filter click, and on window resize. Without JS every card keeps its bar.
+- Covers `.phase-card`, `.topic-card`, `.career-card`, `.guide-col`, `.resource-item`, `.mcard` (Roadmap) and `.skill-group`, `.int-card` (About). The `.modal-learn-cat` / `.modal-resource-link` CSS has no matching markup (dead CSS), so nothing to do there.
+
+**Verified:** `npm test` 79/79 (+9 new: neighbours never share a bar state on Roadmap and About at 1280/860/390, top-to-left on phase/career cards, topic filter per phase and back to "all", desktop-to-phone resize; all 9 fail on the old code); `lint:html` 0 errors; before/after geometry of the 14 converted cards at 1280 dark+light, 860, 390: width and horizontal content offset unchanged, max 2px vertical shift, no new overflow; screenshots dark + light.
+
+**Note:** Home and Projects (PR #40) alternate in plain CSS because their grids have fixed column counts; Roadmap/About use `balanceBars()`. Moving Projects onto `balanceBars()` too would unify them (and handle the in-between widths of its `auto-fit` platform grid) but is not needed today. This branch is based on `dev` without PR #40, so the two DEVLOG entries will conflict at the top when the second PR merges: merge `origin/dev` into the branch and keep both entries.
+
+**State:** PR open against `dev`. The todo entry lives in the main checkout's uncommitted `tasks/todo.md`.
+
+**Modified:** `prototypes/portfolio-combined.html`, `tests/e2e/spa.spec.js`, `tasks/DEVLOG.md`.
+
+---
+
 ## [2026-10-31] Claude Code (local) — docs/readme-refresh · README rewritten, repo description updated
 
 **Mode:** Execution

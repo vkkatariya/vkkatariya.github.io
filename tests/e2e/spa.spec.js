@@ -540,3 +540,98 @@ test.describe('home project icons and /me logo', () => {
     expect(reqs).not.toContain('logo.png');
   });
 });
+
+// ─── Roadmap + About: accent bars alternate ──────────────────────────────────
+
+test.describe('roadmap and about accent bars', () => {
+  const ROADMAP = ['#pg-roadmap .phase-card', '#pg-roadmap .topic-card', '#pg-roadmap .career-card', '#pg-roadmap .guide-col', '#pg-roadmap .resource-item', '#pg-roadmap .mcard'];
+  const ABOUT = ['#pg-about .skill-group', '#pg-about .int-card'];
+
+  // For every group of visible cards: count them, count the ones with a 4px hue edge, and list any two neighbours (next to each
+  // other in a row or in a column) that share a bar state. A checkerboard has no such pair.
+  const alternation = (page, selectors) => page.evaluate(sels => {
+    const hasBar = e => { const c = getComputedStyle(e); return c.borderLeftWidth === '4px' && c.borderLeftColor !== 'rgba(0, 0, 0, 0)'; };
+    const res = { cards: 0, barred: 0, clashes: [] };
+    for (const sel of sels) {
+      for (const parent of new Set([...document.querySelectorAll(sel)].map(e => e.parentElement))) {
+        const items = [...parent.children].filter(e => e.matches(sel) && e.offsetParent !== null);
+        res.cards += items.length;
+        res.barred += items.filter(hasBar).length;
+        for (const a of items) for (const b of items) {
+          if (a === b) continue;
+          const sameRow = Math.abs(a.offsetTop - b.offsetTop) <= 4, sameCol = Math.abs(a.offsetLeft - b.offsetLeft) <= 4;
+          if (sameRow === sameCol) continue;
+          const lo = (p, q) => Math.min(p, q) + 4, hi = (p, q) => Math.max(p, q) - 4;
+          const between = items.some(c => c !== a && c !== b && (sameRow
+            ? Math.abs(c.offsetTop - a.offsetTop) <= 4 && c.offsetLeft > lo(a.offsetLeft, b.offsetLeft) && c.offsetLeft < hi(a.offsetLeft, b.offsetLeft)
+            : Math.abs(c.offsetLeft - a.offsetLeft) <= 4 && c.offsetTop > lo(a.offsetTop, b.offsetTop) && c.offsetTop < hi(a.offsetTop, b.offsetTop)));
+          if (!between && hasBar(a) === hasBar(b)) res.clashes.push(`${sel}: "${a.textContent.trim().slice(0, 16)}" next to "${b.textContent.trim().slice(0, 16)}"`);
+        }
+      }
+    }
+    return res;
+  }, selectors);
+
+  const settled = async (page, selectors) => {
+    await expect.poll(async () => { const r = await alternation(page, selectors); return r.cards > 0 && (r.cards === 1 || r.barred < r.cards) ? r.clashes.length : -1; }, { timeout: 8000 }).toBe(0); // -1 = not balanced yet (everything still barred)
+    return alternation(page, selectors);
+  };
+
+  for (const width of [1280, 860, 390]) {
+    test(`roadmap: no two neighbouring cards share a bar state at ${width}px`, async ({ page }) => {
+      await page.setViewportSize({ width, height: 900 });
+      await page.goto(SPA);
+      await page.evaluate(() => showPage('roadmap'));
+      const r = await settled(page, ROADMAP);
+      expect(r.cards).toBeGreaterThan(30);
+      expect(r.barred).toBeGreaterThan(10); // not everything stripped either
+    });
+
+    test(`about: no two neighbouring cards share a bar state at ${width}px`, async ({ page }) => {
+      await page.setViewportSize({ width, height: 900 });
+      await page.goto(SPA);
+      await page.evaluate(() => showPage('about'));
+      const r = await settled(page, ABOUT);
+      expect(r.cards).toBe(8);
+      expect(r.barred).toBe(4);
+    });
+  }
+
+  test('roadmap phase and career cards carry the hue on the left edge, not the top', async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 900 });
+    await page.goto(SPA);
+    await page.evaluate(() => showPage('roadmap'));
+    for (const sel of ['#pg-roadmap .phase-card', '#pg-roadmap .career-card']) {
+      const edges = await page.locator(sel).evaluateAll(els => els.map(e => { const c = getComputedStyle(e); return [c.borderLeftWidth, c.borderTopWidth]; }));
+      expect(edges.length, sel).toBeGreaterThan(0);
+      for (const e of edges) expect(e, sel).toEqual(['4px', '1px']);
+    }
+  });
+
+  test('the topic filter keeps the visible cards alternating, and "all" restores the pattern', async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 900 });
+    await page.goto(SPA);
+    await page.evaluate(() => showPage('roadmap'));
+    await settled(page, ['#pg-roadmap .topic-card']);
+    const filters = await page.locator('.filter-btn').evaluateAll(bs => bs.map(b => b.dataset.filter));
+    expect(filters.length).toBeGreaterThan(2);
+    for (const f of filters.filter(x => x !== 'all')) {
+      await page.locator(`.filter-btn[data-filter="${f}"]`).click();
+      const r = await settled(page, ['#pg-roadmap .topic-card']);
+      expect(r.cards, `filter ${f}`).toBeGreaterThan(0);
+      expect(r.cards, `filter ${f}`).toBeLessThan(11);
+      expect(r.barred, `filter ${f}: the first visible card keeps its bar`).toBeGreaterThan(0);
+    }
+    await page.locator('.filter-btn[data-filter="all"]').click();
+    expect((await settled(page, ['#pg-roadmap .topic-card'])).cards).toBe(11);
+  });
+
+  test('resizing from desktop to phone re-balances the bars', async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 900 });
+    await page.goto(SPA);
+    await page.evaluate(() => showPage('roadmap'));
+    await settled(page, ROADMAP);
+    await page.setViewportSize({ width: 390, height: 900 });
+    await settled(page, ROADMAP);
+  });
+});
