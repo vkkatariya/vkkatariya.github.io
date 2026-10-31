@@ -6,6 +6,20 @@
 
 ---
 
+## [2026-10-31] Claude Code (local) — docs/readme-refresh · README rewritten, repo description updated
+
+**Mode:** Execution
+
+**Did:** Rewrote `README.md`, which still described the pre-migration site (NDOT-era palette, four standalone prototype pages, SvelteKit as the main plan, a Tailscale hostname list). It now covers the five SPA pages, site search, themes, the intro splash and the resume; the real font stack and the nine-hue `--h` system; Vercel and GitHub Pages deploys; the `/me` privacy rule; local development (`npm ci`, `http-server`, `lint:html`, `npm test`), CI and the branch flow; and the current repo layout. Removed the internal Tailnet hostnames from the public README. Updated the GitHub repo description.
+
+**Verified:** local-server advice checked against both servers: `http-server` serves the extensionless `/prototypes/portfolio-combined` (200), Python's `http.server` returns 404 for it and needs `.html`, so the README recommends `http-server`.
+
+**State:** PR open against `dev`. `tasks/todo.md` was not touched: the main checkout holds a large uncommitted rewrite of it.
+
+**Modified:** `README.md`, `tasks/DEVLOG.md`.
+
+---
+
 ## [2026-10-26] Claude Code (local) — docs/perf-todo · performance scope recorded
 
 **Mode:** Analytical
