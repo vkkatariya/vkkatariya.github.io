@@ -21,7 +21,7 @@
 
 **Verified:** `npm test` 86/86, `lint:html` 0 errors (9 files: the SPA, index and the seven resume pages).
 
-**State:** committed locally on `chore/resume-folder-and-tidy` (3 commits on top of `origin/dev` 1f79363). Not pushed yet; the PR into `dev` is the next step once pushing is approved.
+**State:** PR #42 open against `dev` (branch `chore/resume-folder-and-tidy`, on top of `origin/dev` 1f79363), not merged. Checked on its Vercel preview: `/prototypes/resume` and `/prototypes/resume-dark` serve the moved pages (assets via `../assets/`), and `/prototypes/me/x-bookmarks.json` is a 404.
 
 **Modified:** moves and deletions above, `vercel.json`, `package.json`, `tests/e2e/phone-and-legacy.spec.js`, `README.md`, `CONTEXT.md`, `.gitignore`, `tasks/DEVLOG.md`.
 
