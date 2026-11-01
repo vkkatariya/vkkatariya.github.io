@@ -6,6 +6,20 @@
 
 ---
 
+## [2026-11-01] Claude Code (local) — fix/release-review-findings · fixes from the code review of release PR #46
+
+**Mode:** Builder
+
+**Did:** fixed the review findings that were real and cheap: (1) `index.html` no-JS `<meta http-equiv="refresh">` moved into `<noscript>` (it fired 2s after load even on `/#stay`, and could beat the hash-forwarding script on a slow font stylesheet); (2) `vercel.json` 307 redirects for every removed or moved page (`/prototypes/about|projects|cs-roadmap` to the SPA section, `portfolio-v4` and the two prototypes to the SPA, `resume-v1|v2|v3|v2-dark|v3-dark` to `prototypes/resume/`); (3) the "Consolidated SPA" case study no longer says the deleted standalone pages are still in use; (4) CLAUDE.md `vercel.json` row and `docs/design-dual-deployment.md` analytics list updated; (5) the 7 resume pages use an absolute `og:image`. 3 new tests.
+
+**Not fixed (in `todo.md`):** Projects bars use `:nth-child` CSS while Roadmap/About use `balanceBars()` (unify); the one-pixel `@media (min-width:560px) and (max-width:560px)` FAB lift; inline `padding-left` on the Hermes/Contact widgets; FAB focus return on iOS Safari (unverified).
+
+**State:** PR open against `dev`; release PR #46 to follow once it is merged.
+
+**Modified:** `index.html`, `vercel.json`, `prototypes/portfolio-combined.html`, `prototypes/resume/*.html`, `CLAUDE.md`, `docs/design-dual-deployment.md`, `tests/e2e/phone-and-legacy.spec.js`, `tasks/DEVLOG.md`, `tasks/todo.md`.
+
+---
+
 ## [2026-10-31] Claude Code (local) — feat/index-minimal · index.html redesigned to a minimal splash
 
 **Mode:** Builder
