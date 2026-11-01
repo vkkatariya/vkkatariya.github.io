@@ -13,7 +13,7 @@ Before any meaningful work, read these files in order:
 3. `tasks/todo.md` — sprint items and phase status
 4. `tasks/lessons.md` — active prevention rules (L-001 through L-061+)
 
-**This project uses the dual-session model** (see `workflow/SESSION-WORKFLOW.md` v3):
+**This project uses the dual-session model** (see `workflow/agents_workflow/AGENTS-WORKFLOW.md`):
 
 - **Local session** (this is normally the one you are): `[portfolio-website]-local`
   - Host: athena tmux
@@ -37,16 +37,11 @@ Before any meaningful work, read these files in order:
 
  read top 3 of `tasks/DEVLOG.md` on every resume — the cloud and local sessions log to the same DEVLOG with `cloud-session-start` / `cloud-session-end` / `local-session-handoff` markers so the other side knows what happened. Coordination also happens via git branches and PRs.
 
-## Workflow references (symlinked, homelab-only)
+## Workflow reference (symlinked, homelab-only)
 
-The `./workflow/` directory is a symlink to `~/dev-shared/workflow/` — same path on every machine via mutagen sync. **Do not commit it** (already in `.gitignore`). Read workflow files on demand, not at every session start:
+`./workflow/` is a symlink to `~/dev-shared/workflow/` (same path on every machine via mutagen sync). **Do not commit it** (already in `.gitignore`). There is one file to read for how Vishal works:
 
-- `./workflow/SESSION-WORKFLOW.md` — Claude Code session lifecycle, dual-session (local + cloud), no lineage branches, /remote-control, compaction
-- `./workflow/AI-ROUTING.md` — L1/L2/L3 layer model, tool vs agent routing
-- `./workflow/GIT-GITHUB-BLUEPRINT.md` — branch/commit/PR conventions
-- `./workflow/agents_workflow/AI-AGENTS-ORCHESTRATION.md` — sub-agent dispatch patterns
-- `./workflow/TODAY.md` — daily task list
-- `./workflow/PROJECTS.md` — cross-project statuses
+- `./workflow/agents_workflow/AGENTS-WORKFLOW.md` — the one file an agent reads to know how Vishal works. Self-contained (session lifecycle, dual-session, routing, git/PR conventions, sub-agent dispatch); do not open other workflow files unless its §12 says so.
 
 If the symlink is broken on a fresh clone, recreate it:
 ```bash

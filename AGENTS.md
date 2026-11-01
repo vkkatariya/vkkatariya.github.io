@@ -3,6 +3,8 @@
 > This file governs identity, workflow, mental models, and session discipline.
 > **Workspace = doctrine. Project folder = battlefield.**
 
+> **Workflow:** `./workflow/agents_workflow/AGENTS-WORKFLOW.md` is the one file an agent reads to know how Vishal works (self-contained). `./workflow/` is a homelab-only symlink to `~/dev-shared/workflow/` and is not committed; recreate it with `ln -sf ~/dev-shared/workflow ./workflow`.
+
 ---
 
 ## Identity & Role
