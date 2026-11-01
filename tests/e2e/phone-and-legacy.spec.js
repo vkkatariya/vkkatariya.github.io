@@ -69,3 +69,23 @@ test.describe('legacy standalone prototypes', () => {
     expect(pkg.dependencies ?? {}).not.toHaveProperty('@vercel/speed-insights');
   });
 });
+
+test.describe('release review fixes', () => {
+  test('removed and moved pages are redirected, not 404', () => {
+    const src = JSON.parse(readFileSync('vercel.json', 'utf8')).redirects.map(r => r.source);
+    for (const s of ['about', 'projects', 'cs-roadmap', 'portfolio-v4', 'resume-v1', 'resume-v2', 'resume-v3', 'resume-v2-dark', 'resume-v3-dark']) expect(src).toContain(`/prototypes/${s}`);
+  });
+
+  test('the resume pages use an absolute og:image (scrapers do not resolve relative paths)', () => {
+    for (const f of readdirSync('prototypes/resume').filter(f => f.endsWith('.html'))) {
+      expect(readFileSync(`prototypes/resume/${f}`, 'utf8'), f).toMatch(/og:image" content="https:\/\/vishal-katariya\.com\//);
+    }
+  });
+
+  test('the splash fallback refresh lives in <noscript>, so /#stay is not cut short', async ({ page }) => {
+    expect(readFileSync('index.html', 'utf8')).toMatch(/<noscript><meta http-equiv="refresh"/);
+    await page.goto('/index.html#stay');
+    await page.waitForTimeout(2600);
+    expect(page.url()).toContain('/index.html');
+  });
+});

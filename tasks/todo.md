@@ -107,6 +107,7 @@
 - [x] `.skill-group` (About) and `.mcard` (Roadmap) moved to `--bg2` too
 - [x] Roadmap title starts at 120px on phones, like Projects and About (`npm test` 99/99)
 - [x] Roadmap hero: dead space before "Learning path overview" on phones/tablets (home `.hero` min-height 75-80vh leaked in) removed
+- [ ] Review follow-ups (PR #46): unify the Projects `:nth-child` bar CSS with `balanceBars()`; replace the one-pixel `@media (min-width:560px) and (max-width:560px)` FAB lift by unifying the 559/560 breakpoints; move the Hermes/Contact inline `padding-left` into CSS; check FAB focus return on iOS Safari
 - [ ] Open: at 560px and above the roadmap title still starts at 196px (Projects 120px, About 120-130px): same 76px double padding on tablet and desktop. Decide whether to align those too
 
 ### Performance — cut the root-load cost (scoped 2026-10-26, not started)

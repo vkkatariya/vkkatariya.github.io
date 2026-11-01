@@ -252,7 +252,7 @@ There is **no build step** for Phase 0. The source file is the deployed artifact
 |---|---|
 | `prototypes/portfolio-combined.html` | **Primary source of truth** — the live SPA (all 5 pages) |
 | `index.html` | Root intro splash on the design-system tokens (logo, wordmark, role line, four-hue progress hairline; tapping the logo skips it; first visit per tab session only), then redirects to `/prototypes/portfolio-combined`. `/#stay` shows it without redirecting; `/#projects` etc. forward the section |
-| `vercel.json` | `{"framework": null, "outputDirectory": "."}` — minimal |
+| `vercel.json` | `framework: null`, `outputDirectory: "."`, `cleanUrls`, and 307 redirects for moved or removed pages (old standalone pages go to the SPA section, resume pages to `prototypes/resume/`) |
 | `homelab-configs/me-tailscale-caddy.conf` | Caddy config for `/me` private gate |
 
 ### Deployment split
