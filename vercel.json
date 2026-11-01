@@ -1,5 +1,72 @@
 {
   "framework": null,
   "outputDirectory": ".",
-  "cleanUrls": true
+  "cleanUrls": true,
+  "redirects": [
+    {
+      "source": "/prototypes/resume",
+      "destination": "/prototypes/resume/resume",
+      "permanent": false
+    },
+    {
+      "source": "/prototypes/resume-dark",
+      "destination": "/prototypes/resume/resume-dark",
+      "permanent": false
+    },
+    {
+      "source": "/prototypes/about",
+      "destination": "/prototypes/portfolio-combined#about",
+      "permanent": false
+    },
+    {
+      "source": "/prototypes/projects",
+      "destination": "/prototypes/portfolio-combined#projects",
+      "permanent": false
+    },
+    {
+      "source": "/prototypes/cs-roadmap",
+      "destination": "/prototypes/portfolio-combined#roadmap",
+      "permanent": false
+    },
+    {
+      "source": "/prototypes/portfolio-v4",
+      "destination": "/prototypes/portfolio-combined",
+      "permanent": false
+    },
+    {
+      "source": "/prototypes/portfolio-prototypev.1",
+      "destination": "/prototypes/portfolio-combined",
+      "permanent": false
+    },
+    {
+      "source": "/prototypes/portfolio-prototypev.2",
+      "destination": "/prototypes/portfolio-combined",
+      "permanent": false
+    },
+    {
+      "source": "/prototypes/resume-v1",
+      "destination": "/prototypes/resume/resume-v1",
+      "permanent": false
+    },
+    {
+      "source": "/prototypes/resume-v2",
+      "destination": "/prototypes/resume/resume-v2",
+      "permanent": false
+    },
+    {
+      "source": "/prototypes/resume-v3",
+      "destination": "/prototypes/resume/resume-v3",
+      "permanent": false
+    },
+    {
+      "source": "/prototypes/resume-v2-dark",
+      "destination": "/prototypes/resume/resume-v2-dark",
+      "permanent": false
+    },
+    {
+      "source": "/prototypes/resume-v3-dark",
+      "destination": "/prototypes/resume/resume-v3-dark",
+      "permanent": false
+    }
+  ]
 }

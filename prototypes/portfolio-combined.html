@@ -315,6 +315,18 @@ html.light body::before {
 .sx-sug { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
 .sx-ft { display: flex; flex-wrap: wrap; gap: 6px 18px; align-items: center; padding: 10px 18px; border-top: 1px solid var(--w12); font-family: var(--mono); font-size: 13px; color: var(--w60); }
 .sx-ft kbd { font-family: var(--mono); font-size: 13px; border: 1px solid var(--w12); border-radius: 6px; padding: 0 6px; background: var(--bg3); color: var(--w80); }
+/* phones: the topbar has no spare pixels at 360px (brand + 4 icons + theme + profile), so search is a floating glass button;
+   lifted above the roadmap's bottom bar when that is showing (only at exactly 560px: below that the roadmap nav is in the topbar) */
+.pill.sx-fab { display: none; }
+@media (max-width: 560px) {
+  .pill.sx-fab { display: inline-flex; justify-content: center; position: fixed; z-index: 150; width: 48px; height: 48px; padding: 0; cursor: pointer; color: var(--w80);
+    right: max(16px, env(safe-area-inset-right, 0px)); bottom: max(20px, env(safe-area-inset-bottom, 0px)); }
+  .pill.sx-fab svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+  .pill.sx-fab:focus-visible { outline: 2px solid color-mix(in srgb, var(--acc) 35%, transparent); outline-offset: 3px; }
+}
+@media (min-width: 560px) and (max-width: 560px) {
+  html:has(#roadmap-internal-nav.nav-visible) .pill.sx-fab { bottom: 84px; }
+}
 .sx-flash { outline: 2px solid var(--acc); outline-offset: 5px; border-radius: 14px; transition: outline-color .6s; }
 @media (max-width: 560px) { .sx-ft span:not(:last-child) { display: none; } }
 .nav-lang { font-family: var(--mono); font-size: 12px; letter-spacing: 1.5px; }
@@ -1584,8 +1596,15 @@ footer {
 #pg-roadmap .ph {
   padding-bottom: 0;
 }
+/* phones: this header sits inside <main>, which already adds 76px, so the .ph 120px put the title at 196px while Projects and About
+   (header outside <main>) start at 120px. 44px + 76px = 120px. */
+@media (max-width: 559px) {
+  #pg-roadmap .ph { padding-top: 44px; }
+}
 #pg-roadmap .hero {
   padding-top: 20px;
+  padding-bottom: 24px;
+  min-height: 0; /* the home hero's 75-80vh tablet/phone min-height leaks in through the shared .hero class */
 }
 
 .hn-script {
@@ -2793,15 +2812,19 @@ html.light footer.roadmap-footer a { color: var(--w); }
 }
 
 /* --- Homepage: topic hues (every widget now carries one: Hermes pink = its Projects-page hue, About purple = its nav hue, Contact blue) ---
-   neutral surface; label + icon + 2px top bar read the hue from --h. */
+   neutral surface; label + icon + 4px left bar read the hue from --h. */
 #pg-home .w[class*="hue-"] {
-  /* neutral Widget surface; the hue shows only on the label/icon and a 2px accent bar along the top edge */
+  /* neutral Widget surface; the hue shows only on the label/icon and a 4px accent bar along the left edge */
   background: var(--bg2);
   border-color: var(--w12);
 }
-/* accent = a 3px top border, so it follows the 28px corner radius edge to edge (same idea as the 4px left edge on .pi / .skill-group) */
-#pg-home .w[class*="hue-"] { border-top: 3px solid var(--h); padding-top: 18px; }
-#pg-home .w[class*="hue-"]:hover { border-top-color: var(--h) !important; }
+/* accent = a 4px left border, so it follows the 28px corner radius (same recipe as the left edge on .pi / .skill-group).
+   It replaces the 1px outline on that side, so padding-left is 3px smaller than the widget padding to keep the content where it was
+   (20px base, 16px <=560px, 14px <=380px; the two inline-padded widgets carry their own). */
+#pg-home .w[class*="hue-"] { border-left: 4px solid var(--h); padding-left: 17px; }
+#pg-home .w[class*="hue-"]:hover { border-left-color: var(--h) !important; }
+@media (max-width: 560px) { #pg-home .w[class*="hue-"] { padding-left: 13px; } }
+@media (max-width: 380px) { #pg-home .w[class*="hue-"] { padding-left: 11px; } }
 #pg-home .w[class*="hue-"] .wlbl-row { color: var(--h); }
 #pg-home .w[class*="hue-"] .wlbl-row svg * { stroke: var(--h); }
 
@@ -2833,6 +2856,7 @@ html.light #pg-home .tl-item .tl-title svg [fill^="rgba(255,255,255"]:not([strok
 #pg-home .tl-item[class] .tl-badge { color: var(--h, var(--w60)); border-color: color-mix(in srgb, var(--h, var(--w12)) 35%, transparent); background: color-mix(in srgb, var(--h, var(--w)) 10%, transparent); }
 #pg-home .tl-item:not(.future) .tl-dot { background: var(--h, var(--w)); }
 /* all-projects cards: icons take the project's hue (same map as the Projects page: homelab teal, TypeShift cyan, orlon-bot indigo) */
+#pg-home .pcard[class*="hue-"] .pfoot-type { color: var(--h); } /* beats the per-type colours (.app/.collab/.ai) and their light-mode twins */
 #pg-home .pcard[class*="hue-"] svg [stroke] { stroke: var(--h); }
 #pg-home .pcard[class*="hue-"] svg [fill^="rgba(255,255,255"] { fill: color-mix(in srgb, var(--h) 16%, transparent); }
 #pg-home .pcard[class*="hue-"] svg [fill^="rgba(255,255,255"]:not([stroke]) { fill: color-mix(in srgb, var(--h) 80%, transparent); }
@@ -3120,6 +3144,29 @@ html.light #pg-projects .vis-wrap:hover, html.light #pg-projects .feat:hover, ht
 @media (prefers-reduced-motion: reduce) {
   #pg-projects .cs-stat:hover, #pg-projects .pipe-stage:hover, #pg-projects .plat:hover, #pg-projects .vis-wrap:hover, #pg-projects .feat:hover, #pg-projects .cs-skills:hover { transform: none; }
 }
+/* accent bars, stripped down (they were on 95 elements, often nested): odd items keep the 4px hue edge, even items keep the same 4px
+   but transparent, so text stays aligned and nothing shifts. The two wide panels carry no bar at all; the cards and bars inside them
+   already carry the hue. The hover ring still shows the hue on every card. Must stay after the rules above (same specificity).
+   In a 2-column grid plain odd/even would stripe whole columns, so the index cards (2 columns above 700px) and the stat tiles
+   (2x2 at 600px and below) flip every row instead: a checkerboard. */
+#pg-projects :is(.feat, .pipe-stage, .plat):nth-child(even),
+#pg-projects :is(.feat, .pipe-stage, .plat):nth-child(even):hover,
+#pg-projects :is(.vis-wrap, .cs-skills),
+#pg-projects :is(.vis-wrap, .cs-skills):hover { border-left-color: transparent; }
+@media (min-width: 701px) {
+  #pg-projects .pi:is(:nth-child(4n+2), :nth-child(4n+3)),
+  #pg-projects .pi:is(:nth-child(4n+2), :nth-child(4n+3)):hover { border-left-color: transparent; }
+}
+@media (max-width: 700px) {
+  #pg-projects .pi:nth-child(even), #pg-projects .pi:nth-child(even):hover { border-left-color: transparent; }
+}
+@media (min-width: 601px) {
+  #pg-projects .cs-stat:nth-child(even), #pg-projects .cs-stat:nth-child(even):hover { border-left-color: transparent; }
+}
+@media (max-width: 600px) {
+  #pg-projects .cs-stat:is(:nth-child(4n+2), :nth-child(4n+3)),
+  #pg-projects .cs-stat:is(:nth-child(4n+2), :nth-child(4n+3)):hover { border-left-color: transparent; }
+}
 #pg-projects .bar-lbl { font-family: var(--mono); font-size: 12.5px; letter-spacing: 0; color: var(--w80); }
 #pg-projects .bar-val { font-family: var(--data); font-size: 12.5px; letter-spacing: 0; color: var(--w80); }
 /* ══════════════════════════════════════════════════════════════════════
@@ -3158,11 +3205,11 @@ html.light #pg-projects .vis-wrap:hover, html.light #pg-projects .feat:hover, ht
 #pg-roadmap .chip { font-family: var(--mono); font-size: 12.5px; letter-spacing: 0; color: var(--w80); background: var(--bg3);
   border: 1px solid var(--w12); border-radius: 100px; padding: 4px 11px; }
 
-/* overview: 4 phase cards = panel + 3px hue top edge, hue numeral */
+/* overview: 4 phase cards = panel + 4px hue left edge (padding-left 3px under the 22px so the content stays put), hue numeral */
 #pg-roadmap .phases-grid { grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr)); }
 #pg-roadmap .phases-grid::before { background: color-mix(in srgb, var(--w) 12%, transparent); }
 #pg-roadmap .phase-card, #pg-roadmap .phase-card:hover {
-  background: var(--bg2); border: 1px solid var(--w12); border-top: 3px solid var(--h); border-radius: 20px;
+  background: var(--bg2); border: 1px solid var(--w12); border-left: 4px solid var(--h); border-radius: 20px; padding-left: 19px;
   box-shadow: none; backdrop-filter: none; -webkit-backdrop-filter: none;
 }
 #pg-roadmap .phase-card:hover { transform: translateY(-3px); background: var(--bg3); }
@@ -3175,7 +3222,7 @@ html.light #pg-projects .vis-wrap:hover, html.light #pg-projects .feat:hover, ht
 #pg-roadmap .guide-card, #pg-roadmap .guide-card:hover { padding: 0; background: none; border: none; box-shadow: none; border-radius: 0;
   backdrop-filter: none; -webkit-backdrop-filter: none; overflow: visible; transform: none; }
 #pg-roadmap .guide-grid { grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 12px; }
-#pg-roadmap .guide-col { background: var(--bg3); border: 1px solid var(--w12); border-left: 4px solid var(--h); border-radius: 14px; padding: 20px; min-width: 0;
+#pg-roadmap .guide-col { background: var(--bg2); border: 1px solid var(--w12); border-left: 4px solid var(--h); border-radius: 14px; padding: 20px; min-width: 0;
   box-shadow: none; backdrop-filter: none; -webkit-backdrop-filter: none; }
 #pg-roadmap .guide-col h3 { font-family: var(--sans); font-weight: 700; font-size: 17px; color: var(--w); margin-bottom: 12px; }
 #pg-roadmap .guide-col h4 { font-family: var(--mono); font-size: 13px; letter-spacing: .06em; text-transform: none; color: var(--h); margin: 20px 0 10px; }
@@ -3223,10 +3270,10 @@ html.light #pg-projects .vis-wrap:hover, html.light #pg-projects .feat:hover, ht
 #pg-roadmap .topic-card[data-phase="foundation"] { --h: var(--blue); } #pg-roadmap .topic-card[data-phase="core"] { --h: var(--teal); }
 #pg-roadmap .topic-card[data-phase="system"] { --h: var(--indigo); } #pg-roadmap .topic-card[data-phase="advanced"] { --h: var(--purple); }
 #pg-roadmap .topic-card, #pg-roadmap .topic-card.completed {
-  padding: 18px; background: var(--bg3); border: 1px solid var(--w12); border-left: 4px solid var(--h); border-radius: 14px;
+  padding: 18px; background: var(--bg2); border: 1px solid var(--w12); border-left: 4px solid var(--h); border-radius: 14px;
   box-shadow: none; backdrop-filter: none; -webkit-backdrop-filter: none; min-width: 0;
 }
-#pg-roadmap .topic-card:hover { transform: translateY(-3px); background: var(--bg2); box-shadow: none; border-color: var(--w12); border-left-color: var(--h); }
+#pg-roadmap .topic-card:hover { transform: translateY(-3px); background: var(--bg3); box-shadow: none; border-color: var(--w12); border-left-color: var(--h); }
 #pg-roadmap .topic-num { font-family: var(--data); font-size: 12.5px; letter-spacing: .06em; color: var(--w60); }
 #pg-roadmap .topic-name { display: flex; align-items: center; gap: 8px; font-family: var(--sans); font-weight: 700; font-size: 17px; line-height: 1.25; color: var(--w); }
 #pg-roadmap .topic-desc { font-family: var(--read); font-size: 15px; letter-spacing: 0; line-height: 1.55; color: var(--w80); }
@@ -3244,10 +3291,13 @@ html.light #pg-projects .vis-wrap:hover, html.light #pg-projects .feat:hover, ht
 #pg-roadmap .topic-check-label input { display: block; position: absolute; opacity: 0; width: 24px; height: 24px; margin: 0; cursor: pointer; }
 #pg-roadmap .topic-check-label { position: relative; }
 
-/* careers (10): panel + hue top edge; % + bar in the hue */
-#pg-roadmap .career-card { background: var(--bg2); border: 1px solid var(--w12); border-top: 3px solid var(--h); border-radius: 20px; padding: 22px;
+/* careers (10): panel + hue left edge; % + bar in the hue */
+#pg-roadmap .career-card { background: var(--bg2); border: 1px solid var(--w12); border-left: 4px solid var(--h); border-radius: 20px; padding: 22px 22px 22px 19px;
   box-shadow: none; backdrop-filter: none; -webkit-backdrop-filter: none; min-width: 0; }
-#pg-roadmap .career-card:hover { transform: translateY(-3px); background: var(--bg3); box-shadow: none; border-color: var(--w12); border-top-color: var(--h); }
+#pg-roadmap .career-card:hover { transform: translateY(-3px); background: var(--bg3); box-shadow: none; border-color: var(--w12); border-left-color: var(--h); }
+/* alternating accent bars: balanceBars() tags every other visible card; its 4px hue edge turns transparent (same width, so nothing
+   shifts). !important beats the per-card :hover edge rules. Roadmap + About only. */
+[data-nobar] { border-left-color: transparent !important; }
 #pg-roadmap .career-title { display: flex; align-items: center; gap: 10px; font-family: var(--sans); font-weight: 700; font-size: 19px; line-height: 1.2; color: var(--w); }
 #pg-roadmap .career-title svg.ico { width: 22px; height: 22px; }
 #pg-roadmap .career-tagline { font-family: var(--read); font-size: 15px; letter-spacing: 0; color: var(--w80); margin-top: 4px; }
@@ -3261,9 +3311,9 @@ html.light #pg-projects .vis-wrap:hover, html.light #pg-projects .feat:hover, ht
 
 /* resources (3 groups): mini-cards, purple edge; level = neutral chip */
 #pg-roadmap .resource-group h3 { font-family: var(--mono); font-size: 13px; letter-spacing: .06em; text-transform: none; font-weight: 500; color: var(--h); }
-#pg-roadmap .resource-item { padding: 14px 16px; background: var(--bg3); border: 1px solid var(--w12); border-left: 4px solid var(--h); border-radius: 14px;
+#pg-roadmap .resource-item { padding: 14px 16px; background: var(--bg2); border: 1px solid var(--w12); border-left: 4px solid var(--h); border-radius: 14px;
   box-shadow: none; backdrop-filter: none; -webkit-backdrop-filter: none; }
-#pg-roadmap .resource-item:hover { transform: translateY(-2px); background: var(--bg2); box-shadow: none; border-color: var(--w12); border-left-color: var(--h); }
+#pg-roadmap .resource-item:hover { transform: translateY(-2px); background: var(--bg3); box-shadow: none; border-color: var(--w12); border-left-color: var(--h); }
 #pg-roadmap .resource-name { display: flex; align-items: flex-start; gap: 8px; font-family: var(--sans); font-weight: 600; font-size: 15px; line-height: 1.35; color: var(--w); }
 #pg-roadmap .resource-name svg.ico { margin-top: 3px; }
 #pg-roadmap .resource-level { font-family: var(--mono); font-size: 12px; letter-spacing: 0; color: var(--w80); background: var(--bg2); border: 1px solid var(--w12); border-radius: 100px; padding: 2px 10px; }
@@ -3297,7 +3347,7 @@ html.light #pg-projects .vis-wrap:hover, html.light #pg-projects .feat:hover, ht
 #pg-roadmap .mm-leaf text { fill: var(--w); font-weight: 500; font-size: 13px; text-anchor: middle; pointer-events: none; }
 #pg-roadmap .mm-leaf .mm-num { fill: var(--h); font-family: var(--data); font-size: 10.5px; font-weight: 400; }
 #pg-roadmap .mapcards { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 12px; }
-#pg-roadmap .mcard { background: var(--bg3); border: 1px solid var(--w12); border-left: 4px solid var(--h); border-radius: 14px; padding: 16px; min-width: 0; }
+#pg-roadmap .mcard { background: var(--bg2); border: 1px solid var(--w12); border-left: 4px solid var(--h); border-radius: 14px; padding: 16px; min-width: 0; }
 #pg-roadmap .mcard h3 { display: flex; align-items: center; gap: 10px; margin: 0 0 10px; font-family: var(--sans); font-weight: 700; font-size: 17px; color: var(--w); }
 #pg-roadmap .mcard h3::before { content: ""; width: 10px; height: 10px; border-radius: 50%; background: var(--h); flex: none; }
 #pg-roadmap .mcard ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
@@ -3336,9 +3386,9 @@ html.light #pg-projects .vis-wrap:hover, html.light #pg-projects .feat:hover, ht
 .pw-bar-track { height: 10px; border-radius: 5px; background: var(--w12); }
 .pw-bar-fill { border-radius: 0 5px 5px 0; background: var(--h); }
 
-/* the fixed bottom nav (≤860) owns the bottom edge: lift the progress widget above it */
+/* the fixed bottom nav (560-1000px) owns the bottom edge: lift the progress widget above it. On phones the nav is in the topbar. */
 @media (max-width: 1000px) { #progress-widget { bottom: 86px; left: 16px; } }
-@media (max-width: 559px) { #progress-widget { bottom: 80px; min-width: 0; padding: 10px 14px; } }
+@media (max-width: 559px) { #progress-widget { bottom: 16px; min-width: 0; padding: 10px 14px; } }
 
 /* topic modal (opened from the cards; JS sets data-phase) */
 .modal-overlay { background: var(--scrim); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
@@ -3365,8 +3415,9 @@ html.light #pg-projects .vis-wrap:hover, html.light #pg-projects .feat:hover, ht
 .modal-resource-link .arrow { color: var(--w60); }
 .modal-resource-link:hover .arrow { color: var(--h); }
 
-/* internal nav: responsive. <=1000px (the grouped topbar has no free centre slot) = bottom pill; phone = full-width 4-up bar
-   (rules live after the base so they win) */
+/* internal nav: responsive. 560-1000px (the grouped topbar has no free centre slot for the labelled links) = bottom pill;
+   phone (<=559px) = icons-only pill in the topbar row, in the slot of the shared links pill (alignRoadmapNav() centres it there).
+   Rules live after the base so they win. */
 @media (max-width: 1000px) {
   #roadmap-internal-nav { top: auto !important; bottom: 20px; }
 }
@@ -3374,13 +3425,18 @@ html.light #pg-projects .vis-wrap:hover, html.light #pg-projects .feat:hover, ht
   #roadmap-internal-nav .nav-links a { font-size: 13px; letter-spacing: .04em; padding: 8px 12px; }
 }
 @media (max-width: 559px) {
-  #roadmap-internal-nav { bottom: 16px; width: calc(100% - 32px); max-width: none; height: 50px; padding: 4px; gap: 0; }
+  /* same row and height as the shared topbar pills (14px from the top, 50px tall); 4 icons fit the 134-198px slot between the brand and the tools */
+  #roadmap-internal-nav { --rn-item: 38px; top: 14px !important; bottom: auto; width: fit-content; max-width: none; height: 50px; padding: 4px; gap: 0; }
   #roadmap-internal-nav .nav-logo { display: none; }
-  #roadmap-internal-nav .nav-links { width: 100%; gap: 2px; }
-  #roadmap-internal-nav .nav-links li { flex: 1; min-width: 0; }
-  #roadmap-internal-nav .nav-links a { justify-content: center; gap: 5px; padding: 8px 4px; font-size: 12px; letter-spacing: .02em; overflow: hidden; text-overflow: ellipsis; }
+  #roadmap-internal-nav .nav-links { width: auto; gap: 2px; }
+  #roadmap-internal-nav .nav-links li { flex: none; }
+  #roadmap-internal-nav .nav-links a { justify-content: center; width: var(--rn-item); height: var(--rn-item); padding: 0; }
+  #roadmap-internal-nav .nav-links a svg.i { width: 18px; height: 18px; }
+  #roadmap-internal-nav .nav-links a span { display: none; } /* the links carry aria-labels */
+}
+@media (max-width: 359px) {
+  #roadmap-internal-nav { --rn-item: 30px; }
   #roadmap-internal-nav .nav-links a svg.i { width: 16px; height: 16px; }
-  #roadmap-internal-nav .nav-links a:not(.active) span { display: none; }
 }
 /* ══════════════════════════════════════════════════════════════════════
    PHASE 4 · ABOUT (design system) — scoped to #pg-about
@@ -3465,7 +3521,7 @@ html.light #pg-projects .vis-wrap:hover, html.light #pg-projects .feat:hover, ht
 #pg-about .skill-bar { grid-template-columns: minmax(0, 140px) minmax(0, 1fr); padding: 4px 0; }
 #pg-about .skill-bar-rail { height: 6px; }
 #pg-about .skills-grid { grid-template-columns: repeat(auto-fit, minmax(min(100%, 400px), 1fr)); gap: 12px; }
-#pg-about .skill-group { padding: 20px; background: var(--bg3); border: 1px solid var(--w12); border-left: 4px solid var(--h); border-radius: 14px;
+#pg-about .skill-group { padding: 20px; background: var(--bg2); border: 1px solid var(--w12); border-left: 4px solid var(--h); border-radius: 14px;
   box-shadow: none; backdrop-filter: none; -webkit-backdrop-filter: none; min-width: 0; }
 #pg-about .skill-group:hover { transform: none; box-shadow: none; border-color: var(--w12); border-left-color: var(--h); }
 #pg-about .sg-label { font-family: var(--sans); font-weight: 700; font-size: 16px; letter-spacing: 0; text-transform: none; color: var(--w); margin-bottom: 14px; }
@@ -3488,7 +3544,7 @@ html.light #pg-projects .vis-wrap:hover, html.light #pg-projects .feat:hover, ht
 
 /* interests: mini-cards, pink edge, icon tile */
 #pg-about .int-grid { grid-template-columns: repeat(auto-fit, minmax(min(100%, 400px), 1fr)); gap: 12px; }
-#pg-about .int-card { padding: 18px; gap: 14px; background: var(--bg3); border: 1px solid var(--w12); border-left: 4px solid var(--h); border-radius: 14px;
+#pg-about .int-card { padding: 18px; gap: 14px; background: var(--bg2); border: 1px solid var(--w12); border-left: 4px solid var(--h); border-radius: 14px;
   box-shadow: none; backdrop-filter: none; -webkit-backdrop-filter: none; min-width: 0; }
 #pg-about .int-icon { width: 44px; height: 44px; border-radius: 11px; color: var(--h);
   background: color-mix(in srgb, var(--h) 13%, transparent); border: 1px solid color-mix(in srgb, var(--h) 42%, transparent); }
@@ -3846,7 +3902,7 @@ html.light #pg-projects .vis-wrap:hover, html.light #pg-projects .feat:hover, ht
     </div>
 
     <!-- 12 · HERMES OAUTH FORK · 1×1 — auto-placed at col4 row5 -->
-    <div class="w s11 hue-pink" style="display:flex;flex-direction:column;justify-content:space-between;padding:16px;overflow:hidden;position:relative">
+    <div class="w s11 hue-pink" style="display:flex;flex-direction:column;justify-content:space-between;padding:16px 16px 16px 13px;overflow:hidden;position:relative">
       <!-- header -->
       <div class="wlbl-row" style="margin-bottom:0;gap:5px">
         <svg class="ico" width="11" height="11" viewBox="0 0 13 13" fill="none"><rect x="3" y="5.5" width="7" height="6" rx="1.2" stroke="rgba(255,255,255,.4)" stroke-width="1" fill="rgba(255,255,255,.04)"/><path d="M4.5 5.5V4a2 2 0 0 1 4 0v1.5" stroke="rgba(255,255,255,.4)" stroke-width="1" stroke-linecap="round" fill="none"/><circle cx="6.5" cy="8.5" r=".7" fill="rgba(255,255,255,.5)"/></svg>
@@ -3890,7 +3946,7 @@ html.light #pg-projects .vis-wrap:hover, html.light #pg-projects .feat:hover, ht
     </div>
 
     <!-- 11 · CONTACT · 1×2 -->
-    <div class="w s12 about-contact hue-blue" style="width:260px;justify-self:start;gap:10px;padding:14px;overflow:visible;align-self:stretch;flex-shrink:0">
+    <div class="w s12 about-contact hue-blue" style="width:260px;justify-self:start;gap:10px;padding:14px 14px 14px 11px;overflow:visible;align-self:stretch;flex-shrink:0">
       <div class="wlbl-row">
         <svg class="ico" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V4z" stroke="rgba(255,255,255,.4)" stroke-width="1" fill="rgba(255,255,255,.04)"/><polyline points="1,4 7,8.5 13,4" stroke="rgba(255,255,255,.35)" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
         contact
@@ -4688,7 +4744,7 @@ html.light #pg-projects .vis-wrap:hover, html.light #pg-projects .feat:hover, ht
       </div>
       <div>
         <div class="cs-h">Consolidated SPA</div>
-        <p class="cs-p">Every page is a single HTML prototype in <code>prototypes/</code> — <code>portfolio-combined.html</code> is the consolidated SPA, with separate <code>projects.html</code>, <code>about.html</code>, and <code>cs-roadmap.html</code> still in use as standalone entry points.</p>
+        <p class="cs-p">Every page is a single HTML prototype in <code>prototypes/</code> — <code>portfolio-combined.html</code> is the consolidated SPA that holds every page (home, projects, roadmap, about); the old standalone pages were folded into it.</p>
       </div>
     </div>
     
@@ -5988,6 +6044,7 @@ html.light #pg-projects .vis-wrap:hover, html.light #pg-projects .feat:hover, ht
 </div>
 </div>
 
+<button class="pill sx-fab" id="sxFab" type="button" aria-haspopup="dialog" aria-label="Search the whole page"><svg aria-hidden="true"><use href="#i-search"/></svg></button>
 <div class="sx-ov" id="sxOv" hidden>
   <div class="sx-panel" role="dialog" aria-modal="true" aria-label="Search the site">
     <div class="sx-in">
@@ -6035,13 +6092,13 @@ tick(); setInterval(tick, 1000);
 })();
 
 // The grouped topbar is centred as a whole, so the links slot is not at 50%: park the roadmap
-// internal nav over that slot (>1000px; below that it is a bottom bar). The brand pill animates
-// its width on scroll, so keep tracking for the length of that transition.
+// internal nav over that slot (above 1000px the labelled pill, up to 559px the icons-only pill; 560-1000px it is a
+// bottom bar). The brand pill animates its width on scroll, so keep tracking for the length of that transition.
 function alignRoadmapNav() {
   const rn = document.getElementById('roadmap-internal-nav');
   const links = document.querySelector('#shared-nav .links');
   if (!rn || !links) return;
-  if (window.innerWidth <= 1000) { rn.style.left = ''; return; }
+  if (window.innerWidth <= 1000 && window.innerWidth > 559) { rn.style.left = ''; return; }
   const r = links.getBoundingClientRect();
   rn.style.left = (r.left + r.width / 2) + 'px';
 }
@@ -6761,6 +6818,36 @@ document.addEventListener('keydown', (e) => {
 });
 
 // ═══════════════════════════════════════════
+// ACCENT BARS: every other visible card
+// ═══════════════════════════════════════════
+// Cards in a grid or list keep their 4px hue edge on a checkerboard of the *visible* cards; the others get [data-nobar] (transparent
+// edge, same width). Row and column come from the real layout, so it holds for auto-fit grids, breakpoints and the topic filter.
+// Without JS every card simply keeps its bar.
+const ALT_BAR_CARDS = '#pg-roadmap .phase-card, #pg-roadmap .topic-card, #pg-roadmap .career-card, #pg-roadmap .guide-col, #pg-roadmap .resource-item, #pg-roadmap .mcard, #pg-about .skill-group, #pg-about .int-card';
+let barsRO = null; // watches every card parent; set below. Parents are registered inside balanceBars, so grids rendered later (topics, careers, mind map) are picked up too
+function balanceBars() {
+  const cluster = vals => vals.sort((a, b) => a - b).reduce((out, v) => (out.length && v - out[out.length - 1] <= 4 ? out : out.concat(v)), []);
+  const slot = (list, v) => list.findIndex(c => Math.abs(c - v) <= 4);
+  new Set([...document.querySelectorAll(ALT_BAR_CARDS)].map(el => el.parentElement)).forEach(parent => {
+    if (barsRO) barsRO.observe(parent); // no-op when already observed; fires once on first observe, then on resize and when a hidden page is shown
+    const cards = [...parent.children].filter(el => el.matches(ALT_BAR_CARDS));
+    const shown = cards.filter(el => el.offsetParent !== null);
+    if (!shown.length) return; // page not visible: keep the last pattern so it does not flash all-barred when the page opens
+    const xs = cluster(shown.map(el => el.offsetLeft)), ys = cluster(shown.map(el => el.offsetTop));
+    cards.forEach(el => el.toggleAttribute('data-nobar', shown.includes(el) && (slot(xs, el.offsetLeft) + slot(ys, el.offsetTop)) % 2 === 1));
+  });
+}
+let barsQueued = false;
+function queueBars() {
+  if (barsQueued) return;
+  barsQueued = true;
+  requestAnimationFrame(() => { barsQueued = false; balanceBars(); });
+}
+if (typeof ResizeObserver === 'function') barsRO = new ResizeObserver(queueBars);
+window.addEventListener('resize', queueBars);
+queueBars();
+
+// ═══════════════════════════════════════════
 // TOPIC FILTER
 // ═══════════════════════════════════════════
 document.querySelectorAll('.filter-btn').forEach(btn => {
@@ -6776,6 +6863,7 @@ document.querySelectorAll('.filter-btn').forEach(btn => {
         card.classList.add('hidden');
       }
     });
+    queueBars();
   });
 });
 
@@ -7038,7 +7126,7 @@ function showPage(id, opts) {
      ['projects', 'Projects', 'Case studies and what each one is built with', 'i-box', 'teal'],
      ['roadmap', 'CS Roadmap', 'Learning path, core topics, career paths and timeline', 'i-map', 'indigo'],
      ['about', 'About', 'Education, interests and languages', 'i-figure', 'purple']
-    ].forEach(p => add({ t: 'page', pg: p[0], ti: p[1], tx: p[2], ic: p[3], h: p[4], meta: ['page'] }));
+    ].forEach(p => add({ t: 'page', pg: p[0], ti: p[1], tx: p[2], ic: p[3], h: p[4], meta: [] }));
 
     document.querySelectorAll('#pg-projects .cs-section').forEach(el => add({
       t: 'project', pg: 'projects', ti: textOf(el.querySelector('.cs-title')), tx: textOf(el), ic: 'i-box', h: hueOf(el), el,
@@ -7216,6 +7304,7 @@ function showPage(id, opts) {
   }
 
   sbtn.addEventListener('click', openDlg);
+  const fab = document.getElementById('sxFab'); if (fab) fab.addEventListener('click', openDlg);
   document.getElementById('sxX').addEventListener('click', closeDlg);
   ov.addEventListener('mousedown', e => { if (e.target === ov) closeDlg(); });
   inp.addEventListener('input', render);

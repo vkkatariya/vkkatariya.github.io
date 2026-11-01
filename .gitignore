@@ -55,3 +55,7 @@ workflow
 
 # Temporary render templates (used to generate static assets, not shipped)
 prototypes/assets/_og-template.html
+
+# Private personal content (bookmarks, following lists, private dashboards). This repo is public and Vercel serves the whole tree
+# (outputDirectory "."), so keep it out of git and out of `vercel deploy` uploads. It belongs on athena behind Tailscale.
+prototypes/me/

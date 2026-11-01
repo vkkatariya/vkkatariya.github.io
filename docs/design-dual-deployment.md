@@ -113,15 +113,11 @@ Vercel preview (vishalkatariya.dev)         ← preview deployment URL
 | **GitHub Pages smoke test** | Verifies analytics scripts are present after deploy | `.github/workflows/pages.yml` smoke-test job |
 
 ### Analytics coverage
-All 6 HTML files include **both** Speed Insights + Web Analytics:
-- `index.html` (root redirect splash)
-- `prototypes/about.html`
-- `prototypes/cs-roadmap.html`
-- `prototypes/portfolio-combined.html` (live SPA)
-- `prototypes/projects.html`
-- `prototypes/resume.html`
+The two pages that matter include **both** Speed Insights + Web Analytics:
+- `index.html` (root intro splash)
+- `prototypes/portfolio-combined.html` (live SPA, holds every page)
 
-**Excluded:** `prototypes/portfolio-v4.html` (archived prototype, not deployed to production).
+The resume pages live in `prototypes/resume/`. The old standalone pages (`about`, `projects`, `cs-roadmap`, `portfolio-v4`, the two `portfolio-prototype` files) were removed; `vercel.json` redirects their URLs to the SPA.
 
 ### Smoke test additions
 The Pages workflow now verifies (in addition to existing checks):

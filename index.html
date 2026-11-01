@@ -1,9 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Vishal Katariya · Portfolio</title>
+<script>
+/* theme: same switch as the site (dark by default, light only when the visitor chose it there) */
+(function () {
+  var light = false;
+  try { light = localStorage.getItem('vk-theme') === 'light'; } catch (e) { /* storage blocked: stay dark */ }
+  if (light) document.documentElement.classList.add('light');
+  document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('meta[name="theme-color"]').forEach(function (m) { m.content = light ? '#ECECEC' : '#1B1C1D'; });
+  });
+})();
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vishal Katariya · Portfolio</title>
+<meta name="description" content="Vishal Katariya — Personal portfolio">
 <!-- Favicon -->
 <link rel="icon" href="prototypes/assets/favicon.ico" sizes="any">
 <link rel="icon" type="image/svg+xml" href="prototypes/assets/favicon.svg">
@@ -11,7 +23,8 @@
 <link rel="manifest" href="prototypes/assets/site.webmanifest">
 <meta name="theme-color" content="#1B1C1D">
 <meta name="theme-color" content="#ECECEC" media="(prefers-color-scheme: light)">
-<meta property="og:image" content="prototypes/assets/og-image.png">
+<!-- absolute URLs: social scrapers do not resolve relative og:image paths -->
+<meta property="og:image" content="https://vishal-katariya.com/prototypes/assets/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:url" content="https://vishal-katariya.com/">
@@ -19,76 +32,109 @@
 <meta property="og:description" content="CS student at Hochschule Darmstadt. ML Engineering, Full-Stack, Infrastructure.">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="prototypes/assets/og-image.png">
-  <link rel="canonical" href="/prototypes/portfolio-combined" />
-  <meta http-equiv="refresh" content="0; url=/prototypes/portfolio-combined" />
-  <meta name="description" content="Vishal Katariya — Personal portfolio" />
-  <script>
-    window.si = window.si || function () { (window.siq = window.siq || []).push(arguments); };
-  </script>
-  <script defer src="/_vercel/speed-insights/script.js"></script>
-  <script>
-    window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
-  </script>
-  <script defer src="/_vercel/insights/script.js"></script>
-  <style>
-    html, body {
-      margin: 0; padding: 0;
-      min-height: 100vh;
-      background: #1B1C1D;
-      color: #F1F0F6;
-      font-family: 'Space Grotesk', system-ui, sans-serif;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .redirect-wrap {
-      text-align: center;
-      padding: 40px 20px;
-      max-width: 480px;
-    }
-    .redirect-wrap h1 {
-      font-size: clamp(28px, 5vw, 48px);
-      font-weight: 700;
-      letter-spacing: -1px;
-      margin: 0 0 12px;
-      font-family: 'Cormorant Garamond', serif;
-      font-style: italic;
-    }
-    .redirect-wrap p {
-      font-size: 14px;
-      opacity: 0.6;
-      margin: 8px 0;
-      letter-spacing: 0.5px;
-    }
-    .redirect-wrap a {
-      display: inline-block;
-      margin-top: 24px;
-      padding: 14px 28px;
-      background: rgba(255,255,255,0.08);
-      border: 1px solid rgba(255,255,255,0.16);
-      border-radius: 100px;
-      color: #F1F0F6;
-      text-decoration: none;
-      font-size: 13px;
-      letter-spacing: 1.5px;
-      font-family: 'Space Grotesk', sans-serif;
-      text-transform: uppercase;
-    }
-    .redirect-wrap a:hover {
-      background: rgba(255,255,255,0.12);
-    }
-  </style>
+<meta name="twitter:image" content="https://vishal-katariya.com/prototypes/assets/og-image.png">
+<link rel="canonical" href="/prototypes/portfolio-combined">
+<!-- no-JS fallback only (inside noscript, so it cannot cut /#stay short or beat the hash-forwarding script) -->
+<noscript><meta http-equiv="refresh" content="2; url=/prototypes/portfolio-combined"></noscript>
+<link rel="prefetch" href="/prototypes/portfolio-combined" as="document">
+<script>
+window.si = window.si || function () { (window.siq = window.siq || []).push(arguments); };
+</script>
+<script defer src="/_vercel/speed-insights/script.js"></script>
+<script>
+window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+</script>
+<script defer src="/_vercel/insights/script.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,700&family=JetBrains+Mono:wght@400&family=Syne:wght@800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+/* design-system tokens (same values as prototypes/portfolio-combined.html, only those used here) */
+:root {
+  --bg:#1B1C1D; --w:#F4F4F5; --w60:#A4A7AB; --w06:rgba(255,255,255,.06);
+  --acc:#2FD9BE; --blue:#5E9BFF; --teal:#2FD9BE; --indigo:#9A9DFF; --purple:#BC92FF;
+  --shadow:0 12px 32px rgba(0,0,0,.42);
+  --display:'Syne','Space Grotesk',system-ui,sans-serif;
+  --mono:'JetBrains Mono',ui-monospace,'SFMono-Regular',Menlo,monospace;
+  --spring:cubic-bezier(.34,1.46,.64,1); --ease:cubic-bezier(.2,.7,.2,1);
+  color-scheme:dark;
+}
+html.light {
+  --bg:#ECECEC; --w:#0D0D0F; --w60:#54575B; --w06:rgba(13,13,15,.06);
+  --acc:#007860; --blue:#0C65DF; --teal:#007860; --indigo:#4A4DD1; --purple:#7338CC;
+  --shadow:0 12px 32px rgba(13,13,15,.16);
+  color-scheme:light;
+}
+
+html, body { min-height: 100vh; min-height: 100dvh; }
+body { background: var(--bg); color: var(--w); display: grid; place-items: center; overflow: hidden; }
+
+/* dot matrix, as on every page */
+body::before {
+  content: ''; position: fixed; inset: 0; pointer-events: none;
+  background-image: radial-gradient(circle, var(--w06) 1px, transparent 1px); background-size: 20px 20px;
+}
+
+.stage {
+  position: relative; display: flex; flex-direction: column; align-items: center; text-align: center; padding: 24px 20px;
+  animation: leave .18s var(--ease) both paused;
+}
+.stage.leave { animation-play-state: running; }
+@keyframes leave { to { opacity: 0; transform: translateY(-8px) scale(.985); } }
+@keyframes pop { from { opacity: 0; transform: scale(.6); } to { opacity: 1; transform: scale(1); } }
+@keyframes rise { from { opacity: 0; transform: translateY(14px); filter: blur(6px); } to { opacity: 1; transform: none; filter: blur(0); } }
+@keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes sweep { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+/* the logo is the way in: tap it to skip the intro */
+.mark { position: relative; display: block; width: 76px; height: 76px; margin-bottom: 26px; border-radius: 22%; animation: pop .45s var(--spring) both; }
+.mark::before { content: ''; position: absolute; inset: -22px; border-radius: 50%; z-index: -1; background: radial-gradient(circle, color-mix(in srgb, var(--acc) 28%, transparent), transparent 68%); animation: fade .5s var(--ease) .15s both; }
+.mark img { width: 100%; height: 100%; display: block; border-radius: inherit; box-shadow: var(--shadow); }
+.mark:focus-visible { outline: 2px solid var(--acc); outline-offset: 6px; }
+
+.wm { font-family: var(--display); font-weight: 800; font-size: clamp(26px, 8vw, 56px); line-height: 1.05; letter-spacing: -.03em; white-space: nowrap; }
+.wm .hn-script { font-family: 'Cormorant Garamond', serif; font-style: italic; font-weight: 700; font-size: 1.15em; letter-spacing: -.02em; line-height: .8; }
+.wm span { display: inline-block; animation: rise .45s var(--ease) both; }
+.wm .w1 { animation-delay: .06s; } .wm .w2 { animation-delay: .12s; } .wm .w3 { animation-delay: .19s; } .wm .w4 { animation-delay: .26s; }
+
+.role { margin-top: 14px; font-family: var(--mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--w60); animation: fade .4s var(--ease) .3s both; }
+
+/* progress hairline in the four nav hues; fills while the intro plays, then the page changes */
+.bar { width: min(200px, 60vw); height: 2px; margin-top: 30px; border-radius: 2px; background: var(--w06); overflow: hidden; }
+.bar i { display: block; height: 100%; transform-origin: left; background: linear-gradient(90deg, var(--blue), var(--teal), var(--indigo), var(--purple)); animation: sweep .6s cubic-bezier(.4,0,.2,1) .2s both; }
+
+@media (prefers-reduced-motion: reduce) { .stage, .mark, .mark::before, .wm span, .role, .bar i { animation: none !important; } }
+</style>
 </head>
 <body>
-  <div class="redirect-wrap">
-    <h1>Vishal Katariya</h1>
-    <p>Portfolio loading...</p>
-    <p><a href="/prototypes/portfolio-combined">ENTER PORTFOLIO →</a></p>
-  </div>
-  <script>
-    // JS-based redirect as backup for meta refresh
-    window.location.replace('/prototypes/portfolio-combined');
-  </script>
+<main class="stage" id="stage">
+  <a class="mark" id="enter" href="/prototypes/portfolio-combined" aria-label="Enter portfolio"><img src="prototypes/assets/logo-192.webp" alt="" width="76" height="76"></a>
+  <h1 class="wm" aria-label="Vishal Katariya"><span class="hn-script w1" aria-hidden="true">V</span><span class="w2" aria-hidden="true">ishal</span> <span class="hn-script w3" aria-hidden="true">K</span><span class="w4" aria-hidden="true">atariya</span></h1>
+  <p class="role">ML · Infra · Full-stack</p>
+  <div class="bar" aria-hidden="true"><i></i></div>
+</main>
+
+<script>
+(function () {
+  var TARGET = '/prototypes/portfolio-combined';
+  var PAGES = ['home', 'projects', 'roadmap', 'about'];
+  var hash = location.hash.replace('#', '');
+  if (hash === 'stay') return; // view this screen without redirecting (previews, screenshots, tests)
+  var dest = TARGET + (PAGES.indexOf(hash) > -1 ? '#' + hash : ''); // vishal-katariya.com/#projects lands on Projects
+  document.getElementById('enter').href = dest;
+  var stage = document.getElementById('stage');
+  var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var left = false;
+  function go() { if (left) return; left = true; location.replace(dest); }
+  // repeat visit in this tab session: skip the intro entirely
+  var seen = false;
+  try { seen = sessionStorage.getItem('vk-intro') === '1'; sessionStorage.setItem('vk-intro', '1'); } catch (e) { /* storage blocked: always play */ }
+  if (seen) { go(); return; }
+  // the intro plays for ~0.65s, then the stage fades out (.18s) and the page changes: ~0.85s in total
+  setTimeout(function () { if (!reduce) stage.classList.add('leave'); setTimeout(go, reduce ? 0 : 190); }, reduce ? 300 : 650);
+})();
+</script>
 </body>
 </html>

@@ -6,6 +6,215 @@
 
 ---
 
+## [2026-11-01] Claude Code (local) — fix/release-review-findings · fixes from the code review of release PR #46
+
+**Mode:** Builder
+
+**Did:** fixed the review findings that were real and cheap: (1) `index.html` no-JS `<meta http-equiv="refresh">` moved into `<noscript>` (it fired 2s after load even on `/#stay`, and could beat the hash-forwarding script on a slow font stylesheet); (2) `vercel.json` 307 redirects for every removed or moved page (`/prototypes/about|projects|cs-roadmap` to the SPA section, `portfolio-v4` and the two prototypes to the SPA, `resume-v1|v2|v3|v2-dark|v3-dark` to `prototypes/resume/`); (3) the "Consolidated SPA" case study no longer says the deleted standalone pages are still in use; (4) CLAUDE.md `vercel.json` row and `docs/design-dual-deployment.md` analytics list updated; (5) the 7 resume pages use an absolute `og:image`. 3 new tests.
+
+**Not fixed (in `todo.md`):** Projects bars use `:nth-child` CSS while Roadmap/About use `balanceBars()` (unify); the one-pixel `@media (min-width:560px) and (max-width:560px)` FAB lift; inline `padding-left` on the Hermes/Contact widgets; FAB focus return on iOS Safari (unverified).
+
+**State:** PR open against `dev`; release PR #46 to follow once it is merged.
+
+**Modified:** `index.html`, `vercel.json`, `prototypes/portfolio-combined.html`, `prototypes/resume/*.html`, `CLAUDE.md`, `docs/design-dual-deployment.md`, `tests/e2e/phone-and-legacy.spec.js`, `tasks/DEVLOG.md`, `tasks/todo.md`.
+
+---
+
+## [2026-10-31] Claude Code (local) — feat/index-minimal · index.html redesigned to a minimal splash
+
+**Mode:** Builder
+
+**Ask:** "Redesign index.html with minimal footprint yet modern and follows our design system".
+
+**Did:** `index.html` 13.8KB to 8.5KB. Kept: dot-matrix background, the logo with its hue halo (now a link: tapping it enters the portfolio), the Syne wordmark with the Cormorant V/K, a JetBrains Mono role line, a 2px four-hue progress hairline, the ~0.85s timeline, repeat-visit skip, `#stay`, section-hash forwarding, theme switch and absolute og: URLs. Removed: destination chips, the tagline, the "loading" status, the NeoPOP CTA, the icon sprite, unused tokens, the top glow. The Google Fonts request shrinks to the three faces used (Syne 800, Cormorant italic 700, JetBrains Mono 400; was five families and 20 weights). No new dependencies.
+
+**Verified:** `tests/e2e/index.spec.js` 12/12 (rewritten for the new content; new: size under 10KB, no chips/CTA, one font request, logo tap enters); screenshots dark 390px and light 1280px; full suite and `lint:html` before the PR.
+
+**State:** PR open against `dev`. Stacked on top of #44 (splash speed), so merge #44 first.
+
+**Modified:** `index.html`, `tests/e2e/index.spec.js`, `CLAUDE.md`, `tasks/DEVLOG.md`.
+
+---
+
+## [2026-10-31] Claude Code (local) — perf/splash-faster · intro splash cut from ~1.9s to ~0.85s
+
+**Mode:** Builder
+
+**Ask:** "Sort out splash, 1.9s is a lot" (decision 1 of the perf task in `todo.md`).
+
+**Did:** `index.html` keeps the design-system intro but the whole timeline is compressed: mark pop .7s to .45s, wordmark words staggered .06-.26s, chips .34-.49s, progress bar sweep 1.35s to .6s, redirect timer 1700ms to 650ms plus .18s fade (~0.85s total; reduced motion 300ms). Repeat visits in the same tab session skip it entirely (`sessionStorage` key `vk-intro`, try/catch so blocked storage always plays it). `#stay` and section-hash forwarding unchanged.
+
+**Verified:** `tests/e2e/index.spec.js` 11/11 (new: redirect within 1.2s; repeat visit redirects within 400ms), full suite and `lint:html` run before the PR.
+
+**State:** PR open against `dev`. Self-hosted fonts, canonical host and HTML cache staleness (decisions 2-4) still open.
+
+**Modified:** `index.html`, `tests/e2e/index.spec.js`, `tasks/todo.md`, `tasks/DEVLOG.md`.
+
+---
+
+## [2026-10-31] Claude Code (local) — fix/roadmap-mobile-nav-and-surfaces · roadmap nav at the top on phones, grey card surfaces
+
+**Mode:** Builder
+
+**Ask (from a phone screenshot of the dev preview):** the roadmap nav is at the bottom on a phone, put it at the top; and the Getting started, 11 core topics, curated resources (Roadmap) and Interests (About) widgets are near-black instead of grey.
+
+**Did:**
+- Nav: `#roadmap-internal-nav` was a bottom bar at 1000px and below. On phones (<=559px) it is now an icons-only pill in the topbar row (14px from the top, 50px tall like the other pills), centred in the slot of the shared links pill, which the roadmap hides: `alignRoadmapNav()` now also centres it there on phones (it only did so above 1000px). Items are 38px (30px at <=359px) so the pill is 168px (136px) and clears the brand and tools pills from 320px up; the links keep their aria-labels, the active tab is the hue-tinted circle. 560-1000px keeps the labelled bottom pill (516px does not fit the 258px slot); desktop unchanged.
+- Things that assumed a bottom bar: the search FAB lift (`bottom: 84px`) now only applies at exactly 560px (where the bottom pill and the FAB can meet); the progress widget is back at `bottom: 16px` on phones (the 560-1000px lift stays); the old phone test ("FAB clears the bottom bar") now checks the opposite.
+- Surfaces: `.guide-col`, `.topic-card`, `.resource-item` (Roadmap) and `.int-card` (About) used `--bg3` (near-black in dark theme) while the other widgets use `--bg2`. They now use `--bg2` (white in the light theme, like the career cards); `.topic-card` and `.resource-item` hover to `--bg3`, like the phase and career cards.
+
+**Follow-up in the same PR (asked after the first push):**
+- `.skill-group` (About) and `.mcard` (Roadmap mind-map cards, below 900px) were the same near-black `--bg3`; both now use `--bg2` too, so every card on Roadmap and About matches the other widgets. The chips inside the skill groups stay legible.
+- Roadmap title gap on phones: the roadmap header sits inside `<main>` (which adds 76px) and `.ph` added another 120px, so the title started at 196px while Projects and About start at 120px. At <=559px `#pg-roadmap .ph` now has `padding-top: 44px` (76 + 44 = 120), so all three pages line up from 320px to 559px. At 560px and above the roadmap still starts at 196px (desktop and tablet were not part of the ask).
+
+**Third follow-up (phone screenshot: big empty space between the roadmap hero buttons and "Learning path overview"):** the roadmap hero reuses the home `.hero` class, whose `min-height: 80vh` (<=860px) and `75vh` (<=560px) leaked onto it, leaving ~900px of dead space on a phone. `#pg-roadmap .hero` now has `min-height: 0` and `padding-bottom: 24px` (was 60px). At 390px the hero is ~230px tall and the buttons-to-heading gap is under 100px. New test "roadmap hero has no dead space" (390/768/1280px): fails at 390 and 768 on the old CSS. `npm test` 102/102 before the padding tweak; the new and title tests re-run after it, `lint:html` 0 errors.
+
+**Verified:** `npm test` 99/99 (96 + 3: the title lines up with Projects and About at 320/390/559px; the surfaces test now also covers `.mcard` and `.skill-group`; 5 of those 5 fail on the previous HTML). Earlier in this PR: `npm test` 96/96 (+10: nav inside the topbar row and clear of the brand/tools pills at 320/360/390/430/559px, bottom pill kept at 560 and 860px, desktop unchanged, card backgrounds equal the home widget's in dark and light, topic-card hover; the phone FAB test replaced; 8 of the 11 new/changed tests fail on the old CSS); `lint:html` 0 errors; nav rect measured at 11 widths from 320 to 1280; screenshots at 390 and 320 (dark and light). Gotcha for screenshots: `html { scroll-behavior: smooth }`, so a screenshot taken right after `scrollTo` shows the fixed bars displaced mid-scroll; use `behavior: 'instant'` and wait.
+
+**State:** PR open against `dev`.
+
+**Modified:** `prototypes/portfolio-combined.html`, `tests/e2e/spa.spec.js`, `tests/e2e/phone-and-legacy.spec.js`, `tasks/todo.md`, `tasks/DEVLOG.md`.
+
+---
+
+## [2026-10-31] Claude Code (local) — chore/resume-folder-and-tidy · your reorganisation committed, move repaired
+
+**Mode:** Execution
+
+**Did:** Reviewed the uncommitted work in the main checkout, fast-forwarded it to `origin/dev` (nothing overlapped), and committed it in two steps.
+- Commit 1, as you made it: the seven resume pages moved to `prototypes/resume/` (byte-identical, git sees 100% renames), `tasks/design-dual-deployment.md` moved to `docs/`, the two old diagrams in `docs/` deleted, `tasks/todo.md` condensed (open items 118 -> 113, all phases kept).
+- Commit 2, repairs the move: the pages' `assets/...` links (photo, favicons, manifest, og-image) now resolve one folder up (`../assets/...`), otherwise the resume photo and icons 404; `vercel.json` redirects the old public URLs `/prototypes/resume` and `/prototypes/resume-dark` to the new location (temporary 307, easy to drop); the `lint:html` glob and the availability-text test now cover `prototypes/resume/` (they silently stopped at `prototypes/*.html`); README and CONTEXT point at the new paths. New test loads every resume page and checks the photo and requests (fails on the as-moved files).
+- Commit 3: `.gitignore` entry for `prototypes/me/`.
+
+**Left out on purpose:** `prototypes/me/` (X bookmarks and following lists, Reddit communities, YouTube and TL;DR digests, private dashboards: personal browsing data, and this repo is public and `outputDirectory` is `.`, so anything committed is served) and `docs/germany-tax-map.html` (a personal tax-planning page: a EUR 1,440/month Werkstudent forecast, family, parents, cash flow; `docs/` is publicly served).
+
+**Watch:** the GitHub Pages mirror cannot redirect, so `vkkatariya.github.io/prototypes/resume` no longer resolves there (the new path `/prototypes/resume/resume` does). `docs/design-dual-deployment.md` still lists some pages that no longer exist; it is a historical design note and was moved unchanged.
+
+**Verified:** `npm test` 86/86, `lint:html` 0 errors (9 files: the SPA, index and the seven resume pages).
+
+**State:** PR #42 open against `dev` (branch `chore/resume-folder-and-tidy`, on top of `origin/dev` 1f79363), not merged. Checked on its Vercel preview: `/prototypes/resume` and `/prototypes/resume-dark` serve the moved pages (assets via `../assets/`), and `/prototypes/me/x-bookmarks.json` is a 404.
+
+**Modified:** moves and deletions above, `vercel.json`, `package.json`, `tests/e2e/phone-and-legacy.spec.js`, `README.md`, `CONTEXT.md`, `.gitignore`, `tasks/DEVLOG.md`.
+
+---
+
+## [2026-10-31] Claude Code (local) — style/accent-bars-roadmap-about · same accent-bar treatment on Roadmap and About
+
+**Mode:** Builder
+
+**Ask:** apply the Home/Projects accent-bar changes (PR #40) to the Roadmap and About pages.
+
+**Scope (measured at 1280/860/390):** Roadmap: 14 cards with a 3px top bar (4 `.phase-card`, 10 `.career-card`) and 26 with a 4px left bar (11 `.topic-card`, 9 `.resource-item`, 4 `.mcard` below 900px, 2 `.guide-col`). About: 8 left bars (4 `.skill-group`, 4 `.int-card`, both 2-column).
+
+**Did:**
+- `.phase-card` and `.career-card`: top bar to a 4px left border, `padding-left` 19px (22px - 3px) so the content keeps its horizontal position; hover rule moved to `border-left-color`.
+- Alternation: these grids are `auto-fit` (1-4 columns) and the topic filter hides cards with `.hidden`, so CSS-only `:nth-child` would stripe columns and break after filtering. New `balanceBars()` (JS, next to the topic filter) reads each card's real row/column among the *visible* cards of its parent and tags every other one `data-nobar` (a checkerboard; in a single row or column it is plain alternation). CSS: `[data-nobar] { border-left-color: transparent !important; }` (same 4px width, nothing shifts). Re-runs through a `ResizeObserver` on the card parents (resize, first show of a hidden page), after a filter click, and on window resize. Without JS every card keeps its bar.
+- Covers `.phase-card`, `.topic-card`, `.career-card`, `.guide-col`, `.resource-item`, `.mcard` (Roadmap) and `.skill-group`, `.int-card` (About). The `.modal-learn-cat` / `.modal-resource-link` CSS has no matching markup (dead CSS), so nothing to do there.
+
+**Verified:** `npm test` 79/79 (+9 new: neighbours never share a bar state on Roadmap and About at 1280/860/390, top-to-left on phase/career cards, topic filter per phase and back to "all", desktop-to-phone resize; all 9 fail on the old code); `lint:html` 0 errors; before/after geometry of the 14 converted cards at 1280 dark+light, 860, 390: width and horizontal content offset unchanged, max 2px vertical shift, no new overflow; screenshots dark + light.
+
+**Review fixes (independent review of #40 and #41 before merging):** the `ResizeObserver` was created before `renderTopics()`/`renderCareers()`/`buildMindMap()` ran, so those three grids were never observed; it only worked because the window-resize listener and the other observed parents re-ran the pass for every group. `balanceBars()` now registers each card parent itself (`observe` is a no-op for one already watched), so late-rendered grids are covered. It also skips groups with no visible card, so a rebalance while a page is hidden (window resize on Home) no longer clears that page's tags, which made the cards fade from all-barred when the page opened. +2 tests (79 -> 81 on this branch; both fail on the earlier code). My first version of the observer test went from 3 columns to 1 and passed on the old code: an odd column count flattens to plain alternation, so it needs a switch to 2 columns.
+
+**Note:** Home and Projects (PR #40) alternate in plain CSS because their grids have fixed column counts; Roadmap/About use `balanceBars()`. Known cosmetic gap in #40, left for a follow-up: between roughly 460px and 600px the three `.plat` cards wrap to 2 columns (`auto-fit, minmax(170px, 1fr)`), so plain odd/even puts the bar on cards 1 and 3 in the same column. Moving Projects onto `balanceBars()` would fix that and unify the two approaches.
+
+**State:** PR merged after #40 (`origin/dev` merged into the branch, DEVLOG entries kept). The todo entry lives in the main checkout's uncommitted `tasks/todo.md`.
+
+---
+
+## [2026-10-31] Claude Code (local) — style/accent-bar-rebalance · hue accent bars moved and stripped down
+
+**Mode:** Builder
+
+**Ask:** the hue accent bar was overused. Move the home widgets' bar from the top to the left; on the Projects page strip it down to an odd/even pattern.
+
+**Scope (measured first):** home had 12 widgets with a 3px `border-top`. Projects had 95 elements with a 4px hue left edge (8 `.pi`, 32 `.cs-stat`, 23 `.feat`, 8 `.vis-wrap`, 8 `.cs-skills`, 10 `.pipe-stage`, 6 `.plat`), several nested inside each other.
+
+**Did:**
+- Home: `#pg-home .w[class*="hue-"]` now has a 4px `border-left` (curves with the 28px corners); the top is a plain 1px outline again. `padding-left` is 3px under the widget padding at each breakpoint (17px, 13px at <=560px, 11px at <=380px) and the two inline-padded widgets (Hermes, About-contact) were adjusted, so content keeps its horizontal position. The hover override moved from `border-top-color` to `border-left-color`.
+- Projects: odd items keep the bar, even items get the same 4px but transparent (alignment and layout unchanged). The wide panels (`.vis-wrap`, `.cs-skills`) carry no bar. The hover ring still shows the hue on every card. In the two 2-column cases (index cards above 700px, stat tiles at <=600px) plain odd/even would stripe whole columns, so the pattern flips each row (checkerboard). Bars on Projects: 95 -> 43.
+- Roadmap and About keep their left bars (not in the ask).
+
+**Verified:** `npm test` 74/74 (+4 new: home bar on the left, desktop and phone odd/even, even-card alignment and hover ring; 5 of the 6 changed/new tests fail on the old CSS); `lint:html` 0 errors; before/after geometry diff of all 12 home widgets at 1280 dark+light, 860, 390, 1920: widths and horizontal child offsets unchanged, vertical shift <=2px on desktop and <=4px at 390px (the top border is 1px again, and the old `padding-top: 18px` override had made phone widgets 4px deeper than their 16px padding), no new overflow; screenshots dark + light at 1280 and 390.
+
+**Decision for later:** if the checkerboard is not wanted, drop the four `@media` blocks under "accent bars, stripped down" and use `:nth-child(even)` for `.pi` and `.cs-stat` too.
+
+**State:** PR open against `dev`. The todo entry lives in the main checkout's uncommitted `tasks/todo.md` (large uncommitted rewrite there), so it is not in this PR.
+
+---
+
+**Modified:** `prototypes/portfolio-combined.html`, `tests/e2e/spa.spec.js`, `tasks/DEVLOG.md`.
+
+---
+
+## [2026-10-31] Claude Code (local) — docs/readme-refresh · README rewritten, repo description updated
+
+**Mode:** Execution
+
+**Did:** Rewrote `README.md`, which still described the pre-migration site (NDOT-era palette, four standalone prototype pages, SvelteKit as the main plan, a Tailscale hostname list). It now covers the five SPA pages, site search, themes, the intro splash and the resume; the real font stack and the nine-hue `--h` system; Vercel and GitHub Pages deploys; the `/me` privacy rule; local development (`npm ci`, `http-server`, `lint:html`, `npm test`), CI and the branch flow; and the current repo layout. Removed the internal Tailnet hostnames from the public README. Updated the GitHub repo description.
+
+**Verified:** local-server advice checked against both servers: `http-server` serves the extensionless `/prototypes/portfolio-combined` (200), Python's `http.server` returns 404 for it and needs `.html`, so the README recommends `http-server`.
+
+**State:** PR open against `dev`. `tasks/todo.md` was not touched: the main checkout holds a large uncommitted rewrite of it.
+
+**Modified:** `README.md`, `tasks/DEVLOG.md`.
+
+---
+
+## [2026-10-26] Claude Code (local) — docs/perf-todo · performance scope recorded
+
+**Mode:** Analytical
+
+**Did:** Measured the live site (redirect chain, headers, waterfall, trace-based main-thread breakdown, controlled CSS/DOM/JS experiments) and recorded the scoped plan in `tasks/todo.md` ("Performance — cut the root-load cost"): baseline table, findings, four decisions needed from Vishal, three phases with expected savings, what was ruled out, and how to re-measure. No code changed.
+
+**Key numbers:** root hop +75ms (www) / +230ms (apex); direct first paint 559ms on the test board; blocking Google Fonts CSS + late font files are the biggest network cost; visual effects cost nothing measurable.
+
+**Also:** consolidated the scattered completed items in `todo.md` into one dated "Post-migration polish" list with PR numbers (including the previously unrecorded topbar spacing, widget hues, /me logo WebP and release PRs), split into "released to main" vs "on dev, not yet released", and trimmed Follow-ups to the genuinely open items.
+
+**State:** PR open against `dev`; work not started, waiting on the four decisions.
+
+**Modified:** `tasks/todo.md`, `tasks/DEVLOG.md`.
+
+---
+
+## [2026-10-26] Claude Code (local) — feat/index-design-system · index.html design-system migration
+
+**Mode:** Execution
+
+**Did:** `index.html` (the root URL) was the one page the migration never touched: a plain redirect with no fonts loaded (it asked for Cormorant/Space Grotesk but never linked them), raw rgba colours, and a `0s` meta refresh so the "Portfolio loading…" screen could never actually be seen. Rebuilt it as a short on-brand intro on the design-system tokens.
+- **Look:** same `:root` / `html.light` tokens as the site, dot-matrix background + top glow, Google Fonts link identical to the site (Syne wordmark with the Cormorant V/K initials, Outfit tagline, JetBrains Mono status, Space Grotesk chips). Dark by default; follows the site's `vk-theme` choice.
+- **Motion (CSS-only, ~1.7s):** logo mark springs in (site spring curve) with a teal halo → wordmark rises word by word → tagline fades → four destination chips (home/projects/roadmap/about) pop in, each in its nav hue with its topbar icon → a progress bar in the four nav hues sweeps → NeoPOP "Enter portfolio" button; then the stage fades out and the page changes.
+- **Behaviour:** JS only schedules the redirect (1.7s + 0.23s fade). `prefers-reduced-motion`: finished screen at once, redirect after 0.5s. `/#projects` (any section hash) is forwarded to the portfolio; `/#stay` shows the splash without redirecting (previews/tests). Chips are real deep links, the CTA redirects immediately. No-JS fallback: `meta refresh` 4s (was 0). Prefetches the target document.
+- **Social meta:** og:image/twitter:image were relative paths, which scrapers don't resolve; now absolute `https://vishal-katariya.com/...`.
+- `npm run lint:html` now also covers `index.html`; CLAUDE.md file table updated.
+
+**Verification:** `npm run lint:html` 0 errors (15 files); `npm test` +9 (new `tests/e2e/index.spec.js`: content, fonts/tokens, light theme, intro then redirect, reduced motion, hash forwarding, chip navigation, 320px no overflow, absolute og meta); dark + light + 390px screenshots (early + final frame). Fixed a 9px overflow at 390px found in the first screenshot.
+
+**State:** PR open against `dev`. Not yet deployed: the live root still shows the old splash until this reaches `main`.
+
+**Modified:** `index.html`, `package.json` (lint glob), `CLAUDE.md`, `tests/e2e/index.spec.js`, `tasks/DEVLOG.md`, `tasks/todo.md`.
+
+---
+
+## [2026-10-26] Claude Code (local) — feat/phone-search-cleanup · phone search, footer tags, legacy cleanup
+
+**Mode:** Execution
+
+**Did:** Closed the open follow-ups from the release.
+- **Phone search:** the topbar has zero spare pixels at 360px (brand + 4 icons + theme + profile), so a fifth icon can't fit without dropping the logo or the private-section link. Added a floating glass search button (`#sxFab`, 48px, bottom-right, ≤560px only) that opens the same dialog; it lifts to 84px while the roadmap's bottom bar is showing so they never overlap. Also fixed page results reading "Page page".
+- **Footer tags:** the home all-projects `.pfoot-type` tags (App · private / Collab / AI · ML) now follow their card hue.
+- **Availability text gone everywhere:** removed "Open to work" pills from all 7 `resume*.html`, the `sbadge`/`avail-badge` in `portfolio-v4` and `portfolio-prototypev.1/.2` (plus the v4 JS that wrote to the removed badge), and the availability block on `about.html`.
+- **Legacy handlers:** `about.html`/`projects.html` referenced `runSearch`, `toggleTheme`, `toggleLang` and `portfolio-v4.html` referenced `runSearch`, none defined there. Added safe definitions (theme toggle persists `vk-theme`; lang is a label stub like combined; search is a no-op: search lives in portfolio-combined). A test then caught `portfolio-v4`'s own `toggleLang` throwing on a missing `.hero-eyebrow`; guarded.
+- **Dependency:** removed the unused `@vercel/speed-insights` npm package (nothing imports it; the `/_vercel/speed-insights/script.js` tag is served by Vercel itself). `npm ci --dry-run` is clean.
+- **Kickoff Box 2** (local-only file) reworded from "27/27" to "All Playwright tests pass" and ticked.
+
+**Verification:** `npm run lint:html` 0 errors; `npm test` 64/64 (+8 in new `tests/e2e/phone-and-legacy.spec.js`); phone screenshots at 390/320 incl. roadmap and dialog; resume hero checked after pill removal.
+
+**State:** PR open against `dev`.
+
+**Modified:** `prototypes/portfolio-combined.html`, `prototypes/{about,projects,portfolio-v4,portfolio-prototypev.1,portfolio-prototypev.2,resume*}.html`, `package.json`, `package-lock.json`, `tests/e2e/phone-and-legacy.spec.js`, `tasks/DEVLOG.md`, `tasks/todo.md`.
+
+---
+
 ## [2026-10-26] Claude Code (local) — fix/home-neutral-widget-hues · hue on the last three home widgets
 
 **Mode:** Execution

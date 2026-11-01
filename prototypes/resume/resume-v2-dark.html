@@ -5,12 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Vishal Katariya — CV</title>
 <!-- Favicon -->
-<link rel="icon" href="assets/favicon.ico" sizes="any">
-<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
-<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
-<link rel="manifest" href="assets/site.webmanifest">
+<link rel="icon" href="../assets/favicon.ico" sizes="any">
+<link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<link rel="manifest" href="../assets/site.webmanifest">
 <meta name="theme-color" content="#1B1C1D">
-<meta property="og:image" content="assets/og-image.png">
+<meta property="og:image" content="https://vishal-katariya.com/prototypes/assets/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:url" content="https://vishal-katariya.com/prototypes/resume-dark">
@@ -18,7 +18,7 @@
 <meta property="og:description" content="CS student at Hochschule Darmstadt. ML Engineering, Full-Stack, Infrastructure.">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="assets/og-image.png">
+<meta name="twitter:image" content="https://vishal-katariya.com/prototypes/assets/og-image.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=JetBrains+Mono:wght@300;400;500;600&family=Outfit:wght@300;400;500;600&family=Space+Grotesk:wght@400;500;600;700;800&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -84,7 +84,7 @@ body::before {
   border-radius: 4mm;
   padding: 4mm 5mm;
   box-shadow: 0 4px 20px rgba(0,0,0,.04);
-  margin-bottom: 2.5mm;
+  margin-bottom: 3.5mm;
 }
 
 /* ── HERO ── */
@@ -93,7 +93,7 @@ body::before {
   grid-template-columns: auto 1fr auto;
   align-items: center;
   gap: 6mm;
-  margin-bottom: 2.5mm;
+  margin-bottom: 3.5mm;
 }
 .hero-photo {
   width: 32mm; height: 38mm;
@@ -105,7 +105,7 @@ body::before {
   box-shadow: 4px 4px 16px var(--sd), -1px -1px 5px var(--sl);
 }
 .hero-photo img { width: 100%; height: 100%; object-fit: cover; object-position: top center; display: block; }
-.hero-main { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3.5mm; text-align: center; padding-top: 4mm; }
+.hero-main { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3.5mm; text-align: center; }
 .hero-name {
   font-family: 'Space Grotesk', sans-serif;
   font-weight: 800;
@@ -133,23 +133,6 @@ body::before {
   color: var(--w80);
   white-space: nowrap;
 }
-.hc-pill.avail {
-  border-color: rgba(52,199,123,.3);
-  background: rgba(52,199,123,.07);
-}
-.hc-pill.avail span {
-  font-family: 'Syne', sans-serif;
-  font-weight: 600;
-  letter-spacing: .4px;
-  color: var(--green);
-}
-.hc-pill.avail .dot {
-  width: 5px; height: 5px;
-  border-radius: 50%;
-  background: var(--green);
-  flex-shrink: 0;
-  box-shadow: 0 0 6px var(--green);
-}
 .status-pills { display: flex; gap: 2.5mm; flex-wrap: wrap; justify-content: center; }
 .status-pill {
   font-family: 'DM Mono', monospace;
@@ -162,6 +145,24 @@ body::before {
   padding: 2mm 4.5mm;
   background: var(--bg2);
 }
+.status-pill.avail {
+  font-family: 'Syne', sans-serif;
+  font-weight: 600;
+  letter-spacing: .8px;
+  color: var(--green);
+  border-color: rgba(52,199,123,.3);
+  background: rgba(52,199,123,.07);
+  text-transform: none;
+}
+.status-pill.avail .dot {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--green);
+  display: inline-block;
+  margin-right: 5px;
+  box-shadow: 0 0 6px var(--green);
+}
+
 /* ── SECTION LABEL ── */
 .s-label {
   font-family: 'Syne', sans-serif;
@@ -187,7 +188,7 @@ body::before {
 .body {
   display: grid;
   grid-template-columns: 62mm 1fr;
-  gap: 3mm;
+  gap: 4.5mm;
   flex: 1;
   min-height: 0;
 }
@@ -317,6 +318,7 @@ body::before {
   font-family: 'Space Grotesk', sans-serif;
   font-size: 9.5px; font-weight: 600; color: var(--w);
 }
+.proj-mid { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
 .proj-desc {
   font-family: 'Outfit', sans-serif;
   font-size: 7px; color: var(--w60); line-height: 1.45;
@@ -335,6 +337,17 @@ body::before {
   font-size: 6px; color: var(--w30);
   border: 1px solid var(--w06); border-radius: 3px; padding: 1px 4px;
 }
+.proj-status {
+  font-family: 'DM Mono', monospace;
+  font-size: 6.5px;
+  display: flex; align-items: center; gap: 3px;
+  white-space: nowrap;
+}
+.proj-status::before { content: ''; width: 4px; height: 4px; border-radius: 50%; flex-shrink: 0; }
+.s-done { color: var(--green); }
+.s-done::before { background: var(--green); }
+.s-wip  { color: var(--amber); }
+.s-wip::before  { background: var(--amber); }
 
 /* ── WORK EXPERIENCE ── */
 .work-header { display: flex; justify-content: space-between; align-items: baseline; gap: 6px; margin-bottom: 1px; flex-wrap: wrap; }
@@ -350,8 +363,8 @@ body::before {
 
 /* ── FOOTER ── */
 .resume-footer {
-  margin-top: 2.5mm;
-  padding-top: 2.5mm;
+  margin-top: 3.5mm;
+  padding-top: 3.5mm;
   border-top: 1px solid var(--w06);
   display: flex;
   align-items: center;
@@ -385,7 +398,7 @@ body::before {
   <!-- HERO -->
   <div class="hero section">
     <div class="hero-photo">
-      <img src="assets/image.png" alt="Vishal Katariya">
+      <img src="../assets/image.png" alt="Vishal Katariya">
     </div>
     <div class="hero-main">
       <div class="hero-name">VISHAL KATARIYA</div>
@@ -412,7 +425,6 @@ body::before {
         <svg width="11" height="11" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="5.5" stroke="currentColor" stroke-width="1"/><circle cx="6.5" cy="4" r=".9" fill="currentColor"/><line x1="6.5" y1="6" x2="6.5" y2="9.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
         <span>Darmstadt, Germany</span>
       </div>
-      <div class="hc-pill avail"><span class="dot"></span><span>Open to work</span></div>
     </div>
   </div>
 
@@ -517,28 +529,28 @@ body::before {
             <span class="int-icon"><svg width="14" height="14" viewBox="0 0 13 13" fill="none"><path d="M4.5 3L1.5 6.5L4.5 10" stroke="currentColor" stroke-width="1.2" fill="none"/><path d="M8.5 3L11.5 6.5L8.5 10" stroke="currentColor" stroke-width="1.2" fill="none"/></svg></span>
             <div>
               <div class="int-title">Programming</div>
-              <div class="int-desc">Coding since 10th grade — now building production systems.</div>
+              <div class="int-desc">Started coding in 10th grade — before I knew it was a career path. Now building production systems, self-hosted infrastructure, and ML pipelines across whatever stack fits the problem.</div>
             </div>
           </div>
           <div class="int-card">
             <span class="int-icon"><svg width="14" height="14" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="4" r="2.5" stroke="currentColor" stroke-width="1" fill="none"/><path d="M3 9c0-2 1.5-3 3.5-3s3.5 1 3.5 3" stroke="currentColor" stroke-width="1" fill="none"/><line x1="6.5" y1="10" x2="6.5" y2="12" stroke="currentColor" stroke-width="1"/></svg></span>
             <div>
               <div class="int-title">Artificial Intelligence</div>
-              <div class="int-desc">Fine-tuning LLMs and running inference on edge NPUs.</div>
+              <div class="int-desc">Not just using AI tools — understanding how they work under the hood. Fine-tuning LLMs with QLoRA, running inference on edge NPUs, building multi-agent systems on self-hosted hardware.</div>
             </div>
           </div>
           <div class="int-card">
             <span class="int-icon"><svg width="14" height="14" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="5" r="3" stroke="currentColor" stroke-width="1" fill="none"/><line x1="6.5" y1="8" x2="6.5" y2="12" stroke="currentColor" stroke-width="1.2"/></svg></span>
             <div>
               <div class="int-title">Cricket</div>
-              <div class="int-desc">Played since childhood — strategy, patience, team dynamics.</div>
+              <div class="int-desc">Played since childhood — always been a big part of life. The strategy, the patience, the team dynamics. Grew up watching and playing in India and still follow it closely.</div>
             </div>
           </div>
           <div class="int-card">
             <span class="int-icon"><svg width="14" height="14" viewBox="0 0 13 13" fill="none"><path d="M3 10L6.5 2L10 10" stroke="currentColor" stroke-width="1" fill="none"/><line x1="4.3" y1="7" x2="8.7" y2="7" stroke="currentColor" stroke-width="1"/></svg></span>
             <div>
               <div class="int-title">Entrepreneurship</div>
-              <div class="int-desc">Studying how companies scale — building toward orlon.</div>
+              <div class="int-desc">Reading business books and studying how companies are built — not just the tech, but the strategy, the product thinking, and what makes a system scale. Building toward something called orlon.</div>
             </div>
           </div>
         </div>
@@ -580,7 +592,10 @@ body::before {
               <span class="proj-icon"><svg width="13" height="13" viewBox="0 0 13 13" fill="none"><rect x="1" y="8" width="2.5" height="4" fill="currentColor"/><rect x="5.25" y="5" width="2.5" height="7" fill="currentColor"/><rect x="9.5" y="2" width="2.5" height="10" fill="currentColor"/></svg></span>
               <div class="proj-title">Finance Buddy</div>
             </div>
-            <div class="proj-desc">Self-hosted 7-tab finance tracker built from 993 real transactions across 44 months. Waste audit identified €3,656 in avoidable spend across 13 categories; savings plan runs 3 projection scenarios — status quo, budget, and aggressive.</div>
+            <div class="proj-mid">
+              <div class="proj-desc">Self-hosted 7-tab finance tracker built from 993 real transactions across 44 months. Waste audit identified €3,656 in avoidable spend; savings plan runs 3 projection scenarios.</div>
+              <div class="proj-status s-done">complete · private</div>
+            </div>
             <div class="proj-stack">
               <span class="proj-stack-label"><svg width="11" height="11" viewBox="0 0 13 13" fill="none"><path d="M6.5 1 L12 3.8 L6.5 6.5 L1 3.8Z" stroke="currentColor" stroke-width="1" stroke-linejoin="round" fill="none"/><path d="M1 7 L6.5 9.7 L12 7" stroke="currentColor" stroke-width="1" stroke-linecap="round" fill="none"/><path d="M1 10 L6.5 12.7 L12 10" stroke="currentColor" stroke-width="1" stroke-linecap="round" fill="none"/></svg>Stack</span>
               <div class="proj-tags">
@@ -594,7 +609,10 @@ body::before {
               <span class="proj-icon"><svg width="13" height="13" viewBox="0 0 13 13" fill="none"><rect x="1" y="1" width="4.5" height="5" rx="1" stroke="currentColor" stroke-width="1" fill="none"/><rect x="7.5" y="1" width="4.5" height="3" rx="1" stroke="currentColor" stroke-width="1" fill="none"/><rect x="1" y="8" width="4.5" height="4" rx="1" stroke="currentColor" stroke-width="1" fill="none"/><rect x="7.5" y="6" width="4.5" height="6" rx="1" stroke="currentColor" stroke-width="1" fill="none"/></svg></span>
               <div class="proj-title">Homelab Dashboard</div>
             </div>
-            <div class="proj-desc">Real-time ops dashboard for a 2-node Proxmox cluster (48GB RAM, ARM64 + x86_64) with live CPU/RAM/network metrics via WebSocket. Debugged Docker bridge network isolation — replaced localhost with host.docker.internal to restore reachability.</div>
+            <div class="proj-mid">
+              <div class="proj-desc">Real-time ops dashboard for a 2-node Proxmox cluster (48GB RAM, ARM64 + x86_64). Live CPU/RAM/network via WebSocket; debugged Docker bridge network isolation.</div>
+              <div class="proj-status s-done">complete · private</div>
+            </div>
             <div class="proj-stack">
               <span class="proj-stack-label"><svg width="11" height="11" viewBox="0 0 13 13" fill="none"><path d="M6.5 1 L12 3.8 L6.5 6.5 L1 3.8Z" stroke="currentColor" stroke-width="1" stroke-linejoin="round" fill="none"/><path d="M1 7 L6.5 9.7 L12 7" stroke="currentColor" stroke-width="1" stroke-linecap="round" fill="none"/><path d="M1 10 L6.5 12.7 L12 10" stroke="currentColor" stroke-width="1" stroke-linecap="round" fill="none"/></svg>Stack</span>
               <div class="proj-tags">
@@ -608,7 +626,10 @@ body::before {
               <span class="proj-icon"><svg width="13" height="13" viewBox="0 0 13 13" fill="none"><rect x="3" y="4" width="7" height="6" rx="1" stroke="currentColor" stroke-width="1" fill="none"/><circle cx="5" cy="7" r=".8" fill="currentColor"/><circle cx="8" cy="7" r=".8" fill="currentColor"/><line x1="6.5" y1="1.5" x2="6.5" y2="4" stroke="currentColor" stroke-width="1"/><circle cx="6.5" cy="1.5" r=".8" fill="currentColor"/></svg></span>
               <div class="proj-title">orlon-bot</div>
             </div>
-            <div class="proj-desc">Telegram bot powered by a custom QLoRA fine-tuned LLM (Llama 3.2 3B). Built a privacy-aware Discord→JSONL data pipeline with PII scrubbing, trained on Kaggle T4 via Unsloth, and deployed to an ARM NPU for on-device inference.</div>
+            <div class="proj-mid">
+              <div class="proj-desc">Telegram bot powered by a custom QLoRA fine-tuned LLM (Llama 3.2 3B). Full train-to-inference pipeline: Discord data pipeline → Kaggle T4 training → ARM NPU deployment.</div>
+              <div class="proj-status s-wip">in progress</div>
+            </div>
             <div class="proj-stack">
               <span class="proj-stack-label"><svg width="11" height="11" viewBox="0 0 13 13" fill="none"><path d="M6.5 1 L12 3.8 L6.5 6.5 L1 3.8Z" stroke="currentColor" stroke-width="1" stroke-linejoin="round" fill="none"/><path d="M1 7 L6.5 9.7 L12 7" stroke="currentColor" stroke-width="1" stroke-linecap="round" fill="none"/><path d="M1 10 L6.5 12.7 L12 10" stroke="currentColor" stroke-width="1" stroke-linecap="round" fill="none"/></svg>Stack</span>
               <div class="proj-tags">
@@ -622,7 +643,10 @@ body::before {
               <span class="proj-icon"><svg width="13" height="13" viewBox="0 0 13 13" fill="none"><rect x="1.5" y="2" width="10" height="9" rx="1" stroke="currentColor" stroke-width="1" fill="none"/><line x1="1.5" y1="5" x2="11.5" y2="5" stroke="currentColor" stroke-width="1"/><circle cx="3.5" cy="3.5" r=".6" fill="currentColor"/><circle cx="5.5" cy="3.5" r=".6" fill="currentColor"/></svg></span>
               <div class="proj-title">Portfolio Website</div>
             </div>
-            <div class="proj-desc">Hybrid-hosted SPA — public routes on Vercel's CDN edge, private /me/* routes behind Tailscale + Caddy IP allowlist on a self-hosted ARM64 node. Multi-stage GitHub Actions CI runs HTML lint and Playwright E2E before every deploy.</div>
+            <div class="proj-mid">
+              <div class="proj-desc">Hybrid-hosted SPA — public routes on Vercel CDN edge, private /me/* routes behind Tailscale + Caddy IP allowlist. Multi-stage GitHub Actions CI with Playwright E2E.</div>
+              <div class="proj-status s-done">live · vishal-katariya.com</div>
+            </div>
             <div class="proj-stack">
               <span class="proj-stack-label"><svg width="11" height="11" viewBox="0 0 13 13" fill="none"><path d="M6.5 1 L12 3.8 L6.5 6.5 L1 3.8Z" stroke="currentColor" stroke-width="1" stroke-linejoin="round" fill="none"/><path d="M1 7 L6.5 9.7 L12 7" stroke="currentColor" stroke-width="1" stroke-linecap="round" fill="none"/><path d="M1 10 L6.5 12.7 L12 10" stroke="currentColor" stroke-width="1" stroke-linecap="round" fill="none"/></svg>Stack</span>
               <div class="proj-tags">
@@ -636,7 +660,10 @@ body::before {
               <span class="proj-icon"><svg width="13" height="13" viewBox="0 0 13 13" fill="none"><rect x="3" y="6" width="7" height="5.5" rx="1" stroke="currentColor" stroke-width="1" fill="none"/><path d="M4.5 6V4.5a2 2 0 0 1 4 0V6" stroke="currentColor" stroke-width="1" fill="none"/><circle cx="6.5" cy="9" r=".8" fill="currentColor"/></svg></span>
               <div class="proj-title">Hermes One OAuth Fork</div>
             </div>
-            <div class="proj-desc">Patch project adding Nous Portal OAuth and single-use WebSocket ticket minting to a community Electron client. Diagnosed a cross-process cookie isolation bug causing silent auth failures; shipped across 13 merged PRs with 38/38 tests passing.</div>
+            <div class="proj-mid">
+              <div class="proj-desc">Patch project adding Nous Portal OAuth + single-use WebSocket ticket minting to a community Electron client. Diagnosed cross-process cookie isolation bug; 13 PRs merged, 38/38 tests passing.</div>
+              <div class="proj-status s-wip">in progress</div>
+            </div>
             <div class="proj-stack">
               <span class="proj-stack-label"><svg width="11" height="11" viewBox="0 0 13 13" fill="none"><path d="M6.5 1 L12 3.8 L6.5 6.5 L1 3.8Z" stroke="currentColor" stroke-width="1" stroke-linejoin="round" fill="none"/><path d="M1 7 L6.5 9.7 L12 7" stroke="currentColor" stroke-width="1" stroke-linecap="round" fill="none"/><path d="M1 10 L6.5 12.7 L12 10" stroke="currentColor" stroke-width="1" stroke-linecap="round" fill="none"/></svg>Stack</span>
               <div class="proj-tags">

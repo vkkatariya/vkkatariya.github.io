@@ -69,10 +69,6 @@ ln -sf ~/dev-shared/workflow ./workflow
 ```bash
 # No build step. Open files directly in browser:
 open prototypes/portfolio-combined.html   # main SPA (all pages)
-open prototypes/portfolio-v4.html         # homepage standalone
-open prototypes/projects.html
-open prototypes/about.html
-open prototypes/cs-roadmap.html
 ```
 
 ### Local HTTP server (for CI-parity testing)
@@ -255,12 +251,8 @@ There is **no build step** for Phase 0. The source file is the deployed artifact
 | File | Role |
 |---|---|
 | `prototypes/portfolio-combined.html` | **Primary source of truth** — the live SPA (all 5 pages) |
-| `prototypes/portfolio-v4.html` | Homepage standalone prototype |
-| `prototypes/projects.html` | Projects page standalone |
-| `prototypes/about.html` | About page standalone |
-| `prototypes/cs-roadmap.html` | CS roadmap standalone |
-| `index.html` | Root redirect to `/prototypes/portfolio-combined.html` |
-| `vercel.json` | `{"framework": null, "outputDirectory": "."}` — minimal |
+| `index.html` | Root intro splash on the design-system tokens (logo, wordmark, role line, four-hue progress hairline; tapping the logo skips it; first visit per tab session only), then redirects to `/prototypes/portfolio-combined`. `/#stay` shows it without redirecting; `/#projects` etc. forward the section |
+| `vercel.json` | `framework: null`, `outputDirectory: "."`, `cleanUrls`, and 307 redirects for moved or removed pages (old standalone pages go to the SPA section, resume pages to `prototypes/resume/`) |
 | `homelab-configs/me-tailscale-caddy.conf` | Caddy config for `/me` private gate |
 
 ### Deployment split
