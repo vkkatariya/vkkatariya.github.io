@@ -1,0 +1,24 @@
+# DEVLOG check: fails a pull request that does not change tasks/DEVLOG.md.
+# Backstop for --no-verify and cloud sessions (AGENTS-WORKFLOW section 7).
+# Kept separate from ci.yml so its branch and path filters do not skip this check.
+name: DEVLOG check
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  devlog:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: DEVLOG touched
+        run: |
+          git diff --name-only "origin/${{ github.base_ref }}...HEAD" | grep -qx 'tasks/DEVLOG.md' || {
+            echo "::error::Add a DEVLOG entry at the top of tasks/DEVLOG.md (format: AGENTS-WORKFLOW section 7)."
+            exit 1
+          }
