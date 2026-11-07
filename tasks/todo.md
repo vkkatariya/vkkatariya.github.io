@@ -208,7 +208,7 @@
 - [x] Favicon derived from glass VK logo across all browsers + devices (PR #8 `fix/favicon-borders`)
 - [x] Topbar logo rollout across 6 sub-places: left brand pill scroll-swap, right profile icon, OG social banner (1200×630), homepage `#home-identity` mark, `index.html` splash mark, `/me` auth card (PR #9 `feat/logo-everywhere`, PR #33 `fix/home-bottom-me-logo`)
 
-### Logo Redesign Rollout (2026-11-07) — done, pending merge (`tasks/kickoff-redesign-logo-update.md`)
+### Logo Redesign Rollout (2026-11-07) — done, merged in #49 (`tasks/kickoff-redesign-logo-update.md`)
 **Branch:** `feat/redesign-logo-update` (off `dev`)
 **Source:** `prototypes/assets/new-logos/` (`logo.png` primary + `logo-blue.png`, `logo-brown.png`, `logo-mono.png` variants; 5016×5016 RGB PNGs with ~330px outer black margin around squircle bbox `x:329..4657, y:328..4715`)
 - [x] **Step 1: Tight-crop source master** — crop `new-logos/logo.png` to the squircle edges (1:1 square, removing the ~330px outer black border per L-068) and save canonical master to `prototypes/assets/logo.png` (1024×1024 optimized PNG)
@@ -224,7 +224,7 @@
   - [x] `prototypes/assets/apple-touch-icon.png` (180×180)
   - [x] `prototypes/assets/icon-192.png`, `icon-512.png`, `icon-mask.png` (PWA manifest icons)
 - [x] **Step 4: Regenerate Open Graph social banner** — render `prototypes/assets/_og-template.html` at 1200×630 via Playwright to update `prototypes/assets/og-image.png`
-- [x] **Step 5: Clean up staging directory** — remove `prototypes/assets/new-logos/` before committing so 4MB raw 5016px renders are not committed
+- [x] **Step 5: Staging directory** — left out of #49, then committed on purpose as sources in #50 (`prototypes/assets/new-logos/`, 3.9MB, publicly served)
 - [x] **Step 6: Visual QA & E2E verification** — verify via Playwright screenshots (`index.html#stay`, homepage topbar at scroll=0 & scroll=200, `#home-identity`, `#pg-me`, `og-image.png`, favicons at 16×16 & 32×32 in dark + light themes); run `npm test` and `npm run lint:html`
 
 ### Resume redesign ✅ COMPLETE (2026-07-01)
