@@ -16,7 +16,9 @@
 
 **OG black bars:** the squircle's outer corners in `logo.png` were opaque black, so the rounded clip in `_og-template.html` showed a dark frame. The corners are now transparent (flood-fill from the 4 corners, 1px feather) in `logo.png`, `logo-512/256/128.png` and `logo-192.webp`; `_og-template.html` (gitignored, local only) uses `border-radius:44px` so the ring follows the squircle; `og-image.png` re-rendered. Icons, favicons and the Apple touch icon are unchanged.
 
-**OG banner redesign:** `og-image.png` was still on the pre-migration look (glass card, Space Grotesk, old green, white contribution cells, "open to work"). Rebuilt `_og-template.html` on the current design system: `#1B1C1D` + dot matrix, solid `--bg2` widgets with a hue edge bar, mono hue labels, Syne wordmark with the Cormorant V/K, four-hue hairline, accent-glow logo mark, blue/indigo/purple contact widgets, cyan contribution grid, orange focus widget. Dropped "open to work" and "intern-ready" (removed from the site earlier). The template is gitignored, so only the rendered PNG is committed.
+**OG banner redesign (tried, reverted):** rebuilt `_og-template.html` on the current design tokens (hue-edge widgets, Syne wordmark, four-hue hairline), but Vishal preferred the earlier banner, so `og-image.png` is back to the previous layout (glass card, identity row, pills, "open to work" pill, contribution widget) with the black-corner fix kept. Only the rendered PNG is committed; the template is gitignored and the local copy was restored to the old layout with `border-radius:44px` on the logo.
+
+**Git fix:** the branch was cut from local `dev`, which carried two unpushed commits (one added the private `docs/germany-tax-map.html`). Rebased onto `origin/dev` and force-pushed (with lease) so the branch carries only the logo work.
 
 **Verified:** screenshots of the favicon sheet, `index.html#stay`, home at scroll 0 and 250, `#me`, and the OG banner; `npm run lint:html` 0 errors; Playwright suite 108/108.
 
