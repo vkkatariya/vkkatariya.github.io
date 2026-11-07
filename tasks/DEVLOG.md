@@ -14,6 +14,8 @@
 
 **Light-theme QA:** real light theme (`localStorage vk-theme=light`, not `prefers-color-scheme`) screenshotted for `index.html#stay`, home at 0/250 and `#me`, plus a favicon sheet on `#ECECEC` and `#080808`. It showed black square corners on the light tab background, so `favicon-16/32`, `favicon.ico` and `favicon.svg` now carry a 22% rounded alpha mask. Apple touch and maskable icons stay opaque.
 
+**OG black bars:** the squircle's outer corners in `logo.png` were opaque black, so the rounded clip in `_og-template.html` showed a dark frame. The corners are now transparent (flood-fill from the 4 corners, 1px feather) in `logo.png`, `logo-512/256/128.png` and `logo-192.webp`; `_og-template.html` (gitignored, local only) uses `border-radius:44px` so the ring follows the squircle; `og-image.png` re-rendered. Icons, favicons and the Apple touch icon are unchanged.
+
 **Verified:** screenshots of the favicon sheet, `index.html#stay`, home at scroll 0 and 250, `#me`, and the OG banner; `npm run lint:html` 0 errors; Playwright suite 108/108.
 
 **Notes:** `logo.png` is 616KB (kickoff said under 300KB; lossless, was 1.4MB). `_og-template.html` is gitignored, so it only exists in the main checkout. It still says "open to work" and `intern-ready`, so the banner repeats that; not changed here. `logo-blue/brown/mono.png` variants were not used.
