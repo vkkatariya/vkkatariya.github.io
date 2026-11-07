@@ -6,6 +6,18 @@
 
 ---
 
+## [2026-11-07] Claude Code (local) — docs/todo-logo-merged · branch cleanup and verification
+
+**Mode:** Execution
+
+**Did:** merged #50 (root `AGENTS-WORKFLOW.md` symlink ignored, raw logo sources committed) and #48 (`devlog.yml` CI check, DEVLOG entry moved into date order). Deleted `agent/claude-code-config-ci-devlog`, `backup/dev-unpushed` and the `chore/` branch, local and remote. Verified before deleting: both CI commits are ancestors of `dev`; `CLAUDE.md`, `AGENTS.md` and `.gitignore` on `dev` equal the backup branch; the only backup-only path was `docs/germany-tax-map.html`, which stays out of git (copy at `~/private-backup/`); the old uncommitted `todo.md` differs from `dev` only by the logo checklist now ticked. Fixed stale `todo.md` wording (merged in #49, new-logos committed in #50).
+
+**State:** `dev` at #48; `main` does not have the logo work yet (release PR pending).
+
+**Modified:** `tasks/todo.md`, `tasks/DEVLOG.md`.
+
+---
+
 ## [2026-11-07] Claude Code (local) — chore/workflow-symlink-and-logo-sources · root workflow symlink ignored, raw logo sources committed
 
 **Mode:** Execution
