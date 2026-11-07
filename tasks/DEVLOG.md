@@ -6,6 +6,20 @@
 
 ---
 
+## [2026-11-07] Claude Code (local) — chore/workflow-symlink-and-logo-sources · root workflow symlink ignored, raw logo sources committed
+
+**Mode:** Execution
+
+**Did:** `AGENTS-WORKFLOW.md` at the repo root (symlink to `~/dev-shared/workflow/agents_workflow/AGENTS-WORKFLOW.md`) is now in `.gitignore`; `CLAUDE.md` and `AGENTS.md` point at it instead of `./workflow/`. Took only those three files from the local `backup/dev-unpushed` branch, which also carried the private `docs/germany-tax-map.html` (not committed; copy kept in `~/private-backup/`). Committed the four raw 5016px logo renders (`prototypes/assets/new-logos/`, 3.9MB) as sources, at Vishal's request, so the derivative script can be rerun.
+
+**Note:** the repo is public and `vercel.json` serves the repo root, so the renders are publicly fetchable. The earlier logo PR deliberately left them out.
+
+**State:** branch pushed, PR open against `dev`.
+
+**Modified:** `.gitignore`, `CLAUDE.md`, `AGENTS.md`, `prototypes/assets/new-logos/*`, `tasks/DEVLOG.md`.
+
+---
+
 ## [2026-11-07] Claude Code (local) — feat/redesign-logo-update · redesigned VK logo rolled out to every asset
 
 **Mode:** Execution
