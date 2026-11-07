@@ -13,7 +13,7 @@ Before any meaningful work, read these files in order:
 3. `tasks/todo.md` — sprint items and phase status
 4. `tasks/lessons.md` — active prevention rules (L-001 through L-061+)
 
-**This project uses the dual-session model** (see `workflow/agents_workflow/AGENTS-WORKFLOW.md`):
+**This project uses the dual-session model** (see `AGENTS-WORKFLOW.md`):
 
 - **Local session** (this is normally the one you are): `[portfolio-website]-local`
   - Host: athena tmux
@@ -39,13 +39,11 @@ Before any meaningful work, read these files in order:
 
 ## Workflow reference (symlinked, homelab-only)
 
-`./workflow/` is a symlink to `~/dev-shared/workflow/` (same path on every machine via mutagen sync). **Do not commit it** (already in `.gitignore`). There is one file to read for how Vishal works:
-
-- `./workflow/agents_workflow/AGENTS-WORKFLOW.md` — the one file an agent reads to know how Vishal works. Self-contained (session lifecycle, dual-session, routing, git/PR conventions, sub-agent dispatch); do not open other workflow files unless its §12 says so.
+`./AGENTS-WORKFLOW.md` is a symlink to `~/dev-shared/workflow/agents_workflow/AGENTS-WORKFLOW.md` — same path on every machine via mutagen sync. **Do not commit it** (already in `.gitignore`). This is the one file an agent reads to know how Vishal works (self-contained: session lifecycle, dual-session, routing, git/PR conventions, sub-agent dispatch).
 
 If the symlink is broken on a fresh clone, recreate it:
 ```bash
-ln -sf ~/dev-shared/workflow ./workflow
+ln -sf ~/dev-shared/workflow/agents_workflow/AGENTS-WORKFLOW.md ./AGENTS-WORKFLOW.md
 ```
 
 ## Compaction + /remote-control (project-specific)

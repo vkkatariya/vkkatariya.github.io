@@ -15,6 +15,43 @@
 **Config change:** file `.github/workflows/devlog.yml` (new); old: none; new: workflow with `on: pull_request` and no branch or path filter; rollback: `git revert 175942b`. It is a separate file because this repo's `ci.yml` filters `pull_request` by branch or path, so a job pasted there would be skipped on some pull requests. `ci.yml` is unchanged.
 
 **State:** branch `agent/claude-code-config-ci-devlog`, PR open against `dev`, not merged.
+## [2026-11-07] Claude Code (local) — chore/workflow-symlink-and-logo-sources · root workflow symlink ignored, raw logo sources committed
+
+**Mode:** Execution
+
+**Did:** `AGENTS-WORKFLOW.md` at the repo root (symlink to `~/dev-shared/workflow/agents_workflow/AGENTS-WORKFLOW.md`) is now in `.gitignore`; `CLAUDE.md` and `AGENTS.md` point at it instead of `./workflow/`. Took only those three files from the local `backup/dev-unpushed` branch, which also carried the private `docs/germany-tax-map.html` (not committed; copy kept in `~/private-backup/`). Committed the four raw 5016px logo renders (`prototypes/assets/new-logos/`, 3.9MB) as sources, at Vishal's request, so the derivative script can be rerun.
+
+**Note:** the repo is public and `vercel.json` serves the repo root, so the renders are publicly fetchable. The earlier logo PR deliberately left them out.
+
+**State:** branch pushed, PR open against `dev`.
+
+**Modified:** `.gitignore`, `CLAUDE.md`, `AGENTS.md`, `prototypes/assets/new-logos/*`, `tasks/DEVLOG.md`.
+
+---
+
+## [2026-11-07] Claude Code (local) — feat/redesign-logo-update · redesigned VK logo rolled out to every asset
+
+**Mode:** Execution
+
+**Did:** replaced the old glass VK logo with the redesigned `new-logos/logo.png` (5016px, ~330px black margin). Tight-cropped to the squircle bbox (x 329..4658, y 328..4716, square 4388px) so the `border-radius` placements fill edge to edge (L-068). Regenerated with one deterministic Pillow script (LANCZOS): `logo.png` 1024, `logo-512/256/128.png`, `logo-192.webp` (q88, 6KB), `icon-192/512.png`, `apple-touch-icon.png`, `icon-mask.png` (82% on `#080808`). Small-size set (`logo-cropped.png`, `favicon-16/32`, `favicon.ico` 16+32+48 here and at the repo root, `favicon.svg`) uses a 72% inner crop on the VK with 1.6x contrast and 1.3x brightness, because at 16px the full squircle swallowed the glyph. `og-image.png` re-rendered from `_og-template.html` in Playwright (seeded `Math.random` for the contribution grid, `document.fonts.ready`). `new-logos/` removed from the branch (the 4 raw renders stay untracked in the main checkout).
+
+**Light-theme QA:** real light theme (`localStorage vk-theme=light`, not `prefers-color-scheme`) screenshotted for `index.html#stay`, home at 0/250 and `#me`, plus a favicon sheet on `#ECECEC` and `#080808`. It showed black square corners on the light tab background, so `favicon-16/32`, `favicon.ico` and `favicon.svg` now carry a 22% rounded alpha mask. Apple touch and maskable icons stay opaque.
+
+**OG black bars:** the squircle's outer corners in `logo.png` were opaque black, so the rounded clip in `_og-template.html` showed a dark frame. The corners are now transparent (flood-fill from the 4 corners, 1px feather) in `logo.png`, `logo-512/256/128.png` and `logo-192.webp`; `_og-template.html` (gitignored, local only) uses `border-radius:44px` so the ring follows the squircle; `og-image.png` re-rendered. Icons, favicons and the Apple touch icon are unchanged.
+
+**OG banner redesign (tried, reverted):** rebuilt `_og-template.html` on the current design tokens (hue-edge widgets, Syne wordmark, four-hue hairline), but Vishal preferred the earlier banner, so `og-image.png` is back to the previous layout (glass card, identity row, pills, "open to work" pill, contribution widget) with the black-corner fix kept. Only the rendered PNG is committed; the template is gitignored and the local copy was restored to the old layout with `border-radius:44px` on the logo.
+
+**Git fix:** the branch was cut from local `dev`, which carried two unpushed commits (one added the private `docs/germany-tax-map.html`). Rebased onto `origin/dev` and force-pushed (with lease) so the branch carries only the logo work.
+
+**Verified:** screenshots of the favicon sheet, `index.html#stay`, home at scroll 0 and 250, `#me`, and the OG banner; `npm run lint:html` 0 errors; Playwright suite 108/108.
+
+**Notes:** `logo.png` is 616KB (kickoff said under 300KB; lossless, was 1.4MB). `_og-template.html` is gitignored, so it only exists in the main checkout. It still says "open to work" and `intern-ready`, so the banner repeats that; not changed here. `logo-blue/brown/mono.png` variants were not used.
+
+**State:** pushed to `feat/redesign-logo-update`, not merged.
+
+**Modified:** `prototypes/assets/{logo,logo-512,logo-256,logo-128,logo-cropped,icon-192,icon-512,icon-mask,apple-touch-icon,favicon-16x16,favicon-32x32,og-image}.png`, `logo-192.webp`, `favicon.ico` (x2), `favicon.svg`, `tasks/DEVLOG.md`, `tasks/todo.md`, `tasks/kickoff-redesign-logo-update.md`.
+
+---
 
 ## [2026-11-01] Claude Code (local) — fix/release-review-findings · fixes from the code review of release PR #46
 
