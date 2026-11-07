@@ -204,18 +204,28 @@
 - [ ] DE translation strings — choose tier: (a) Minimal, (b) Partial, (c) Full coverage
 - [x] Fix SVG icon visibility in light mode — added `html.light svg.ico` selectors for all 113+ icons
 
-### Brand assets (2026-06-30)
-**Favicon** (fix queued — prior work had visible black borders)
-- [ ] **Fix: re-derive favicon from cropped source** — crop to V/K content, add 5% padding, square to 1024×1024, composite on clean background, re-derive 9 assets, visual QA at 16/32/180/192/512. Kickoff: `tasks/kickoff-favicon-borders-fix.md`
+### Brand assets (2026-06-30 → updated 2026-11-07)
+- [x] Favicon derived from glass VK logo across all browsers + devices (PR #8 `fix/favicon-borders`)
+- [x] Topbar logo rollout across 6 sub-places: left brand pill scroll-swap, right profile icon, OG social banner (1200×630), homepage `#home-identity` mark, `index.html` splash mark, `/me` auth card (PR #9 `feat/logo-everywhere`, PR #33 `fix/home-bottom-me-logo`)
 
-**Topbar logo** (7 sub-places identified)
-- [ ] Sub-place 1: Topbar pill (left) — scroll-responsive logo swap (wordmark → mark)
-- [ ] Sub-place 2: Profile icon (top right) — replace "VK" initials with logo SVG
-- [ ] Sub-place 3: Open Graph image — 1200×630 with logo + name + tagline; add to all 7 HTML files
-- [ ] Sub-place 4: Hero identity widget — add logo mark alongside wordmark
-- [ ] Sub-place 5: About page photo block — add logo mark below photo
-- [ ] Sub-place 6: Resume page header — add logo mark
-- [ ] Sub-place 7: `/me` private page — add logo mark to heading
+### Logo Redesign Rollout (2026-11-07) — done, pending merge (`tasks/kickoff-redesign-logo-update.md`)
+**Branch:** `feat/redesign-logo-update` (off `dev`)
+**Source:** `prototypes/assets/new-logos/` (`logo.png` primary + `logo-blue.png`, `logo-brown.png`, `logo-mono.png` variants; 5016×5016 RGB PNGs with ~330px outer black margin around squircle bbox `x:329..4657, y:328..4715`)
+- [x] **Step 1: Tight-crop source master** — crop `new-logos/logo.png` to the squircle edges (1:1 square, removing the ~330px outer black border per L-068) and save canonical master to `prototypes/assets/logo.png` (1024×1024 optimized PNG)
+- [x] **Step 2: Regenerate site mark derivatives** in `prototypes/assets/`:
+  - [x] `logo-128.png` (128×128) — topbar `.nav-logo-mark` (28×28) & `.nav-profile-mark` (26×26)
+  - [x] `logo-192.webp` (192×192, <15KB) — `index.html` `.mark img` (76×76) & `#pg-me .me-logo img` (64×64)
+  - [x] `logo-256.png` (256×256) — homepage `#home-identity .home-identity-mark` (42×42)
+  - [x] `logo-512.png` & `logo-cropped.png` (512×512)
+- [x] **Step 3: Regenerate favicon & PWA icon suite** (apply contrast/brightness boost or tight inner crop so `VK` is crisp at 16×16 per L-068):
+  - [x] `prototypes/assets/favicon.ico` + repo root `/favicon.ico` (16+32+48 multi-size ICO)
+  - [x] `prototypes/assets/favicon.svg` (64×64 embedded PNG + dark/light media query)
+  - [x] `prototypes/assets/favicon-16x16.png` & `favicon-32x32.png`
+  - [x] `prototypes/assets/apple-touch-icon.png` (180×180)
+  - [x] `prototypes/assets/icon-192.png`, `icon-512.png`, `icon-mask.png` (PWA manifest icons)
+- [x] **Step 4: Regenerate Open Graph social banner** — render `prototypes/assets/_og-template.html` at 1200×630 via Playwright to update `prototypes/assets/og-image.png`
+- [x] **Step 5: Clean up staging directory** — remove `prototypes/assets/new-logos/` before committing so 4MB raw 5016px renders are not committed
+- [x] **Step 6: Visual QA & E2E verification** — verify via Playwright screenshots (`index.html#stay`, homepage topbar at scroll=0 & scroll=200, `#home-identity`, `#pg-me`, `og-image.png`, favicons at 16×16 & 32×32 in dark + light themes); run `npm test` and `npm run lint:html`
 
 ### Resume redesign ✅ COMPLETE (2026-07-01)
 **Goal:** rebuild `prototypes/resume.html` using portfolio design system (Light Grey + Dark themes, widget-block glass, SVG icons, 4-font stack). A4 print stylesheet.

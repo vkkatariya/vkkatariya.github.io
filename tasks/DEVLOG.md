@@ -6,6 +6,22 @@
 
 ---
 
+## [2026-11-07] Claude Code (local) — feat/redesign-logo-update · redesigned VK logo rolled out to every asset
+
+**Mode:** Execution
+
+**Did:** replaced the old glass VK logo with the redesigned `new-logos/logo.png` (5016px, ~330px black margin). Tight-cropped to the squircle bbox (x 329..4658, y 328..4716, square 4388px) so the `border-radius` placements fill edge to edge (L-068). Regenerated with one deterministic Pillow script (LANCZOS): `logo.png` 1024, `logo-512/256/128.png`, `logo-192.webp` (q88, 6KB), `icon-192/512.png`, `apple-touch-icon.png`, `icon-mask.png` (82% on `#080808`). Small-size set (`logo-cropped.png`, `favicon-16/32`, `favicon.ico` 16+32+48 here and at the repo root, `favicon.svg`) uses a 72% inner crop on the VK with 1.6x contrast and 1.3x brightness, because at 16px the full squircle swallowed the glyph. `og-image.png` re-rendered from `_og-template.html` in Playwright (seeded `Math.random` for the contribution grid, `document.fonts.ready`). `new-logos/` removed from the branch (the 4 raw renders stay untracked in the main checkout).
+
+**Verified:** screenshots of the favicon sheet, `index.html#stay`, home at scroll 0 and 250, `#me`, and the OG banner; `npm run lint:html` 0 errors; Playwright suite 108/108.
+
+**Notes:** `logo.png` is 616KB (kickoff said under 300KB; lossless, was 1.4MB). `_og-template.html` is gitignored, so it only exists in the main checkout. It still says "open to work" and `intern-ready`, so the banner repeats that; not changed here. `logo-blue/brown/mono.png` variants were not used.
+
+**State:** pushed to `feat/redesign-logo-update`, not merged.
+
+**Modified:** `prototypes/assets/{logo,logo-512,logo-256,logo-128,logo-cropped,icon-192,icon-512,icon-mask,apple-touch-icon,favicon-16x16,favicon-32x32,og-image}.png`, `logo-192.webp`, `favicon.ico` (x2), `favicon.svg`, `tasks/DEVLOG.md`, `tasks/todo.md`, `tasks/kickoff-redesign-logo-update.md`.
+
+---
+
 ## [2026-11-01] Claude Code (local) — fix/release-review-findings · fixes from the code review of release PR #46
 
 **Mode:** Builder
